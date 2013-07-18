@@ -120,7 +120,7 @@ void ocio_colorspace_param_t::do_read( const serialization::yaml_node_t& node)
         value().assign( val);
     else
     {
-        node.error_stream() << "Node " << parameterised()->name() << ": colorspace " << val << " not found in OCIO config.\n";
+        node.error_stream() << "Node " << this->node()->name() << ": colorspace " << val << " not found in OCIO config.\n";
         node.error_stream() << "Replacing by default value.\n";
         value().assign( default_colorspace());
     }

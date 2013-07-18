@@ -26,8 +26,9 @@
 
 #include<ramen/app/composition_fwd.hpp>
 
+#include<ramen/nodes/node_fwd.hpp>
+
 #include<ramen/params/poly_param_value.hpp>
-#include<ramen/params/parameterised_fwd.hpp>
 #include<ramen/params/param_set_fwd.hpp>
 #include<ramen/params/static_param_command_fwd.hpp>
 #include<ramen/params/animated_param_command_fwd.hpp>
@@ -118,11 +119,11 @@ public:
     /// Sets the param set this param belongs to.
     void set_param_set( param_set_t *parent);
 
-    /// Returns a const pointer to the parameterised this param belongs to.
-    const parameterised_t *parameterised() const;
+    /// Returns a const pointer to the node this param belongs to.
+    const node_t *node() const;
 
-    /// Returns a pointer to the parameterised this param belongs to.
-    parameterised_t *parameterised();
+    /// Returns a pointer to the node this param belongs to.
+    node_t *node();
 
     /// Returns a const pointer to the composition this param belongs to.
     const composition_t *composition() const;

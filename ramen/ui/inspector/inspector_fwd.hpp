@@ -7,13 +7,12 @@
 
 namespace ramen
 {
-
 namespace ui
 {
 
 class inspector_t;
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

@@ -7,15 +7,19 @@
 
 #include<ramen/nodes/node_fwd.hpp>
 
+#include<ramen/manipulators/manipulable.hpp>
+
 #include<vector>
 #include<string>
 #include<memory>
 #include<set>
 #include<utility>
 
+#include<boost/signals2/signal.hpp>
+
 #include<QWidget>
 
-#include<ramen/params/composite_parameterised.hpp>
+#include<ramen/params/param_set.hpp>
 
 #include<ramen/app/composition_fwd.hpp>
 
@@ -35,7 +39,7 @@ namespace ramen
 \ingroup nodes
 \brief A node in Ramen's processing graph.
 */
-class RAMEN_API node_t : public composite_parameterised_t
+class RAMEN_API node_t : public manipulable_t
 {
 public:
 
@@ -58,8 +62,29 @@ public:
     node_t();
     virtual ~node_t();
 
+    /// Emitted when this node is deleted.
+    boost::signals2::signal<void ( node_t*)> deleted;
+
+    /// Makes a copy of the node.
+    node_t *clone() const;
+
     /// Called for the new node, after being copied.
     virtual void cloned();
+
+    /// Returns the node name.
+    const std::string& name() const { return name_;}
+
+    /// Sets the node name.
+    void set_name( const std::string& n);
+
+    /// Returns the composition this node belongs to.
+    const composition_t *composition() const;
+
+    /// Returns the composition this node belongs to.
+    composition_t *composition();
+
+    /// Sets the composition this node belongs to.
+    virtual void set_composition( composition_t *comp);
 
     // inputs
     std::size_t num_inputs() const { return inputs_.size();}
@@ -89,6 +114,8 @@ public:
                          const Imath::Color3c& color,
                          const std::string& tooltip);
 
+    virtual void add_new_input_plug();
+
     // outputs
 
     bool has_output_plug() const { return !outputs_.empty();}
@@ -107,11 +134,6 @@ public:
 
     graph_color_t graph_color() const            { return graph_color_;}
     void set_graph_color( graph_color_t c) const { graph_color_ = c;}
-
-    // composition
-    const composition_t *composition() const            { return composition_;}
-    composition_t *composition()                        { return composition_;}
-    virtual void set_composition( composition_t *comp)  { composition_ = comp;}
 
     // visitor
     virtual void accept( node_visitor& v);
@@ -144,9 +166,34 @@ public:
     bool is_active() const;
     bool is_context() const;
 
-    virtual void add_new_input_plug();
+    bool dont_persist_params() const        { return dont_persist_params_;}
+    void set_dont_persist_params( bool b)   { dont_persist_params_ = b;}
 
-    // params
+    virtual bool autokey() const;
+    virtual bool track_mouse() const;
+
+    /// Creates the params for this node.
+    void create_params();
+
+    /// Returns a const reference to the node param_set.
+    const param_set_t& param_set() const    { return params_;}
+
+    /// Returns a reference to the node param_set.
+    param_set_t& param_set()				{ return params_;}
+
+    /// Returns a const reference to the param with identifier id.
+    const param_t& param( const std::string& identifier) const;
+
+    /// Returns a reference to the param with identifier id.
+    param_t& param( const std::string& identifier);
+
+    /// Adds a param to this node.
+    template<class T>
+    void add_param( std::auto_ptr<T> p) { param_set().add_param( p);}
+
+    /// Calls a function f for each param.
+    virtual void for_each_param( const boost::function<void ( param_t*)>& f);
+
     virtual void param_edit_finished();
 
     // signals
@@ -212,10 +259,19 @@ public:
 
     virtual bool is_frame_varying() const;
 
+    /// Creates anim tracks for this node and adds them to root.
+    void create_tracks( anim::track_t *root);
+
+    /// Sets the current frame to f.
+    void set_frame( float f);
+
     // user interface
     virtual const char *help_string() const;
 
     virtual std::auto_ptr<QWidget> create_toolbar() { return std::auto_ptr<QWidget>();}
+
+    /// Updates widgets associated with this node's params.
+    void update_widgets();
 
     // paths
     virtual void convert_relative_paths( const boost::filesystem::path& old_base,
@@ -237,9 +293,24 @@ protected:
     void add_needed_frames_to_hash( const render::context_t& context);
     void add_context_to_hash_string( const render::context_t& context);
 
+    /// Evaluate all params at frame frame.
+    void evaluate_params( float frame);
+
     bool is_valid_, is_identity_;
 
 private:
+
+    /*!
+        \brief Customization hook for node_t::clone.
+        For subclasses to implement.
+    */
+    virtual node_t *do_clone() const = 0;
+
+    /*!
+        \brief Customization hook for node_t::create_params.
+        For subclasses to implement.
+    */
+    virtual void do_create_params();
 
     // connections
     virtual void do_connected( node_t *src, int port);
@@ -261,6 +332,18 @@ private:
     virtual void do_calc_frames_needed( const render::context_t& context);
 
     /*!
+        \brief Customization hook for node_t::create_tracks.
+        For subclasses to implement.
+    */
+    virtual void do_create_tracks( anim::track_t *parent) {}
+
+    /*!
+        \brief Customization hook for node_t::set_frame.
+        For subclasses to implement.
+    */
+    virtual void do_set_frame( float t) {}
+
+    /*!
         \brief Customization hook for node_t::read.
         Implement in subclasses to read extra data from node.
     */
@@ -276,14 +359,24 @@ private:
     // serialization utils
     void write_node_info( serialization::yaml_oarchive_t& out) const;
 
+    /*!
+        \brief Customization hook for node_t::update_widgets.
+        For subclasses to implement.
+    */
+    virtual void do_update_widgets() {}
+
     // data
+    std::string name_;
 
     std::vector<node_input_plug_t> inputs_;
     boost::ptr_vector<node_output_plug_t> outputs_;
 
+    param_set_t params_;
+
     mutable graph_color_t graph_color_;
 
     boost::uint32_t flags_;
+    bool dont_persist_params_;
     Imath::V2f loc_;
     std::vector<std::pair<int, float> > frames_needed_;
 

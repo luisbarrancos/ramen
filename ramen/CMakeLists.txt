@@ -39,7 +39,7 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/float3_param.hpp
                         params/group_param.hpp
                         params/image_format_param.hpp
-                        params/inspector_param.hpp
+                        #params/inspector_param.hpp
                         params/motion_blur_param.hpp
                         params/numeric_param.hpp
                         params/ocio_colorspace_param.hpp
@@ -274,7 +274,6 @@ SET( RAMEN_SOURCES      system/system.cpp
                         params/color_param.cpp
                         params/combo_group_param.cpp
                         params/composite_param.cpp
-                        params/composite_parameterised.cpp
                         params/curve_param.cpp
                         params/file_param.cpp
                         params/float_param.cpp
@@ -282,14 +281,13 @@ SET( RAMEN_SOURCES      system/system.cpp
                         params/float3_param.cpp
                         params/group_param.cpp
                         params/image_format_param.cpp
-                        params/inspector_param.cpp
+                        #params/inspector_param.cpp
                         params/motion_blur_info.cpp
                         params/motion_blur_param.cpp
                         params/numeric_param.cpp
                         params/ocio_colorspace_param.cpp
                         params/param.cpp
                         params/param_set.cpp
-                        params/parameterised.cpp
                         params/popup_param.cpp
                         params/proportional_param.cpp
                         params/separator_param.cpp
@@ -406,9 +404,9 @@ IF( WITH_NODES)
     SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} nodes/image/input/image_channels_param.hpp
                                                 nodes/image/input/image_seq_param.hpp
 
-                                                nodes/image/roto/roto_shape_param.hpp
-                                                nodes/image/roto/shape_transform_param.hpp
-                                                nodes/image/roto/toolbar.hpp
+                                                #nodes/image/roto/roto_shape_param.hpp
+                                                #nodes/image/roto/shape_transform_param.hpp
+                                                #nodes/image/roto/toolbar.hpp
 
                                                 params/transform2_param.hpp
                                                 params/transform3_param.hpp
@@ -498,22 +496,22 @@ IF( WITH_NODES)
 
                                         nodes/image/output/output_node.cpp
 
-                                        nodes/image/roto/convert_tool.cpp
-                                        nodes/image/roto/create_tool.cpp
-                                        nodes/image/roto/manipulator.cpp
-                                        nodes/image/roto/null_tool.cpp
-                                        nodes/image/roto/roto_commands.cpp
-                                        nodes/image/roto/roto_node.cpp
-                                        nodes/image/roto/roto_shape_param.cpp
-                                        nodes/image/roto/select_tool.cpp
-                                        nodes/image/roto/shape_transform_param.cpp
-                                        nodes/image/roto/tool.cpp
-                                        nodes/image/roto/rect_tool.cpp
-                                        nodes/image/roto/toolbar.cpp
-                                        nodes/image/roto/shape.cpp
-                                        nodes/image/roto/scene.cpp
-                                        nodes/image/roto/scene_renderer.cpp
-                                        nodes/image/roto/triple.cpp
+                                        #nodes/image/roto/convert_tool.cpp
+                                        #nodes/image/roto/create_tool.cpp
+                                        #nodes/image/roto/manipulator.cpp
+                                        #nodes/image/roto/null_tool.cpp
+                                        #nodes/image/roto/roto_commands.cpp
+                                        #nodes/image/roto/roto_node.cpp
+                                        #nodes/image/roto/roto_shape_param.cpp
+                                        #nodes/image/roto/select_tool.cpp
+                                        #nodes/image/roto/shape_transform_param.cpp
+                                        #nodes/image/roto/tool.cpp
+                                        #nodes/image/roto/rect_tool.cpp
+                                        #nodes/image/roto/toolbar.cpp
+                                        #nodes/image/roto/shape.cpp
+                                        #nodes/image/roto/scene.cpp
+                                        #nodes/image/roto/scene_renderer.cpp
+                                        #nodes/image/roto/triple.cpp
 
                                         nodes/image/tonemap/global_tonemap_node.cpp
 

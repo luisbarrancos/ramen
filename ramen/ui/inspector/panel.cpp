@@ -2,8 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
-
 #include<ramen/ui/inspector/panel.hpp>
 
 #include<boost/foreach.hpp>
@@ -12,7 +10,7 @@
 
 #include<ramen/ui/inspector/inspector.hpp>
 
-#include<ramen/params/parameterised.hpp>
+#include<ramen/nodes/node.hpp>
 #include<ramen/ui/user_interface.hpp>
 
 namespace ramen
@@ -20,7 +18,7 @@ namespace ramen
 namespace ui
 {
 
-panel_t::panel_t( parameterised_t *p) : p_( p), panel_( 0)
+panel_t::panel_t( node_t *n) : n_( n), panel_( 0)
 {
     panel_ = new QWidget();
 
@@ -28,7 +26,7 @@ panel_t::panel_t( parameterised_t *p) : p_( p), panel_( 0)
     layout->setContentsMargins( 0, 0, 0, 0);
     layout->setSizeConstraint( QLayout::SetFixedSize);
 
-    BOOST_FOREACH( param_t& param, p_->param_set())
+    BOOST_FOREACH( param_t& param, n_->param_set())
     {
         QWidget *w = param.create_widgets();
 
@@ -42,16 +40,16 @@ panel_t::panel_t( parameterised_t *p) : p_( p), panel_( 0)
 
 panel_t::~panel_t()
 {
-	connection_.disconnect();
-	panel_->deleteLater();
+    connection_.disconnect();
+    panel_->deleteLater();
 }
 
 void panel_t::set_connection( const boost::signals2::connection c)
 {
-	connection_ = c;
+    connection_ = c;
 }
 
-void panel_t::update() { p_->update_widgets();}
+void panel_t::update() { n_->update_widgets();}
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

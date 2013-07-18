@@ -12,7 +12,7 @@ namespace ui
 
 class panel_t;
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

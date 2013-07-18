@@ -16,6 +16,8 @@
 
 #include<ramen/app/composition.hpp>
 
+#include<ramen/anim/track.hpp>
+
 #include<ramen/serialization/yaml_iarchive.hpp>
 #include<ramen/serialization/yaml_oarchive.hpp>
 
@@ -43,20 +45,35 @@ struct frames_needed_less
 
 } // unnamed
 
-node_t::node_t() : composite_parameterised_t(), flags_( 0), composition_( 0) {}
+node_t::node_t() : manipulable_t(), flags_( 0), composition_( 0), dont_persist_params_( false)
+{
+    params_.set_parent( this);
+}
 
-node_t::node_t( const node_t& other) : composite_parameterised_t( other),
+node_t::node_t( const node_t& other) :  manipulable_t( other),
+                                        params_( other.params_),
                                         outputs_( other.outputs_)
 {
+    params_.set_parent( this);
+    name_ = other.name_;
     boost::range::for_each( outputs_, boost::bind( &node_output_plug_t::set_parent_node,
                                                    _1,
                                                    this));
     flags_ = other.flags_;
     loc_ = other.loc_;
     composition_ = other.composition_;
+    dont_persist_params_ = other.dont_persist_params_;
 }
 
-node_t::~node_t() {}
+node_t::~node_t()
+{
+    deleted( this);
+}
+
+node_t *node_t::clone() const
+{
+    return do_clone();
+}
 
 void node_t::cloned()
 {
@@ -64,6 +81,31 @@ void node_t::cloned()
         connected( 0, i);
 
     create_manipulators();
+}
+
+void node_t::set_name( const std::string& n)
+{
+    RAMEN_ASSERT( util::is_string_valid_identifier( n));
+
+    if( !util::is_string_valid_identifier( n))
+        throw std::runtime_error( "Invalid name for node");
+
+    name_ = n;
+}
+
+const composition_t *node_t::composition() const
+{
+    return composition_;
+}
+
+composition_t *node_t::composition()
+{
+    return composition_;
+}
+
+void node_t::set_composition( composition_t *comp)
+{
+    composition_ = comp;
 }
 
 // visitor
@@ -109,6 +151,16 @@ void node_t::set_ui_invisible( bool b)  { util::set_flag( flags_, ui_invisible_b
 
 bool node_t::is_active() const     { return util::test_flag( flags_, active_bit);}
 bool node_t::is_context() const    { return util::test_flag( flags_, context_bit);}
+
+bool node_t::autokey() const
+{
+    if( const composition_t *c = composition())
+        return c->autokey();
+
+    return false;
+}
+
+bool node_t::track_mouse() const { return true;}
 
 // inputs
 
@@ -224,6 +276,29 @@ void node_t::reconnect_node()
 }
 
 // params
+void node_t::create_params()
+{
+    do_create_params();
+    boost::range::for_each( param_set(), boost::bind( &param_t::init, _1));
+}
+
+void node_t::do_create_params() {}
+
+const param_t& node_t::param( const std::string& identifier) const
+{
+    return param_set().find( identifier);
+}
+
+param_t& node_t::param( const std::string& identifier)
+{
+    return param_set().find( identifier);
+}
+
+void node_t::for_each_param( const boost::function<void ( param_t*)>& f)
+{
+    param_set().for_each_param( f);
+}
+
 void node_t::param_edit_finished() { notify();}
 
 void node_t::notify()
@@ -483,12 +558,42 @@ void node_t::add_needed_frames_to_hash( const render::context_t& context)
 // cache
 bool node_t::is_frame_varying() const { return false;}
 
+void node_t::create_tracks( anim::track_t *root)
+{
+    std::auto_ptr<anim::track_t> top( new anim::track_t( name()));
+
+    BOOST_FOREACH( param_t& p, param_set())
+    {
+        p.create_tracks( top.get());
+    }
+
+    do_create_tracks( top.get());
+    root->add_child( top);
+}
+
+void node_t::set_frame( float f)
+{
+    boost::range::for_each( param_set(), boost::bind( &param_t::set_frame, _1, f));
+    do_set_frame( f);
+}
+
+void node_t::evaluate_params( float frame)
+{
+    boost::range::for_each( param_set(), boost::bind( &param_t::evaluate, _1, frame));
+}
+
 // ui
 const char *node_t::help_string() const
 {
     RAMEN_ASSERT( metaclass());
 
     return metaclass()->help;
+}
+
+void node_t::update_widgets()
+{
+    boost::range::for_each( param_set(), boost::bind( &param_t::update_widgets, _1));
+    do_update_widgets();
 }
 
 void node_t::convert_relative_paths( const boost::filesystem::path& old_base,
@@ -584,7 +689,7 @@ void node_t::write_node_info( serialization::yaml_oarchive_t& out) const
 
 node_t *new_clone( const node_t& other)
 {
-    return dynamic_cast<node_t*>( new_clone( dynamic_cast<const parameterised_t&>( other)));
+    return other.clone();
 }
 
 } // ramen

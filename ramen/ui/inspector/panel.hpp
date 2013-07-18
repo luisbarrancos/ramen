@@ -11,7 +11,7 @@
 
 #include<QObject>
 
-#include<ramen/params/parameterised_fwd.hpp>
+#include<ramen/nodes/node_fwd.hpp>
 
 class QWidget;
 
@@ -26,10 +26,10 @@ class panel_t : public QObject
 
 public:
 
-    panel_t( parameterised_t *p);
+    panel_t( node_t *n);
     ~panel_t();
 
-	void set_connection( const boost::signals2::connection c);
+    void set_connection( const boost::signals2::connection c);
 
     QWidget *widget() { return panel_;}
 
@@ -37,12 +37,12 @@ public:
 
 private:
 
-    parameterised_t *p_;
+    node_t *n_;
     QWidget *panel_;
-	boost::signals2::connection connection_;
+    boost::signals2::connection connection_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

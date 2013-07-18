@@ -22,9 +22,10 @@
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
 
-#include<ramen/params/parameterised.hpp>
 #include<ramen/params/param.hpp>
 #include<ramen/params/composite_param.hpp>
+
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/undo/stack.hpp>
 
@@ -99,7 +100,7 @@ private:
     boost::ptr_vector<undo::command_t> more_commands_;
 };
 
-param_set_t::param_set_t( parameterised_t *p) : parent_( p) {}
+param_set_t::param_set_t( node_t *p) : parent_( p) {}
 
 param_set_t::param_set_t( const param_set_t& other) : params_( other.params_)
 {
@@ -262,4 +263,4 @@ void param_set_t::write( serialization::yaml_oarchive_t& out) const
         out.end_seq();
 }
 
-} // namespace
+} // ramen

@@ -7,9 +7,7 @@
 
 #include<map>
 
-#include<boost/noncopyable.hpp>
-
-#include<ramen/params/parameterised_fwd.hpp>
+#include<ramen/nodes/node_fwd.hpp>
 #include<ramen/ui/inspector/panel_fwd.hpp>
 
 namespace ramen
@@ -17,30 +15,34 @@ namespace ramen
 namespace ui
 {
 
-class panel_factory_t : boost::noncopyable
+class panel_factory_t
 {
 public:
 
     panel_factory_t();
-	~panel_factory_t();
+    ~panel_factory_t();
 
-	typedef std::map<parameterised_t*,panel_t*>::iterator iterator;
+    typedef std::map<node_t*,panel_t*>::iterator iterator;
 
-	iterator begin()	{ return panels_.begin();}
-	iterator end()		{ return panels_.end();}
+    iterator begin()	{ return panels_.begin();}
+    iterator end()		{ return panels_.end();}
 
-    iterator create_panel( parameterised_t *p);
-    void delete_panel( parameterised_t *p);
+    iterator create_panel( node_t *n);
+    void delete_panel( node_t *n);
 
 private:
 
-    void do_create_panel( parameterised_t *p);
+    // non-copyable
+    panel_factory_t( const panel_factory_t&);
+    panel_factory_t& operator=( const panel_factory_t&);
 
-    std::map<parameterised_t*,panel_t*> panels_;
-    std::map<parameterised_t*,panel_t*>::iterator current_;
+    void do_create_panel( node_t *n);
+
+    std::map<node_t*,panel_t*> panels_;
+    std::map<node_t*,panel_t*>::iterator current_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

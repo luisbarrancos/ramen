@@ -43,13 +43,13 @@ public:
 
     QWidget *widget() { return window_;}
 
-	panel_factory_t& panel_factory() { return factory_;}
+    panel_factory_t& panel_factory() { return factory_;}
 
 private Q_SLOTS:
 
     void rename_node();
-	void show_help();
-	
+    void show_help();
+
 private:
 
     inspector_t( const inspector_t& other);
@@ -70,15 +70,15 @@ private:
 
     QWidget *header_;
     ui::line_edit_t *name_edit_;
-	QPushButton *help_;
+    QPushButton *help_;
 
     container_widget_t *view_;
 
-	panel_factory_t factory_;
+    panel_factory_t factory_;
     panel_factory_t::iterator current_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

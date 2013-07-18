@@ -379,7 +379,7 @@ void float2_param_t::spinbox_dragged( double value)
     if( track_mouse())
         param_set()->notify_parent();
     else
-        parameterised()->update_overlay();
+        node()->update_overlay();
 
     app().ui()->update_anim_editors();
 }

@@ -6,7 +6,7 @@
 
 #include<stdexcept>
 
-#include<ramen/params/parameterised.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/serialization/yaml_oarchive.hpp>
 
@@ -42,13 +42,13 @@ void param_t::set_param_set( param_set_t *parent)
 
 void param_t::do_set_param_set( param_set_t *parent) {}
 
-const parameterised_t *param_t::parameterised() const
+const node_t *param_t::node() const
 {
     RAMEN_ASSERT( param_set());
     return param_set()->parent();
 }
 
-parameterised_t *param_t::parameterised()
+node_t *param_t::node()
 {
     RAMEN_ASSERT( param_set());
     return param_set()->parent();
@@ -57,10 +57,10 @@ parameterised_t *param_t::parameterised()
 const composition_t *param_t::composition() const
 {
     RAMEN_ASSERT( param_set());
-    const parameterised_t *p = parameterised();
+    const node_t *n = node();
 
-    if( p)
-        return p->composition();
+    if( n)
+        return n->composition();
     else
         return 0;
 }
@@ -68,10 +68,10 @@ const composition_t *param_t::composition() const
 composition_t *param_t::composition()
 {
     RAMEN_ASSERT( param_set());
-    parameterised_t *p = parameterised();
+    node_t *n = node();
 
-    if( p)
-        return p->composition();
+    if( n)
+        return n->composition();
     else
         return 0;
 }
@@ -131,9 +131,9 @@ void param_t::set_include_in_hash( bool b)
 
 bool param_t::track_mouse() const
 {
-    if( const parameterised_t *p = parameterised())
+    if( const node_t *n = node())
     {
-        if( !p->track_mouse())
+        if( !n->track_mouse())
             return false;
     }
 

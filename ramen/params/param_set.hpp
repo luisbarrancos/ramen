@@ -14,7 +14,8 @@
 #include<boost/signals2/signal.hpp>
 
 #include<ramen/params/param.hpp>
-#include<ramen/params/parameterised_fwd.hpp>
+
+#include<ramen/nodes/node_fwd.hpp>
 
 namespace ramen
 {
@@ -31,14 +32,14 @@ class RAMEN_API param_set_t
 {
 public:
 
-    param_set_t( parameterised_t *p = 0);
+    param_set_t( node_t *p = 0);
     param_set_t( const param_set_t& other);
 
     ~param_set_t();
 
-    const parameterised_t *parent() const   { return parent_;}
-    parameterised_t *parent()				{ return parent_;}
-    void set_parent( parameterised_t *p)    { parent_ = p;}
+    const node_t *parent() const    { return parent_;}
+    node_t *parent()                { return parent_;}
+    void set_parent( node_t *p)     { parent_ = p;}
 
     void clear();
     bool empty() const { return params_.empty();}
@@ -98,7 +99,7 @@ private:
 
     void do_add_param( param_t *p);
 
-    parameterised_t *parent_;
+    node_t *parent_;
     boost::ptr_vector<param_t> params_;
     std::auto_ptr<param_set_command_t> command_;
 };
