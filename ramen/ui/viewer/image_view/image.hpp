@@ -5,9 +5,16 @@
 #ifndef RAMEN_UI_VIEWER_IMAGE_HPP
 #define	RAMEN_UI_VIEWER_IMAGE_HPP
 
-#include<memory>
+#include<ramen/core/memory.hpp>
 
-#include<ramen/ui/viewer/image_view/image_strategy.hpp>
+#include<boost/optional.hpp>
+
+#include<OpenEXR/ImathBox.h>
+#include<OpenEXR/ImathColor.h>
+
+#include<ramen/image/buffer.hpp>
+
+#include<ramen/GL/gl.hpp>
 
 namespace ramen
 {
@@ -20,40 +27,43 @@ class image_t
 {
 public:
 
-    image_t( GLenum texture_unit = GL_TEXTURE0) : texture_unit_( texture_unit) {}
+    image_t( GLenum texture_unit = GL_TEXTURE0);
+    ~image_t();
 
-	bool valid() const;
+    bool valid() const;
 
     void reset();
     void reset( image::buffer_t pixels,
                 const Imath::Box2i& display_window,
                 const Imath::Box2i& data_window);
 
-	Imath::Box2i display_window() const;
-	Imath::Box2i data_window() const;
+    Imath::Box2i display_window() const;
+    Imath::Box2i data_window() const;
 
-	// draw
-	void draw_background() const;
-	void draw() const;
+    // draw
+    void draw_background() const;
+    void draw() const;
 
-	// overlay draw
-	void frame_display_window() const;
-	void frame_data_window() const;
+    // overlay draw
+    void frame_display_window() const;
+    void frame_data_window() const;
 
-	// get colors
-	boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const;
+    // get colors
+    boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const;
 
 private:
 
-    void create_strategy( const image::buffer_t& pixels,
-                          const Imath::Box2i& display_window,
-                          const Imath::Box2i& data_window);
+    void create_impl( const image::buffer_t& pixels,
+                      const Imath::Box2i& display_window,
+                      const Imath::Box2i& data_window);
 
-	void frame_rect( const Imath::Box2i& b) const;
-	void gl_vertices_for_box( const Imath::Box2i& b) const;
+    void frame_rect( const Imath::Box2i& b) const;
+    void gl_vertices_for_box( const Imath::Box2i& b) const;
 
-	GLenum texture_unit_;
-    std::auto_ptr<image_strategy_t> strategy_;	
+    GLenum texture_unit_;
+
+    struct impl;
+    core::auto_ptr_t<impl> pimpl_;
 };
 
 } // viewer
