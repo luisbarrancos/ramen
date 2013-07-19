@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_RENDER_RENDER_THREAD_HPP
 #define RAMEN_RENDER_RENDER_THREAD_HPP
@@ -28,11 +30,11 @@ struct RAMEN_API render_thread_t
 
 private:
 
-    struct implementation;
-    implementation *pimpl_;
+    struct impl;
+    impl *pimpl_;
 };
 
-} // namespace
-} // namespace
+} // render
+} // ramen
 
 #endif

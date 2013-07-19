@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #include<ramen/render/render_thread.hpp>
 
@@ -11,18 +13,18 @@ namespace ramen
 namespace render
 {
 
-struct render_thread_t::implementation
+struct render_thread_t::impl
 {
-    implementation()
+    impl()
     {
         // start our thread
         finish = false;
         ready = false;
         do_work = false;
-        thread = boost::thread( &implementation::thread_loop, this);
+        thread = boost::thread( &impl::thread_loop, this);
     }
 
-    ~implementation()
+    ~impl()
     {
         boost::unique_lock<boost::mutex> lock( mutex);
         finish = true;
@@ -42,7 +44,7 @@ struct render_thread_t::implementation
         cancel = false;
         ready = true;
         do_work = true;
-        task = boost::packaged_task<bool>( boost::bind( &implementation::call_fun, this, f));
+        task = boost::packaged_task<bool>( boost::bind( &impl::call_fun, this, f));
         future = task.get_future();
         lock.unlock();
         cond.notify_one();
@@ -99,7 +101,7 @@ render_thread_t::~render_thread_t() { delete pimpl_;}
 void render_thread_t::init()
 {
     RAMEN_ASSERT( pimpl_ == 0 && "render_thread_t: init called twice");
-    pimpl_ = new implementation();
+    pimpl_ = new impl();
 }
 
 boost::unique_future<bool>& render_thread_t::render_image( node_renderer_t& renderer)
@@ -116,5 +118,5 @@ bool render_thread_t::cancelled() const { return pimpl_->cancel;}
 
 void render_thread_t::cancel_render() { pimpl_->cancel = true;}
 
-} // namespace
-} // namespace
+} // render
+} // ramen

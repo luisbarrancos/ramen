@@ -72,7 +72,7 @@ Imath::Box2i numeric_param_t::frame_area() const
 
     if( node()->input( depends_on_port_))
     {
-        area =  n->input_as<node_t>( depends_on_port_)->full_format();
+        area =  node()->input_as<node_t>( depends_on_port_)->full_format();
         ++area.max.x;
         ++area.max.y;
     }

@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #include<ramen/render/node_renderer.hpp>
 
@@ -28,7 +30,7 @@ struct print_areas
 {
     void operator()( ramen::node_t& n) const
     {
-        std::cout << in->name() << " ";
+        std::cout << n.name() << " ";
         std::cout << "[" << n.hash_generator().digest_as_string() << "]\n";
         std::cout << "format      = "; print_box( std::cout, n.format()) << "\n";
         std::cout << "bounds      = "; print_box( std::cout, n.bounds()) << "\n";
@@ -142,5 +144,5 @@ image::const_image_view_t node_renderer_t::format_image_view() const
     return n_->const_subimage_view( format());
 }
 
-} // namespace
-} // namespace
+} // render
+} // ramen

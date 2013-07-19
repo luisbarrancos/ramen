@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #include<ramen/render/context_guard.hpp>
 
@@ -75,5 +77,5 @@ void context_guard_t::restore( node_t *n)
     depth_first_inputs_search( *n, boost::bind( &node_t::calc_hash_str, _1, context_));
 }
 
-} // namespace
-} // namespace
+} // render
+} // ramen
