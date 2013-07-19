@@ -28,13 +28,13 @@ base_output_node_t::base_output_node_t( const base_output_node_t& other) : node_
 
 void base_output_node_t::do_process( const render::context_t& context)
 {
-    input_defined_ = input_as<node_t>()->defined();
+    input_defined_ = input()->defined();
 
     Imath::Box2i area( ImathExt::intersect( input_defined_, defined()));
 
     if( !area.isEmpty())
     {
-        boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+        boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
 
         try
         {

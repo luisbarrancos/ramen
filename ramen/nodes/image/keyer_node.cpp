@@ -26,21 +26,21 @@ keyer_node_t::keyer_node_t( const keyer_node_t& other) : node_t( other) {}
 
 void keyer_node_t::do_calc_bounds( const render::context_t& context)
 {
-    node_t *in0 = input_as<node_t>( 0);
+    node_t *in0 = input( 0);
 
     if( input( 1))
-        set_bounds( ImathExt::intersect( in0->bounds(), input_as<node_t>( 1)->bounds()));
+        set_bounds( ImathExt::intersect( in0->bounds(), input( 1)->bounds()));
     else
         set_bounds( in0->bounds());
 }
 
 void keyer_node_t::do_calc_defined( const render::context_t& context)
 {
-    node_t *in0 = input_as<node_t>( 0);
+    node_t *in0 = input( 0);
 
     if( input( 1))
     {
-        Imath::Box2i def( ImathExt::intersect( in0->defined(), input_as<node_t>( 1)->defined()));
+        Imath::Box2i def( ImathExt::intersect( in0->defined(), input( 1)->defined()));
         set_defined( def);
     }
     else
@@ -49,7 +49,7 @@ void keyer_node_t::do_calc_defined( const render::context_t& context)
 
 void keyer_node_t::get_input_frame()
 {
-    node_t *in0 = input_as<node_t>( 0);
+    node_t *in0 = input( 0);
 
     // Render the input
     if( in0)

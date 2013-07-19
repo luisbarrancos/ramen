@@ -100,7 +100,7 @@ bool resize_node_t::do_is_identity() const
 
 void resize_node_t::do_calc_format( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
 
     if( get_value<int>( param( "method")) == 0)
     {
@@ -126,7 +126,7 @@ void resize_node_t::do_calc_bounds( const render::context_t& context) { set_boun
 
 void resize_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
     Imath::Box2i roi( image::resize_box( interest(), in->format().min, scale_.x, scale_.y));
 
     int xfilter_area, yfilter_area;

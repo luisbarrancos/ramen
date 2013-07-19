@@ -87,8 +87,8 @@ void copy_channels_node_t::do_create_params()
 
 void copy_channels_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i rod1 = input_as<node_t>(0)->bounds();
-    Imath::Box2i rod2 = input_as<node_t>(1)->bounds();
+    Imath::Box2i rod1 = input(0)->bounds();
+    Imath::Box2i rod2 = input(1)->bounds();
 
     int ch_r = get_value<int>( param( "red"));
     int ch_g = get_value<int>( param( "green"));
@@ -144,11 +144,11 @@ void copy_channels_node_t::do_calc_bounds( const render::context_t& context)
 
 void copy_channels_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i src1_area( ImathExt::intersect( input_as<node_t>(0)->defined(), defined()));
-    image::const_image_view_t src1( input_as<node_t>(0)->const_subimage_view( src1_area));
+    Imath::Box2i src1_area( ImathExt::intersect( input(0)->defined(), defined()));
+    image::const_image_view_t src1( input(0)->const_subimage_view( src1_area));
 
-    Imath::Box2i src2_area( ImathExt::intersect( input_as<node_t>(1)->defined(), defined()));
-    image::const_image_view_t src2( input_as<node_t>(1)->const_subimage_view( src2_area));
+    Imath::Box2i src2_area( ImathExt::intersect( input(1)->defined(), defined()));
+    image::const_image_view_t src2( input(1)->const_subimage_view( src2_area));
 
     image::image_view_t dst1( subimage_view( src1_area));
     image::image_view_t dst2( subimage_view( src2_area));

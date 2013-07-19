@@ -70,7 +70,7 @@ void smart_blur_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void smart_blur_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
@@ -96,7 +96,7 @@ void smart_blur_node_t::do_process( const render::context_t& context)
             image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
             image::smart_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), stddev.x, stddev.y, get_value<float>( param( "theresh")));
             boost::gil::fill_pixels( boost::gil::nth_channel_view( image_view(), 3), boost::gil::gray32f_pixel_t( 0));
-            boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( input()->const_subimage_view( area), 3),
                                         boost::gil::nth_channel_view( subimage_view( area), 3));
         }
         break;

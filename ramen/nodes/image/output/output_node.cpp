@@ -231,7 +231,7 @@ void output_node_t::param_changed( param_t *p, param_t::change_reason reason)
 
 void output_node_t::do_calc_defined( const render::context_t& context)
 {
-    set_defined( input_as<node_t>()->format());
+    set_defined( input()->format());
 }
 
 namespace

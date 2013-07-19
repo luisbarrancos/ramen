@@ -29,12 +29,12 @@ void invert_node_t::do_calc_bounds( const render::context_t& context)
     if( alpha)
         set_bounds( format());
     else
-        set_bounds( input_as<node_t>()->bounds());
+        set_bounds( input()->bounds());
 }
 
 void invert_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
     return;
@@ -42,7 +42,7 @@ void invert_node_t::do_process( const render::context_t& context)
     if( get_value<int>( param( "channels")))
     boost::gil::fill_pixels( image_view(), image::pixel_t( 0, 0, 0, 1));
 
-    do_process( input_as<node_t>()->const_subimage_view( area), subimage_view( area), context);
+    do_process( input()->const_subimage_view( area), subimage_view( area), context);
 }
 
 void invert_node_t::do_process( const image::const_image_view_t& src, const image::image_view_t& dst, const render::context_t& context)

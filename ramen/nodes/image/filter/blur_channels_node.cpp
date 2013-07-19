@@ -95,7 +95,7 @@ void blur_channels_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void blur_channels_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
@@ -112,7 +112,7 @@ void blur_channels_node_t::do_process( const render::context_t& context)
     b_radius = adjust_blur_size( b_radius, context.subsample);
     a_radius = adjust_blur_size( a_radius, context.subsample);
 
-    boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+    boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
 
     image::buffer_t buffer( image_view().height(), image_view().width(), 1);
     image::gray_image_view_t tmp = buffer.gray_view();

@@ -45,7 +45,7 @@ void percentile_filter_node_t::get_expand_radius( int& hradius, int& vradius) co
 
 void percentile_filter_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
@@ -54,26 +54,26 @@ void percentile_filter_node_t::do_process( const render::context_t& context)
 
     if( radius == 0)
     {
-        boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+        boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
         return;
     }
 
     switch( get_value<int>( param( "channels")))
     {
         case 0:
-            image::percentile_filter_rgba( input_as<node_t>()->const_subimage_view( area),
+            image::percentile_filter_rgba( input()->const_subimage_view( area),
                                            subimage_view( area), radius,
                                            get_value<float>( param( "percent")));
         break;
 
         case 1:
-            image::percentile_filter_rgb( input_as<node_t>()->const_subimage_view( area),
+            image::percentile_filter_rgb( input()->const_subimage_view( area),
                                           subimage_view( area), radius,
                                           get_value<float>( param( "percent")));
         break;
 
         case 2:
-            image::percentile_filter_alpha( input_as<node_t>()->const_subimage_view( area),
+            image::percentile_filter_alpha( input()->const_subimage_view( area),
                                             subimage_view( area), radius,
                                             get_value<float>( param( "percent")));
         break;

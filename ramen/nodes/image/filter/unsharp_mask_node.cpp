@@ -87,12 +87,12 @@ void unsharp_mask_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void unsharp_mask_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-    image::const_image_view_t src( input_as<node_t>()->const_subimage_view( area));
+    image::const_image_view_t src( input()->const_subimage_view( area));
     image::image_view_t dst( subimage_view( area));
 
     float radiusx = get_value<float>( param( "radius")) / context.subsample * proxy_scale().x / 3.0f / aspect_ratio();
@@ -103,7 +103,7 @@ void unsharp_mask_node_t::do_process( const render::context_t& context)
     boost::gil::tbb_transform2_pixels( src, dst, dst, unsharp_mask_fun( get_value<float>( param( "amount")),
                                                                          get_value<float>( param( "theresh"))));
 
-    boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+    boost::gil::copy_pixels( boost::gil::nth_channel_view( input()->const_subimage_view( area), 3),
                             boost::gil::nth_channel_view( subimage_view( area), 3));
 }
 

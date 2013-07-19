@@ -95,12 +95,12 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     if( input(1))
     {
         boost::gil::copy_pixels( src, dst);
-        area = ImathExt::intersect( input_as<node_t>(1)->defined(), defined());
+        area = ImathExt::intersect( input(1)->defined(), defined());
 
         if( area.isEmpty())
             return;
 
-        src_view = input_as<node_t>(0)->const_subimage_view( area),
+        src_view = input(0)->const_subimage_view( area),
         dst_view = subimage_view( area);
     }
     else
@@ -168,7 +168,7 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
 
     // mask
     if( input(1))
-        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input_as<node_t>(1)->const_subimage_view( area), 3), dst_view);
+        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input(1)->const_subimage_view( area), 3), dst_view);
 }
 
 // factory

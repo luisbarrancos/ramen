@@ -191,7 +191,7 @@ void crop_node_t::do_create_params()
 
 void crop_node_t::do_calc_format( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
     Imath::Box2i box( in->format());
     int crop_t = get_absolute_value<float>( param( "top"));
     int crop_l = get_absolute_value<float>( param( "left"));
@@ -204,19 +204,19 @@ void crop_node_t::do_calc_format( const render::context_t& context)
 
 void crop_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bounds( ImathExt::intersect( input_as<node_t>()->bounds(), format()));
+    Imath::Box2i bounds( ImathExt::intersect( input()->bounds(), format()));
     set_bounds( bounds);
 }
 
 void crop_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi = ImathExt::intersect( interest(), format());
-    input_as<node_t>()->add_interest( roi);
+    input()->add_interest( roi);
 }
 
 void crop_node_t::do_process( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
     Imath::Box2i area = ImathExt::intersect( in->defined(), defined());
 
     if( area.isEmpty())
@@ -228,7 +228,7 @@ void crop_node_t::do_process( const render::context_t& context)
     float soft_r = get_absolute_value<float>( param( "soft_right"));
 
     if( soft_t == 0 && soft_l == 0 && soft_b == 0 && soft_r == 0)
-        boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+        boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
     else
     {
         if( get_value<bool>( param( "alpha_only")))

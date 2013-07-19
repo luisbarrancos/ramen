@@ -113,15 +113,15 @@ void add_mix_layer_node_t::do_create_params()
 
 void add_mix_layer_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bbox( input_as<node_t>( 0)->bounds());
-    bbox.extendBy( input_as<node_t>( 1)->bounds());
+    Imath::Box2i bbox( input( 0)->bounds());
+    bbox.extendBy( input( 1)->bounds());
     set_bounds( bbox);
 }
 
 void add_mix_layer_node_t::do_process( const render::context_t& context)
 {
-    node_t *bg = input_as<node_t>( 0);
-    node_t *fg = input_as<node_t>( 1);
+    node_t *bg = input( 0);
+    node_t *fg = input( 1);
 
     Imath::Box2i bg_area = ImathExt::intersect( bg->defined(), defined());
 

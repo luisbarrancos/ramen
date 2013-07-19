@@ -24,7 +24,7 @@ bool areaop_node_t::expand_defined() const { return false;}
 void areaop_node_t::do_calc_bounds( const render::context_t& context)
 {
     get_expand_radius( hradius_, vradius_);
-    Imath::Box2i bounds( input_as<node_t>()->bounds());
+    Imath::Box2i bounds( input()->bounds());
 
     if( expand_defined())
     {
@@ -40,7 +40,7 @@ void areaop_node_t::do_calc_inputs_interest( const render::context_t& context)
     Imath::Box2i roi = interest();
     roi.min.x -= hradius_; roi.min.y -= vradius_;
     roi.max.x += hradius_; roi.max.y += vradius_;
-    input_as<node_t>()->add_interest( roi);
+    input()->add_interest( roi);
 }
 
 void areaop_node_t::do_calc_defined( const render::context_t& context)

@@ -25,7 +25,7 @@ public:
     template<class XFormNode>
     node_t *get_img_source()
     {
-        node_t *source = input_as<node_t>();
+        node_t *source = input();
 
         while( 1)
         {
@@ -34,10 +34,10 @@ public:
             if( !x)
                 break;
 
-            if( !source->input_as<node_t>())
+            if( !source->input())
                 break;
 
-            source = source->input_as<node_t>();
+            source = source->input();
         }
 
         return source;
@@ -72,7 +72,7 @@ public:
 
         xforms.push_back( self);
 
-        const node_t *source = input_as<node_t>();
+        const node_t *source = input();
 
         while( 1)
         {
@@ -83,10 +83,10 @@ public:
 
             xforms.push_back( x);
 
-            if( !source->input_as<node_t>())
+            if( !source->input())
                 break;
 
-            source = source->input_as<node_t>();
+            source = source->input();
         }
 
         return source;

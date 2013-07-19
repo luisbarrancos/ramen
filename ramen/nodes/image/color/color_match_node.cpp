@@ -153,22 +153,22 @@ color_match_node_t::color_match_node_t()
 void color_match_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     // we need all the image of the second input
-    input_as<node_t>( 1)->add_interest( input_as<node_t>( 1)->format());
+    input( 1)->add_interest( input( 1)->format());
 
     if( input( 2))
     {
-        input_as<node_t>( 0)->add_interest( interest());
-        input_as<node_t>( 2)->add_interest( input_as<node_t>( 2)->format());
+        input( 0)->add_interest( interest());
+        input( 2)->add_interest( input( 2)->format());
     }
     else
-        input_as<node_t>( 0)->add_interest( input_as<node_t>( 0)->format());
+        input( 0)->add_interest( input( 0)->format());
 }
 
 void color_match_node_t::do_calc_defined( const render::context_t& context)
 {
     if( input( 2))
     {
-        Imath::Box2i def( input_as<node_t>( 0)->defined());
+        Imath::Box2i def( input( 0)->defined());
         set_defined( ImathExt::intersect( def, interest()));
     }
     else
@@ -180,14 +180,14 @@ void color_match_node_t::do_process( const render::context_t& context)
     Imath::V3f src_mean( 0, 0, 0), src_dev( 0, 0, 0);
     Imath::V3f dst_mean( 0, 0, 0), dst_dev( 0, 0, 0);
 
-    Imath::Box2i area = ImathExt::intersect( defined(), input_as<node_t>( 0)->defined());
+    Imath::Box2i area = ImathExt::intersect( defined(), input( 0)->defined());
 
     if( area.isEmpty())
         return;
 
     // process input 1
     {
-        image::const_image_view_t src_view( input_as<node_t>( 1)->const_subimage_view( input_as<node_t>( 1)->format()));
+        image::const_image_view_t src_view( input( 1)->const_subimage_view( input( 1)->format()));
         image::image_t tmp( src_view.width(), src_view.height());
         boost::gil::tbb_transform_pixels( src_view, boost::gil::view( tmp), convert_rgb_to_lab_fun());
         cm_calc_mean_and_stddev( boost::gil::const_view( tmp), dst_mean, dst_dev);
@@ -195,13 +195,13 @@ void color_match_node_t::do_process( const render::context_t& context)
 
     if( input( 2))
     {
-        image::const_image_view_t src_view( input_as<node_t>( 2)->const_subimage_view( input_as<node_t>( 2)->format()));
+        image::const_image_view_t src_view( input( 2)->const_subimage_view( input( 2)->format()));
         image::image_t tmp( src_view.width(), src_view.height());
         boost::gil::tbb_transform_pixels( src_view, boost::gil::view( tmp), convert_rgb_to_lab_fun());
         cm_calc_mean_and_stddev( boost::gil::const_view( tmp), src_mean, src_dev);
     }
 
-    boost::gil::tbb_transform_pixels( input_as<node_t>( 0)->const_subimage_view( area), subimage_view( area), convert_rgb_to_lab_fun());
+    boost::gil::tbb_transform_pixels( input( 0)->const_subimage_view( area), subimage_view( area), convert_rgb_to_lab_fun());
 
     if( !input( 2))
         cm_calc_mean_and_stddev( const_subimage_view( area), src_mean, src_dev);

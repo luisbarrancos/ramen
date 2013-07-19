@@ -57,7 +57,7 @@ void expand_node_t::do_create_params()
 
 void expand_node_t::do_calc_format( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
     Imath::Box2i box( in->format());
     int exp_t = get_absolute_value<float>( param( "top"));
     int exp_l = get_absolute_value<float>( param( "left"));
@@ -70,24 +70,24 @@ void expand_node_t::do_calc_format( const render::context_t& context)
 
 void expand_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bounds( ImathExt::intersect( input_as<node_t>()->bounds(), format()));
+    Imath::Box2i bounds( ImathExt::intersect( input()->bounds(), format()));
     set_bounds( bounds);
 }
 
 void expand_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi = ImathExt::intersect( interest(), format());
-    input_as<node_t>()->add_interest( roi);
+    input()->add_interest( roi);
 }
 
 void expand_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area = ImathExt::intersect( input_as<node_t>()->defined(), defined());
+    Imath::Box2i area = ImathExt::intersect( input()->defined(), defined());
 
     if( area.isEmpty())
         return;
 
-    boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+    boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
 }
 
 // factory

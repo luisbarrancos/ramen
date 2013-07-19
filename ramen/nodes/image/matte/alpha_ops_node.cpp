@@ -176,13 +176,13 @@ void alpha_ops_node_t::do_process( const render::context_t& context)
 {
     using namespace boost::gil;
 
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
     // copy the rgb channels
-    copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+    copy_pixels( input()->const_subimage_view( area), subimage_view( area));
 
     int width = defined().size().x + 1;
     int height = defined().size().y + 1;
@@ -199,7 +199,7 @@ void alpha_ops_node_t::do_process( const render::context_t& context)
     image::gray_image_view_t src( img0.gray_view());
     image::gray_image_view_t dst( img0.gray_view());
 
-    copy_pixels( nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+    copy_pixels( nth_channel_view( input()->const_subimage_view( area), 3),
                 boost::gil::subimage_view( src, area.min.x - defined().min.x,
                                            area.min.y - defined().min.y, area.size().x + 1, area.size().y + 1));
 

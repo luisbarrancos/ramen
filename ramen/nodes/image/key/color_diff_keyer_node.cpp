@@ -186,7 +186,7 @@ void color_diff_keyer_node_t::do_create_params()
 
 void color_diff_keyer_node_t::do_process( const render::context_t& context)
 {
-    node_t *in0 = input_as<node_t>( 0);
+    node_t *in0 = input( 0);
 
     if( !input(1))
     {
@@ -207,7 +207,7 @@ void color_diff_keyer_node_t::do_process( const render::context_t& context)
     }
     else
     {
-        node_t *in1 = input_as<node_t>( 1);
+        node_t *in1 = input( 1);
 
         Imath::Box2i area( ImathExt::intersect( ImathExt::intersect( defined(), in0->defined()), in1->defined()));
 

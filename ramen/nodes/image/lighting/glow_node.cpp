@@ -169,14 +169,14 @@ bool glow_node_t::do_is_identity() const
 
 void glow_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i box( input_as<node_t>()->bounds());
+    Imath::Box2i box( input()->bounds());
 
     int hradius, vradius;
     get_expand_radius( hradius, vradius);
 
     if( input( 1))
     {
-        Imath::Box2i mask_bounds( input_as<node_t>( 1)->bounds());
+        Imath::Box2i mask_bounds( input( 1)->bounds());
         mask_bounds = ImathExt::intersect( box, mask_bounds);
 
         if( !mask_bounds.isEmpty())
@@ -202,14 +202,14 @@ void glow_node_t::do_calc_bounds( const render::context_t& context)
 void glow_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi( interest());
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
 
     int hradius, vradius;
     get_expand_radius( hradius, vradius);
 
     if( input( 1))
     {
-        node_t *msk = input_as<node_t>( 1);
+        node_t *msk = input( 1);
         msk->add_interest( roi);
 
         Imath::Box2i mask_area( ImathExt::intersect( msk->bounds(), roi));
@@ -230,7 +230,7 @@ void glow_node_t::do_calc_inputs_interest( const render::context_t& context)
 
 void glow_node_t::do_process( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
 
     Imath::Box2i area( ImathExt::intersect( in->defined(), defined()));
 
@@ -262,7 +262,7 @@ void glow_node_t::do_process( const render::context_t& context)
 
     if( input( 1))
     {
-        node_t *msk = input_as<node_t>( 1);
+        node_t *msk = input( 1);
 
         Imath::Box2i msk_area( ImathExt::intersect( msk->defined(), defined()));
 

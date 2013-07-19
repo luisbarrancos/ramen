@@ -67,16 +67,16 @@ void key_mix_layer_node_t::do_create_params()
 
 void key_mix_layer_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bbox( input_as<node_t>( 0)->bounds());
-    bbox.extendBy( ImathExt::intersect( input_as<node_t>( 1)->bounds(), input_as<node_t>( 2)->bounds()));
+    Imath::Box2i bbox( input( 0)->bounds());
+    bbox.extendBy( ImathExt::intersect( input( 1)->bounds(), input( 2)->bounds()));
     set_bounds( bbox);
 }
 
 void key_mix_layer_node_t::do_process( const render::context_t& context)
 {
-    node_t *bg = input_as<node_t>( 0);
-    node_t *fg = input_as<node_t>( 1);
-    node_t *mt = input_as<node_t>( 2);
+    node_t *bg = input( 0);
+    node_t *fg = input( 1);
+    node_t *mt = input( 2);
 
     Imath::Box2i bg_area = ImathExt::intersect( bg->defined(), defined());
 

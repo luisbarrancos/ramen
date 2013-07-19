@@ -124,7 +124,7 @@ bool twirl_node_t::do_is_identity() const
 
 void twirl_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i in_bounds( input_as<node_t>()->bounds());
+    Imath::Box2i in_bounds( input()->bounds());
 
     Imath::V2f c = get_absolute_value<Imath::V2f>( param( "center"));
     float r = get_absolute_value<float>( param( "radius"));
@@ -142,7 +142,7 @@ void twirl_node_t::do_calc_bounds( const render::context_t& context)
 void twirl_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi( interest());
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
 
     if( get_value<int>( param( "borders")) == border_black)
     {
@@ -177,7 +177,7 @@ void twirl_node_t::do_calc_inputs_interest( const render::context_t& context)
 
 void twirl_node_t::do_process( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>();
+    node_t *in = input();
 
     twirl_fun f( get_absolute_value<Imath::V2f>( param( "center")) / context.subsample,
                  get_absolute_value<float>( param( "radius")) / context.subsample,

@@ -138,12 +138,12 @@ void chroma_blur_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void chroma_blur_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-    image::const_image_view_t src( input_as<node_t>()->const_subimage_view( area));
+    image::const_image_view_t src( input()->const_subimage_view( area));
     image::image_view_t dst( subimage_view( area));
 
     image::image_t tmp( src.width(), src.height());

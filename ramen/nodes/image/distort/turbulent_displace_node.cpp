@@ -191,7 +191,7 @@ bool turbulent_displace_node_t::do_is_identity() const
 void turbulent_displace_node_t::do_calc_bounds( const render::context_t& context)
 {
     Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
-    Imath::Box2i b( input_as<node_t>( 0)->bounds());
+    Imath::Box2i b( input( 0)->bounds());
 
     if( !b.isEmpty())
     {
@@ -202,12 +202,12 @@ void turbulent_displace_node_t::do_calc_bounds( const render::context_t& context
 
         if( input( 1))
         {
-            Imath::Box2i b2( input_as<node_t>( 1)->bounds());
+            Imath::Box2i b2( input( 1)->bounds());
             b2.min.x -= amplitude.x;
             b2.min.y -= amplitude.y;
             b2.max.x += amplitude.x;
             b2.max.y += amplitude.y;
-            b2.extendBy( input_as<node_t>( 0)->bounds());
+            b2.extendBy( input( 0)->bounds());
             b = ImathExt::intersect( b, b2);
         }
     }
@@ -222,9 +222,9 @@ void turbulent_displace_node_t::do_calc_inputs_interest( const render::context_t
     Imath::Box2i roi( interest());
 
     if( input( 1))
-        input_as<node_t>( 1)->add_interest( roi);
+        input( 1)->add_interest( roi);
 
-    node_t *in = input_as<node_t>( 0);
+    node_t *in = input( 0);
 
     if( get_value<int>( param( "borders")) == border_black)
     {
@@ -261,8 +261,8 @@ void turbulent_displace_node_t::do_process( const render::context_t& context)
                                             get_value<float>( param( "time")),
                                             context.subsample, aspect_ratio());
 
-    node_t *in  = input_as<node_t>( 0);
-    node_t *msk = input_as<node_t>( 1);
+    node_t *in  = input( 0);
+    node_t *msk = input( 1);
 
     if( msk)
     {

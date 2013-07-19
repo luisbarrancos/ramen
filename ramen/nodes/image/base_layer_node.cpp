@@ -18,9 +18,9 @@ void base_layer_node_t::do_calc_format( const render::context_t& context)
     node_t *in = 0;
 
     if( get_value<int>( param( "mode")))
-        in = input_as<node_t>( 1);
+        in = input( 1);
     else
-        in = input_as<node_t>( 0);
+        in = input( 0);
 
     set_format( in->format());
     set_aspect_ratio( in->aspect_ratio());
@@ -42,13 +42,13 @@ void base_layer_node_t::do_recursive_process( const render::context_t& context)
 void base_layer_node_t::render_input( std::size_t i, const render::context_t& context)
 {
     RAMEN_ASSERT( input( i) && "Base layer node, null input node in render input");
-    input_as<node_t>( i)->recursive_process( context);
+    input( i)->recursive_process( context);
 }
 
 void base_layer_node_t::release_input_image( std::size_t i)
 {
     RAMEN_ASSERT( input( i) && "Base layer node, null input node in release input image");
-    input_as<node_t>( i)->release_image();
+    input( i)->release_image();
 }
 
 } // namespace

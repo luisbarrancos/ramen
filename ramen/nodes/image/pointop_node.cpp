@@ -19,12 +19,12 @@ pointop_node_t::pointop_node_t( const pointop_node_t& other) : node_t( other) {}
 
 void pointop_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-    do_process( input_as<node_t>()->const_subimage_view( area), subimage_view( area), context);
+    do_process( input()->const_subimage_view( area), subimage_view( area), context);
 }
 
 } // namespace

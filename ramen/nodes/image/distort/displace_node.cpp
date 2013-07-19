@@ -115,7 +115,7 @@ bool displace_node_t::do_is_identity() const
 void displace_node_t::do_calc_bounds( const render::context_t& context)
 {
     Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
-    Imath::Box2i b( input_as<node_t>()->bounds());
+    Imath::Box2i b( input()->bounds());
 
     if( !b.isEmpty())
     {
@@ -131,9 +131,9 @@ void displace_node_t::do_calc_bounds( const render::context_t& context)
 void displace_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi( interest());
-    input_as<node_t>( 1)->add_interest( roi);
+    input( 1)->add_interest( roi);
 
-    node_t *in = input_as<node_t>( 0);
+    node_t *in = input( 0);
 
     if( get_value<int>( param( "borders")) == border_black)
     {
@@ -157,8 +157,8 @@ void displace_node_t::do_process( const render::context_t& context)
     amplitude.x = amplitude.x / context.subsample / aspect_ratio();
     amplitude.y /= context.subsample;
 
-    node_t *in = input_as<node_t>( 0);
-    node_t *dmap = input_as<node_t>( 1);
+    node_t *in = input( 0);
+    node_t *dmap = input( 1);
 
     displace_fun f( nth_channel_view( dmap->const_image_view(), get_value<int>( param( "xchannel"))),
                     nth_channel_view( dmap->const_image_view(), get_value<int>( param( "ychannel"))),

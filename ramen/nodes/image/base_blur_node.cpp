@@ -37,7 +37,7 @@ Imath::V2i base_blur_node_t::round_blur_size( const Imath::V2f& size) const
 
 void base_blur_node_t::copy_src_image( int in, const Imath::Box2i& area, blur_border_mode bmode)
 {
-    boost::gil::copy_pixels( input_as<node_t>( in)->const_subimage_view( area), subimage_view( area));
+    boost::gil::copy_pixels( input( in)->const_subimage_view( area), subimage_view( area));
 
     if( bmode != border_black)
     {

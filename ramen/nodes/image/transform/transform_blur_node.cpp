@@ -72,7 +72,7 @@ void transform_blur_node_t::do_calc_bounds( const render::context_t& context)
     for( int i = 0; i < num_samples; ++i)
     {
         Imath::M33d m( p->xform_blur_matrix_at_frame( context.frame, (float) i / ( num_samples - 1) , aspect_ratio(), context.subsample));
-        Imath::Box2i bounds( ImathExt::transform( input_as<node_t>()->bounds(), m, false));
+        Imath::Box2i bounds( ImathExt::transform( input()->bounds(), m, false));
         area.extendBy( bounds);
     }
 
@@ -113,7 +113,7 @@ void transform_blur_node_t::do_calc_inputs_interest( const render::context_t& co
         roi.min.y -= 2 * context.subsample;
         roi.max.x += 2 * context.subsample;
         roi.max.y += 2 * context.subsample;
-        input_as<node_t>()->add_interest( roi);
+        input()->add_interest( roi);
     }
 }
 
@@ -150,7 +150,7 @@ void transform_blur_node_t::do_process( const render::context_t& context)
 
 void transform_blur_node_t::do_process( const image::image_view_t& dst, const Imath::M33d& xf, int border_mode)
 {
-    if( input_as<node_t>()->defined().isEmpty())
+    if( input()->defined().isEmpty())
         return;
 
     try
@@ -159,22 +159,22 @@ void transform_blur_node_t::do_process( const image::image_view_t& dst, const Im
 
         if( border_mode == border_black)
         {
-            image::affine_warp_bilinear( input_as<node_t>()->defined(),
-                                         input_as<node_t>()->const_image_view(),
+            image::affine_warp_bilinear( input()->defined(),
+                                         input()->const_image_view(),
                                          defined(), dst, xf, inv_xf);
         }
         else
         {
             if( border_mode == border_tile)
             {
-                image::affine_warp_bilinear_tile( input_as<node_t>()->defined(),
-                                                  input_as<node_t>()->const_image_view(),
+                image::affine_warp_bilinear_tile( input()->defined(),
+                                                  input()->const_image_view(),
                                                   defined(), dst, xf, inv_xf);
             }
             else
             {
-                image::affine_warp_bilinear_mirror( input_as<node_t>()->defined(),
-                                                    input_as<node_t>()->const_image_view(),
+                image::affine_warp_bilinear_mirror( input()->defined(),
+                                                    input()->const_image_view(),
                                                     defined(), dst, xf, inv_xf);
             }
         }

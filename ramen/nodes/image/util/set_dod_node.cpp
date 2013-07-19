@@ -51,24 +51,24 @@ void set_dod_node_t::do_create_params()
 
 void set_dod_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bounds( ImathExt::intersect( input_as<node_t>()->bounds(), dod_area()));
+    Imath::Box2i bounds( ImathExt::intersect( input()->bounds(), dod_area()));
     set_bounds( bounds);
 }
 
 void set_dod_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi = ImathExt::intersect( interest(), dod_area());
-    input_as<node_t>()->add_interest( roi);
+    input()->add_interest( roi);
 }
 
 void set_dod_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area = ImathExt::intersect( input_as<node_t>()->defined(), defined());
+    Imath::Box2i area = ImathExt::intersect( input()->defined(), defined());
 
     if( area.isEmpty())
         return;
 
-    boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+    boost::gil::copy_pixels( input()->const_subimage_view( area), subimage_view( area));
 }
 
 Imath::Box2i set_dod_node_t::dod_area() const

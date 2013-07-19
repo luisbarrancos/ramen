@@ -69,10 +69,10 @@ bool blur_mask_node_t::do_is_identity() const
 void blur_mask_node_t::do_calc_bounds( const render::context_t& context)
 {
     Imath::V2i min_radius = round_blur_size( adjust_blur_size( get_value<Imath::V2f>( param( "min_radius")), 1));
-    Imath::Box2i bounds( input_as<node_t>()->bounds());
+    Imath::Box2i bounds( input()->bounds());
 
     Imath::V2i max_radius = round_blur_size( adjust_blur_size( get_value<Imath::V2f>( param( "max_radius")), 1));
-    Imath::Box2i max_bounds( input_as<node_t>( 1)->bounds());
+    Imath::Box2i max_bounds( input( 1)->bounds());
     max_bounds = ImathExt::intersect( max_bounds, bounds);
 
     bounds.min.x -= min_radius.x;
@@ -94,8 +94,8 @@ void blur_mask_node_t::do_calc_bounds( const render::context_t& context)
 
 void blur_mask_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
-    node_t *in = input_as<node_t>( 0);
-    node_t *msk = input_as<node_t>( 1);
+    node_t *in = input( 0);
+    node_t *msk = input( 1);
 
     Imath::Box2i roi( interest());
 
@@ -126,8 +126,8 @@ void blur_mask_node_t::do_calc_inputs_interest( const render::context_t& context
 
 void blur_mask_node_t::do_process( const render::context_t& context)
 {
-    node_t *in  = input_as<node_t>( 0);
-    node_t *msk = input_as<node_t>( 1);
+    node_t *in  = input( 0);
+    node_t *msk = input( 1);
 
     Imath::Box2i area( ImathExt::intersect( in->defined(), defined()));
 

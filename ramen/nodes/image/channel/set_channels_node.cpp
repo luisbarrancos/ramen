@@ -81,19 +81,19 @@ void set_channels_node_t::do_calc_bounds( const render::context_t& context)
     if( ch_a == set_one)
         set_bounds( format());
     else
-        set_bounds( input_as<node_t>()->bounds());
+        set_bounds( input()->bounds());
 }
 
 void set_channels_node_t::do_process( const image::const_image_view_t& src, const image::image_view_t& dst, const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "red"))  , subimage_view( area), 0);
-    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "green")), subimage_view( area), 1);
-    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "blue")) , subimage_view( area), 2);
+    copy_channel( input()->const_subimage_view( area), get_value<int>( param( "red"))  , subimage_view( area), 0);
+    copy_channel( input()->const_subimage_view( area), get_value<int>( param( "green")), subimage_view( area), 1);
+    copy_channel( input()->const_subimage_view( area), get_value<int>( param( "blue")) , subimage_view( area), 2);
 
     int alpha_op = get_value<int>( param( "alpha"));
 

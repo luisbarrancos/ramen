@@ -47,9 +47,9 @@ void set_matte_node_t::do_create_params()
 void set_matte_node_t::do_calc_bounds( const render::context_t& context)
 {
     if( get_value<bool>( param( "premultiply")))
-        set_bounds( ImathExt::intersect( input_as<node_t>( 0)->bounds(), input_as<node_t>( 1)->bounds()));
+        set_bounds( ImathExt::intersect( input( 0)->bounds(), input( 1)->bounds()));
     else
-        set_bounds( input_as<node_t>( 0)->bounds());
+        set_bounds( input( 0)->bounds());
 }
 
 void set_matte_node_t::do_process( const render::context_t& context)
@@ -57,13 +57,13 @@ void set_matte_node_t::do_process( const render::context_t& context)
     if( defined().isEmpty())
     return;
 
-    boost::gil::tbb_transform_pixels( input_as<node_t>( 0)->const_subimage_view( defined()), image_view(),
+    boost::gil::tbb_transform_pixels( input( 0)->const_subimage_view( defined()), image_view(),
                       copy_rgb_and_clear_alpha());
 
-    Imath::Box2i area = ImathExt::intersect( defined(), input_as<node_t>( 1)->defined());
+    Imath::Box2i area = ImathExt::intersect( defined(), input( 1)->defined());
 
     if( !area.isEmpty())
-    boost::gil::tbb_copy_pixels( boost::gil::nth_channel_view( input_as<node_t>( 1)->const_subimage_view( area), 3),
+    boost::gil::tbb_copy_pixels( boost::gil::nth_channel_view( input( 1)->const_subimage_view( area), 3),
                         boost::gil::nth_channel_view( subimage_view( area), 3));
 
     if( get_value<bool>( param( "premultiply")))

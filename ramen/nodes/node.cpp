@@ -60,6 +60,7 @@ node_t::node_t() : manipulable_t(), flags_( 0), composition_( 0), dont_persist_p
 
 node_t::node_t( const node_t& other) :  manipulable_t( other),
                                         params_( other.params_),
+                                        inputs_( other.inputs_),
                                         outputs_( other.outputs_)
 {
     params_.set_parent( this);
@@ -748,9 +749,9 @@ void node_t::calc_format( const render::context_t& context)
 
 void node_t::do_calc_format( const render::context_t& context)
 {
-    if( ( num_inputs() != 0) && input_as<node_t>())
+    if( ( num_inputs() != 0) && input())
     {
-        node_t *in = input_as<node_t>();
+        node_t *in = input();
         set_format( in->format());
         set_aspect_ratio( in->aspect_ratio());
         set_proxy_scale( in->proxy_scale());
@@ -789,8 +790,8 @@ void node_t::calc_bounds( const render::context_t& context)
 
 void node_t::do_calc_bounds( const render::context_t& context)
 {
-    if( ( num_inputs() != 0) && input_as<node_t>())
-        set_bounds( input_as<node_t>()->bounds());
+    if( ( num_inputs() != 0) && input())
+        set_bounds( input()->bounds());
     else
         set_bounds( format());
 }
@@ -834,8 +835,8 @@ void node_t::calc_defined( const render::context_t& context)
     {
         if( is_identity_)
         {
-            if( num_inputs() != 0 && input_as<node_t>())
-                set_defined( input_as<node_t>()->defined());
+            if( num_inputs() != 0 && input())
+                set_defined( input()->defined());
             else
             {
                 // this should never happen.
@@ -965,7 +966,7 @@ void node_t::recursive_process( const render::context_t& context)
     if( is_identity())
     {
         // TODO: Not sure if this is correct, check it.
-        if( node_t *in = input_as<node_t>())
+        if( node_t *in = input())
         {
             in->recursive_process( context);
             image_ = in->image_;
