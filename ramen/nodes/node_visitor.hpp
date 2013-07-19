@@ -19,7 +19,6 @@ public:
     virtual ~node_visitor();
 
     virtual void visit( node_t *n) = 0;
-    virtual void visit( image_node_t *n) = 0;
 };
 
 class generic_node_visitor : public node_visitor
@@ -29,7 +28,6 @@ public:
     virtual ~generic_node_visitor();
 
     virtual void visit( node_t *n) = 0;
-    virtual void visit( image_node_t *n);
 };
 
 } // ramen

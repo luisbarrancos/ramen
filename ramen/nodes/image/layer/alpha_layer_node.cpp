@@ -53,10 +53,10 @@ void alpha_layer_node_t::do_create_params()
 
 void alpha_layer_node_t::do_calc_format( const render::context_t& context)
 {
-	image_node_t *in = input_as<image_node_t>( 0);
-	set_format( in->format());
-	set_aspect_ratio( in->aspect_ratio());
-	set_proxy_scale( in->proxy_scale());
+    node_t *in = input_as<node_t>( 0);
+    set_format( in->format());
+    set_aspect_ratio( in->aspect_ratio());
+    set_proxy_scale( in->proxy_scale());
 }
 
 void alpha_layer_node_t::do_calc_bounds( const render::context_t& context)
@@ -72,22 +72,22 @@ void alpha_layer_node_t::do_calc_bounds( const render::context_t& context)
         case comp_mult:
         case comp_min:
         case comp_mix:
-            bbox = ImathExt::intersect( input_as<image_node_t>( 0)->bounds(), input_as<image_node_t>( 1)->bounds());
+            bbox = ImathExt::intersect( input_as<node_t>( 0)->bounds(), input_as<node_t>( 1)->bounds());
         break;
 
         case comp_sub:
-            bbox = input_as<image_node_t>( 0)->bounds();
+            bbox = input_as<node_t>( 0)->bounds();
         break;
 
         default:
-            bbox = input_as<image_node_t>( 0)->bounds();
-            bbox.extendBy( input_as<image_node_t>( 1)->bounds());
+            bbox = input_as<node_t>( 0)->bounds();
+            bbox.extendBy( input_as<node_t>( 1)->bounds());
         }
     }
     else
     {
-        bbox = input_as<image_node_t>( 0)->bounds();
-        bbox.extendBy( input_as<image_node_t>( 1)->bounds());
+        bbox = input_as<node_t>( 0)->bounds();
+        bbox.extendBy( input_as<node_t>( 1)->bounds());
     }
 
     set_bounds( bbox);
@@ -103,8 +103,8 @@ void alpha_layer_node_t::do_process( const render::context_t& context)
         return;
     }
 
-    image_node_t *bg = input_as<image_node_t>( 0);
-    image_node_t *fg = input_as<image_node_t>( 1);
+    node_t *bg = input_as<node_t>( 0);
+    node_t *fg = input_as<node_t>( 1);
 
     Imath::Box2i bg_area = ImathExt::intersect( bg->defined(), defined());
     float opacity = get_value<float>( param( "opacity"));
@@ -128,21 +128,21 @@ void alpha_layer_node_t::do_process( const render::context_t& context)
         switch( mode)
         {
         case comp_add:
-            image::alpha_composite_add( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_add( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
 
         case comp_sub:
-            image::alpha_composite_sub( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_sub( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
 
         case comp_max:
-            image::alpha_composite_max( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_max( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
         }
 
@@ -152,8 +152,8 @@ void alpha_layer_node_t::do_process( const render::context_t& context)
 
 void alpha_layer_node_t::do_process_mult_min_mix( const render::context_t& context)
 {
-    image_node_t *bg = input_as<image_node_t>( 0);
-    image_node_t *fg = input_as<image_node_t>( 1);
+    node_t *bg = input_as<node_t>( 0);
+    node_t *fg = input_as<node_t>( 1);
 
     int mode = get_value<int>( param( "layer_mode"));
     float opacity = get_value<float>( param( "opacity"));
@@ -172,18 +172,18 @@ void alpha_layer_node_t::do_process_mult_min_mix( const render::context_t& conte
         }
 
         if( opacity == 1.0f) // the normal case, nothing special to do
-			boost::gil::copy_pixels( bg->const_subimage_view( bg_area), subimage_view( bg_area));
-		else // we need to handle the areas of the bg that don't intersect the fg
-		{
-			image::mul_channel_scalar( boost::gil::nth_channel_view( bg->const_subimage_view( bg_area), 3), 1.0f - opacity, 
-									   boost::gil::nth_channel_view( subimage_view( bg_area), 3));
-			
-			Imath::Box2i common_area( ImathExt::intersect( fg->defined(), bg->defined()));
-			
-			if( !common_area.isEmpty())
-				boost::gil::copy_pixels( bg->const_subimage_view( common_area), subimage_view( common_area));
-		}
-		
+            boost::gil::copy_pixels( bg->const_subimage_view( bg_area), subimage_view( bg_area));
+        else // we need to handle the areas of the bg that don't intersect the fg
+        {
+            image::mul_channel_scalar( boost::gil::nth_channel_view( bg->const_subimage_view( bg_area), 3), 1.0f - opacity,
+                                       boost::gil::nth_channel_view( subimage_view( bg_area), 3));
+
+            Imath::Box2i common_area( ImathExt::intersect( fg->defined(), bg->defined()));
+
+            if( !common_area.isEmpty())
+                boost::gil::copy_pixels( bg->const_subimage_view( common_area), subimage_view( common_area));
+        }
+
         // we don't need the bg anymore
         release_input_image( 0);
     }
@@ -195,21 +195,21 @@ void alpha_layer_node_t::do_process_mult_min_mix( const render::context_t& conte
         switch( mode)
         {
         case comp_min:
-            image::alpha_composite_min( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_min( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
 
         case comp_mult:
-            image::alpha_composite_mul( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_mul( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
 
         case comp_mix:
-            image::alpha_composite_mix( const_subimage_view( comp_area), 
-										input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-										subimage_view( comp_area), opacity);
+            image::alpha_composite_mix( const_subimage_view( comp_area),
+                                        input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                        subimage_view( comp_area), opacity);
         break;
         }
 

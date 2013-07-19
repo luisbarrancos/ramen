@@ -5,7 +5,7 @@
 #ifndef RAMEN_IMAGE_GENERATOR_NODE_HPP
 #define RAMEN_IMAGE_GENERATOR_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/gil/extension/algorithm/tbb/tbb_copy.hpp>
 
@@ -36,25 +36,25 @@ public:
                 *dst_it++ = f_( Imath::V2i( x, y));
         }
     }
-    
+
 private:
 
     const image::image_view_t& dst_;
     Imath::Box2i defined_;
     Fun f_;
 };
-    
+
 } // detail
 
 
-class RAMEN_API generator_node_t : public image_node_t
+class RAMEN_API generator_node_t : public node_t
 {
 public:
 
     generator_node_t();
 
     virtual bool use_cache( const render::context_t& context) const { return false;}
-	
+
 protected:
 
     generator_node_t( const generator_node_t& other);
@@ -73,9 +73,9 @@ protected:
 
     virtual void do_calc_format( const render::context_t& context);
     virtual void do_calc_bounds( const render::context_t& context);
-	virtual void do_calc_defined( const render::context_t& context);
+    virtual void do_calc_defined( const render::context_t& context);
 
-	virtual void do_calc_hash_str( const render::context_t& context);
+    virtual void do_calc_hash_str( const render::context_t& context);
 };
 
 } // image

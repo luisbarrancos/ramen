@@ -2,10 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_NODE_RENDERER_HPP
-#define	RAMEN_IMAGE_NODE_RENDERER_HPP
-
-#include<boost/noncopyable.hpp>
+#ifndef RAMEN_NODE_RENDERER_HPP
+#define	RAMEN_NODE_RENDERER_HPP
 
 #include<ramen/nodes/node_fwd.hpp>
 #include<ramen/image/buffer.hpp>
@@ -17,16 +15,16 @@ namespace ramen
 namespace render
 {
 
-class RAMEN_API image_node_renderer_t : boost::noncopyable
+class RAMEN_API node_renderer_t
 {
 public:
 
-	image_node_renderer_t();
-    explicit image_node_renderer_t( const context_t& new_context);
+    node_renderer_t();
+    explicit node_renderer_t( const context_t& new_context);
 
-    ~image_node_renderer_t();
+    ~node_renderer_t();
 
-	void set_context( const context_t& context);
+    void set_context( const context_t& context);
 
     const Imath::Box2i& format() const;
     const Imath::Box2i& bounds() const;
@@ -37,19 +35,21 @@ public:
     image::buffer_t image();
     image::const_image_view_t format_image_view() const;
 
+    static bool do_log;
+
 private:
 
+    // non-copyable
+    node_renderer_t( const node_renderer_t&);
+    node_renderer_t& operator=( const node_renderer_t&);
+
     context_t new_context_;
-	bool has_context_;
-    image_node_t *n_;
-	bool render_done_;
-
-public:
-
-    static bool do_log;
+    bool has_context_;
+    node_t *n_;
+    bool render_done_;
 };
 
-} // namespace
-} // namespace
+} // render
+} // ramen
 
 #endif

@@ -246,7 +246,6 @@ SET( RAMEN_SOURCES      system/system.cpp
 
                         nodes/edge.cpp
                         nodes/graph_algorithm.cpp
-                        nodes/image_node.cpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
                         nodes/node_graph.cpp
@@ -298,7 +297,7 @@ SET( RAMEN_SOURCES      system/system.cpp
 
                         render/context.cpp
                         render/context_guard.cpp
-                        render/image_node_renderer.cpp
+                        render/node_renderer.cpp
                         render/render_sequence.cpp
                         render/render_thread.cpp
 

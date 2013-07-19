@@ -11,7 +11,7 @@ namespace ramen
 namespace image
 {
 
-nop_node_t::nop_node_t() : image_node_t()
+nop_node_t::nop_node_t() : node_t()
 {
     set_name( "nop");
     add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
@@ -36,7 +36,7 @@ const node_metaclass_t& nop_node_t::nop_node_metaclass()
         info.menu = "Image";
         info.submenu = "Util";
         info.menu_item = "Nop";
-		info.help = "No operation (Null)";
+        info.help = "No operation (Null)";
         info.create = &create_nop_node;
         inited = true;
     }

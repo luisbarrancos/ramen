@@ -3,14 +3,14 @@
 #ifndef RAMEN_IMAGE_CROP_NODE_HPP
 #define RAMEN_IMAGE_CROP_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class crop_node_t : public image_node_t
+class crop_node_t : public node_t
 {
 public:
 
@@ -21,7 +21,7 @@ public:
 
 protected:
 
-    crop_node_t(const crop_node_t& other) : image_node_t(other) { }
+    crop_node_t(const crop_node_t& other) : node_t(other) { }
     void operator=(const crop_node_t&);
 
 private:

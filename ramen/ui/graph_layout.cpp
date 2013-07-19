@@ -18,7 +18,7 @@ namespace ui
 namespace
 {
 
-struct bbox_node_visitor : public generic_node_visitor
+struct bbox_node_visitor : public node_visitor
 {
     bbox_node_visitor() {}
 
@@ -44,7 +44,7 @@ Imath::Box2f graph_layout_t::node_bbox( const node_t& n) const
 {
     node_t& nn = const_cast<node_t&>( n);
 
-    bbox_node_visitor v;    
+    bbox_node_visitor v;
     nn.accept( v);
     return v.bbox;
 }

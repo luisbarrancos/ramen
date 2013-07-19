@@ -21,26 +21,26 @@ enum
     copy_green,
     copy_blue,
     copy_alpha,
-	copy_lum,
+    copy_lum,
     set_one,
     set_zero
 };
 
 void copy_luminance( const image::const_image_view_t& src, const image::channel_view_t& dst)
 {
-	RAMEN_ASSERT( src.dimensions() == dst.dimensions());
-	
-	for( int y = 0, ye = src.height(); y < ye; ++y)
-	{
-		image::const_image_view_t::x_iterator s_it( src.row_begin( y));
-		image::channel_view_t::x_iterator d_it( dst.row_begin( y));
-		
-		for( int x = 0, xe = src.width(); x < xe; ++x)
-		{
-			float lum = image::luminance( *s_it++);
-			*d_it++ = lum;
-		}
-	}
+    RAMEN_ASSERT( src.dimensions() == dst.dimensions());
+
+    for( int y = 0, ye = src.height(); y < ye; ++y)
+    {
+        image::const_image_view_t::x_iterator s_it( src.row_begin( y));
+        image::channel_view_t::x_iterator d_it( dst.row_begin( y));
+
+        for( int x = 0, xe = src.width(); x < xe; ++x)
+        {
+            float lum = image::luminance( *s_it++);
+            *d_it++ = lum;
+        }
+    }
 }
 
 } // unnamed
@@ -79,51 +79,51 @@ void set_channels_node_t::do_calc_bounds( const render::context_t& context)
     int ch_a = get_value<int>( param( "alpha"));
 
     if( ch_a == set_one)
-		set_bounds( format());
+        set_bounds( format());
     else
-        set_bounds( input_as<image_node_t>()->bounds());
+        set_bounds( input_as<node_t>()->bounds());
 }
 
 void set_channels_node_t::do_process( const image::const_image_view_t& src, const image::image_view_t& dst, const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-    copy_channel( input_as<image_node_t>()->const_subimage_view( area), get_value<int>( param( "red"))  , subimage_view( area), 0);
-    copy_channel( input_as<image_node_t>()->const_subimage_view( area), get_value<int>( param( "green")), subimage_view( area), 1);
-    copy_channel( input_as<image_node_t>()->const_subimage_view( area), get_value<int>( param( "blue")) , subimage_view( area), 2);
+    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "red"))  , subimage_view( area), 0);
+    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "green")), subimage_view( area), 1);
+    copy_channel( input_as<node_t>()->const_subimage_view( area), get_value<int>( param( "blue")) , subimage_view( area), 2);
 
     int alpha_op = get_value<int>( param( "alpha"));
 
     // the alpha channel is special if we fill with 0 or 1.
     if( alpha_op == set_one || alpha_op == set_zero)
-		copy_channel( src, get_value<int>( param( "alpha")), image_view(), 3);
+        copy_channel( src, get_value<int>( param( "alpha")), image_view(), 3);
     else
-		copy_channel( src, get_value<int>( param( "alpha")) , dst, 3);
+        copy_channel( src, get_value<int>( param( "alpha")) , dst, 3);
 }
 
 void set_channels_node_t::copy_channel( const image::const_image_view_t& src, int src_ch, const image::image_view_t& dst , int dst_ch)
 {
-	switch( src_ch)
-	{
-		case set_zero:
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 0.0f));
-		break;
-		
-		case set_one:
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 1.0f));
-		break;
-		
-		case copy_lum:
-			copy_luminance( src, boost::gil::nth_channel_view( dst, dst_ch));
-		break;
-		
-		default:
-			boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch), boost::gil::nth_channel_view( dst, dst_ch));
-		break;
-	}
+    switch( src_ch)
+    {
+        case set_zero:
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 0.0f));
+        break;
+
+        case set_one:
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 1.0f));
+        break;
+
+        case copy_lum:
+            copy_luminance( src, boost::gil::nth_channel_view( dst, dst_ch));
+        break;
+
+        default:
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch), boost::gil::nth_channel_view( dst, dst_ch));
+        break;
+    }
 }
 
 // factory

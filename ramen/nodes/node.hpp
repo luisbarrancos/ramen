@@ -19,9 +19,15 @@
 
 #include<QWidget>
 
-#include<ramen/params/param_set.hpp>
+#include<OpenEXR/ImathColor.h>
+
+#include<ramen/ImathExt/ImathBoxAlgo.h>
+
+#include<ramen/image/buffer.hpp>
 
 #include<ramen/app/composition_fwd.hpp>
+
+#include<ramen/params/param_set.hpp>
 
 #include<ramen/nodes/graph_color.hpp>
 #include<ramen/nodes/node_plug.hpp>
@@ -31,6 +37,8 @@
 #include<ramen/render/context.hpp>
 
 #include<ramen/undo/command.hpp>
+
+#include<ramen/ui/palette.hpp>
 
 namespace ramen
 {
@@ -131,6 +139,8 @@ public:
     void add_output_plug( const std::string& id,
                           const Imath::Color3c& color,
                           const std::string& tooltip);
+
+    void add_output_plug();
 
     graph_color_t graph_color() const            { return graph_color_;}
     void set_graph_color( graph_color_t c) const { graph_color_ = c;}
@@ -284,6 +294,75 @@ public:
     void read( const serialization::yaml_node_t& in, const std::pair<int,int>& version);
     void write( serialization::yaml_oarchive_t& out) const;
 
+    // format, bounds & aspect
+    const Imath::Box2i& format() const	    { return format_;}
+    const Imath::Box2i& full_format() const	{ return full_format_;}
+    void set_format( const Imath::Box2i& d) { format_ = d;}
+    virtual void format_changed();
+
+    void calc_format( const render::context_t& context);
+    void recursive_calc_format( const render::context_t& context);
+
+    void calc_bounds( const render::context_t& context);
+
+    float aspect_ratio() const		{ return aspect_;}
+    void set_aspect_ratio( float a);
+
+    const Imath::V2f& proxy_scale() const { return proxy_scale_;}
+    void set_proxy_scale( const Imath::V2f& s);
+
+    const Imath::Box2i& bounds() const { return bounds_;}
+    void set_bounds( const Imath::Box2i& bounds);
+
+    // interest
+    const Imath::Box2i& interest() const   { return interest_;}
+    void clear_interest();
+    void set_interest( const Imath::Box2i& roi);
+    void add_interest( const Imath::Box2i& roi);
+    void calc_inputs_interest( const render::context_t& context);
+
+    // defined
+    const Imath::Box2i& defined() const	    { return defined_;}
+    void set_defined( const Imath::Box2i& b);
+    void calc_defined( const render::context_t& context);
+
+    // subsample
+    void subsample_areas( const render::context_t& context);
+
+    // if the node is not expensive to compute like simple color corrections,
+    // premultiply, ..., then it can return false here and save a bit of memory.
+    virtual bool use_cache( const render::context_t& context) const;
+
+    // images
+    bool image_empty() const { return image_.empty();}
+    image::buffer_t image() const { return image_;}
+    void set_image( image::buffer_t img) { image_ = img;}
+
+    // virtual while testing
+    virtual void alloc_image();
+    virtual void release_image();
+
+    image::image_view_t image_view();
+    image::const_image_view_t const_image_view() const;
+
+    image::image_view_t subimage_view( int x, int y, int w, int h);
+    image::image_view_t subimage_view( const Imath::Box2i& area);
+
+    image::const_image_view_t const_subimage_view( int x, int y, int w, int h) const;
+    image::const_image_view_t const_subimage_view( const Imath::Box2i& area) const;
+
+    // processing
+    void recursive_process( const render::context_t& context);
+    void process( const render::context_t& context);
+
+    // functors used with the dataflow algorithms
+    static void calc_format_fun( node_t& n, const render::context_t& context);
+    static void calc_bounds_fun( node_t& n, const render::context_t& context);
+    static void clear_interest_fun( node_t& n);
+    static void calc_inputs_interest_fun( node_t& n, const render::context_t& context);
+    static void calc_defined_fun( node_t& n, const render::context_t& context);
+    static void subsample_areas_fun( node_t& n, const render::context_t& context);
+
 protected:
 
     node_t( const node_t& other);
@@ -295,6 +374,12 @@ protected:
 
     /// Evaluate all params at frame frame.
     void evaluate_params( float frame);
+
+    virtual void do_recursive_process( const render::context_t& context);
+
+    // cache
+    bool read_image_from_cache( const render::context_t& context);
+    void write_image_to_cache( const render::context_t& context);
 
     bool is_valid_, is_identity_;
 
@@ -359,6 +444,13 @@ private:
     // serialization utils
     void write_node_info( serialization::yaml_oarchive_t& out) const;
 
+    virtual void do_calc_format( const render::context_t& context);
+    virtual void do_calc_bounds( const render::context_t& context);
+    virtual void do_calc_inputs_interest( const render::context_t& context);
+    virtual void do_calc_defined( const render::context_t& context);
+
+    virtual void do_process( const render::context_t& context);
+
     /*!
         \brief Customization hook for node_t::update_widgets.
         For subclasses to implement.
@@ -385,6 +477,12 @@ private:
 
     // hash
     hash::generator_t hash_gen_;
+
+    Imath::Box2i format_, bounds_, interest_, defined_;
+    Imath::Box2i full_format_;
+    float aspect_;
+    Imath::V2f proxy_scale_;
+    image::buffer_t image_;
 };
 
 /// Makes a copy of a node.

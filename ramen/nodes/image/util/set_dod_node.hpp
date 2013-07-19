@@ -3,14 +3,14 @@
 #ifndef RAMEN_IMAGE_SET_DOD_NODE_HPP
 #define RAMEN_IMAGE_SET_DOD_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class set_dod_node_t : public image_node_t
+class set_dod_node_t : public node_t
 {
 public:
 
@@ -23,7 +23,7 @@ public:
 
 protected:
 
-    set_dod_node_t( const set_dod_node_t& other) : image_node_t(other) {}
+    set_dod_node_t( const set_dod_node_t& other) : node_t(other) {}
     void operator=( const set_dod_node_t&);
 
 private:
@@ -37,7 +37,7 @@ private:
 
     virtual void do_process( const render::context_t& context);
 
-	Imath::Box2i dod_area() const;
+    Imath::Box2i dod_area() const;
 };
 
 } // namespace

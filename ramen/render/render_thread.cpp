@@ -90,7 +90,7 @@ public:
     boost::condition_variable cond;
 
     boost::packaged_task<bool> task;
-    boost::unique_future<bool> future;    
+    boost::unique_future<bool> future;
 };
 
 render_thread_t::render_thread_t() : pimpl_( 0) {}
@@ -102,14 +102,14 @@ void render_thread_t::init()
     pimpl_ = new implementation();
 }
 
-boost::unique_future<bool>& render_thread_t::render_image( image_node_renderer_t& renderer)
+boost::unique_future<bool>& render_thread_t::render_image( node_renderer_t& renderer)
 {
     return render_image( renderer, renderer.format());
 }
 
-boost::unique_future<bool>& render_thread_t::render_image( image_node_renderer_t& renderer, const Imath::Box2i& roi)
+boost::unique_future<bool>& render_thread_t::render_image( node_renderer_t& renderer, const Imath::Box2i& roi)
 {
-    return pimpl_->run_function( boost::bind( &image_node_renderer_t::render, boost::ref( renderer), roi));
+    return pimpl_->run_function( boost::bind( &node_renderer_t::render, boost::ref( renderer), roi));
 }
 
 bool render_thread_t::cancelled() const { return pimpl_->cancel;}

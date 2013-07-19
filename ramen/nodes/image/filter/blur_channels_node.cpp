@@ -71,8 +71,8 @@ bool blur_channels_node_t::do_is_identity() const
     Imath::V2f g_radius = get_value<Imath::V2f>( param( "g_radius"));
     Imath::V2f b_radius = get_value<Imath::V2f>( param( "b_radius"));
     Imath::V2f a_radius = get_value<Imath::V2f>( param( "a_radius"));
-	return r_radius == Imath::V2f( 0, 0) && g_radius == Imath::V2f( 0, 0) && 
-			b_radius == Imath::V2f( 0, 0) && a_radius == Imath::V2f( 0, 0);
+    return r_radius == Imath::V2f( 0, 0) && g_radius == Imath::V2f( 0, 0) &&
+            b_radius == Imath::V2f( 0, 0) && a_radius == Imath::V2f( 0, 0);
 }
 
 void blur_channels_node_t::get_expand_radius( int& hradius, int& vradius) const
@@ -82,12 +82,12 @@ void blur_channels_node_t::get_expand_radius( int& hradius, int& vradius) const
     Imath::V2f b_radius = get_value<Imath::V2f>( param( "b_radius"));
     Imath::V2f a_radius = get_value<Imath::V2f>( param( "a_radius"));
 
-	r_radius = adjust_blur_size( r_radius, 1);
-	g_radius = adjust_blur_size( g_radius, 1);
-	b_radius = adjust_blur_size( b_radius, 1);
-	a_radius = adjust_blur_size( a_radius, 1);
+    r_radius = adjust_blur_size( r_radius, 1);
+    g_radius = adjust_blur_size( g_radius, 1);
+    b_radius = adjust_blur_size( b_radius, 1);
+    a_radius = adjust_blur_size( a_radius, 1);
     Imath::V2i radius( round_blur_size( Imath::V2f( std::max( r_radius.x, std::max( g_radius.x, std::max( b_radius.x, a_radius.x))),
-							                        std::max( r_radius.y, std::max( g_radius.y, std::max( b_radius.y, a_radius.y))))));
+                                                    std::max( r_radius.y, std::max( g_radius.y, std::max( b_radius.y, a_radius.y))))));
 
     hradius = radius.x;
     vradius = radius.y;
@@ -95,10 +95,10 @@ void blur_channels_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void blur_channels_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
 
     if( area.isEmpty())
-		return;
+        return;
 
     int iters = get_value<float>( param( "iters"));
 
@@ -107,33 +107,33 @@ void blur_channels_node_t::do_process( const render::context_t& context)
     Imath::V2f b_radius = get_value<Imath::V2f>( param( "b_radius")) / iters;
     Imath::V2f a_radius = get_value<Imath::V2f>( param( "a_radius")) / iters;
 
-	r_radius = adjust_blur_size( r_radius, context.subsample);
-	g_radius = adjust_blur_size( g_radius, context.subsample);
-	b_radius = adjust_blur_size( b_radius, context.subsample);
-	a_radius = adjust_blur_size( a_radius, context.subsample);
+    r_radius = adjust_blur_size( r_radius, context.subsample);
+    g_radius = adjust_blur_size( g_radius, context.subsample);
+    b_radius = adjust_blur_size( b_radius, context.subsample);
+    a_radius = adjust_blur_size( a_radius, context.subsample);
 
-    boost::gil::copy_pixels( input_as<image_node_t>()->const_subimage_view( area), subimage_view( area));	
-	
-	image::buffer_t buffer( image_view().height(), image_view().width(), 1);
-	image::gray_image_view_t tmp = buffer.gray_view();
+    boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+
+    image::buffer_t buffer( image_view().height(), image_view().width(), 1);
+    image::gray_image_view_t tmp = buffer.gray_view();
 
     blur_border_mode bmode = ( blur_border_mode) get_value<int>( param( "border"));
-	
-	boost::gil::fill_pixels( tmp, 0.0f);
+
+    boost::gil::fill_pixels( tmp, 0.0f);
     blur_channel( 0, area, tmp, r_radius, iters, bmode);
 
-	boost::gil::fill_pixels( tmp, 0.0f);
+    boost::gil::fill_pixels( tmp, 0.0f);
     blur_channel( 1, area, tmp, g_radius, iters, bmode);
 
-	boost::gil::fill_pixels( tmp, 0.0f);
+    boost::gil::fill_pixels( tmp, 0.0f);
     blur_channel( 2, area, tmp, b_radius, iters, bmode);
 
-	boost::gil::fill_pixels( tmp, 0.0f);
+    boost::gil::fill_pixels( tmp, 0.0f);
     blur_channel( 3, area, tmp, a_radius, iters, bmode);
 }
 
 void blur_channels_node_t::blur_channel( int ch, const Imath::Box2i& area, const boost::gil::gray32f_view_t& tmp,
-										 const Imath::V2f& radius, int iters, blur_border_mode border)
+                                         const Imath::V2f& radius, int iters, blur_border_mode border)
 {
     if( border != border_black)
     {
@@ -156,8 +156,8 @@ void blur_channels_node_t::blur_channel( int ch, const Imath::Box2i& area, const
     }
 
     image::box_blur_channel( boost::gil::nth_channel_view( const_image_view(), ch), tmp,
-							 boost::gil::nth_channel_view( image_view(), ch),
-							 radius.x, radius.y, iters);
+                             boost::gil::nth_channel_view( image_view(), ch),
+                             radius.x, radius.y, iters);
 }
 
 // factory
@@ -175,7 +175,7 @@ const node_metaclass_t& blur_channels_node_t::blur_channels_node_metaclass()
         info.id = "image.builtin.blur_channels";
         info.major_version = 1;
         info.minor_version = 0;
-		info.menu = "Image";
+        info.menu = "Image";
         info.submenu = "Filter";
         info.menu_item = "Blur Channels";
         info.create = &create_blur_channels_node;

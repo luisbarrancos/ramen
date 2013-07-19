@@ -20,7 +20,7 @@ namespace ui
 
 class composition_view_t;
 
-struct input_location_node_visitor : public generic_node_visitor
+struct input_location_node_visitor : public node_visitor
 {
     input_location_node_visitor( int i = 0);
     virtual void visit( node_t *n);
@@ -29,7 +29,7 @@ struct input_location_node_visitor : public generic_node_visitor
     Imath::V2f loc;
 };
 
-struct output_location_node_visitor : public generic_node_visitor
+struct output_location_node_visitor : public node_visitor
 {
     output_location_node_visitor( int i = 0);
     virtual void visit( node_t *n);
@@ -38,15 +38,15 @@ struct output_location_node_visitor : public generic_node_visitor
     Imath::V2f loc;
 };
 
-struct size_node_visitor : public generic_node_visitor
+struct size_node_visitor : public node_visitor
 {
-	size_node_visitor();
+    size_node_visitor();
     virtual void visit( node_t *n);
 
-	Imath::V2i size;
+    Imath::V2i size;
 };
 
-struct draw_node_visitor : public generic_node_visitor
+struct draw_node_visitor : public node_visitor
 {
     draw_node_visitor( QPainter& painter);
     virtual void visit( node_t *n);
@@ -56,7 +56,7 @@ private:
     QPainter& painter_;
 };
 
-struct draw_edges_visitor : public generic_node_visitor
+struct draw_edges_visitor : public node_visitor
 {
     draw_edges_visitor( const composition_view_t& view, QPainter& painter);
     virtual void visit( node_t *n);
@@ -67,7 +67,7 @@ private:
     QPainter& painter_;
 };
 
-struct pick_node_visitor : public generic_node_visitor
+struct pick_node_visitor : public node_visitor
 {
     pick_node_visitor( const composition_view_t& view, const Imath::V2f& p, pick_result_t& result);
     virtual void visit( node_t *n);
@@ -79,7 +79,7 @@ private:
     pick_result_t& result_;
 };
 
-struct box_pick_node_visitor : public generic_node_visitor
+struct box_pick_node_visitor : public node_visitor
 {
     box_pick_node_visitor( const Imath::Box2f& box);
     virtual void visit( node_t *n);
@@ -91,7 +91,7 @@ private:
     Imath::Box2f box_;
 };
 
-struct pick_edge_visitor : public generic_node_visitor
+struct pick_edge_visitor : public node_visitor
 {
     pick_edge_visitor( const composition_view_t& view, const Imath::V2f& p);
     virtual void visit( node_t *n);

@@ -49,7 +49,7 @@ void blur_node_t::do_create_params()
 bool blur_node_t::do_is_identity() const
 {
     Imath::V2f radius = get_value<Imath::V2f>( param( "radius"));
-	return radius == Imath::V2f( 0, 0);
+    return radius == Imath::V2f( 0, 0);
 }
 
 void blur_node_t::get_expand_radius( int& hradius, int& vradius) const
@@ -61,46 +61,46 @@ void blur_node_t::get_expand_radius( int& hradius, int& vradius) const
 
 void blur_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-	copy_src_image( 0, area, ( blur_border_mode) get_value<int>( param( "border")));
+    copy_src_image( 0, area, ( blur_border_mode) get_value<int>( param( "border")));
 
     blur_channels_mode channels = ( blur_channels_mode) get_value<int>( param( "channels"));
     int iters = get_value<float>( param( "iters"));
     Imath::V2f radius = get_value<Imath::V2f>( param( "radius")) / iters;
-	radius = adjust_blur_size( radius, context.subsample);
-	
+    radius = adjust_blur_size( radius, context.subsample);
+
     switch( channels)
     {
-		case channels_rgba:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
-			image::box_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), radius.x, radius.y, iters);
-		}
-		break;
-	
-		case channels_rgb:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
-			image::box_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), radius.x, radius.y, iters);
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( image_view(), 3), boost::gil::gray32f_pixel_t( 0));
-			boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<image_node_t>()->const_subimage_view( area), 3),
-										boost::gil::nth_channel_view( subimage_view( area), 3));
-		}
-		break;
-	
-		case channels_alpha:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 1);
-			image::box_blur_channel( boost::gil::nth_channel_view( const_image_view(), 3),
-									 tmp.gray_view(),
-									boost::gil::nth_channel_view( image_view(), 3),
-									radius.x, radius.y, iters);
-		}
-		break;
+        case channels_rgba:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
+            image::box_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), radius.x, radius.y, iters);
+        }
+        break;
+
+        case channels_rgb:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
+            image::box_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), radius.x, radius.y, iters);
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( image_view(), 3), boost::gil::gray32f_pixel_t( 0));
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+                                        boost::gil::nth_channel_view( subimage_view( area), 3));
+        }
+        break;
+
+        case channels_alpha:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 1);
+            image::box_blur_channel( boost::gil::nth_channel_view( const_image_view(), 3),
+                                     tmp.gray_view(),
+                                    boost::gil::nth_channel_view( image_view(), 3),
+                                    radius.x, radius.y, iters);
+        }
+        break;
     }
 }
 

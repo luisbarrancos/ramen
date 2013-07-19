@@ -73,22 +73,22 @@ void layer_node_t::do_calc_bounds( const render::context_t& context)
         case comp_mult:
         case comp_min:
         case comp_mix:
-            bbox = ImathExt::intersect( input_as<image_node_t>( 0)->bounds(), input_as<image_node_t>( 1)->bounds());
+            bbox = ImathExt::intersect( input_as<node_t>( 0)->bounds(), input_as<node_t>( 1)->bounds());
         break;
 
         case comp_sub:
-            bbox = input_as<image_node_t>( 0)->bounds();
+            bbox = input_as<node_t>( 0)->bounds();
         break;
 
         default:
-            bbox = input_as<image_node_t>( 0)->bounds();
-            bbox.extendBy( input_as<image_node_t>( 1)->bounds());
+            bbox = input_as<node_t>( 0)->bounds();
+            bbox.extendBy( input_as<node_t>( 1)->bounds());
         }
     }
     else
     {
-        bbox = input_as<image_node_t>( 0)->bounds();
-        bbox.extendBy( input_as<image_node_t>( 1)->bounds());
+        bbox = input_as<node_t>( 0)->bounds();
+        bbox.extendBy( input_as<node_t>( 1)->bounds());
     }
 
     set_bounds( bbox);
@@ -104,8 +104,8 @@ void layer_node_t::do_process( const render::context_t& context)
         return;
     }
 
-    image_node_t *bg = input_as<image_node_t>( 0);
-    image_node_t *fg = input_as<image_node_t>( 1);
+    node_t *bg = input_as<node_t>( 0);
+    node_t *fg = input_as<node_t>( 1);
 
     Imath::Box2i bg_area = ImathExt::intersect( bg->defined(), defined());
     float opacity = get_value<float>( param( "opacity"));
@@ -129,45 +129,45 @@ void layer_node_t::do_process( const render::context_t& context)
         switch( mode)
         {
         case comp_over:
-            image::composite_over( const_subimage_view( comp_area), 
-								   input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								   subimage_view( comp_area), opacity);
+            image::composite_over( const_subimage_view( comp_area),
+                                   input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                   subimage_view( comp_area), opacity);
         break;
 
         case comp_add:
-            image::composite_add( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_add( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
 
         case comp_sub:
-            image::composite_sub( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_sub( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
 
         case comp_screen:
-            image::composite_screen( const_subimage_view( comp_area), 
-									 input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-									 subimage_view( comp_area), opacity);
+            image::composite_screen( const_subimage_view( comp_area),
+                                     input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                     subimage_view( comp_area), opacity);
         break;
 
         case comp_overlay:
-            image::composite_overlay( const_subimage_view( comp_area), 
-									  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-									  subimage_view( comp_area), opacity);
+            image::composite_overlay( const_subimage_view( comp_area),
+                                      input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                      subimage_view( comp_area), opacity);
         break;
 
         case comp_diff:
-            image::composite_diff( const_subimage_view( comp_area), 
-								   input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								   subimage_view( comp_area), opacity);
+            image::composite_diff( const_subimage_view( comp_area),
+                                   input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                   subimage_view( comp_area), opacity);
         break;
 
         case comp_max:
-            image::composite_max( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_max( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
         }
 
@@ -177,8 +177,8 @@ void layer_node_t::do_process( const render::context_t& context)
 
 void layer_node_t::do_process_mult_min_overlay_mix( const render::context_t& context)
 {
-    image_node_t *bg = input_as<image_node_t>( 0);
-    image_node_t *fg = input_as<image_node_t>( 1);
+    node_t *bg = input_as<node_t>( 0);
+    node_t *fg = input_as<node_t>( 1);
 
     int mode = get_value<int>( param( "layer_mode"));
     float opacity = get_value<float>( param( "opacity"));
@@ -231,27 +231,27 @@ void layer_node_t::do_process_mult_min_overlay_mix( const render::context_t& con
         switch( mode)
         {
         case comp_min:
-            image::composite_min( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_min( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
 
         case comp_mult:
-            image::composite_mul( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_mul( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
 
         case comp_mix:
-            image::composite_mix( const_subimage_view( comp_area), 
-								  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-								  subimage_view( comp_area), opacity);
+            image::composite_mix( const_subimage_view( comp_area),
+                                  input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                  subimage_view( comp_area), opacity);
         break;
 
         case comp_overlay:
-            image::composite_overlay( const_subimage_view( comp_area), 
-									  input_as<image_node_t>( 1)->const_subimage_view( comp_area), 
-									  subimage_view( comp_area), opacity);
+            image::composite_overlay( const_subimage_view( comp_area),
+                                      input_as<node_t>( 1)->const_subimage_view( comp_area),
+                                      subimage_view( comp_area), opacity);
         break;
         }
 

@@ -17,7 +17,7 @@ namespace ramen
 namespace image
 {
 
-flip_node_t::flip_node_t() : image_node_t()
+flip_node_t::flip_node_t() : node_t()
 {
     set_name("flip");
     add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
@@ -34,8 +34,8 @@ void flip_node_t::do_create_params()
 
 void flip_node_t::calc_transform_matrix()
 {
-    float cx = input_as<image_node_t>()->format().center().x;
-    float cy = input_as<image_node_t>()->format().center().y;
+    float cx = input_as<node_t>()->format().center().x;
+    float cy = input_as<node_t>()->format().center().y;
 
     float sx, sy;
 
@@ -67,7 +67,7 @@ void flip_node_t::calc_transform_matrix()
 void flip_node_t::do_calc_bounds( const render::context_t& context)
 {
     calc_transform_matrix();
-    Imath::Box2i xfbounds( input_as<image_node_t>()->bounds());
+    Imath::Box2i xfbounds( input_as<node_t>()->bounds());
     xfbounds = ImathExt::transform( xfbounds, xform_);
     set_bounds( xfbounds);
 }
@@ -75,7 +75,7 @@ void flip_node_t::do_calc_bounds( const render::context_t& context)
 void flip_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi( ImathExt::transform( interest(), inv_xform_));
-    input_as<image_node_t>()->add_interest( roi);
+    input_as<node_t>()->add_interest( roi);
 }
 
 void flip_node_t::do_process( const render::context_t& context)
@@ -84,7 +84,7 @@ void flip_node_t::do_process( const render::context_t& context)
         return;
 
     calc_transform_matrix();
-    image::affine_warp_nearest( input_as<image_node_t>()->defined(), input_as<image_node_t>()->const_image_view(),
+    image::affine_warp_nearest( input_as<node_t>()->defined(), input_as<node_t>()->const_image_view(),
                                 defined(), image_view(), xform_, inv_xform_);
 }
 

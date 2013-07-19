@@ -13,7 +13,7 @@ namespace ramen
 namespace image
 {
 
-expand_node_t::expand_node_t() : image_node_t()
+expand_node_t::expand_node_t() : node_t()
 {
     set_name("expand");
     add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
@@ -57,37 +57,37 @@ void expand_node_t::do_create_params()
 
 void expand_node_t::do_calc_format( const render::context_t& context)
 {
-	image_node_t *in = input_as<image_node_t>();
-    Imath::Box2i box( in->format());	
+    node_t *in = input_as<node_t>();
+    Imath::Box2i box( in->format());
     int exp_t = get_absolute_value<float>( param( "top"));
     int exp_l = get_absolute_value<float>( param( "left"));
     int exp_b = get_absolute_value<float>( param( "bottom"));
     int exp_r = get_absolute_value<float>( param( "right"));
     set_format( Imath::Box2i( Imath::V2i( box.min.x - exp_l, box.min.y - exp_t), Imath::V2i( box.max.x + exp_r, box.max.y + exp_b)));
-	set_aspect_ratio( in->aspect_ratio());
-	set_proxy_scale( in->proxy_scale());
+    set_aspect_ratio( in->aspect_ratio());
+    set_proxy_scale( in->proxy_scale());
 }
 
 void expand_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bounds( ImathExt::intersect( input_as<image_node_t>()->bounds(), format()));
+    Imath::Box2i bounds( ImathExt::intersect( input_as<node_t>()->bounds(), format()));
     set_bounds( bounds);
 }
 
 void expand_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi = ImathExt::intersect( interest(), format());
-    input_as<image_node_t>()->add_interest( roi);
+    input_as<node_t>()->add_interest( roi);
 }
 
 void expand_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area = ImathExt::intersect( input_as<image_node_t>()->defined(), defined());
+    Imath::Box2i area = ImathExt::intersect( input_as<node_t>()->defined(), defined());
 
     if( area.isEmpty())
         return;
 
-    boost::gil::copy_pixels( input_as<image_node_t>()->const_subimage_view( area), subimage_view( area));
+    boost::gil::copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
 }
 
 // factory

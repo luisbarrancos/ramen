@@ -22,7 +22,7 @@ struct exposure_fun
 
     image::pixel_t operator()( const image::pixel_t& src) const
     {
-		return image::pixel_t( src[0] * m_, src[1] * m_, src[2] * m_, src[3]);
+        return image::pixel_t( src[0] * m_, src[1] * m_, src[2] * m_, src[3]);
     }
 
     float m_;
@@ -47,7 +47,7 @@ void exposure_node_t::do_create_params()
 
 bool exposure_node_t::do_is_identity() const
 {
-	return get_value<float>( param( "exp")) == 0.0f;
+    return get_value<float>( param( "exp")) == 0.0f;
 }
 
 void exposure_node_t::do_process( const image::const_image_view_t& src, const image::image_view_t& dst, const render::context_t& context)
@@ -58,25 +58,25 @@ void exposure_node_t::do_process( const image::const_image_view_t& src, const im
 
     if( input( 1))
     {
-		boost::gil::copy_pixels( src, dst);
-		area = ImathExt::intersect( input_as<image_node_t>( 1)->defined(), defined());
+        boost::gil::copy_pixels( src, dst);
+        area = ImathExt::intersect( input_as<node_t>( 1)->defined(), defined());
 
-		if( area.isEmpty())
-		    return;
+        if( area.isEmpty())
+            return;
 
-		src_view = input_as<image_node_t>( 0)->const_subimage_view( area);
-		dst_view = subimage_view( area);
+        src_view = input_as<node_t>( 0)->const_subimage_view( area);
+        dst_view = subimage_view( area);
     }
     else
     {
-		src_view = src;
-		dst_view = dst;
+        src_view = src;
+        dst_view = dst;
     }
 
     boost::gil::tbb_transform_pixels( src_view, dst_view, exposure_fun( get_value<float>( param( "exp"))));
 
     if( input(1))
-        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input_as<image_node_t>( 1)->const_subimage_view( area), 3), dst_view);
+        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input_as<node_t>( 1)->const_subimage_view( area), 3), dst_view);
 }
 
 // node factory

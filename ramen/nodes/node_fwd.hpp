@@ -11,7 +11,6 @@ namespace ramen
 {
 
 class node_t;
-class image_node_t;
 
 } // ramen
 

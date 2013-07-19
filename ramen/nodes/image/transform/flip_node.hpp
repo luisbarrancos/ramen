@@ -3,7 +3,7 @@
 #ifndef RAMEN_IMAGE_FLIP_NODE_HPP
 #define RAMEN_IMAGE_FLIP_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<OpenEXR/ImathMatrix.h>
 
@@ -12,7 +12,7 @@ namespace ramen
 namespace image
 {
 
-class flip_node_t : public image_node_t
+class flip_node_t : public node_t
 {
 public:
 
@@ -23,7 +23,7 @@ public:
 
 protected:
 
-    flip_node_t(const flip_node_t& other) : image_node_t(other) {}
+    flip_node_t(const flip_node_t& other) : node_t(other) {}
     void operator=(const flip_node_t&);
 
 private:

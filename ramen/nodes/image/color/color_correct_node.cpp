@@ -95,12 +95,12 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     if( input(1))
     {
         boost::gil::copy_pixels( src, dst);
-        area = ImathExt::intersect( input_as<image_node_t>(1)->defined(), defined());
+        area = ImathExt::intersect( input_as<node_t>(1)->defined(), defined());
 
         if( area.isEmpty())
             return;
 
-        src_view = input_as<image_node_t>(0)->const_subimage_view( area),
+        src_view = input_as<node_t>(0)->const_subimage_view( area),
         dst_view = subimage_view( area);
     }
     else
@@ -116,11 +116,11 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     Imath::V3f offset = get_value<Imath::V3f>( param( "offset"));
 
     image::color_correct_fun<> master_ccf( 1.0f/gamma.x, 1.0f/gamma.y, 1.0f/gamma.z,
-										  gain.x, gain.y, gain.z,
-										  offset.x, offset.y, offset.z,
-										  get_value<float>( param( "saturation")),
-										  get_value<float>( param( "contrast")),
-										  r_lut, g_lut, b_lut);
+                                          gain.x, gain.y, gain.z,
+                                          offset.x, offset.y, offset.z,
+                                          get_value<float>( param( "saturation")),
+                                          get_value<float>( param( "contrast")),
+                                          r_lut, g_lut, b_lut);
 
     boost::gil::tbb_transform2_pixels( src_view, src_view, dst_view, master_ccf);
 
@@ -130,11 +130,11 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     offset = get_value<Imath::V3f>( param( "sh_offset"));
 
     image::color_correct_fun<image::shadow_blend_fun> shadow_ccf( 1.0f/gamma.x, 1.0f/gamma.y, 1.0f/gamma.z,
-																gain.x, gain.y, gain.z,
-																offset.x, offset.y, offset.z,
-																get_value<float>( param( "sh_saturation")),
-																get_value<float>( param( "sh_contrast")),
-																r_lut, g_lut, b_lut);
+                                                                gain.x, gain.y, gain.z,
+                                                                offset.x, offset.y, offset.z,
+                                                                get_value<float>( param( "sh_saturation")),
+                                                                get_value<float>( param( "sh_contrast")),
+                                                                r_lut, g_lut, b_lut);
 
     boost::gil::tbb_transform2_pixels( src_view, dst_view, dst_view, shadow_ccf);
 
@@ -144,11 +144,11 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     offset = get_value<Imath::V3f>( param( "mid_offset"));
 
     image::color_correct_fun<image::midtones_blend_fun> midtones_ccf( 1.0f/gamma.x, 1.0f/gamma.y, 1.0f/gamma.z,
-																		gain.x, gain.y, gain.z,
-																		offset.x, offset.y, offset.z,
-																		get_value<float>( param( "mid_saturation")),
-																		get_value<float>( param( "mid_contrast")),
-																		r_lut, g_lut, b_lut);
+                                                                        gain.x, gain.y, gain.z,
+                                                                        offset.x, offset.y, offset.z,
+                                                                        get_value<float>( param( "mid_saturation")),
+                                                                        get_value<float>( param( "mid_contrast")),
+                                                                        r_lut, g_lut, b_lut);
 
     boost::gil::tbb_transform2_pixels( src_view, dst_view, dst_view, midtones_ccf);
 
@@ -158,17 +158,17 @@ void color_correct_node_t::do_process( const image::const_image_view_t& src, con
     offset = get_value<Imath::V3f>( param( "high_offset"));
 
     image::color_correct_fun<image::highlights_blend_fun> highlights_ccf( 1.0f/gamma.x, 1.0f/gamma.y, 1.0f/gamma.z,
-																		  gain.x, gain.y, gain.z,
-																		offset.x, offset.y, offset.z,
-																		get_value<float>( param( "high_saturation")),
-																		get_value<float>( param( "high_contrast")),
-																		r_lut, g_lut, b_lut);
+                                                                          gain.x, gain.y, gain.z,
+                                                                        offset.x, offset.y, offset.z,
+                                                                        get_value<float>( param( "high_saturation")),
+                                                                        get_value<float>( param( "high_contrast")),
+                                                                        r_lut, g_lut, b_lut);
 
     boost::gil::tbb_transform2_pixels( src_view, dst_view, dst_view, highlights_ccf);
 
     // mask
     if( input(1))
-        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input_as<image_node_t>(1)->const_subimage_view( area), 3), dst_view);
+        image::key_mix( src_view, dst_view, boost::gil::nth_channel_view( input_as<node_t>(1)->const_subimage_view( area), 3), dst_view);
 }
 
 // factory

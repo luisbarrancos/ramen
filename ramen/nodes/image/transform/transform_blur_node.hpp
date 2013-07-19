@@ -3,12 +3,12 @@
 #ifndef RAMEN_IMAGE_TRANSFORM_BLUR_NODE_HPP
 #define RAMEN_IMAGE_TRANSFORM_BLUR_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 
-class transform_blur_node_t : public image_node_t
+class transform_blur_node_t : public node_t
 {
 public:
 
@@ -19,7 +19,7 @@ public:
 
 protected:
 
-    transform_blur_node_t( const transform_blur_node_t& other) : image_node_t( other) {}
+    transform_blur_node_t( const transform_blur_node_t& other) : node_t( other) {}
     void operator=( const transform_blur_node_t&);
 
 private:

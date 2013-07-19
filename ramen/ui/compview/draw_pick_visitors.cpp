@@ -2,8 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
-
 #include<ramen/ui/compview/draw_pick_visitors.hpp>
 
 #include<ramen/nodes/node.hpp>
@@ -33,7 +31,7 @@ void output_location_node_visitor::visit( node_t *n)
 size_node_visitor::size_node_visitor() {}
 void size_node_visitor::visit( node_t *n)
 {
-	size = Imath::V2i( generic_node_width( n), generic_node_height());
+    size = Imath::V2i( generic_node_width( n), generic_node_height());
 }
 
 draw_node_visitor::draw_node_visitor( QPainter& painter) : painter_( painter) {}

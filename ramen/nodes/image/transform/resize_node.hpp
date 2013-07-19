@@ -3,14 +3,14 @@
 #ifndef RAMEN_IMAGE_RESIZE_NODE_HPP
 #define RAMEN_IMAGE_RESIZE_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class resize_node_t : public image_node_t
+class resize_node_t : public node_t
 {
 public:
 
@@ -30,7 +30,7 @@ private:
 
     virtual void do_create_params();
 
-	virtual bool do_is_identity() const;
+    virtual bool do_is_identity() const;
 
     virtual void do_calc_format( const render::context_t& context);
     virtual void do_calc_bounds( const render::context_t& context);
@@ -38,7 +38,7 @@ private:
 
     virtual void do_process( const render::context_t& context);
 
-	Imath::V2f scale_;
+    Imath::V2f scale_;
 };
 
 } // namespace

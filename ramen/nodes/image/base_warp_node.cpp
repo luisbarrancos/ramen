@@ -15,13 +15,13 @@ namespace ramen
 namespace image
 {
 
-base_warp_node_t::base_warp_node_t() : image_node_t(), notify_pending_( false)
+base_warp_node_t::base_warp_node_t() : node_t(), notify_pending_( false)
 {
     add_input_plug( "Front", false, ui::palette_t::instance().color( "front plug"), "Front");
     add_output_plug();
 }
 
-base_warp_node_t::base_warp_node_t( const base_warp_node_t& other) : image_node_t( other), notify_pending_( false) {}
+base_warp_node_t::base_warp_node_t( const base_warp_node_t& other) : node_t( other), notify_pending_( false) {}
 
 void base_warp_node_t::create_default_filter_param()
 {
@@ -118,7 +118,7 @@ Imath::Box2i base_warp_node_t::expand_interest( const Imath::Box2i& box, const r
 
 int base_warp_node_t::max_mipmap_levels() const { return 4;}
 
-void base_warp_node_t::make_mipmap( image_node_t *src, mipmap_type& mipmap, std::vector<image::buffer_t>& buffers) const
+void base_warp_node_t::make_mipmap( node_t *src, mipmap_type& mipmap, std::vector<image::buffer_t>& buffers) const
 {
     Imath::Box2i area = src->defined();
     buffers.push_back( src->image());

@@ -5,14 +5,14 @@
 #ifndef RAMEN_IMAGE_BASE_LAYER_NODE_HPP
 #define RAMEN_IMAGE_BASE_LAYER_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class RAMEN_API base_layer_node_t : public image_node_t
+class RAMEN_API base_layer_node_t : public node_t
 {
 public:
 
@@ -28,8 +28,8 @@ protected:
 
 private:
 
-	virtual void do_calc_format( const render::context_t& context);
-	
+    virtual void do_calc_format( const render::context_t& context);
+
     virtual void do_recursive_process( const render::context_t& context);
 };
 

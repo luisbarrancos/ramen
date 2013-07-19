@@ -103,19 +103,19 @@ void displace_node_t::do_create_params()
     q.reset( new popup_param_t( "Borders"));
     q->set_id( "borders");
     q->menu_items() = boost::assign::list_of( "Black")( "Tile")( "Mirror");
-    add_param( q);	
+    add_param( q);
 }
 
 bool displace_node_t::do_is_identity() const
 {
-    Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));	
-	return amplitude == Imath::V2f( 0, 0);
+    Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
+    return amplitude == Imath::V2f( 0, 0);
 }
 
 void displace_node_t::do_calc_bounds( const render::context_t& context)
 {
     Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
-    Imath::Box2i b( input_as<image_node_t>()->bounds());
+    Imath::Box2i b( input_as<node_t>()->bounds());
 
     if( !b.isEmpty())
     {
@@ -131,52 +131,52 @@ void displace_node_t::do_calc_bounds( const render::context_t& context)
 void displace_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
     Imath::Box2i roi( interest());
-    input_as<image_node_t>( 1)->add_interest( roi);
+    input_as<node_t>( 1)->add_interest( roi);
 
-	image_node_t *in = input_as<image_node_t>( 0);
-	
-	if( get_value<int>( param( "borders")) == border_black)
-	{
-		Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
-	
-		roi.min.x -= amplitude.x;
-		roi.min.y -= amplitude.y;
-		roi.max.x += amplitude.x;
-		roi.max.y += amplitude.y;
-		in->add_interest( roi);
-	}
-	else
-		in->add_interest( in->format());
+    node_t *in = input_as<node_t>( 0);
+
+    if( get_value<int>( param( "borders")) == border_black)
+    {
+        Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
+
+        roi.min.x -= amplitude.x;
+        roi.min.y -= amplitude.y;
+        roi.max.x += amplitude.x;
+        roi.max.y += amplitude.y;
+        in->add_interest( roi);
+    }
+    else
+        in->add_interest( in->format());
 }
 
 void displace_node_t::do_process( const render::context_t& context)
 {
     using namespace boost::gil;
 
-	Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
-	amplitude.x = amplitude.x / context.subsample / aspect_ratio();
-	amplitude.y /= context.subsample;
+    Imath::V2f amplitude = get_value<Imath::V2f>( param( "amplitude"));
+    amplitude.x = amplitude.x / context.subsample / aspect_ratio();
+    amplitude.y /= context.subsample;
 
-	image_node_t *in = input_as<image_node_t>( 0);
-	image_node_t *dmap = input_as<image_node_t>( 1);
-	
+    node_t *in = input_as<node_t>( 0);
+    node_t *dmap = input_as<node_t>( 1);
+
     displace_fun f( nth_channel_view( dmap->const_image_view(), get_value<int>( param( "xchannel"))),
                     nth_channel_view( dmap->const_image_view(), get_value<int>( param( "ychannel"))),
                     dmap->defined(), amplitude);
-	
+
     switch( get_value<int>( param( "borders")))
     {
-		case border_black:
-			image::warp_bilinear( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
-		break;
-	
-		case border_tile:
-			image::warp_bilinear_tile( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
-		break;
-	
-		case border_mirror:
-			image::warp_bilinear_mirror( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
-		break;
+        case border_black:
+            image::warp_bilinear( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+        break;
+
+        case border_tile:
+            image::warp_bilinear_tile( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+        break;
+
+        case border_mirror:
+            image::warp_bilinear_mirror( in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+        break;
     }
 }
 
@@ -192,12 +192,12 @@ const node_metaclass_t& displace_node_t::displace_node_metaclass()
 
     if( !inited)
     {
-		info.id = "image.builtin.displace";
-		info.major_version = 1;
-		info.minor_version = 0;
-		info.menu = "Image";
-		info.submenu = "Distort";
-		info.menu_item = "Displace";
+        info.id = "image.builtin.displace";
+        info.major_version = 1;
+        info.minor_version = 0;
+        info.menu = "Image";
+        info.submenu = "Distort";
+        info.menu_item = "Displace";
         info.help = "Displaces the input image, using the second input as the displacement map."
                     "A value of 0.5 in the displacement map means no displacement,"
                     "Black values warp the image to the left / top and white to the right / bottom.";

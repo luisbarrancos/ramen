@@ -4,7 +4,7 @@
 
 #include<ramen/params/numeric_param.hpp>
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/app/composition.hpp>
 
@@ -60,22 +60,19 @@ Imath::Box2i numeric_param_t::frame_area() const
 {
     Imath::Box2i area;
 
-    const image_node_t *n = dynamic_cast<const image_node_t*>( node());
-    RAMEN_ASSERT( n && "numeric relative params can only be used inside image nodes");
-
     if( depends_on_port_ == -1)
     {
-        area = n->full_format();
+        area = node()->full_format();
         ++area.max.x;
         ++area.max.y;
         return area;
     }
 
-    RAMEN_ASSERT( depends_on_port_ < n->num_inputs());
+    RAMEN_ASSERT( depends_on_port_ < node()->num_inputs());
 
-    if( n->input( depends_on_port_))
+    if( node()->input( depends_on_port_))
     {
-        area =  n->input_as<image_node_t>( depends_on_port_)->full_format();
+        area =  n->input_as<node_t>( depends_on_port_)->full_format();
         ++area.max.x;
         ++area.max.y;
     }
@@ -112,11 +109,11 @@ Imath::V2f numeric_param_t::relative_to_absolute( const Imath::V2f& x) const
     {
     case relative_xy:
         return Imath::V2f( ( x.x  * frame_area().size().x) + frame_area().min.x,
-                            ( x.y * frame_area().size().y) + frame_area().min.y);
+                           ( x.y * frame_area().size().y) + frame_area().min.y);
 
     case relative_size_xy:
         return Imath::V2f( x.x  * frame_area().size().x,
-                            x.y * frame_area().size().y);
+                           x.y * frame_area().size().y);
 
     default:
         return x;

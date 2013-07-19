@@ -3,14 +3,14 @@
 #ifndef RAMEN_IMAGE_COPY_CHANNELS_NODE_HPP
 #define	RAMEN_IMAGE_COPY_CHANNELS_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class copy_channels_node_t : public image_node_t
+class copy_channels_node_t : public node_t
 {
 public:
 
@@ -18,12 +18,12 @@ public:
     virtual const node_metaclass_t *metaclass() const;
 
     copy_channels_node_t();
-    
+
     virtual bool use_cache( const render::context_t& context) const { return false;}
 
 protected:
 
-    copy_channels_node_t( const copy_channels_node_t& other) : image_node_t( other) {}
+    copy_channels_node_t( const copy_channels_node_t& other) : node_t( other) {}
     void operator=( const copy_channels_node_t&);
 
 private:

@@ -51,7 +51,7 @@ struct grad_magnitude_fun
                 float gx = ( center_it[x1][0] - center_it[x0][0]);
                 float gy = ( top_it[i][0] - bottom_it[i][0]);
                 float gmag = std::sqrt( (double) ( gx * gx) + ( gy * gy)) / sqrt2;
-                
+
                 if( gmag < thereshold_)
                     gmag = 0;
 
@@ -73,19 +73,19 @@ struct remap_alpha_fun
 
     image::gray_pixel_t operator()( const image::gray_pixel_t& p) const
     {
-	float a = p[0];
+    float a = p[0];
 
-	if( a <= alpha_low_)
-	    a = 0;
-	else
-	{
-	    if( a >= alpha_high_ || alpha_high_ == alpha_low_)
-		a = 1;
-	    else
-		a = ( a - alpha_low_) / ( alpha_high_ - alpha_low_);
-	}
+    if( a <= alpha_low_)
+        a = 0;
+    else
+    {
+        if( a >= alpha_high_ || alpha_high_ == alpha_low_)
+        a = 1;
+        else
+        a = ( a - alpha_low_) / ( alpha_high_ - alpha_low_);
+    }
 
-	return image::gray_pixel_t( a);
+    return image::gray_pixel_t( a);
     }
 
 private:
@@ -103,7 +103,7 @@ void alpha_ops_node_t::do_create_params()
     b->set_id( "edetect");
     b->set_default_value( false);
     add_param( b);
-    
+
     std::auto_ptr<float_param_t> p( new float_param_t( "Edge Theresh"));
     p->set_id( "etheresh");
     p->set_default_value( 0);
@@ -141,33 +141,33 @@ void alpha_ops_node_t::do_create_params()
 void alpha_ops_node_t::get_expand_radius( int& hradius, int& vradius) const
 {
     if( get_value<bool>( param( "edetect")))
-	{
+    {
         hradius = 1;
-		vradius = 1;
-	}
+        vradius = 1;
+    }
     else
-	{
+    {
         hradius = 0;
-		vradius = 0;
-	}
+        vradius = 0;
+    }
 
     float shrinkx = get_value<float>( param( "shrink")) * proxy_scale().x / aspect_ratio();
     float shrinky = get_value<float>( param( "shrink")) * proxy_scale().y;
 
     if( shrinkx > 0 || shrinky > 0)
-	{
+    {
         hradius += std::ceil( ( double) shrinkx);
-		vradius += std::ceil( ( double) shrinky);
-	}
+        vradius += std::ceil( ( double) shrinky);
+    }
 
     float blurx = get_value<float>( param( "blur")) * proxy_scale().x / aspect_ratio() / 2.0f;
     float blury = get_value<float>( param( "blur")) * proxy_scale().y / 2.0f;
 
     if( blurx != 0 || blury != 0)
-	{
+    {
         hradius += std::ceil( ( double) blurx + 1) * 2;
         vradius += std::ceil( ( double) blury + 1) * 2;
-	}	
+    }
 }
 
 bool alpha_ops_node_t::expand_defined() const { return true;}
@@ -176,17 +176,17 @@ void alpha_ops_node_t::do_process( const render::context_t& context)
 {
     using namespace boost::gil;
 
-    Imath::Box2i area( ImathExt::intersect( input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
 
     if( area.isEmpty())
-		return;
-	
-    // copy the rgb channels
-    copy_pixels( input_as<image_node_t>()->const_subimage_view( area), subimage_view( area));
+        return;
 
-	int width = defined().size().x + 1;
-	int height = defined().size().y + 1;
-	
+    // copy the rgb channels
+    copy_pixels( input_as<node_t>()->const_subimage_view( area), subimage_view( area));
+
+    int width = defined().size().x + 1;
+    int height = defined().size().y + 1;
+
     image::buffer_t img0( width, height, 1);
     fill_pixels( img0.gray_view(), image::gray_pixel_t( 0));
 
@@ -194,14 +194,14 @@ void alpha_ops_node_t::do_process( const render::context_t& context)
     fill_pixels( img1.gray_view(), image::gray_pixel_t( 0));
 
     image::buffer_t tmp( height, width, 1);
-	
+
     // copy the alpha channel to img0
     image::gray_image_view_t src( img0.gray_view());
     image::gray_image_view_t dst( img0.gray_view());
 
-    copy_pixels( nth_channel_view( input_as<image_node_t>()->const_subimage_view( area), 3),
-                boost::gil::subimage_view( src, area.min.x - defined().min.x, 
-										   area.min.y - defined().min.y, area.size().x + 1, area.size().y + 1));
+    copy_pixels( nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+                boost::gil::subimage_view( src, area.min.x - defined().min.x,
+                                           area.min.y - defined().min.y, area.size().x + 1, area.size().y + 1));
 
     bool detect_edges = get_value<bool>( param( "edetect"));
 
@@ -215,7 +215,7 @@ void alpha_ops_node_t::do_process( const render::context_t& context)
         tbb::parallel_for( tbb::blocked_range<int>( 0, dst.height()), grad_magnitude_fun( src, dst, theresh), tbb::auto_partitioner());
     }
 
-	float shrinkx = get_value<float>( param( "shrink")) / context.subsample * proxy_scale().x / aspect_ratio();
+    float shrinkx = get_value<float>( param( "shrink")) / context.subsample * proxy_scale().x / aspect_ratio();
     float shrinky = get_value<float>( param( "shrink")) / context.subsample * proxy_scale().y;
 
     if( shrinkx != 0 || shrinky != 0)

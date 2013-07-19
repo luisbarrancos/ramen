@@ -5,7 +5,7 @@
 #ifndef RAMEN_IMAGE_POINTOP_NODE_HPP
 #define RAMEN_IMAGE_POINTOP_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/gil/extension/algorithm/tbb/tbb_transform.hpp>
 
@@ -14,7 +14,7 @@ namespace ramen
 namespace image
 {
 
-class RAMEN_API pointop_node_t : public image_node_t
+class RAMEN_API pointop_node_t : public node_t
 {
 public:
 

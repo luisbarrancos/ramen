@@ -21,96 +21,96 @@ namespace image
 class RAMEN_API xform_node_t : public base_warp_node_t
 {
 public:
-	
-	template<class XFormNode>
-	image_node_t *get_img_source()
-	{
-		image_node_t *source = input_as<image_node_t>();
-	
-		while( 1)
-		{
-			XFormNode *x = dynamic_cast<XFormNode*>( source);
-	
-			if( !x)
-				break;
-	
-			if( !source->input_as<image_node_t>())
-				break;
-	
-			source = source->input_as<image_node_t>();
-		}
-	
-		return source;
-	}
 
-	template<class XFormNode>
-	const image_node_t *get_img_source() const
-	{
-		const image_node_t *source = input_as<const image_node_t>();
-	
-		while( 1)
-		{
-			const XFormNode *x = dynamic_cast<const XFormNode*>( source);
-	
-			if( !x)
-				break;
-	
-			if( !source->input_as<const image_node_t>())
-				break;
-	
-			source = source->input_as<const image_node_t>();
-		}
+    template<class XFormNode>
+    node_t *get_img_source()
+    {
+        node_t *source = input_as<node_t>();
 
-		return source;
-	}
-	
-	template<class XFormNode>
-	const image_node_t *get_img_source_and_xform_list( std::vector<const XFormNode*>& xforms) const
-	{
-		const XFormNode *self = dynamic_cast<const XFormNode*>( this);
-		RAMEN_ASSERT( self);
-		
-		xforms.push_back( self);
+        while( 1)
+        {
+            XFormNode *x = dynamic_cast<XFormNode*>( source);
 
-		const image_node_t *source = input_as<image_node_t>();
-	
-		while( 1)
-		{
-			const XFormNode *x = dynamic_cast<const XFormNode*>( source);
-	
-			if( !x)
-				break;
-	
-			xforms.push_back( x);
-	
-			if( !source->input_as<image_node_t>())
-				break;
-	
-			source = source->input_as<image_node_t>();
-		}
-	
-		return source;
-	}
-	
+            if( !x)
+                break;
+
+            if( !source->input_as<node_t>())
+                break;
+
+            source = source->input_as<node_t>();
+        }
+
+        return source;
+    }
+
+    template<class XFormNode>
+    const node_t *get_img_source() const
+    {
+        const node_t *source = input_as<const node_t>();
+
+        while( 1)
+        {
+            const XFormNode *x = dynamic_cast<const XFormNode*>( source);
+
+            if( !x)
+                break;
+
+            if( !source->input_as<const node_t>())
+                break;
+
+            source = source->input_as<const node_t>();
+        }
+
+        return source;
+    }
+
+    template<class XFormNode>
+    const node_t *get_img_source_and_xform_list( std::vector<const XFormNode*>& xforms) const
+    {
+        const XFormNode *self = dynamic_cast<const XFormNode*>( this);
+        RAMEN_ASSERT( self);
+
+        xforms.push_back( self);
+
+        const node_t *source = input_as<node_t>();
+
+        while( 1)
+        {
+            const XFormNode *x = dynamic_cast<const XFormNode*>( source);
+
+            if( !x)
+                break;
+
+            xforms.push_back( x);
+
+            if( !source->input_as<node_t>())
+                break;
+
+            source = source->input_as<node_t>();
+        }
+
+        return source;
+    }
+
 protected:
 
     xform_node_t();
     xform_node_t( const xform_node_t& other);
-	
+
     void operator=( const xform_node_t&);
 
-	void create_motion_blur_param();
+    void create_motion_blur_param();
 
-	motion_blur_info_t::loop_data_t motion_blur_loop_data( float time, int extra_samples, float shutter_factor) const;
+    motion_blur_info_t::loop_data_t motion_blur_loop_data( float time, int extra_samples, float shutter_factor) const;
 
-	virtual void do_calc_hash_str( const render::context_t& context);	
+    virtual void do_calc_hash_str( const render::context_t& context);
 
 private:
 
-	virtual bool do_is_valid() const;
+    virtual bool do_is_valid() const;
 
-	// interaction
-	virtual void do_begin_interaction();
+    // interaction
+    virtual void do_begin_interaction();
 };
 
 } // image

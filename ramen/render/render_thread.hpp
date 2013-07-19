@@ -6,7 +6,7 @@
 #include<boost/function.hpp>
 #include<boost/thread.hpp>
 
-#include<ramen/render/image_node_renderer.hpp>
+#include<ramen/render/node_renderer.hpp>
 
 namespace ramen
 {
@@ -20,8 +20,8 @@ struct RAMEN_API render_thread_t
 
     void init();
 
-    boost::unique_future<bool>& render_image( image_node_renderer_t& renderer);
-    boost::unique_future<bool>& render_image( image_node_renderer_t& renderer, const Imath::Box2i& roi);
+    boost::unique_future<bool>& render_image( node_renderer_t& renderer);
+    boost::unique_future<bool>& render_image( node_renderer_t& renderer, const Imath::Box2i& roi);
 
     bool cancelled() const;
     void cancel_render();

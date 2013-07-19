@@ -23,15 +23,15 @@ struct key_mix_layer_mode_fun
 
     image::pixel_t operator()( const image::pixel_t& back, const image::pixel_t& front, const image::pixel_t& matte) const
     {
-		using namespace boost::gil;
-	
-		float a = get_color( matte, alpha_t()) * opacity_;
-		float a_inv = 1.0f - a;
-	
-		return image::pixel_t(  ( get_color( front, red_t())   * a)  + ( get_color( back, red_t())   * a_inv),
-								( get_color( front, green_t()) * a)  + ( get_color( back, green_t()) * a_inv),
-								( get_color( front, blue_t())  * a)  + ( get_color( back, blue_t())  * a_inv),
-								( get_color( front, alpha_t()) * a)  + ( get_color( back, alpha_t()) * a_inv));
+        using namespace boost::gil;
+
+        float a = get_color( matte, alpha_t()) * opacity_;
+        float a_inv = 1.0f - a;
+
+        return image::pixel_t(  ( get_color( front, red_t())   * a)  + ( get_color( back, red_t())   * a_inv),
+                                ( get_color( front, green_t()) * a)  + ( get_color( back, green_t()) * a_inv),
+                                ( get_color( front, blue_t())  * a)  + ( get_color( back, blue_t())  * a_inv),
+                                ( get_color( front, alpha_t()) * a)  + ( get_color( back, alpha_t()) * a_inv));
     }
 
 private:
@@ -67,23 +67,23 @@ void key_mix_layer_node_t::do_create_params()
 
 void key_mix_layer_node_t::do_calc_bounds( const render::context_t& context)
 {
-    Imath::Box2i bbox( input_as<image_node_t>( 0)->bounds());
-    bbox.extendBy( ImathExt::intersect( input_as<image_node_t>( 1)->bounds(), input_as<image_node_t>( 2)->bounds()));
+    Imath::Box2i bbox( input_as<node_t>( 0)->bounds());
+    bbox.extendBy( ImathExt::intersect( input_as<node_t>( 1)->bounds(), input_as<node_t>( 2)->bounds()));
     set_bounds( bbox);
 }
 
 void key_mix_layer_node_t::do_process( const render::context_t& context)
 {
-    image_node_t *bg = input_as<image_node_t>( 0);
-    image_node_t *fg = input_as<image_node_t>( 1);
-    image_node_t *mt = input_as<image_node_t>( 2);
+    node_t *bg = input_as<node_t>( 0);
+    node_t *fg = input_as<node_t>( 1);
+    node_t *mt = input_as<node_t>( 2);
 
     Imath::Box2i bg_area = ImathExt::intersect( bg->defined(), defined());
 
     if( !bg_area.isEmpty())
     {
         render_input( 0, context);
-		boost::gil::copy_pixels( bg->const_subimage_view( bg_area), subimage_view( bg_area));
+        boost::gil::copy_pixels( bg->const_subimage_view( bg_area), subimage_view( bg_area));
         release_input_image( 0);
     }
 
@@ -104,11 +104,11 @@ void key_mix_layer_node_t::do_process( const render::context_t& context)
         render_input( 2, context);
         image::buffer_t alpha_img = mt->image();
 
-		boost::gil::tbb_transform3_pixels( const_subimage_view( comp_area),
-											fg->const_subimage_view( comp_area),
-											mt->const_subimage_view( comp_area),
-											subimage_view( comp_area),
-											key_mix_layer_mode_fun( get_value<float>( param( "opacity"))));
+        boost::gil::tbb_transform3_pixels( const_subimage_view( comp_area),
+                                            fg->const_subimage_view( comp_area),
+                                            mt->const_subimage_view( comp_area),
+                                            subimage_view( comp_area),
+                                            key_mix_layer_mode_fun( get_value<float>( param( "opacity"))));
         release_input_image( 1);
         release_input_image( 2);
     }

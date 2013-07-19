@@ -31,15 +31,15 @@ enum
 
 } // unnamed
 
-resize_node_t::resize_node_t() : image_node_t()
+resize_node_t::resize_node_t() : node_t()
 {
     add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
-	set_name( "resize");
-	scale_ = Imath::V2f( 0, 0);
+    set_name( "resize");
+    scale_ = Imath::V2f( 0, 0);
 }
 
-resize_node_t::resize_node_t(const resize_node_t& other) : image_node_t(other), scale_( other.scale_) {}
+resize_node_t::resize_node_t(const resize_node_t& other) : node_t(other), scale_( other.scale_) {}
 
 void resize_node_t::do_create_params()
 {
@@ -48,28 +48,28 @@ void resize_node_t::do_create_params()
 
     // Absolute
     {
-		std::auto_ptr<composite_param_t> group( new composite_param_t( "Size"));
-		group->set_id( "size_group");
+        std::auto_ptr<composite_param_t> group( new composite_param_t( "Size"));
+        group->set_id( "size_group");
 
-		std::auto_ptr<image_format_param_t> fp( new image_format_param_t( "Size"));
-		fp->set_id( "size");
-		group->add_param( fp);
-		top->add_param( group);
+        std::auto_ptr<image_format_param_t> fp( new image_format_param_t( "Size"));
+        fp->set_id( "size");
+        group->add_param( fp);
+        top->add_param( group);
     }
 
     // Relative
     {
-		std::auto_ptr<composite_param_t> group( new composite_param_t( "Scale"));
-		group->set_id( "scale_group");
+        std::auto_ptr<composite_param_t> group( new composite_param_t( "Scale"));
+        group->set_id( "scale_group");
 
-		std::auto_ptr<float2_param_t> fp( new float2_param_t( "Scale"));
-		fp->set_id( "scale");
-		fp->set_min( 0);
-		fp->set_step( 0.05);
-		fp->set_default_value( Imath::V2f( 1, 1));
-		fp->set_proportional( true);
-		fp->set_static( true);
-		group->add_param( fp);
+        std::auto_ptr<float2_param_t> fp( new float2_param_t( "Scale"));
+        fp->set_id( "scale");
+        fp->set_min( 0);
+        fp->set_step( 0.05);
+        fp->set_default_value( Imath::V2f( 1, 1));
+        fp->set_proportional( true);
+        fp->set_static( true);
+        group->add_param( fp);
         top->add_param( group);
     }
 
@@ -82,111 +82,111 @@ void resize_node_t::do_create_params()
 
 bool resize_node_t::do_is_identity() const
 {
-	const image_node_t *in = input_as<const image_node_t>();
-	Imath::V2f scale;
+    const node_t *in = input_as<const node_t>();
+    Imath::V2f scale;
 
     if( get_value<int>( param( "method")) == 0)
     {
-		image::format_t f( get_value<image::format_t>( param( "size")));
-		Imath::Box2i box( f.area());
-		scale.x = ( float) ( box.max.x - 1) / in->format().size().x;
-		scale.y = ( float) ( box.max.y - 1) / in->format().size().y;
+        image::format_t f( get_value<image::format_t>( param( "size")));
+        Imath::Box2i box( f.area());
+        scale.x = ( float) ( box.max.x - 1) / in->format().size().x;
+        scale.y = ( float) ( box.max.y - 1) / in->format().size().y;
     }
     else
-		scale = get_value<Imath::V2f>( param( "scale"));
+        scale = get_value<Imath::V2f>( param( "scale"));
 
-	return scale.x == 1.0f && scale.y == 1.0f;
+    return scale.x == 1.0f && scale.y == 1.0f;
 }
 
 void resize_node_t::do_calc_format( const render::context_t& context)
 {
-	image_node_t *in = input_as<image_node_t>();
+    node_t *in = input_as<node_t>();
 
     if( get_value<int>( param( "method")) == 0)
     {
-		image::format_t f( get_value<image::format_t>( param( "size")));
-		Imath::Box2i box( f.area());
-		scale_.x = ( float) ( box.max.x - 1) / in->format().size().x;
-		scale_.y = ( float) ( box.max.y - 1) / in->format().size().y;
-		set_aspect_ratio( f.aspect);
+        image::format_t f( get_value<image::format_t>( param( "size")));
+        Imath::Box2i box( f.area());
+        scale_.x = ( float) ( box.max.x - 1) / in->format().size().x;
+        scale_.y = ( float) ( box.max.y - 1) / in->format().size().y;
+        set_aspect_ratio( f.aspect);
     }
     else
     {
-		Imath::V2f scale = get_value<Imath::V2f>( param( "scale"));
-		scale_.x = scale.x;
-		scale_.y = scale.y;
-		set_aspect_ratio( in->aspect_ratio());
+        Imath::V2f scale = get_value<Imath::V2f>( param( "scale"));
+        scale_.x = scale.x;
+        scale_.y = scale.y;
+        set_aspect_ratio( in->aspect_ratio());
     }
 
-	set_format( image::resize_box( in->format(), in->format().min, 1.0f / scale_.x, 1.0f / scale_.y));
-	set_proxy_scale( in->proxy_scale());
+    set_format( image::resize_box( in->format(), in->format().min, 1.0f / scale_.x, 1.0f / scale_.y));
+    set_proxy_scale( in->proxy_scale());
 }
 
 void resize_node_t::do_calc_bounds( const render::context_t& context) { set_bounds( format());}
 
 void resize_node_t::do_calc_inputs_interest( const render::context_t& context)
 {
-	image_node_t *in = input_as<image_node_t>();
-	Imath::Box2i roi( image::resize_box( interest(), in->format().min, scale_.x, scale_.y));
+    node_t *in = input_as<node_t>();
+    Imath::Box2i roi( image::resize_box( interest(), in->format().min, scale_.x, scale_.y));
 
-	int xfilter_area, yfilter_area;
+    int xfilter_area, yfilter_area;
 
     switch( get_value<int>( param( "filter")))
     {
-		case lanczos3_filter:
-		{
-			lanczos3_filter_t filter;
-			xfilter_area = filter.filter_area( scale_.x);
-			yfilter_area = filter.filter_area( scale_.y);
-		}
-		break;
+        case lanczos3_filter:
+        {
+            lanczos3_filter_t filter;
+            xfilter_area = filter.filter_area( scale_.x);
+            yfilter_area = filter.filter_area( scale_.y);
+        }
+        break;
 
-		case mitchell_filter:
-		{
-			mitchell_filter_t filter;
-			xfilter_area = filter.filter_area( scale_.x);
-			yfilter_area = filter.filter_area( scale_.y);
-		}
-		break;
+        case mitchell_filter:
+        {
+            mitchell_filter_t filter;
+            xfilter_area = filter.filter_area( scale_.x);
+            yfilter_area = filter.filter_area( scale_.y);
+        }
+        break;
 
-		case catrom_filter:
-		{
-			catrom_filter_t filter;
-			xfilter_area = filter.filter_area( scale_.x);
-			yfilter_area = filter.filter_area( scale_.y);
-		}
-		break;
-	};
+        case catrom_filter:
+        {
+            catrom_filter_t filter;
+            xfilter_area = filter.filter_area( scale_.x);
+            yfilter_area = filter.filter_area( scale_.y);
+        }
+        break;
+    };
 
-	roi.min.x -= xfilter_area / 2 + 2;
-	roi.min.y -= yfilter_area / 2 + 2;
-	roi.max.x += xfilter_area / 2 + 1;
-	roi.max.y += yfilter_area / 2 + 1;
-	in->add_interest( roi);
+    roi.min.x -= xfilter_area / 2 + 2;
+    roi.min.y -= yfilter_area / 2 + 2;
+    roi.max.x += xfilter_area / 2 + 1;
+    roi.max.y += yfilter_area / 2 + 1;
+    in->add_interest( roi);
 }
 
 void resize_node_t::do_process( const render::context_t& context)
 {
-	RAMEN_ASSERT( !( scale_.x == 1.0f && scale_.y == 1.0f));
+    RAMEN_ASSERT( !( scale_.x == 1.0f && scale_.y == 1.0f));
 
-	const image_node_t *in = input_as<const image_node_t>();
+    const node_t *in = input_as<const node_t>();
 
     switch( get_value<int>( param( "filter")))
     {
-		case lanczos3_filter:
-			image::resize_lanczos3( in->const_image_view(), in->defined(),
-									image_view(), defined(), in->format().min, scale_);
-		break;
+        case lanczos3_filter:
+            image::resize_lanczos3( in->const_image_view(), in->defined(),
+                                    image_view(), defined(), in->format().min, scale_);
+        break;
 
-		case mitchell_filter:
-			image::resize_mitchell( in->const_image_view(), in->defined(),
-									image_view(), defined(), in->format().min, scale_);
-		break;
+        case mitchell_filter:
+            image::resize_mitchell( in->const_image_view(), in->defined(),
+                                    image_view(), defined(), in->format().min, scale_);
+        break;
 
-		case catrom_filter:
-			image::resize_catrom( in->const_image_view(), in->defined(),
-									image_view(), defined(), in->format().min, scale_);
-		break;
+        case catrom_filter:
+            image::resize_catrom( in->const_image_view(), in->defined(),
+                                    image_view(), defined(), in->format().min, scale_);
+        break;
     }
 }
 

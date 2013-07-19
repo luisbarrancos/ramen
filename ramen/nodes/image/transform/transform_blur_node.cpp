@@ -31,7 +31,7 @@ enum
 
 } // unnamed
 
-transform_blur_node_t::transform_blur_node_t() : image_node_t()
+transform_blur_node_t::transform_blur_node_t() : node_t()
 {
     set_name("move2_blur");
     add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
@@ -48,7 +48,7 @@ void transform_blur_node_t::do_create_params()
 
     std::auto_ptr<float_param_t> p( new float_param_t( "Samples"));
     p->set_id( "samples");
-	p->set_static( true);
+    p->set_static( true);
     p->set_min( 1);
     p->set_default_value( 1);
     p->set_round_to_int( true);
@@ -72,8 +72,8 @@ void transform_blur_node_t::do_calc_bounds( const render::context_t& context)
     for( int i = 0; i < num_samples; ++i)
     {
         Imath::M33d m( p->xform_blur_matrix_at_frame( context.frame, (float) i / ( num_samples - 1) , aspect_ratio(), context.subsample));
-		Imath::Box2i bounds( ImathExt::transform( input_as<image_node_t>()->bounds(), m, false));
-		area.extendBy( bounds);
+        Imath::Box2i bounds( ImathExt::transform( input_as<node_t>()->bounds(), m, false));
+        area.extendBy( bounds);
     }
 
     set_bounds( area);
@@ -94,16 +94,16 @@ void transform_blur_node_t::do_calc_inputs_interest( const render::context_t& co
     for( int i = 0; i < num_samples; ++i)
     {
         Imath::M33d m( p->xform_blur_matrix_at_frame( context.frame, (float) i / ( num_samples - 1), aspect_ratio(), context.subsample));
-		
-		try
-		{
-			Imath::M33d inv_m( m.inverse( true));
-			Imath::Box2i box( ImathExt::transform( interest(), inv_m, false));
-			roi.extendBy( box);
-		}
-		catch( Iex::MathExc& e)
-		{
-		}       
+
+        try
+        {
+            Imath::M33d inv_m( m.inverse( true));
+            Imath::Box2i box( ImathExt::transform( interest(), inv_m, false));
+            roi.extendBy( box);
+        }
+        catch( Iex::MathExc& e)
+        {
+        }
     }
 
     if( !roi.isEmpty())
@@ -113,7 +113,7 @@ void transform_blur_node_t::do_calc_inputs_interest( const render::context_t& co
         roi.min.y -= 2 * context.subsample;
         roi.max.x += 2 * context.subsample;
         roi.max.y += 2 * context.subsample;
-        input_as<image_node_t>()->add_interest( roi);
+        input_as<node_t>()->add_interest( roi);
     }
 }
 
@@ -150,7 +150,7 @@ void transform_blur_node_t::do_process( const render::context_t& context)
 
 void transform_blur_node_t::do_process( const image::image_view_t& dst, const Imath::M33d& xf, int border_mode)
 {
-    if( input_as<image_node_t>()->defined().isEmpty())
+    if( input_as<node_t>()->defined().isEmpty())
         return;
 
     try
@@ -158,25 +158,25 @@ void transform_blur_node_t::do_process( const image::image_view_t& dst, const Im
         Imath::M33d inv_xf = xf.inverse( true);
 
         if( border_mode == border_black)
-		{
-            image::affine_warp_bilinear( input_as<image_node_t>()->defined(),
-										 input_as<image_node_t>()->const_image_view(),
-										 defined(), dst, xf, inv_xf);
-		}
+        {
+            image::affine_warp_bilinear( input_as<node_t>()->defined(),
+                                         input_as<node_t>()->const_image_view(),
+                                         defined(), dst, xf, inv_xf);
+        }
         else
         {
             if( border_mode == border_tile)
-			{
-                image::affine_warp_bilinear_tile( input_as<image_node_t>()->defined(),
-												  input_as<image_node_t>()->const_image_view(),
-												  defined(), dst, xf, inv_xf);
-			}
+            {
+                image::affine_warp_bilinear_tile( input_as<node_t>()->defined(),
+                                                  input_as<node_t>()->const_image_view(),
+                                                  defined(), dst, xf, inv_xf);
+            }
             else
-			{
-                image::affine_warp_bilinear_mirror( input_as<image_node_t>()->defined(),
-													input_as<image_node_t>()->const_image_view(),
-													defined(), dst, xf, inv_xf);
-			}
+            {
+                image::affine_warp_bilinear_mirror( input_as<node_t>()->defined(),
+                                                    input_as<node_t>()->const_image_view(),
+                                                    defined(), dst, xf, inv_xf);
+            }
         }
     }
     catch( Iex::MathExc)
@@ -200,7 +200,7 @@ const node_metaclass_t& transform_blur_node_t::transform_blur_node_metaclass()
         info.id = "image.builtin.transform_blur";
         info.major_version = 1;
         info.minor_version = 0;
-		info.menu = "Image";
+        info.menu = "Image";
         info.submenu = "Transform";
         info.menu_item = "Transform Blur";
         info.create = &create_transform_blur_node;

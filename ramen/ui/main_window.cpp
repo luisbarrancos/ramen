@@ -37,7 +37,7 @@
 #include<ramen/nodes/graph_algorithm.hpp>
 #include<ramen/nodes/node_factory.hpp>
 #include<ramen/nodes/node_output_interface.hpp>
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 #include<ramen/undo/stack.hpp>
 
@@ -851,7 +851,7 @@ void main_window_t::render_flipbook()
 
     if( result == QDialog::Accepted)
     {
-        if( image_node_t *n = dynamic_cast<image_node_t*>( app().document().composition().selected_node()))
+        if( node_t *n = dynamic_cast<node_t*>( app().document().composition().selected_node()))
         {
             int frame_rate = app().document().composition().frame_rate();
             std::string display_device = render_flipbook_dialog_t::instance().display_device();
@@ -1039,7 +1039,7 @@ void main_window_t::update_menus()
     group_->setEnabled( false);
     ungroup_->setEnabled( false);
 
-    if( n && dynamic_cast<image_node_t*>( n))
+    if( n)
         comp_flipbook_->setEnabled( true);
     else
         comp_flipbook_->setEnabled( false);

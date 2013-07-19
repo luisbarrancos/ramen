@@ -41,70 +41,70 @@ void gauss_blur_node_t::do_create_params()
 bool gauss_blur_node_t::do_is_identity() const
 {
     Imath::V2f stddev = get_value<Imath::V2f>( param( "stddev"));
-	return stddev == Imath::V2f( 0, 0);
+    return stddev == Imath::V2f( 0, 0);
 }
 
 void gauss_blur_node_t::get_expand_radius( int& hradius, int& vradius) const
 {
     Imath::V2f stddev = get_value<Imath::V2f>( param( "stddev"));
-	stddev = adjust_blur_size( stddev, 1);
+    stddev = adjust_blur_size( stddev, 1);
 
-	int sizex = (int)( stddev.x * 6 + 1) | 1;
+    int sizex = (int)( stddev.x * 6 + 1) | 1;
 
-	if( sizex == 1)
-		sizex = 3;
+    if( sizex == 1)
+        sizex = 3;
 
-	int sizey = (int)( stddev.y * 6 + 1) | 1;
+    int sizey = (int)( stddev.y * 6 + 1) | 1;
 
-	if( sizey == 1)
-		sizey = 3;
-	
+    if( sizey == 1)
+        sizey = 3;
+
     hradius = ( sizex - 1) / 2;
     vradius = ( sizey - 1) / 2;
 }
 
 void gauss_blur_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area( ImathExt::intersect( input_as<node_t>()->defined(), defined()));
 
     if( area.isEmpty())
         return;
 
-	copy_src_image( 0, area, ( blur_border_mode) get_value<int>( param( "border")));
-	
+    copy_src_image( 0, area, ( blur_border_mode) get_value<int>( param( "border")));
+
     Imath::V2f stddev = get_value<Imath::V2f>( param( "stddev"));
-	stddev = adjust_blur_size( stddev, context.subsample);
+    stddev = adjust_blur_size( stddev, context.subsample);
 
     blur_channels_mode channels = ( blur_channels_mode) get_value<int>( param( "channels"));
-	
+
     switch( channels)
     {
-		case channels_rgba:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
-			image::gaussian_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), stddev.x, stddev.y);
-		}
-		break;
-	
-		case channels_rgb:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
-			image::gaussian_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), stddev.x, stddev.y);
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( image_view(), 3), boost::gil::gray32f_pixel_t( 0));
-			boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<image_node_t>()->const_subimage_view( area), 3),
-										boost::gil::nth_channel_view( subimage_view( area), 3));
-		}
-		break;
-	
-		case channels_alpha:
-		{
-			image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 1);
-			image::gaussian_blur_channel( boost::gil::nth_channel_view( const_image_view(), 3),
-										  tmp.gray_view(), 
-										 boost::gil::nth_channel_view( image_view(), 3),
-										 stddev.x, stddev.y);
-		}
-		break;
+        case channels_rgba:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
+            image::gaussian_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), stddev.x, stddev.y);
+        }
+        break;
+
+        case channels_rgb:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 4);
+            image::gaussian_blur_rgba( const_image_view(), tmp.rgba_view(), image_view(), stddev.x, stddev.y);
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( image_view(), 3), boost::gil::gray32f_pixel_t( 0));
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( input_as<node_t>()->const_subimage_view( area), 3),
+                                        boost::gil::nth_channel_view( subimage_view( area), 3));
+        }
+        break;
+
+        case channels_alpha:
+        {
+            image::buffer_t tmp( const_image_view().height(), const_image_view().width(), 1);
+            image::gaussian_blur_channel( boost::gil::nth_channel_view( const_image_view(), 3),
+                                          tmp.gray_view(),
+                                         boost::gil::nth_channel_view( image_view(), 3),
+                                         stddev.x, stddev.y);
+        }
+        break;
     }
 }
 

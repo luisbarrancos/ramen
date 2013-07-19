@@ -3,14 +3,14 @@
 #ifndef RAMEN_SET_MATTE_NODE_HPP
 #define	RAMEN_SET_MATTE_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace image
 {
 
-class set_matte_node_t : public image_node_t
+class set_matte_node_t : public node_t
 {
 public:
 
@@ -23,7 +23,7 @@ public:
 
 protected:
 
-    set_matte_node_t( const set_matte_node_t& other) : image_node_t( other) {}
+    set_matte_node_t( const set_matte_node_t& other) : node_t( other) {}
     void operator=( const set_matte_node_t&);
 
 private:

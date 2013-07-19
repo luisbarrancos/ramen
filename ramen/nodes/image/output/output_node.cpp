@@ -63,15 +63,15 @@ void output_node_t::do_create_params()
     cs->set_id( "colorspace");
     add_param( cs);
 
-	std::auto_ptr<float_param_t> f( new float_param_t( "Priority"));
-	f->set_id( "priority");
-	f->set_static( true);
-	f->set_default_value( 100);
-	f->set_round_to_int( true);
-	f->set_include_in_hash( false);
-	f->set_secret( true);
-	add_param( f);
-	
+    std::auto_ptr<float_param_t> f( new float_param_t( "Priority"));
+    f->set_id( "priority");
+    f->set_static( true);
+    f->set_default_value( 100);
+    f->set_round_to_int( true);
+    f->set_include_in_hash( false);
+    f->set_secret( true);
+    add_param( f);
+
     std::auto_ptr<combo_group_param_t> top( new combo_group_param_t( "Format"));
     top->set_id( "format");
 
@@ -194,9 +194,9 @@ void output_node_t::do_create_params()
 
 void output_node_t::param_changed( param_t *p, param_t::change_reason reason)
 {
-	if( reason == param_t::time_changed)
-		return;
-	
+    if( reason == param_t::time_changed)
+        return;
+
     file_param_t *out = dynamic_cast<file_param_t*>( &param( "output"));
     combo_group_param_t *format = dynamic_cast<combo_group_param_t*>( &param( "format"));
     int selected_format = get_value<int>( *format);
@@ -231,7 +231,7 @@ void output_node_t::param_changed( param_t *p, param_t::change_reason reason)
 
 void output_node_t::do_calc_defined( const render::context_t& context)
 {
-    set_defined( input_as<image_node_t>()->format());
+    set_defined( input_as<node_t>()->format());
 }
 
 namespace
@@ -264,103 +264,103 @@ void output_node_t::write( const render::context_t& context)
     params[ core::name_t( "aspect")] = core::variant_t( aspect_ratio());
 
     switch( get_value<int>( param( "format")))
-	{
-		case exr_format:
-			tag = "exr";
+    {
+        case exr_format:
+            tag = "exr";
             params[ core::name_t( "channels")]	= core::variant_t( get_value<int>( param( "exr_channels")));
             params[ core::name_t( "type")]		= core::variant_t( get_value<int>( param( "exr_type")));
             params[ core::name_t( "compress")]	= core::variant_t( get_value<int>( param( "exr_compress")));
-		break;
-	
-		case jpg_format:
-			tag = "jpg";
+        break;
+
+        case jpg_format:
+            tag = "jpg";
             params[ core::name_t( "quality")]  = core::variant_t( get_value<float>( param( "jpg_quality")));
-		break;
-	
-		case cin_format:
-			tag = "cin";
-		break;
-	
-		case dpx_format:
-				tag = "dpx";
-		break;
-	
-		case hdr_format:
-			tag = "hdr";
-		break;
-	
-		case tiff_format:
-			tag = "tiff";
+        break;
+
+        case cin_format:
+            tag = "cin";
+        break;
+
+        case dpx_format:
+                tag = "dpx";
+        break;
+
+        case hdr_format:
+            tag = "hdr";
+        break;
+
+        case tiff_format:
+            tag = "tiff";
             params[ core::name_t( "channels")]  = core::variant_t( get_value<int>( param( "tiff_channels")));
-			
-			switch( get_value<int>( param( "tiff_type")))
-			{
-				case 0:
+
+            switch( get_value<int>( param( "tiff_type")))
+            {
+                case 0:
                     params[ core::name_t( "type")]	= core::variant_t( (int) imageio::ubyte_channel_type);
-				break;
-		
-				case 1:
+                break;
+
+                case 1:
                     params[ core::name_t( "type")]	= core::variant_t( (int) imageio::ushort_channel_type);
-				break;
-		
-				case 2:
+                break;
+
+                case 2:
                     params[ core::name_t( "type")] = core::variant_t( (int) imageio::float_channel_type);
-				break;
-				
-				default:
-					RAMEN_ASSERT( 0);
-			}
-			
-			switch( get_value<int>( param( "tiff_compress")))
-			{
-				case 0:
+                break;
+
+                default:
+                    RAMEN_ASSERT( 0);
+            }
+
+            switch( get_value<int>( param( "tiff_compress")))
+            {
+                case 0:
                     params[ core::name_t( "compress")]  = core::variant_t( (int) imageio::none_compression);
-				break;
-	
-				case 1:
+                break;
+
+                case 1:
                     params[ core::name_t( "compress")]  = core::variant_t( (int) imageio::lzw_compression);
-				break;
-		
-				case 2:
+                break;
+
+                case 2:
                     params[ core::name_t( "compress")]  = core::variant_t( (int) imageio::zip_compression);
-				break;
-		
-				default:
-					RAMEN_ASSERT( 0);
-			}
-			
-		break;
-	
-		case tga_format:
-			tag = "tga";
+                break;
+
+                default:
+                    RAMEN_ASSERT( 0);
+            }
+
+        break;
+
+        case tga_format:
+            tag = "tga";
             params[ core::name_t( "channels")]  = core::variant_t( get_value<int>( param( "tga_channels")));
-			
-			switch( get_value<int>( param( "tga_compress")))
-			{
-				case 0:
+
+            switch( get_value<int>( param( "tga_compress")))
+            {
+                case 0:
                     params[ core::name_t( "compress")]  = core::variant_t( (int) imageio::none_compression);
-				break;
-				
-				case 1:
+                break;
+
+                case 1:
                     params[ core::name_t( "compress")]  = core::variant_t( (int) imageio::rle_compression);
-				break;
-	
-				default:
-					RAMEN_ASSERT( 0);
-			}
-			
-		break;
-	
-		case png_format:
-			tag = "png";
+                break;
+
+                default:
+                    RAMEN_ASSERT( 0);
+            }
+
+        break;
+
+        case png_format:
+            tag = "png";
             params[ core::name_t( "channels")]  = core::variant_t( get_value<int>( param( "png_channels")));
-		break;
-		
-		default:
-			RAMEN_ASSERT( 0);
+        break;
+
+        default:
+            RAMEN_ASSERT( 0);
     }
 
-	// TODO: catch exceptions here.
+    // TODO: catch exceptions here.
 
     core::auto_ptr_t<imageio::writer_t> writer( imageio::factory_t::instance().writer_for_tag( tag));
 
