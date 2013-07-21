@@ -259,7 +259,8 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
                         nodes/node_graph.cpp
-                        nodes/node_metaclass.cpp
+                        nodes/node_info.hpp
+                        nodes/node_info.cpp
                         nodes/node_plug.cpp
                         nodes/node_output_interface.cpp
                         nodes/node_visitor.cpp

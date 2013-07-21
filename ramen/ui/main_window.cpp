@@ -399,15 +399,15 @@ void main_window_t::create_node_actions()
     node_factory_t::instance().sort_by_menu_item();
 
     // add our builtin nodes first
-    BOOST_FOREACH( const node_metaclass_t& mclass, node_factory_t::instance().registered_nodes())
+    BOOST_FOREACH( const node_info_t& minfo, node_factory_t::instance().registered_nodes())
     {
-        if( mclass.ui_visible && node_factory_t::instance().is_latest_version( mclass.id))
+        if( minfo.ui_visible && node_factory_t::instance().is_latest_version( minfo.id))
         {
-            node_menu_t *menu = find_node_menu( mclass.menu);
-            QAction *act = new QAction( QString( mclass.menu_item.c_str()), this);
+            node_menu_t *menu = find_node_menu( minfo.menu);
+            QAction *act = new QAction( QString( minfo.menu_item.c_str()), this);
             connect( act, SIGNAL( triggered()), this, SLOT( create_node()));
-            create_node_actions_[act] = mclass.id;
-            menu->add_action( mclass.submenu, act);
+            create_node_actions_[act] = minfo.id;
+            menu->add_action( minfo.submenu, act);
         }
     }
 }

@@ -12,7 +12,7 @@
 
 #include<boost/noncopyable.hpp>
 
-#include<ramen/nodes/node_metaclass.hpp>
+#include<ramen/nodes/node_info.hpp>
 
 namespace ramen
 {
@@ -27,17 +27,17 @@ public:
 
     static node_factory_t& instance();
 
-    bool register_node( const node_metaclass_t& m);
+    bool register_node( const node_info_t& m);
 
     void sort_by_menu_item();
 
-    // all metaclasses
-    const std::vector<node_metaclass_t>& registered_nodes() const   { return metaclasses_;}
-    std::vector<node_metaclass_t>& registered_nodes()               { return metaclasses_;}
+    // all node infos
+    const std::vector<node_info_t>& registered_nodes() const   { return node_infos_;}
+    std::vector<node_info_t>& registered_nodes()               { return node_infos_;}
 
     // latest versions
-    typedef std::map<std::string, node_metaclass_t>::const_iterator const_iterator;
-    typedef std::map<std::string, node_metaclass_t>::iterator       iterator;
+    typedef std::map<std::string, node_info_t>::const_iterator const_iterator;
+    typedef std::map<std::string, node_info_t>::iterator       iterator;
 
     const_iterator latest_versions_begin() const    { return newest_node_infos_.begin();}
     const_iterator latest_versions_end() const	    { return newest_node_infos_.end();}
@@ -49,15 +49,16 @@ public:
 
     // creation
     std::auto_ptr<node_t> create_by_id( const std::string& id, bool ui = false);
-    std::auto_ptr<node_t> create_by_id_with_version( const std::string& id, const std::pair<int, int>& version);
+    std::auto_ptr<node_t> create_by_id_with_version( const std::string& id,
+                                                     const std::pair<int, int>& version);
 
 private:
 
     node_factory_t();
     ~node_factory_t();
 
-    std::vector<node_metaclass_t> metaclasses_;
-    std::map<std::string, node_metaclass_t> newest_node_infos_;
+    std::vector<node_info_t> node_infos_;
+    std::map<std::string, node_info_t> newest_node_infos_;
 };
 
 } // ramen

@@ -67,7 +67,7 @@ public:
         interacting_bit			= 1 << 9
     };
 
-    virtual const node_metaclass_t *metaclass() const { return 0;}
+    virtual const node_info_t *node_info() const { return 0;}
 
     node_t();
     virtual ~node_t();

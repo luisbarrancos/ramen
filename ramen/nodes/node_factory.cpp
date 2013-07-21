@@ -20,7 +20,7 @@ namespace
 
 struct compare_menu_items
 {
-    bool operator()( const node_metaclass_t& a, const node_metaclass_t& b) const
+    bool operator()( const node_info_t& a, const node_info_t& b) const
     {
         return a.menu_item < b.menu_item;
     }
@@ -46,14 +46,14 @@ node_factory_t::node_factory_t() {}
 
 node_factory_t::~node_factory_t()
 {
-    for( int i = 0; i < metaclasses_.size(); ++i)
+    for( int i = 0; i < node_infos_.size(); ++i)
     {
-        if( !metaclasses_[i].first_time_ && metaclasses_[i].cleanup)
-            metaclasses_[i].cleanup();
+        if( !node_infos_[i].first_time_ && node_infos_[i].cleanup)
+            node_infos_[i].cleanup();
     }
 }
 
-bool node_factory_t::register_node( const node_metaclass_t& m)
+bool node_factory_t::register_node( const node_info_t& m)
 {
     #ifndef NDEBUG
         if( !check_node_class( m.id))
@@ -70,19 +70,19 @@ bool node_factory_t::register_node( const node_metaclass_t& m)
     RAMEN_ASSERT( !m.submenu.empty());
     RAMEN_ASSERT( !m.menu_item.empty());
 
-    BOOST_FOREACH( const node_metaclass_t& metaclass, metaclasses_)
+    BOOST_FOREACH( const node_info_t& node_info, node_infos_)
     {
-        if( metaclass.id == m.id && metaclass.major_version == m.major_version && metaclass.minor_version == m.minor_version)
+        if( node_info.id == m.id && node_info.major_version == m.major_version && node_info.minor_version == m.minor_version)
         {
-            std::cout << "Duplicated metaclass in node factory: " << m.id << "\n";
+            std::cout << "Duplicated node_info in node factory: " << m.id << "\n";
             RAMEN_ASSERT( 0);
         }
     }
 
-    metaclasses_.push_back( m);
+    node_infos_.push_back( m);
 
     // if this version of the node is newer that the one we have...
-    std::map<std::string, node_metaclass_t>::iterator it( newest_node_infos_.find( m.id));
+    std::map<std::string, node_info_t>::iterator it( newest_node_infos_.find( m.id));
 
     if( it != latest_versions_end())
     {
@@ -105,12 +105,12 @@ bool node_factory_t::register_node( const node_metaclass_t& m)
 
 void node_factory_t::sort_by_menu_item()
 {
-    std::sort( metaclasses_.begin(), metaclasses_.end(), compare_menu_items());
+    std::sort( node_infos_.begin(), node_infos_.end(), compare_menu_items());
 }
 
 std::auto_ptr<node_t> node_factory_t::create_by_id( const std::string& id, bool ui)
 {
-    std::map<std::string, node_metaclass_t>::iterator it( newest_node_infos_.find( id));
+    std::map<std::string, node_info_t>::iterator it( newest_node_infos_.find( id));
     std::auto_ptr<node_t> n;
 
     if( it != newest_node_infos_.end())
@@ -140,11 +140,11 @@ std::auto_ptr<node_t> node_factory_t::create_by_id( const std::string& id, bool 
 
 std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const std::string& id, const std::pair<int, int>& version)
 {
-    std::vector<node_metaclass_t>::iterator best( metaclasses_.end());
-    std::vector<node_metaclass_t>::iterator it( metaclasses_.begin());
+    std::vector<node_info_t>::iterator best( node_infos_.end());
+    std::vector<node_info_t>::iterator it( node_infos_.begin());
     int best_minor = -1;
 
-    for( ; it != metaclasses_.end(); ++it)
+    for( ; it != node_infos_.end(); ++it)
     {
         if( it->id == id)
         {
@@ -164,7 +164,7 @@ std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const std::stri
     if( best_minor < version.second)
         return n;
 
-    if( best != metaclasses_.end())
+    if( best != node_infos_.end())
     {
         try
         {

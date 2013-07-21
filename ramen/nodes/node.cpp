@@ -607,9 +607,9 @@ void node_t::evaluate_params( float frame)
 // ui
 const char *node_t::help_string() const
 {
-    RAMEN_ASSERT( metaclass());
+    RAMEN_ASSERT( node_info());
 
-    return metaclass()->help;
+    return node_info()->help;
 }
 
 void node_t::update_widgets()
@@ -681,7 +681,7 @@ void node_t::do_read( const serialization::yaml_node_t& in,
 
 void node_t::write( serialization::yaml_oarchive_t& out) const
 {
-    RAMEN_ASSERT( metaclass() && "Trying to serialize an abstract node");
+    RAMEN_ASSERT( node_info() && "Trying to serialize an abstract node");
     out.begin_map();
     write_node_info( out);
     param_set().write( out);
@@ -696,8 +696,8 @@ void node_t::write_node_info( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "class" << YAML::Value;
     out.flow();
     out.begin_seq();
-    out << metaclass()->id
-        << metaclass()->major_version << metaclass()->minor_version;
+    out << node_info()->id
+        << node_info()->major_version << node_info()->minor_version;
     out.end_seq();
 
     out << YAML::Key << "name"  << YAML::DoubleQuoted << YAML::Value << name();

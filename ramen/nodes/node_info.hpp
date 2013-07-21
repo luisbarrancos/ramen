@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODE_METACLASS_HPP
-#define RAMEN_NODE_METACLASS_HPP
+#ifndef RAMEN_NODE_INFO_HPP
+#define RAMEN_NODE_INFO_HPP
 
 #include<ramen/config.hpp>
 
@@ -20,11 +20,11 @@ namespace ramen
 \ingroup nodes
 \brief This class contains information about a node class like ids, menus, etc.
 */
-class RAMEN_API node_metaclass_t
+class RAMEN_API node_info_t
 {
 public:
 
-    node_metaclass_t();
+    node_info_t();
 
     /// Unique id for this node
     std::string id;
