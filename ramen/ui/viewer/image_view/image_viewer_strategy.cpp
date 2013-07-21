@@ -372,11 +372,30 @@ void image_viewer_strategy_t::set_aspect_ratio( float asp)
 
 float image_viewer_strategy_t::pixel_scale() const { return viewport_.zoom_x();}
 
-Imath::V2f image_viewer_strategy_t::screen_to_world( const Imath::V2i& p) const		{ return viewport_.screen_to_world( p);}
-Imath::V2i image_viewer_strategy_t::world_to_screen( const Imath::V2f& p) const		{ return viewport_.world_to_screen( p);}
-Imath::Box2f image_viewer_strategy_t::screen_to_world( const Imath::Box2i& b) const { return viewport_.screen_to_world( b);}
-Imath::Box2i image_viewer_strategy_t::world_to_screen( const Imath::Box2f& b) const { return viewport_.world_to_screen( b);}
-Imath::V2f image_viewer_strategy_t::screen_to_world_dir( const Imath::V2f& v) const { return viewport_.screen_to_world_dir( v);}
+Imath::V2f image_viewer_strategy_t::screen_to_world( const Imath::V2i& p) const
+{
+    return viewport_.screen_to_world( p);
+}
+
+Imath::V2i image_viewer_strategy_t::world_to_screen( const Imath::V2f& p) const
+{
+    return viewport_.world_to_screen( p);
+}
+
+Imath::Box2f image_viewer_strategy_t::screen_to_world( const Imath::Box2i& b) const
+{
+    return viewport_.screen_to_world( b);
+}
+
+Imath::Box2i image_viewer_strategy_t::world_to_screen( const Imath::Box2f& b) const
+{
+    return viewport_.world_to_screen( b);
+}
+
+Imath::V2f image_viewer_strategy_t::screen_to_world_dir( const Imath::V2f& v) const
+{
+    return viewport_.screen_to_world_dir( v);
+}
 
 void image_viewer_strategy_t::save_projection()			{ parent()->save_projection();}
 void image_viewer_strategy_t::restore_projection()		{ parent()->restore_projection();}
@@ -427,21 +446,21 @@ void image_viewer_strategy_t::paint()
 
         switch( display_->view_channels())
         {
-        case ocio::gl_display_manager_t::view_red_channel:
-            c.y = c.z = 0;
-        break;
+            case ocio::gl_display_manager_t::view_red_channel:
+                c.y = c.z = 0;
+            break;
 
-        case ocio::gl_display_manager_t::view_green_channel:
-            c.x = c.z = 0;
-        break;
+            case ocio::gl_display_manager_t::view_green_channel:
+                c.x = c.z = 0;
+            break;
 
-        case ocio::gl_display_manager_t::view_blue_channel:
-            c.x = c.y = 0;
-        break;
+            case ocio::gl_display_manager_t::view_blue_channel:
+                c.x = c.y = 0;
+            break;
 
-        case ocio::gl_display_manager_t::view_alpha_channel:
-            c = Imath::Color3f( 0, 0, 0);
-        break;
+            case ocio::gl_display_manager_t::view_alpha_channel:
+                c = Imath::Color3f( 0, 0, 0);
+            break;
         }
 
         gl_color4f( c.x, c.y, c.z, 1);
@@ -646,24 +665,24 @@ void image_viewer_strategy_t::mouse_press_event( QMouseEvent *event)
         press_event_.aspect_ratio = aspect_ratio();
         press_event_.pixel_scale = pixel_scale();
         press_event_.subsample = subsample();
-        press_event_.pos = p;
-        press_event_.wpos = q;
+        press_event_.pos = math::point2i_t( p.x, p.y);
+        press_event_.wpos = math::point2f_t( q.x, q.y);
         press_event_.modifiers = translate_modifiers( event);
         press_event_.button = translate_mouse_buttons( event);
 
         drag_event_.first_drag = true;
-        drag_event_.click_pos  = p;
-        drag_event_.last_pos = p;
-        drag_event_.click_wpos = q;
-        drag_event_.last_wpos = q;
+        drag_event_.click_pos  = press_event_.pos;
+        drag_event_.last_pos = press_event_.pos;
+        drag_event_.click_wpos = press_event_.wpos;
+        drag_event_.last_wpos = press_event_.wpos;
         drag_event_.modifiers = press_event_.modifiers;
         drag_event_.button = press_event_.button;
 
         release_event_.dragged = false;
-        release_event_.click_pos = p;
-        release_event_.pos = p;
-        release_event_.click_wpos = q;
-        release_event_.wpos = q;
+        release_event_.click_pos = press_event_.pos;
+        release_event_.pos = press_event_.pos;
+        release_event_.click_wpos = press_event_.wpos;
+        release_event_.wpos = press_event_.wpos;
         release_event_.modifiers = press_event_.modifiers;
         release_event_.button = press_event_.button;
 
@@ -675,7 +694,7 @@ void image_viewer_strategy_t::mouse_press_event( QMouseEvent *event)
             if( event->modifiers() & Qt::ShiftModifier)
             {
                 zoom_mode_ = true;
-                zoom_center_ = press_event_.wpos;
+                zoom_center_ = Imath::V2f( press_event_.wpos.x, press_event_.wpos.y);
             }
             else
                 scroll_mode_ = true;
@@ -732,8 +751,8 @@ void image_viewer_strategy_t::mouse_move_event( QMouseEvent *event)
             move_event_.aspect_ratio = aspect_ratio();
             move_event_.pixel_scale = pixel_scale();
             move_event_.subsample = subsample();
-            move_event_.pos = Imath::V2i( event->x(), event->y());
-            move_event_.wpos = pw;
+            move_event_.pos = math::point2i_t( event->x(), event->y());
+            move_event_.wpos = math::point2f_t( pw.x, pw.y);
             move_event_.modifiers = translate_modifiers( event);
 
             node_t *active_node  = app().ui()->active_node();
@@ -752,14 +771,18 @@ void image_viewer_strategy_t::mouse_move_event( QMouseEvent *event)
             drag_event_.aspect_ratio = aspect_ratio();
             drag_event_.pixel_scale = pixel_scale();
             drag_event_.subsample = subsample();
-            drag_event_.pos = Imath::V2i( event->x(), event->y());
-            drag_event_.wpos = screen_to_world( drag_event_.pos);
+            drag_event_.pos = math::point2i_t( event->x(), event->y());
+
+            Imath::V2f pw( screen_to_world( Imath::V2i( event->x(), event->y())));
+            drag_event_.wpos = math::point2f_t( pw.x, pw.y);
+
             drag_event_.modifiers = translate_modifiers( event);
             drag_event_.button = translate_mouse_buttons( event);
 
             if( scroll_mode_)
             {
-                viewport_.scroll( -( drag_event_.pos - drag_event_.last_pos));
+                viewport_.scroll( Imath::V2i( -( drag_event_.pos.x - drag_event_.last_pos.x),
+                                              -( drag_event_.pos.y - drag_event_.last_pos.y)));
                 event->accept();
                 update();
             }
@@ -808,8 +831,10 @@ void image_viewer_strategy_t::mouse_release_event( QMouseEvent *event)
     release_event_.aspect_ratio = aspect_ratio();
     release_event_.pixel_scale = pixel_scale();
     release_event_.subsample = subsample();
-    release_event_.pos = Imath::V2i( event->x(), event->y());
-    release_event_.wpos = screen_to_world( release_event_.pos);
+    release_event_.pos = math::point2i_t( event->x(), event->y());
+
+    Imath::V2f pw( screen_to_world( Imath::V2i( event->x(), event->y())));
+    release_event_.wpos = math::point2f_t( pw.x, pw.y);
     release_event_.modifiers = translate_modifiers( event);
     release_event_.button = translate_mouse_buttons( event);
 
@@ -851,7 +876,8 @@ Imath::Color4f image_viewer_strategy_t::color_at( int x, int y) const
     return Imath::Color4f( 0, 0, 0, 0);
 }
 
-void image_viewer_strategy_t::pick_colors_in_box( const Imath::Box2i& b, boost::function<void ( const Imath::Color4f&)> f) const
+void image_viewer_strategy_t::pick_colors_in_box( const Imath::Box2i& b,
+                                                  boost::function<void ( const Imath::Color4f&)> f) const
 {
     Imath::Box2i xbox;
     Imath::V2f wpos = screen_to_world( b.min);

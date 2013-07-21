@@ -716,7 +716,7 @@ void main_window_t::duplicate_nodes()
         if( n.selected())
         {
             std::auto_ptr<node_t> nclone( new_clone( n));
-            nclone->offset_location( Imath::V2f( 20, 20));
+            nclone->offset_location( math::vector2f_t( 20, 20));
             relation[ &n] = nclone.get();
             c->add_node( nclone);
         }

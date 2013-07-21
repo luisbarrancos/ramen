@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_EVENTS_UTIL_HPP
 #define RAMEN_UI_EVENTS_UTIL_HPP
@@ -19,7 +21,7 @@ int translate_mouse_buttons( QMouseEvent *event);
 
 key_event_t::key_t translate_keys( QKeyEvent *event);
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

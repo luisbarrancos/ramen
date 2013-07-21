@@ -2,8 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
-
 #include<ramen/ui/compview/draw_pick_generic_node.hpp>
 
 #include<QPainter>
@@ -38,7 +36,8 @@ Imath::V2f generic_input_location( const node_t *n, std::size_t i)
 
 Imath::V2f generic_output_location( const node_t *n)
 {
-    return Imath::V2f( n->location().x + generic_node_width( n) / 2, n->location().y + generic_node_height() + 2);
+    return Imath::V2f( n->location().x + generic_node_width( n) / 2,
+                       n->location().y + generic_node_height() + 2);
 }
 
 int generic_node_width( const node_t *n)
@@ -50,7 +49,7 @@ int generic_node_height() { return 20;}
 
 void draw_generic_node( QPainter& painter, const node_t *n)
 {
-    Imath::V2f p = n->location();
+    Imath::V2f p( n->location().x, n->location().y);
 
     QPen pen;
     QBrush brush;
@@ -80,13 +79,13 @@ void draw_generic_node( QPainter& painter, const node_t *n)
     }
 
     if( n->selected())
-		brush.setColor( palette_t::instance().qcolor( "node_picked_bg"));
+        brush.setColor( palette_t::instance().qcolor( "node_picked_bg"));
     else
     {
         if( n->plugin_error())
-			brush.setColor( palette_t::instance().qcolor( "node_error_bg"));
+            brush.setColor( palette_t::instance().qcolor( "node_error_bg"));
         else
-			brush.setColor( palette_t::instance().qcolor( "node_bg"));
+            brush.setColor( palette_t::instance().qcolor( "node_bg"));
     }
 
     painter.setBrush( brush);
@@ -95,13 +94,13 @@ void draw_generic_node( QPainter& painter, const node_t *n)
     painter.setBrush( Qt::NoBrush);
 
     if( app().ui()->active_node() == n)
-		pen.setColor( palette_t::instance().qcolor( "node_active_out"));
+        pen.setColor( palette_t::instance().qcolor( "node_active_out"));
     else
     {
         if( app().ui()->context_node() == n)
-			pen.setColor( palette_t::instance().qcolor( "node_context_out"));
+            pen.setColor( palette_t::instance().qcolor( "node_context_out"));
         else
-			pen.setColor( palette_t::instance().qcolor( "text"));
+            pen.setColor( palette_t::instance().qcolor( "text"));
     }
 
     painter.setPen( pen);
@@ -113,7 +112,7 @@ void draw_generic_node( QPainter& painter, const node_t *n)
 
     if( n->ignored())
     {
-		pen.setColor( palette_t::instance().qcolor( "box_pick"));
+        pen.setColor( palette_t::instance().qcolor( "box_pick"));
         pen.setWidth(2);
         painter.setPen( pen);
         painter.drawLine( QPointF( p.x - 3, p.y - 2), QPointF( p.x + generic_node_width( n) + 3, p.y + generic_node_height() + 2));
@@ -178,5 +177,5 @@ void pick_generic_node( node_t *n, const Imath::V2f& p, const composition_view_t
     }
 }
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

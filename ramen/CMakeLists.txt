@@ -310,7 +310,10 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
 
                         ui/add_node_command.cpp
                         ui/edit_commands.cpp
+                        ui/events_fwd.hpp
+                        ui/events.hpp
                         ui/events.cpp
+                        ui/events_util.hpp
                         ui/events_util.cpp
                         ui/main_window.cpp
                         ui/nice_numbers.cpp
@@ -318,7 +321,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         ui/palette.cpp
                         ui/render_composition.cpp
                         ui/time_controls.cpp
-                        ui/tool.cpp
                         ui/user_interface_fwd.hpp
                         ui/user_interface.hpp
                         ui/user_interface.cpp

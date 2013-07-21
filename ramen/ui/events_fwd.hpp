@@ -1,7 +1,11 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_EVENTS_FWD_HPP
 #define RAMEN_UI_EVENTS_FWD_HPP
+
+#include<ramen/config.hpp>
 
 namespace ramen
 {
@@ -21,7 +25,7 @@ struct key_release_event_t;
 
 struct paint_event_t;
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

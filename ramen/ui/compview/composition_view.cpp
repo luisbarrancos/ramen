@@ -351,7 +351,7 @@ void composition_view_t::move_nodes_drag_handler( QMouseEvent *event)
 {
     float xoffset = ( event->x() - last_x_) / ( width()  / viewport().world().size().x);
     float yoffset = ( event->y() - last_y_) / ( height() / viewport().world().size().y);
-    Imath::V2f offset( xoffset, yoffset);
+    math::vector2f_t offset( xoffset, yoffset);
 
     for( composition_t::node_iterator it( app().document().composition().nodes().begin());
             it != app().document().composition().nodes().end(); ++it)

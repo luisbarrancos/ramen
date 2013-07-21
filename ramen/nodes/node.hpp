@@ -23,6 +23,8 @@
 
 #include<ramen/ImathExt/ImathBoxAlgo.h>
 
+#include<ramen/math/point2.hpp>
+
 #include<ramen/image/buffer.hpp>
 
 #include<ramen/app/composition_fwd.hpp>
@@ -149,9 +151,9 @@ public:
     virtual void accept( node_visitor& v);
 
     // ui
-    const Imath::V2f& location() const          { return loc_;}
-    void set_location( const Imath::V2f& p)     { loc_ = p;}
-    void offset_location( const Imath::V2f& v)	{ loc_ += v;}
+    const math::point2f_t& location() const          { return loc_;}
+    void set_location( const math::point2f_t& p)     { loc_ = p;}
+    void offset_location( const math::vector2f_t& v) { loc_ += v;}
 
     // selection & flags
     bool selected() const;
@@ -469,7 +471,7 @@ private:
 
     boost::uint32_t flags_;
     bool dont_persist_params_;
-    Imath::V2f loc_;
+    math::point2f_t loc_;
     std::vector<std::pair<int, float> > frames_needed_;
 
     // composition this node belongs to.
