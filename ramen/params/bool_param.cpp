@@ -39,6 +39,7 @@ param_t *bool_param_t::do_clone() const { return new bool_param_t( *this);}
 
 void bool_param_t::do_add_to_hash( hash::generator_t& hash_gen) const { hash_gen << get_value<bool>( *this);}
 
+/*
 void bool_param_t::do_read( const serialization::yaml_node_t& node)
 {
     bool val;
@@ -51,6 +52,7 @@ void bool_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "value"
         << YAML::Value << get_value<bool>( *this);
 }
+*/
 
 void bool_param_t::do_update_widgets()
 {

@@ -18,7 +18,7 @@ SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/Modules)
 
 #disable in source builds
 IF( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-	MESSAGE(FATAL_ERROR "CMake generation for Ramen is not allowed within the source directory!")
+        MESSAGE(FATAL_ERROR "CMake generation for Ramen is not allowed within the source directory!")
 ENDIF()
 
 # Set the default built type
@@ -85,7 +85,6 @@ SET( BOOST_NEEDED_LIBS  filesystem
 FIND_PACKAGE( Boost COMPONENTS ${BOOST_NEEDED_LIBS} REQUIRED)
 
 FIND_PACKAGE( TBB REQUIRED)
-FIND_PACKAGE( YamlCpp REQUIRED)
 
 # Qt
 SET( QT_MT_REQUIRED false)
@@ -105,7 +104,6 @@ FIND_PACKAGE( OpenImageIO REQUIRED)
 
 FIND_PACKAGE( OpenColorIO REQUIRED)
 
-FIND_PACKAGE( Agg REQUIRED)
 FIND_PACKAGE( ZLIB REQUIRED)
 
 ######################################################
@@ -132,7 +130,6 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
 
                         ${Boost_INCLUDE_DIR}
                         ${TBB_INCLUDE_DIRS}
-                        ${YAMLCPP_INCLUDE_DIRS}
 
                         ${OPENGL_INCLUDE_DIR}
                         ${GLEW_INCLUDE_DIRS}
@@ -148,7 +145,6 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
                         ${OPENIMAGEIO_INCLUDE_DIRS}
 
                         ${OPENCOLORIO_INCLUDE_DIRS}
-                        ${AGG_INCLUDE_DIRS}
 
                         ${ZLIB_INCLUDE_DIRS}
                         )
@@ -174,8 +170,6 @@ SET( RAMEN_ALL_LIBS	${NEEDED_QT_LIBS}
 
                         ${Boost_LIBRARIES}
                         ${TBB_LIBRARIES}
-                        ${YAMLCPP_LIBRARIES}
-                        ${AGG_LIBRARIES}
                         ${ZLIB_LIBRARIES}
 
                         ${RAMEN_ALL_LIBS}
@@ -210,7 +204,7 @@ ENDIF()
 FIND_PACKAGE( Doxygen)
 
 IF( DOXYGEN_FOUND)
-	CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile @ONLY)
+        CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/docs/Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile @ONLY)
         ADD_CUSTOM_TARGET( doc ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
                             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
                             COMMENT "Generating API documentation with Doxygen" VERBATIM)

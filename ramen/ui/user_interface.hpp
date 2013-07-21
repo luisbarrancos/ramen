@@ -30,8 +30,6 @@
     #include<ramen/ui/viewer/viewer_fwd.hpp>
     #include<ramen/ui/inspector/inspector_fwd.hpp>
     #include<ramen/ui/anim/anim_editor_fwd.hpp>
-
-    #include<ramen/serialization/archive_fwd.hpp>
 #endif
 
 namespace ramen
@@ -111,10 +109,6 @@ public:
     bool image_sequence_file_selector( const std::string& title, const std::string& types, boost::filesystem::path& p,
                                         bool& sequence, bool& relative) const;
 
-    // serialization
-    void read_ui_state( const serialization::yaml_iarchive_t& in);
-    void write_ui_state( serialization::yaml_oarchive_t& out) const;
-
     // event filtering
     void start_long_process();
     void process_events();
@@ -164,7 +158,7 @@ private:
     bool cancelled_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

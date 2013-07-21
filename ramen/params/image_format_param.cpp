@@ -53,6 +53,7 @@ void image_format_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << format.width << "," << format.height << "," << format.aspect;
 }
 
+/*
 void image_format_param_t::do_read( const serialization::yaml_node_t& node)
 {
     image::format_t format;
@@ -65,6 +66,7 @@ void image_format_param_t::do_write( serialization::yaml_oarchive_t& out) const
     image::format_t format( get_value<image::format_t>( *this));
     out << YAML::Key << "value" << YAML::Value << format;
 }
+*/
 
 QWidget *image_format_param_t::do_create_widgets()
 {

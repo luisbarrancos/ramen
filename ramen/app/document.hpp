@@ -17,8 +17,6 @@
 
 #include<ramen/undo/stack_fwd.hpp>
 
-#include<ramen/serialization/archive_fwd.hpp>
-
 namespace ramen
 {
 
@@ -44,8 +42,8 @@ public:
     boost::filesystem::path file() const { return file_;}
     void set_file( const boost::filesystem::path& p);
 
-	void load( serialization::yaml_iarchive_t& in);
-	void save( serialization::yaml_oarchive_t& out) const;
+    //void load( serialization::yaml_iarchive_t& in);
+    //void save( serialization::yaml_oarchive_t& out) const;
 
     // composition
     composition_t& composition()                { return comp_;}

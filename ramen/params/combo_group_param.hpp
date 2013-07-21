@@ -43,8 +43,8 @@ private:
 
     virtual std::auto_ptr<undo::command_t> do_create_command();
 
-    virtual void do_read( const serialization::yaml_node_t& node);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    //virtual void do_read( const serialization::yaml_node_t& node);
+    //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
     virtual QWidget *do_create_widgets();
 

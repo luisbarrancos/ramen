@@ -20,9 +20,6 @@
 
 #include<ramen/image/format.hpp>
 
-#include<ramen/serialization/archive_fwd.hpp>
-#include<ramen/serialization/yaml.hpp>
-
 namespace ramen
 {
 
@@ -30,7 +27,7 @@ namespace ramen
 \ingroup app
 \brief Composition class.
 */
-class composition_t : boost::noncopyable
+class composition_t
 {
 public:
 
@@ -64,7 +61,7 @@ public:
     void add_edge( const edge_t& e, bool notify = false);
     void remove_edge( const edge_t& e, bool notify = false);
 
-	void merge_composition( composition_t& other);
+    void merge_composition( composition_t& other);
 
     node_range_type& nodes()                { return g_.nodes();}
     const_node_range_type& nodes() const	{ return g_.nodes();}
@@ -72,10 +69,10 @@ public:
     const_edge_range_type& edges() const	{ return g_.edges();}
     edge_range_type& edges()                { return g_.edges();}
 
-	// import composition needs access to this...
+    // import composition needs access to this...
     const unique_name_map_t<node_t*>& node_map() const;
-	std::string make_name_unique( const std::string& s) const;
-	
+    std::string make_name_unique( const std::string& s) const;
+
     // observer
     typedef boost::signals2::connection connection_type;
     typedef boost::signals2::signal<void ( node_t*)> signal_type;
@@ -97,21 +94,21 @@ public:
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
 
-	// misc
+    // misc
     void rename_node( node_t *n, const std::string& new_name);
 
-	// notifications
-	void notify_all_dirty();
-	void clear_all_notify_dirty_flags();
-	
-	// interacting
-	void begin_interaction();
-	void end_interaction();
+    // notifications
+    void notify_all_dirty();
+    void clear_all_notify_dirty_flags();
 
-	// settings
+    // interacting
+    void begin_interaction();
+    void end_interaction();
+
+    // settings
     int start_frame() const	{ return start_frame_;}
     int end_frame() const	{ return end_frame_;}
-    
+
     void set_start_frame( int f)    { start_frame_ = f;}
     void set_end_frame( int f)      { end_frame_ = f;}
 
@@ -128,7 +125,7 @@ public:
 
     int frame_rate() const        { return frame_rate_;}
     void set_frame_rate( int f)   { frame_rate_ = f;}
-	
+
     // selections
     typedef boost::signals2::signal<void ()> selection_signal_type;
     selection_signal_type selection_changed;
@@ -138,45 +135,48 @@ public:
         return selection_changed.connect( subscriber);
     }
 
-	void select_all();
+    void select_all();
     void deselect_all();
 
     bool any_selected() const;
     node_t *selected_node();
 
-	// composition settings
-	boost::signals2::signal<void ( composition_t *)> settings_changed;
-	
+    // composition settings
+    boost::signals2::signal<void ( composition_t *)> settings_changed;
+
     // home directory, for relative paths
     const boost::filesystem::path& composition_dir() const;
     void set_composition_dir( const boost::filesystem::path& dir);
-	
-	// convert
-	void convert_all_relative_paths( const boost::filesystem::path& new_base);
-	void make_all_paths_absolute();	
-	void make_all_paths_relative();
-	
+
+    // convert
+    void convert_all_relative_paths( const boost::filesystem::path& new_base);
+    void make_all_paths_absolute();
+    void make_all_paths_relative();
+
     boost::filesystem::path relative_to_absolute( const boost::filesystem::path& p) const;
     boost::filesystem::path absolute_to_relative( const boost::filesystem::path& p) const;
 
     // serialization
-	void load_from_file( const boost::filesystem::path& p);
-	
-	void read( serialization::yaml_iarchive_t& in);
-	void write( serialization::yaml_oarchive_t& out) const;
+    void load_from_file( const boost::filesystem::path& p);
+
+    //void read( serialization::yaml_iarchive_t& in);
+    //void write( serialization::yaml_oarchive_t& out) const;
 
 private:
-	
-	void read_nodes( serialization::yaml_iarchive_t& in);
-	void read_node( const serialization::yaml_node_t& node);
-	
-	std::auto_ptr<node_t> create_node( const std::string& id, const std::pair<int,int>& version);
-	std::auto_ptr<node_t> create_unknown_node( const std::string& id, const std::pair<int, int>& version);
 
-	void read_edges( const serialization::yaml_iarchive_t& in);
-	void read_edge( const serialization::yaml_node_t& node);
-	
-    void write_edge( serialization::yaml_oarchive_t& out, const edge_t& e) const;
+    composition_t( const composition_t&);
+    composition_t& operator=( const composition_t&);
+
+    //void read_nodes( serialization::yaml_iarchive_t& in);
+    //void read_node( const serialization::yaml_node_t& node);
+
+    std::auto_ptr<node_t> create_node( const std::string& id, const std::pair<int,int>& version);
+    std::auto_ptr<node_t> create_unknown_node( const std::string& id, const std::pair<int, int>& version);
+
+    //void read_edges( const serialization::yaml_iarchive_t& in);
+    //void read_edge( const serialization::yaml_node_t& node);
+
+    //void write_edge( serialization::yaml_oarchive_t& out, const edge_t& e) const;
 
     boost::filesystem::path composition_dir_;
 
@@ -190,7 +190,7 @@ private:
     float frame_;
     image::format_t default_format_;
     int frame_rate_;
-    bool autokey_;	
+    bool autokey_;
 };
 
 } // ramen

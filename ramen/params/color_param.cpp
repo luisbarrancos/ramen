@@ -155,6 +155,7 @@ void color_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
         hash_gen << "," << c.a;
 }
 
+/*
 void color_param_t::do_read( const serialization::yaml_node_t& node)
 {
     read_curves( node);
@@ -178,6 +179,7 @@ void color_param_t::do_write( serialization::yaml_oarchive_t& out) const
     if( one || two || three || four)
         out << YAML::Key << "value" << YAML::Value << get_value<Imath::Color4f>( *this);
 }
+*/
 
 void color_param_t::do_update_widgets()
 {
@@ -400,7 +402,7 @@ void color_param_t::spinbox_dragged( double value)
     set_component_value_from_slot();
 
     if( track_mouse())
-        param_set()->notify_parent();
+        param_set()->notify_node();
 
     app().ui()->update_anim_editors();
 }

@@ -18,8 +18,6 @@
 
 #include<ramen/image/format.hpp>
 
-#include<ramen/serialization/yaml.hpp>
-
 namespace ramen
 {
 
@@ -34,7 +32,7 @@ public:
     // memory
     int max_image_memory() const        { return max_image_memory_;}
     void set_max_image_memory( int m)   { max_image_memory_ = m;}
-	
+
     // format
     void set_default_format( const image::format_t& format);
     image::format_t default_format() const { return default_format_;}
@@ -42,12 +40,12 @@ public:
     int frame_rate() const      { return frame_rate_;}
     void set_frame_rate( int f) { frame_rate_ = f;}
 
-	// image limits
-	int max_image_width() const;
-	int max_image_height() const;
+    // image limits
+    int max_image_width() const;
+    int max_image_height() const;
 
-	// user interface
-	int pick_distance() const { return pick_distance_;}
+    // user interface
+    int pick_distance() const { return pick_distance_;}
 
     void save();
 
@@ -61,6 +59,7 @@ private:
 
     void load();
 
+    /*
     template<class T>
     bool get_value( const YAML::Node& doc, const std::string& key, T& value)
     {
@@ -72,11 +71,12 @@ private:
 
         return false;
     }
+    */
 
     image::format_t default_format_;
     int frame_rate_;
     int max_image_memory_;
-	int pick_distance_;
+    int pick_distance_;
 };
 
 } // ramen

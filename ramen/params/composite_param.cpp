@@ -156,6 +156,7 @@ void composite_param_t::do_apply_function( const boost::function<void ( param_t*
     boost::range::for_each( params(), boost::bind( &param_t::apply_function, _1, f));
 }
 
+/*
 void composite_param_t::do_read( serialization::yaml_iarchive_t& node)
 {
     RAMEN_ASSERT( param_set());
@@ -173,6 +174,7 @@ void composite_param_t::do_write( serialization::yaml_oarchive_t& out) const
             boost::range::for_each( params(), boost::bind( &param_t::write, _1, boost::ref( out)));
         out.end_seq();
 }
+*/
 
 QWidget *composite_param_t::do_create_widgets()
 {

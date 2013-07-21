@@ -14,8 +14,6 @@
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/inspector/inspector.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 namespace ramen
 {
 
@@ -47,6 +45,7 @@ void popup_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << menu_items()[ get_value<int>( *this)];
 }
 
+/*
 void popup_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
@@ -70,6 +69,7 @@ void popup_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "value" << YAML::Value;
     out << YAML::DoubleQuoted << menu_items()[v];
 }
+*/
 
 int popup_param_t::find_index_for_string( const std::string& s) const
 {

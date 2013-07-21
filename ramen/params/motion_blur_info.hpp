@@ -7,7 +7,7 @@
 
 #include<ramen/config.hpp>
 
-#include<ramen/serialization/yaml.hpp>
+#include<string>
 
 namespace ramen
 {
@@ -30,11 +30,11 @@ struct RAMEN_API motion_blur_info_t
     float shutter;
     float shutter_offset;
     filter_type filter;
-	
+
     struct loop_data_t
     {
         loop_data_t( float time, int samples = 1, float shutter = 0, float offset = 0,
-					 motion_blur_info_t::filter_type f = motion_blur_info_t::box_filter);
+                     motion_blur_info_t::filter_type f = motion_blur_info_t::box_filter);
 
         float weight_for_time( float t) const;
 
@@ -45,13 +45,13 @@ struct RAMEN_API motion_blur_info_t
         float time_step;
         filter_type filter;
     };
-	
-	std::string filter_to_string( filter_type f) const;
-	filter_type string_to_filter( const std::string& s) const;
+
+    std::string filter_to_string( filter_type f) const;
+    filter_type string_to_filter( const std::string& s) const;
 };
 
-void operator>>( const YAML::Node& in, motion_blur_info_t& f);
-YAML::Emitter& operator<<( YAML::Emitter& out, const motion_blur_info_t& f);
+//void operator>>( const YAML::Node& in, motion_blur_info_t& f);
+//YAML::Emitter& operator<<( YAML::Emitter& out, const motion_blur_info_t& f);
 
 } // namespace
 

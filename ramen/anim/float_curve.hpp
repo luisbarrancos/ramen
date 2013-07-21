@@ -23,7 +23,7 @@ class float_curve_t : public curve_t<float_key_t>
 {
 public:
 
-	typedef curve_t<float_key_t>	superclass;
+    typedef curve_t<float_key_t>	superclass;
     typedef float_key_t				key_type;
     typedef key_type::time_type		time_type;
     typedef key_type::value_type	value_type;
@@ -43,7 +43,7 @@ public:
 
     value_type get_max() const	{ return max_;}
     void set_max( value_type x) { max_ = x;}
-	
+
     void set_range( value_type lo, value_type hi)
     {
         RAMEN_ASSERT( lo <= hi);
@@ -53,20 +53,20 @@ public:
 
     value_type scale() const			{ return scale_;}
     void set_scale( value_type x) const	{ scale_ = x;}
-		
+
     value_type offset() const				{ return offset_;}
     void set_offset( value_type x) const	{ offset_ = x;}
 
-	value_type relative_to_absolute( value_type x) const
-	{
-		return x * scale_ + offset_;
-	}
-	
-	value_type absolute_to_relative( value_type x) const
-	{
-		return ( x - offset_) / scale_;
-	}
-	
+    value_type relative_to_absolute( value_type x) const
+    {
+        return x * scale_ + offset_;
+    }
+
+    value_type absolute_to_relative( value_type x) const
+    {
+        return ( x - offset_) / scale_;
+    }
+
     iterator insert( time_type time, value_type value, bool recalc = true);
     iterator insert( const float_key_t& k, bool recalc = true);
     iterator insert( time_type time, bool recalc = true);
@@ -87,20 +87,20 @@ public:
 
     std::string str() const;
 
-	void read( const serialization::yaml_node_t& in);
-	void write( serialization::yaml_oarchive_t& out) const;
+    //void read( const serialization::yaml_node_t& in);
+    //void write( serialization::yaml_oarchive_t& out) const;
 
 private:
 
     value_type do_evaluate( time_type time) const;
-	
+
     float_key_t::auto_tangent_method default_auto_tan_;
     value_type min_, max_;
-	
-	mutable value_type offset_, scale_;
+
+    mutable value_type offset_, scale_;
 };
 
-} // namespace
-} // namespace
+} // anim
+} // ramen
 
 #endif

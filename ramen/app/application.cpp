@@ -30,9 +30,6 @@
 
 #include<ramen/nodes/node_factory.hpp>
 
-#include<ramen/image/init_image_processing.hpp>
-#include<ramen/movieio/factory.hpp>
-
 #include<ramen/render/render_thread.hpp>
 #include<ramen/render/render_sequence.hpp>
 
@@ -109,13 +106,13 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
         splash_->show_message( "Initializing builtin nodes");
     node_factory_t::instance();
 
-    if( !command_line_)
-        splash_->show_message( "Initializing image processing");
-    image::init_image_processing();
+    //if( !command_line_)
+    //    splash_->show_message( "Initializing image processing");
+    //image::init_image_processing();
 
-    if( !command_line_)
-        splash_->show_message( "Initializing movieio");
-    movieio::factory_t::instance();
+    //if( !command_line_)
+    //    splash_->show_message( "Initializing movieio");
+    //movieio::factory_t::instance();
 
     if( !command_line_)
         splash_->show_message( "Initializing OpenColorIO");
@@ -386,6 +383,7 @@ void application_t::create_new_document()
 
 void application_t::open_document( const boost::filesystem::path& p)
 {
+    /*
     create_new_document();
     boost::filesystem::ifstream ifs( p, serialization::yaml_iarchive_t::file_open_mode());
 
@@ -408,6 +406,7 @@ void application_t::open_document( const boost::filesystem::path& p)
         // TODO: display errors here
         // multiline_alert_t::Instance().show_alert( "Errors during file open", err);
     }
+    */
 }
 
 void application_t::delete_document()

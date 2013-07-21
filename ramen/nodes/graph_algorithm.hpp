@@ -48,7 +48,7 @@ void depth_first_inputs_recursive_search( node_t& n, Visitor f)
         if( n.input(i) != 0)
             depth_first_inputs_recursive_search( *n.input(i), f);
     }
-	
+
     if( n.graph_color() == black)
     {
         f( n);
@@ -77,7 +77,7 @@ void depth_first_outputs_recursive_search( node_t& n, Visitor f)
 {
     for( unsigned int i=0;i<n.num_outputs();++i)
         depth_first_outputs_recursive_search( *n.output(i), f);
-	
+
     if( n.graph_color() == black)
     {
         f( n);
@@ -180,16 +180,16 @@ template<class Visitor>
 void breadth_first_out_edges_apply( node_t& n, Visitor f)
 {
     for( unsigned int i = 0; i < n.num_outputs(); ++i)
-	{
-		node_t *dst = boost::get<0>( n.output_plug().connections()[i]);
-		int port  = boost::get<2>( n.output_plug().connections()[i]);
-		edge_t e( &n, dst, port);
-		f( e);
+    {
+        node_t *dst = boost::get<0>( n.output_plug().connections()[i]);
+        int port  = boost::get<2>( n.output_plug().connections()[i]);
+        edge_t e( &n, dst, port);
+        f( e);
 
-		breadth_first_out_edges_apply( *dst, f);
-	}
+        breadth_first_out_edges_apply( *dst, f);
+    }
 }
 
-} // namespace
+} // ramen
 
 #endif

@@ -45,6 +45,7 @@ void aspect_ratio_param_t::set_value( float x, change_reason reason)
 
 void aspect_ratio_param_t::do_add_to_hash( hash::generator_t& hash_gen) const { hash_gen << get_value<float>( *this);}
 
+/*
 void aspect_ratio_param_t::do_read( const serialization::yaml_node_t& node)
 {
     float val = 1.0f;
@@ -57,6 +58,7 @@ void aspect_ratio_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "value"
         << YAML::Value << get_value<float>( *this);
 }
+*/
 
 void aspect_ratio_param_t::do_update_widgets()
 {

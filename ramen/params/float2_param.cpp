@@ -156,6 +156,7 @@ void float2_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << v.x << "," << v.y;
 }
 
+/*
 void float2_param_t::do_read( const serialization::yaml_node_t& node)
 {
     read_curves( node);
@@ -178,6 +179,7 @@ void float2_param_t::do_write( serialization::yaml_oarchive_t& out) const
     if( one || two)
         out << YAML::Key << "value" << YAML::Value << get_value<Imath::V2f>( *this);
 }
+*/
 
 void float2_param_t::do_update_widgets()
 {
@@ -377,7 +379,7 @@ void float2_param_t::spinbox_dragged( double value)
         set_component_value_from_slot();
 
     if( track_mouse())
-        param_set()->notify_parent();
+        param_set()->notify_node();
     else
         node()->update_overlay();
 

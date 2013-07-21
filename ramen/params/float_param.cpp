@@ -19,9 +19,6 @@
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/viewer/viewer.hpp>
 
-#include<ramen/serialization/yaml_node.hpp>
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 #include<ramen/ui/inspector/inspector.hpp>
 #include<ramen/ui/widgets/param_spinbox.hpp>
 
@@ -131,6 +128,7 @@ void float_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << get_value<float>( *this);
 }
 
+/*
 void float_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::optional_yaml_node_t n = node.get_optional_node( "curve");
@@ -158,6 +156,7 @@ void float_param_t::do_write( serialization::yaml_oarchive_t& out) const
             out << YAML::Key << "value" << YAML::Value << get_value<float>( *this);
     }
 }
+*/
 
 void float_param_t::do_update_widgets()
 {
@@ -235,7 +234,7 @@ void float_param_t::spinbox_dragged( double value)
     set_value( absolute_to_relative( round( value)));
 
     if( track_mouse())
-        param_set()->notify_parent();
+        param_set()->notify_node();
     else
         node()->update_overlay();
 

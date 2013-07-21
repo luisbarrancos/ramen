@@ -88,6 +88,7 @@ void file_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
         hash_gen << filesystem::hash_string( get_value<boost::filesystem::path>( *this));
 }
 
+/*
 void file_param_t::do_read( const serialization::yaml_node_t& node)
 {
     std::string val;
@@ -101,6 +102,7 @@ void file_param_t::do_write( serialization::yaml_oarchive_t& out) const
             << YAML::Value << YAML::DoubleQuoted
             << filesystem::file_string( get_value<boost::filesystem::path>( *this));
 }
+*/
 
 void file_param_t::do_update_widgets()
 {

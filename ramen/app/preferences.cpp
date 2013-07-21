@@ -31,12 +31,13 @@ void preferences_t::set_defaults()
 
     default_format_ = image::format_t();
     frame_rate_ = 25; // PAL by default.
-		
-	pick_distance_ = 5;
+
+    pick_distance_ = 5;
 }
 
 void preferences_t::load()
 {
+    /*
     boost::filesystem::path p = app().system().application_user_path() / "prefs.yaml";
     boost::filesystem::ifstream ifs( p);
     if( !ifs.is_open() || !ifs.good())
@@ -54,11 +55,11 @@ void preferences_t::load()
 
         int version;
 
-		if( !get_value( doc, "version", version))
+        if( !get_value( doc, "version", version))
             throw std::runtime_error( "Corrupted preferences file");
 
         get_value( doc, "max_image_memory", max_image_memory_);
-		get_value( doc, "default_format", default_format_);
+        get_value( doc, "default_format", default_format_);
         get_value( doc, "frame_rate", frame_rate_);
     }
     catch( ...)
@@ -66,10 +67,12 @@ void preferences_t::load()
         set_defaults();
         save();
     }
+    */
 }
 
 void preferences_t::save()
 {
+    /*
     boost::filesystem::path p = app().system().application_user_path() / "prefs.yaml";
     boost::filesystem::ofstream ofs( p);
 
@@ -78,21 +81,22 @@ void preferences_t::save()
         app().error( "Couldn't open preferences file for writting. file = " + filesystem::file_string( p));
         return;
     }
-	
+
     YAML::Emitter out;
     out << YAML::Comment( "Ramen preferences") << YAML::Newline;
 
     out << YAML::BeginMap;
         out << YAML::Key << "version" << YAML::Value << 1
             << YAML::Key << "max_image_memory" << YAML::Value << max_image_memory_
-			<< YAML::Key << "default_format" << YAML::Value << default_format_
+            << YAML::Key << "default_format" << YAML::Value << default_format_
             << YAML::Key << "frame_rate" << YAML::Value << frame_rate_
             ;
 
     out << YAML::EndMap;
     ofs << out.c_str();
-	std::flush( ofs);
+    std::flush( ofs);
     ofs.close();
+    */
 }
 
 void preferences_t::set_default_format( const image::format_t& format)

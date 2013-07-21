@@ -32,14 +32,14 @@ class RAMEN_API param_set_t
 {
 public:
 
-    param_set_t( node_t *p = 0);
+    param_set_t( node_t *n = 0);
     param_set_t( const param_set_t& other);
 
     ~param_set_t();
 
-    const node_t *parent() const    { return parent_;}
-    node_t *parent()                { return parent_;}
-    void set_parent( node_t *p)     { parent_ = p;}
+    const node_t *node() const    { return node_;}
+    node_t *node()                { return node_;}
+    void set_node( node_t *n)     { node_ = n;}
 
     void clear();
     bool empty() const { return params_.empty();}
@@ -68,7 +68,7 @@ public:
     param_t& find( const std::string& id);
 
     boost::signals2::signal<void ( param_t*, param_t::change_reason)> param_changed;
-    void notify_parent();
+    void notify_node();
 
     void begin_edit();
     void end_edit( bool notify = true);
@@ -90,16 +90,16 @@ public:
     void for_each_param( const boost::function<void ( param_t*)>& f);
 
     // serialization
-    void read( const serialization::yaml_node_t& node);
-    void write( serialization::yaml_oarchive_t& out) const;
+    //void read( const serialization::yaml_node_t& node);
+    //void write( serialization::yaml_oarchive_t& out) const;
 
-    void read_param( const serialization::yaml_node_t& node);
+    //void read_param( const serialization::yaml_node_t& node);
 
 private:
 
     void do_add_param( param_t *p);
 
-    node_t *parent_;
+    node_t *node_;
     boost::ptr_vector<param_t> params_;
     std::auto_ptr<param_set_command_t> command_;
 };

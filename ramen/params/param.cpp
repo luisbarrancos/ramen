@@ -8,8 +8,6 @@
 
 #include<ramen/nodes/node.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 #include<ramen/util/string.hpp>
 #include<ramen/util/flags.hpp>
 
@@ -45,13 +43,13 @@ void param_t::do_set_param_set( param_set_t *parent) {}
 const node_t *param_t::node() const
 {
     RAMEN_ASSERT( param_set());
-    return param_set()->parent();
+    return param_set()->node();
 }
 
 node_t *param_t::node()
 {
     RAMEN_ASSERT( param_set());
-    return param_set()->parent();
+    return param_set()->node();
 }
 
 const composition_t *param_t::composition() const
@@ -220,6 +218,7 @@ void param_t::apply_function( const boost::function<void ( param_t*)>& f)
 void param_t::do_apply_function( const boost::function<void ( param_t*)>& f) {}
 
 // serialization
+/*
 void param_t::read(const serialization::yaml_node_t& in) { do_read( in);}
 
 void param_t::do_read(const serialization::yaml_node_t& in)
@@ -242,6 +241,7 @@ void param_t::do_write( serialization::yaml_oarchive_t& out) const
 {
     RAMEN_ASSERT( 0 && "We should never get here");
 }
+*/
 
 // widgets
 QWidget *param_t::create_widgets()

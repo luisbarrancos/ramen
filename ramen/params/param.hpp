@@ -39,9 +39,6 @@
 
 #include<ramen/hash/generator.hpp>
 
-#include<ramen/serialization/yaml_iarchive.hpp>
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 #include<ramen/ui/widgets/param_spinbox_fwd.hpp>
 
 class QWidget;
@@ -180,8 +177,10 @@ public:
     void make_paths_relative();
 
     // serialization
+    /*
     void read( const serialization::yaml_node_t& in);
     void write( serialization::yaml_oarchive_t& out) const;
+    */
 
     // util
     void apply_function( const boost::function<void ( param_t*)>& f);
@@ -237,8 +236,10 @@ private:
     virtual void do_make_paths_relative();
 
     // serialization
+    /*
     virtual void do_read( const serialization::yaml_node_t& in);
     virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    */
 
     // util
     virtual void do_apply_function( const boost::function<void ( param_t*)>& f);

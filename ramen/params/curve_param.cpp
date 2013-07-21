@@ -10,8 +10,6 @@
 
 #include<ramen/ui/anim/anim_editor.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 namespace ramen
 {
 
@@ -36,6 +34,7 @@ void curve_param_t::do_create_tracks( anim::track_t *parent)
 void curve_param_t::do_add_to_hash( hash::generator_t& hash_gen) const { hash_gen << curve().str();}
 
 // serialization
+/*
 void curve_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t c( node.get_node( "curve"));
@@ -47,5 +46,6 @@ void curve_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "curve" << YAML::Value;
     curve().write( out);
 }
+*/
 
-} // namespace
+} // ramen

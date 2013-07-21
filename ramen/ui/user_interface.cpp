@@ -4,12 +4,15 @@
 
 #include<ramen/ui/user_interface.hpp>
 
+#include<string>
 #include<utility>
 #include<iostream>
 
 #include<boost/foreach.hpp>
 #include<boost/thread.hpp>
 #include<boost/filesystem/operations.hpp>
+
+#include<OpenImageIO/imageio.h>
 
 #include<QApplication>
 #include<QSplashScreen>
@@ -32,8 +35,6 @@
 
 #include<ramen/memory/manager.hpp>
 
-#include<ramen/movieio/factory.hpp>
-
 #include<ramen/render/node_renderer.hpp>
 
 #include<ramen/ui/main_window.hpp>
@@ -44,9 +45,6 @@
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
 #include<ramen/ui/widgets/time_slider.hpp>
-
-#include<ramen/serialization/yaml_iarchive.hpp>
-#include<ramen/serialization/yaml_oarchive.hpp>
 
 namespace ramen
 {
@@ -62,16 +60,22 @@ user_interface_t::user_interface_t() : QObject()
     interacting_ = false;
     event_filter_installed_ = false;
 
-    image_types_str_ = "Image Files (";
-
+    std::string extensions;
+    if( OIIO::attribute( "extension_list", extensions))
+    {
+        image_types_str_ = "Image Files (";
+        // TODO: rewrite this in terms of OpenImageIO.
+        // example format:ext, ext2:format2; ext:..."
+        /*
         BOOST_FOREACH( const std::string& ext, movieio::factory_t::instance().extensions())
         {
             image_types_str_.append( "*.");
             image_types_str_.append( ext.c_str());
             image_types_str_.append( " ");
         }
-
-    image_types_str_.append( ")");
+        */
+        image_types_str_.append( ")");
+    }
 
     viewer_ = 0;
     inspector_ = 0;
@@ -173,6 +177,7 @@ void user_interface_t::create_new_document()
 void user_interface_t::open_document( const boost::filesystem::path& p)
 {
     create_new_document();
+    /*
     boost::filesystem::ifstream ifs( p, serialization::yaml_iarchive_t::file_open_mode());
 
     if( !ifs.is_open() || !ifs.good())
@@ -221,6 +226,7 @@ void user_interface_t::open_document( const boost::filesystem::path& p)
 
     if( !err.empty())
         multiline_alert_t::instance().show_alert( "Errors during file open", err);
+    */
 }
 
 bool user_interface_t::save_document()
@@ -229,6 +235,7 @@ bool user_interface_t::save_document()
 
     try
     {
+        /*
         serialization::yaml_oarchive_t out;
         out.write_composition_header();
         app().document().save( out);
@@ -236,6 +243,7 @@ bool user_interface_t::save_document()
 
         out.write_to_file( app().document().file());
         app().document().set_dirty( false);
+        */
     }
     catch( std::exception& e)
     {
@@ -483,19 +491,6 @@ bool user_interface_t::image_sequence_file_selector( const std::string& title, c
     }
 
     return false;
-}
-
-// serialization
-void read_ui_state( const serialization::yaml_iarchive_t& in)
-{
-    // TODO: implement this
-}
-
-void user_interface_t::write_ui_state( serialization::yaml_oarchive_t& out) const
-{
-    // out << YAML::BeginMap;
-    // save state( out)
-    // out << YAML::EndMap;
 }
 
 // event filter

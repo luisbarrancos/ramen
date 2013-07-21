@@ -71,6 +71,7 @@ void string_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << get_value<std::string>( *this);
 }
 
+/*
 void string_param_t::do_read( const serialization::yaml_node_t& node)
 {
     std::string val;
@@ -83,6 +84,7 @@ void string_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "value"
         << YAML::Value << get_value<std::string>( *this);
 }
+*/
 
 QWidget *string_param_t::do_create_widgets()
 {

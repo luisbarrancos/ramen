@@ -291,8 +291,8 @@ public:
     virtual void make_paths_relative();
 
     // serialization
-    void read( const serialization::yaml_node_t& in, const std::pair<int,int>& version);
-    void write( serialization::yaml_oarchive_t& out) const;
+    //void read( const serialization::yaml_node_t& in, const std::pair<int,int>& version);
+    //void write( serialization::yaml_oarchive_t& out) const;
 
     // format, bounds & aspect
     const Imath::Box2i& format() const	    { return format_;}
@@ -432,17 +432,17 @@ private:
         \brief Customization hook for node_t::read.
         Implement in subclasses to read extra data from node.
     */
-    virtual void do_read( const serialization::yaml_node_t& in,
-                          const std::pair<int,int>& version);
+    //virtual void do_read( const serialization::yaml_node_t& in,
+    //                      const std::pair<int,int>& version);
 
     /*!
         \brief Customization hook for node_t::write.
         Implement in subclasses to write extra data to out.
     */
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
     // serialization utils
-    void write_node_info( serialization::yaml_oarchive_t& out) const;
+    //void write_node_info( serialization::yaml_oarchive_t& out) const;
 
     virtual void do_calc_format( const render::context_t& context);
     virtual void do_calc_bounds( const render::context_t& context);

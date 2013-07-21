@@ -36,8 +36,8 @@ private:
 
     virtual void do_add_to_hash( hash::generator_t& hash_gen) const;
 
-    virtual void do_read( const serialization::yaml_node_t& node);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    //virtual void do_read( const serialization::yaml_node_t& node);
+    //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);

@@ -20,8 +20,6 @@
 
 #include<ramen/params/static_param_command.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/inspector/inspector.hpp>
 
@@ -66,6 +64,7 @@ void combo_group_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 }
 
 // serialization
+/*
 void combo_group_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
@@ -91,6 +90,7 @@ void combo_group_param_t::do_write( serialization::yaml_oarchive_t& out) const
     out << params()[v].name();
     out.check_errors();
 }
+*/
 
 void combo_group_param_t::do_update_widgets()
 {

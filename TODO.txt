@@ -1,24 +1,21 @@
-    TODO
-    ----
+    TODO (v1.5)
+    -----------
 
-        - remove adobe source libs dependency.
-        - remove Imath dependency.
-        - remove unused code.
-        - remove half done code.
-        - add unit tests.
-        - add doxygen docs.
-
-        - review base classes.
-        - add a dependency graph.
-
+        - hierarchical nodes.
+        - switch file format to json.
+        - rewrite imageio using OpenImageIO.
+        - use doubles for params and anim curves.
+        - switch to core types ( string_t, name_t, ...).
+        - switch Imath types by ramen::math types.
+        - remove more unused / half done code.
+        - more unit tests.
+        - more doxygen docs.
+        - review base node classes.
         - review color management code.
-
         - switch to planar image representation.
         - image processing code needs a rewrite. Evaluate Intel ispc and Halide as replacements.
         - viewer code is a mess. Rewrite.
-        
-        - switch from floats to doubles for non-image processing code.
-        - update to the new yaml-cpp api.
         - switch to more modern OpenGL code.
         - windows port.
+        - plugs as params.
         - reintroduce old features, like OFX plugins or the tracker.

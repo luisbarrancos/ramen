@@ -55,8 +55,8 @@ private:
     virtual void do_make_paths_absolute();
     virtual void do_make_paths_relative();
 
-    virtual void do_read( const serialization::yaml_node_t& node);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    //virtual void do_read( const serialization::yaml_node_t& node);
+    //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);

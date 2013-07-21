@@ -11,8 +11,6 @@
 
 #include<ramen/undo/stack.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 namespace ramen
 {
 
@@ -25,24 +23,26 @@ document_t::~document_t() {}
 
 void document_t::set_file( const boost::filesystem::path& p)
 {
-	RAMEN_ASSERT( p.empty() || p.is_absolute());
+    RAMEN_ASSERT( p.empty() || p.is_absolute());
 
     file_ = p;
-	composition().set_composition_dir( file_.parent_path());
+    composition().set_composition_dir( file_.parent_path());
 }
 
+/*
 void document_t::load( serialization::yaml_iarchive_t& in)
 {
-	RAMEN_ASSERT( has_file());
-	composition().read( in);
+    RAMEN_ASSERT( has_file());
+    composition().read( in);
 }
 
 void document_t::save( serialization::yaml_oarchive_t& out) const
 {
-	RAMEN_ASSERT( out.header_written());
-	RAMEN_ASSERT( out.map_level() == 1);
+    RAMEN_ASSERT( out.header_written());
+    RAMEN_ASSERT( out.map_level() == 1);
 
-	composition().write( out);
+    composition().write( out);
 }
+*/
 
-} // namespace
+} // ramen

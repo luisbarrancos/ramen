@@ -77,8 +77,8 @@ private:
     virtual void do_apply_function( const boost::function<void ( param_t*)>& f);
 
     // serialization
-    virtual void do_read( serialization::yaml_iarchive_t& node);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    //virtual void do_read( serialization::yaml_iarchive_t& node);
+    //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
     virtual QWidget *do_create_widgets();
 

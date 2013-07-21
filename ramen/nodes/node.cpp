@@ -24,9 +24,6 @@
 
 #include<ramen/anim/track.hpp>
 
-#include<ramen/serialization/yaml_iarchive.hpp>
-#include<ramen/serialization/yaml_oarchive.hpp>
-
 #include<ramen/util/string.hpp>
 #include<ramen/util/flags.hpp>
 
@@ -55,7 +52,7 @@ struct frames_needed_less
 
 node_t::node_t() : manipulable_t(), flags_( 0), composition_( 0), dont_persist_params_( false)
 {
-    params_.set_parent( this);
+    params_.set_node( this);
 }
 
 node_t::node_t( const node_t& other) :  manipulable_t( other),
@@ -63,11 +60,9 @@ node_t::node_t( const node_t& other) :  manipulable_t( other),
                                         inputs_( other.inputs_),
                                         outputs_( other.outputs_)
 {
-    params_.set_parent( this);
+    params_.set_node( this);
     name_ = other.name_;
-    boost::range::for_each( outputs_, boost::bind( &node_output_plug_t::set_parent_node,
-                                                   _1,
-                                                   this));
+    boost::range::for_each( outputs_, boost::bind( &node_output_plug_t::set_parent_node, _1, this));
     flags_ = other.flags_;
     loc_ = other.loc_;
     composition_ = other.composition_;
@@ -643,6 +638,7 @@ void node_t::make_paths_relative()
 }
 
 // serialization
+/*
 void node_t::read(const serialization::yaml_node_t& in, const std::pair<int,int>& version)
 {
     std::string n;
@@ -713,6 +709,7 @@ void node_t::write_node_info( serialization::yaml_oarchive_t& out) const
     if( variable_num_inputs())
         out << YAML::Key << "num_inputs" << YAML::Value << num_inputs();
 }
+*/
 
 void node_t::format_changed()
 {

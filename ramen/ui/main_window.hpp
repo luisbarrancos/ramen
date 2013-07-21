@@ -19,8 +19,6 @@
 
 #include<ramen/core/memory.hpp>
 
-#include<ramen/serialization/archive_fwd.hpp>
-
 #include<ramen/ui/node_menu.hpp>
 #include<ramen/ui/compview/composition_view_fwd.hpp>
 #include<ramen/ui/time_controls_fwd.hpp>

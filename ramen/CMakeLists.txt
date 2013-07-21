@@ -23,7 +23,7 @@ ELSE()
     MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
-FILE(GLOB_RECURSE RAMEN_HEADERS ./*.h*)
+#FILE(GLOB_RECURSE RAMEN_HEADERS ./*.h*)
 
 SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/aspect_ratio_param.hpp
@@ -39,7 +39,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/float3_param.hpp
                         params/group_param.hpp
                         params/image_format_param.hpp
-                        #params/inspector_param.hpp
                         params/motion_blur_param.hpp
                         params/numeric_param.hpp
                         params/ocio_colorspace_param.hpp
@@ -95,23 +94,48 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/widgets/spinbox.hpp
                         ui/widgets/text_edit.hpp
                         ui/widgets/time_slider.hpp
+
+                        #params/inspector_param.hpp
                         )
 
-SET( RAMEN_SOURCES      system/system.cpp
+SET( RAMEN_SOURCES      algorithm/clamp.hpp
+                        algorithm/for_each_position.hpp
 
+                        anim/any_curve.hpp
                         anim/any_curve.cpp
+                        anim/clipboard.hpp
                         anim/clipboard.cpp
+                        anim/curve_fwd.hpp
+                        anim/curve.hpp
+                        anim/curve_algorithm.hpp
                         anim/curve_algorithm.cpp
+                        anim/curve_to_half_lut.hpp
                         anim/curve_to_half_lut.cpp
+                        anim/float_curve.hpp
                         anim/float_curve.cpp
+                        anim/float_key.hpp
                         anim/float_key.cpp
+                        anim/fwd_diff_cubic_evaluator.hpp
+                        anim/keyframe.hpp
                         anim/keyframe.cpp
+                        anim/keyframe_vector.hpp
+                        anim/shape_curve.hpp
+                        anim/shape_key.hpp
+                        anim/track.hpp
                         anim/track.cpp
+                        anim/util.hpp
                         anim/util.cpp
 
+                        app/application_fwd.hpp
+                        app/application.hpp
                         app/application.cpp
+                        app/composition_fwd.hpp
+                        app/composition.hpp
                         app/composition.cpp
+                        app/document_fwd.hpp
+                        app/document.hpp
                         app/document.cpp
+                        app/preferences.hpp
                         app/preferences.cpp
 
                         bezier/algorithm.cpp
@@ -142,86 +166,13 @@ SET( RAMEN_SOURCES      system/system.cpp
                         hash/generator.cpp
                         hash/MurmurHash3.cpp
 
-                        image/accumulator.cpp
-                        image/agg_renderers.cpp
-                        image/box_blur.cpp
+                        image/buffer.hpp
                         image/buffer.cpp
-                        image/channel_range.cpp
-                        image/color.cpp
+                        image/color_bars.hpp
                         image/color_bars.cpp
-                        image/denan.cpp
-                        image/dilate.cpp
-                        image/filters.cpp
+                        image/format.hpp
                         image/format.cpp
-                        image/gaussian_blur.cpp
-                        image/init_image_processing.cpp
-                        image/invalid_pixels.cpp
-                        image/ocio_transform.cpp
-                        image/percentile_filter.cpp
-                        image/resize.cpp
-                        image/smart_blur.cpp
-
-                        image/processing.cpp
-
-                        image/generic/affine_warp.cpp
-                        image/generic/alpha_composite.cpp
-                        image/generic/alpha_layer_modes.cpp
-                        image/generic/apply_color_matrix.cpp
-                        image/generic/apply_gamma_exp_log.cpp
-                        image/generic/box_blur_channel.cpp
-                        image/generic/composite.cpp
-                        image/generic/convolve33.cpp
-                        image/generic/gaussian_blur_channel.cpp
-                        image/generic/gaussian_blur_rgb.cpp
-                        image/generic/layer_modes.cpp
-                        image/generic/math.cpp
-                        image/generic/projective_warp.cpp
-                        image/generic/resize.cpp
-                        image/generic/samplers.cpp
-
-                        image/sse2/affine_warp.cpp
-                        image/sse2/box_blur.cpp
-                        image/sse2/channel_math.cpp
-                        image/sse2/composite.cpp
-                        image/sse2/gaussian_blur.cpp
-                        image/sse2/key_mix.cpp
-                        image/sse2/layer_modes.cpp
-                        image/sse2/math.cpp
-                        image/sse2/projective_warp.cpp
-                        image/sse2/resize.cpp
-                        image/sse2/samplers.cpp
-                        image/util.cpp
-                        image/sse2/warp.cpp
-
-                        imageio/exceptions.cpp
-                        imageio/factory.cpp
-                        imageio/format.cpp
-                        imageio/multichannel_reader.cpp
-                        imageio/reader.cpp
-
-                        imageio/exr/exr_format.cpp
-                        imageio/exr/exr_reader.cpp
-                        imageio/exr/exr_writer.cpp
-
-                        imageio/hdr/hdr_format.cpp
-                        imageio/hdr/hdr_writer.cpp
-
-                        imageio/jpg/jpg_format.cpp
-                        imageio/jpg/jpg_reader.cpp
-                        imageio/jpg/jpg_writer.cpp
-                        imageio/jpg/jpg_size.cpp
-
-                        imageio/oiio/oiio_reader.cpp
-                        imageio/oiio/oiio_writer.cpp
-
-                        imageio/png/png_format.cpp
-                        imageio/png/png_writer.cpp
-
-                        imageio/tga/tga_format.cpp
-                        imageio/tga/tga_writer.cpp
-
-                        imageio/tiff/tiff_format.cpp
-                        imageio/tiff/tiff_writer.cpp
+                        image/typedefs.hpp
 
                         ImathExt/ImathBoxAlgo.cpp
                         ImathExt/ImathMatrixColorAlgo.cpp
@@ -236,16 +187,12 @@ SET( RAMEN_SOURCES      system/system.cpp
                         memory/manager.cpp
                         memory/pool.cpp
 
-                        movieio/exceptions.cpp
-                        movieio/factory.cpp
-                        movieio/format.cpp
-                        movieio/image_seq_reader.cpp
-                        movieio/image_seq_writer.cpp
-                        movieio/reader.cpp
-                        movieio/writer.cpp
-
+                        nodes/composite_node.hpp
+                        nodes/composite_node.cpp
                         nodes/edge.cpp
                         nodes/graph_algorithm.cpp
+                        nodes/node_fwd.hpp
+                        nodes/node.hpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
                         nodes/node_graph.cpp
@@ -253,6 +200,8 @@ SET( RAMEN_SOURCES      system/system.cpp
                         nodes/node_plug.cpp
                         nodes/node_output_interface.cpp
                         nodes/node_visitor.cpp
+                        nodes/world_node.hpp
+                        nodes/world_node.cpp
 
                         noise/global_noise.cpp
                         noise/noise_base.cpp
@@ -301,16 +250,12 @@ SET( RAMEN_SOURCES      system/system.cpp
                         render/render_sequence.cpp
                         render/render_thread.cpp
 
-                        serialization/yaml.cpp
-                        serialization/yaml_iarchive.cpp
-                        serialization/yaml_node.cpp
-                        serialization/yaml_oarchive.cpp
+                        system/system.cpp
 
                         ui/add_node_command.cpp
                         ui/edit_commands.cpp
                         ui/events.cpp
                         ui/events_util.cpp
-                        ui/graph_layout.cpp
                         ui/main_window.cpp
                         ui/nice_numbers.cpp
                         ui/node_menu.cpp
@@ -318,6 +263,8 @@ SET( RAMEN_SOURCES      system/system.cpp
                         ui/render_composition.cpp
                         ui/time_controls.cpp
                         ui/tool.cpp
+                        ui/user_interface_fwd.hpp
+                        ui/user_interface.hpp
                         ui/user_interface.cpp
                         ui/viewport.cpp
 
@@ -562,8 +509,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR})
 ######################################################
 # ramen lib
 
-ADD_LIBRARY( ramen SHARED   ${RAMEN_HEADERS}
-                            ${RAMEN_SOURCES}
+ADD_LIBRARY( ramen SHARED   ${RAMEN_SOURCES}
                             ${RAMEN_MOC_SOURCES}
                             ${RAMEN_DESIGNER_SOURCES}
                             ${RAMEN_PLATFORM_SOURCES}

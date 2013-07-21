@@ -11,8 +11,6 @@
 
 #include<boost/array.hpp>
 
-#include<ramen/serialization/archive_fwd.hpp>
-
 namespace ramen
 {
 namespace anim
@@ -27,9 +25,9 @@ public:
     float_key_t();
     float_key_t( time_type time, value_type value);
 
-	void swap( float_key_t& other);
-	void swap_value( float_key_t& other);
-	
+    void swap( float_key_t& other);
+    void swap_value( float_key_t& other);
+
     // value
     value_type  value() const  { return value_;}
     value_type& value()        { return value_;}
@@ -65,10 +63,10 @@ public:
     static value_type max_slope();
     static value_type min_slope();
 
-	void str( std::stringstream& s) const;
+    void str( std::stringstream& s) const;
 
-	void read( const serialization::yaml_node_t& in);
-	void write( serialization::yaml_oarchive_t& out) const;
+    //void read( const serialization::yaml_node_t& in);
+    //void write( serialization::yaml_oarchive_t& out) const;
 
 private:
 

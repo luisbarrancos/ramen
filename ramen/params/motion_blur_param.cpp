@@ -59,6 +59,7 @@ void motion_blur_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
             << info.shutter_offset << "," << info.filter;
 }
 
+/*
 void motion_blur_param_t::do_read( const serialization::yaml_node_t& node)
 {
     motion_blur_info_t val;
@@ -72,6 +73,7 @@ void motion_blur_param_t::do_write( serialization::yaml_oarchive_t& out) const
     motion_blur_info_t info( get_value<motion_blur_info_t>( *this));
     out << YAML::Key << "value" << YAML::Value << info;
 }
+*/
 
 QWidget *motion_blur_param_t::do_create_widgets()
 {

@@ -33,9 +33,6 @@
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/viewer/viewer.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
-#include<ramen/serialization/yaml_node.hpp>
-
 #include<iostream>
 
 namespace ramen
@@ -76,7 +73,7 @@ public:
         for( boost::ptr_vector<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
             it->undo();
 
-        pset->notify_parent();
+        pset->notify_node();
         undo::command_t::undo();
     }
 
@@ -90,7 +87,7 @@ public:
         for( boost::ptr_vector<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
             it->redo();
 
-        pset->notify_parent();
+        pset->notify_node();
         undo::command_t::redo();
     }
 
@@ -100,11 +97,11 @@ private:
     boost::ptr_vector<undo::command_t> more_commands_;
 };
 
-param_set_t::param_set_t( node_t *p) : parent_( p) {}
+param_set_t::param_set_t( node_t *n) : node_( n) {}
 
 param_set_t::param_set_t( const param_set_t& other) : params_( other.params_)
 {
-    parent_ = 0;
+    node_ = 0;
     boost::range::for_each( params_, boost::bind( &param_t::set_param_set, _1, this));
 }
 
@@ -153,10 +150,10 @@ param_t& param_set_t::find( const std::string& id)
     throw std::runtime_error( std::string( "Param not found: ").append( id));
 }
 
-void param_set_t::notify_parent()
+void param_set_t::notify_node()
 {
-    if( parent())
-        parent()->param_edit_finished();
+    if( node())
+        node()->param_edit_finished();
 }
 
 void param_set_t::begin_edit()
@@ -172,7 +169,7 @@ void param_set_t::end_edit( bool notify)
         command_.reset();
 
     if( notify)
-        notify_parent();
+        notify_node();
 
     app().ui()->update();
     app().ui()->update_anim_editors();
@@ -207,8 +204,8 @@ void param_set_t::add_command( param_t *p)
 
 bool param_set_t::autokey() const
 {
-    if( parent())
-        return parent()->autokey();
+    if( node())
+        return node()->autokey();
     else
         return false;
 }
@@ -228,7 +225,7 @@ void param_set_t::for_each_param( const boost::function<void ( param_t*)>& f)
 }
 
 // serialization
-
+/*
 void param_set_t::read( const serialization::yaml_node_t& node)
 {
     for( int i = 0; i < node.size(); ++i)
@@ -247,11 +244,11 @@ void param_set_t::read_param( const serialization::yaml_node_t& node)
     }
     catch( YAML::Exception& e)
     {
-        node.error_stream() << "Yaml exception: " << e.what() << " in node " << parent()->name() << "\n";
+        node.error_stream() << "Yaml exception: " << e.what() << " in node " << this->node()->name() << "\n";
     }
     catch( std::runtime_error& e)
     {
-        node.error_stream() << "Unknown param " << id << " in node " << parent()->name() << "\n";
+        node.error_stream() << "Unknown param " << id << " in node " << this->node()->name() << "\n";
     }
 }
 
@@ -262,5 +259,6 @@ void param_set_t::write( serialization::yaml_oarchive_t& out) const
             BOOST_FOREACH( const param_t& p, params()) { p.write( out);}
         out.end_seq();
 }
+*/
 
 } // ramen

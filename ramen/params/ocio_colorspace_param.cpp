@@ -97,6 +97,7 @@ void ocio_colorspace_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
     hash_gen << get_value<std::string>( *this);
 }
 
+/*
 void ocio_colorspace_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
@@ -130,6 +131,7 @@ void ocio_colorspace_param_t::do_write( serialization::yaml_oarchive_t& out) con
 {
     out << YAML::Key << "value" << YAML::Value << get_value<std::string>( *this);
 }
+*/
 
 std::string ocio_colorspace_param_t::default_colorspace() const
 {
