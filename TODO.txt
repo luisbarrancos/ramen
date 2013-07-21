@@ -1,6 +1,8 @@
     TODO (v1.5)
     -----------
 
+        - reduce compile times.
+
         - hierarchical nodes.
         - switch file format to json.
         - rewrite imageio using OpenImageIO.

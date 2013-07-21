@@ -141,6 +141,8 @@ private:
     void save_window_state();
     void restore_window_state();
 
+    void init_image_types_string();
+
     main_window_t *window_;
     inspector_t *inspector_;
     anim_editor_t *anim_editor_;

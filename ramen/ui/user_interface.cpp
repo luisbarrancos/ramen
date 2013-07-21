@@ -11,6 +11,7 @@
 #include<boost/foreach.hpp>
 #include<boost/thread.hpp>
 #include<boost/filesystem/operations.hpp>
+#include<boost/tokenizer.hpp>
 
 #include<OpenImageIO/imageio.h>
 
@@ -59,28 +60,11 @@ user_interface_t::user_interface_t() : QObject()
     cancelled_ = false;
     interacting_ = false;
     event_filter_installed_ = false;
-
-    std::string extensions;
-    if( OIIO::attribute( "extension_list", extensions))
-    {
-        image_types_str_ = "Image Files (";
-        // TODO: rewrite this in terms of OpenImageIO.
-        // example format:ext, ext2:format2; ext:..."
-        /*
-        BOOST_FOREACH( const std::string& ext, movieio::factory_t::instance().extensions())
-        {
-            image_types_str_.append( "*.");
-            image_types_str_.append( ext.c_str());
-            image_types_str_.append( " ");
-        }
-        */
-        image_types_str_.append( ")");
-    }
-
     viewer_ = 0;
     inspector_ = 0;
     anim_editor_ = 0;
     window_ = 0;
+    init_image_types_string();
 }
 
 user_interface_t::~user_interface_t()
@@ -592,5 +576,36 @@ QFont user_interface_t::get_fixed_width_code_font()
     return font;
 }
 
-} // namespace
-} // namespace
+void user_interface_t::init_image_types_string()
+{
+    image_types_str_ = "Image Files (";
+
+    std::string list;
+    if( OIIO::getattribute( "extension_list", list))
+    {
+        typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+
+        boost::char_separator<char> colon_sep( ";");
+        tokenizer fmt_tokens( list, colon_sep);
+        for( tokenizer::iterator fmt_iter = fmt_tokens.begin(); fmt_iter != fmt_tokens.end(); ++fmt_iter)
+        {
+            std::string format_and_exts = *fmt_iter;
+            std::size_t s = format_and_exts.find( ':');
+            std::string exts( format_and_exts, s + 1, std::string::npos);
+
+            boost::char_separator<char> comma_sep( ",");
+            tokenizer ext_tokens( exts, comma_sep);
+            for( tokenizer::iterator ext_iter = ext_tokens.begin(); ext_iter != ext_tokens.end(); ++ext_iter)
+            {
+                image_types_str_.append( "*.");
+                image_types_str_.append( QString::fromStdString( *ext_iter));
+                image_types_str_.append( " ");
+            }
+        }
+    }
+
+    image_types_str_.append( ")");
+}
+
+} // ui
+} // ramen
