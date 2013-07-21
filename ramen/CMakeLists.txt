@@ -140,30 +140,71 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
 
                         bezier/algorithm.cpp
 
+                        color/color3.hpp
+                        color/color4.hpp
+
+                        Concepts/ParamValueConcept.hpp
+                        Concepts/RegularConcept.hpp
+
+                        config/compiler.hpp
+                        config/os.hpp
+                        config/visibility.hpp
+
+                        container/ptr_vector_util.hpp
+                        container/unique_name_map.hpp
+
+                        core/copy_on_write.hpp
+                        core/dictionary_fwd.hpp
+                        core/dictionary.hpp
                         core/dictionary.cpp
+                        core/empty.hpp
                         core/empty.cpp
+                        core/exceptions.hpp
                         core/exceptions.cpp
+                        core/memory.hpp
+                        core/name_fwd.hpp
+                        core/name.hpp
                         core/name.cpp
                         core/types.cpp
+                        core/types.hpp
+                        core/string_fwd.hpp
+                        core/string.hpp
                         core/string.cpp
+                        core/variant.hpp
                         core/variant.cpp
 
+                        filesystem/path.hpp
                         filesystem/path.cpp
+                        filesystem/path_sequence.hpp
                         filesystem/path_sequence.cpp
 
+                        ggems/graphicsgems.h
                         ggems/ggveclib.c
+                        ggems/nearestpoint.h
                         ggems/nearestpoint.c
+                        ggems/convex_opt.h
                         ggems/convex_opt.c
 
+                        GL/gl.hpp
                         GL/gl.cpp
+                        GL/glew.hpp
+                        GL/glu.hpp
                         GL/glu.cpp
+                        GL/image_view_shaders.hpp
+                        GL/Imath_gl.hpp
                         GL/Imath_gl.cpp
+                        GL/lut3d.hpp
                         GL/lut3d.cpp
+                        GL/program.hpp
                         GL/program.cpp
 
+                        half/half_lut.hpp
+                        half/halfExpLog.h
                         half/halfExpLogTable.cpp
 
+                        hash/generator.hpp
                         hash/generator.cpp
+                        hash/MurmurHash3.h
                         hash/MurmurHash3.cpp
 
                         image/buffer.hpp
@@ -177,11 +218,33 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         ImathExt/ImathBoxAlgo.cpp
                         ImathExt/ImathMatrixColorAlgo.cpp
 
+                        manipulators/draw.hpp
                         manipulators/draw.cpp
+                        manipulators/manipulable_fwd.hpp
+                        manipulators/manipulable.hpp
                         manipulators/manipulable.cpp
+                        manipulators/manipulator_fwd.hpp
+                        manipulators/manipulator.hpp
                         manipulators/manipulator.cpp
+                        manipulators/pick.hpp
                         manipulators/pick.cpp
+                        manipulators/util.hpp
                         manipulators/util.cpp
+
+                        math/box2.hpp
+                        math/box3.hpp
+                        math/cmath.hpp
+                        math/constants.hpp
+                        math/fast_float.hpp
+                        math/hpoint2.hpp
+                        math/hpoint3.hpp
+                        math/matrix33.hpp
+                        math/matrix44.hpp
+                        math/normal.hpp
+                        math/point2.hpp
+                        math/point3.hpp
+                        math/vector2.hpp
+                        math/vector3.hpp
 
                         memory/image_cache.cpp
                         memory/manager.cpp
@@ -202,13 +265,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         nodes/node_visitor.cpp
                         nodes/world_node.hpp
                         nodes/world_node.cpp
-
-                        noise/global_noise.cpp
-                        noise/noise_base.cpp
-                        noise/perlin.cpp
-                        noise/permutation_array.cpp
-                        noise/simplex_noise.cpp
-                        noise/simplex_noise_generator.cpp
 
                         ocio/manager.cpp
                         ocio/gl_display_manager.cpp
