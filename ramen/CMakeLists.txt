@@ -68,8 +68,8 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
                         ui/inspector/inspector.hpp
                         ui/inspector/panel.hpp
-                        ui/viewer/image_view/image_viewer_strategy.hpp
                         ui/viewer/image_view/image_view_toolbar.hpp
+                        ui/viewer/image_view/image_viewer_strategy.hpp
                         ui/viewer/viewer.hpp
                         ui/viewer/viewer_context.hpp
                         ui/viewer/viewer_strategy.hpp
@@ -352,12 +352,9 @@ SET( RAMEN_SOURCES      system/system.cpp
                         ui/inspector/panel.cpp
                         ui/inspector/panel_factory.cpp
 
-                        ui/viewer/image_view/empty_image_strategy.cpp
                         ui/viewer/image_view/image.cpp
-                        ui/viewer/image_view/image_strategy.cpp
                         ui/viewer/image_view/image_viewer_strategy.cpp
                         ui/viewer/image_view/image_view_toolbar.cpp
-                        ui/viewer/image_view/tiled_image_strategy.cpp
 
                         ui/viewer/viewer_context.cpp
                         ui/viewer/viewer_strategy.cpp
