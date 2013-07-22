@@ -54,7 +54,6 @@
 #include<ramen/ui/render_composition.hpp>
 #include<ramen/ui/widgets/time_slider.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
-#include<ramen/ui/dialogs/composition_settings_dialog.hpp>
 #include<ramen/ui/dialogs/preferences_dialog.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 
@@ -809,8 +808,6 @@ void main_window_t::clear_cache()
 
 void main_window_t::show_composition_settings()
 {
-    //composition_settings_dialog_t::instance().exec_dialog();
-    //ins
     app().ui()->inspector().edit_node( &app().document().composition_node());
 }
 

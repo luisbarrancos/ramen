@@ -60,7 +60,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/anim/anim_editor_toolbar.hpp
                         ui/compview/composition_view.hpp
                         ui/compview/composition_view_toolbar.hpp
-                        ui/dialogs/composition_settings_dialog.hpp
                         ui/dialogs/multiline_alert.hpp
                         ui/dialogs/preferences_dialog.hpp
                         ui/dialogs/render_composition_dialog.hpp
@@ -353,7 +352,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         ui/compview/draw_pick_visitors.cpp
                         ui/compview/draw_pick_generic_node.cpp
 
-                        ui/dialogs/composition_settings_dialog.cpp
                         ui/dialogs/multiline_alert.cpp
                         ui/dialogs/preferences_dialog.cpp
                         ui/dialogs/render_composition_dialog.cpp
@@ -558,7 +556,6 @@ ENDIF()
 # ui files
 
 SET( RAMEN_DESIGNER_FILES   ../designer/preferences.ui
-                            ../designer/composition_settings.ui
                             ../designer/render_composition.ui
                             ../designer/smooth_anim_curves.ui
                             )

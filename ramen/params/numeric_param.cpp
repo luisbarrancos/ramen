@@ -4,7 +4,7 @@
 
 #include<ramen/params/numeric_param.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/app/composition.hpp>
 

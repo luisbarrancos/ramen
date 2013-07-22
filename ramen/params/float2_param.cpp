@@ -13,7 +13,7 @@
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/algorithm/clamp.hpp>
 

@@ -13,7 +13,7 @@
 #include<ramen/app/application.hpp>
 #include<ramen/app/composition.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>

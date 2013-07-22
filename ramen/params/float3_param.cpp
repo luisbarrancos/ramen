@@ -8,16 +8,14 @@
 
 #include<boost/bind.hpp>
 
+#include<QLabel>
+
 #include<ramen/algorithm/clamp.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
-
-#include<QLabel>
-
-#include<ramen/nodes/node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
