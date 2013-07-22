@@ -11,8 +11,6 @@
 
 namespace ramen
 {
-namespace image
-{
 namespace detail
 {
 
@@ -83,7 +81,6 @@ protected:
     virtual void do_calc_hash_str( const render::context_t& context);
 };
 
-} // image
 } // ramen
 
 #endif

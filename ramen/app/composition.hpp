@@ -54,22 +54,15 @@ public:
 
     void add_node( std::auto_ptr<node_t> n);
     std::auto_ptr<node_t> release_node( node_t *n);
-    node_t *find_node( const std::string& name);
 
     void add_edge( const edge_t& e, bool notify = false);
     void remove_edge( const edge_t& e, bool notify = false);
-
-    void merge_composition( composition_t& other);
 
     node_range_type& nodes()                { return g_.nodes();}
     const_node_range_type& nodes() const	{ return g_.nodes();}
 
     const_edge_range_type& edges() const	{ return g_.edges();}
     edge_range_type& edges()                { return g_.edges();}
-
-    // import composition needs access to this...
-    const unique_name_map_t<node_t*>& node_map() const;
-    std::string make_name_unique( const std::string& s) const;
 
     // observer
     typedef boost::signals2::connection connection_type;

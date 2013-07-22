@@ -43,13 +43,6 @@ composition_t::~composition_t()
         released_( &(*it));
 }
 
-const unique_name_map_t<node_t*>& composition_t::node_map() const { return node_map_;}
-
-std::string composition_t::make_name_unique( const std::string& s) const
-{
-    return node_map().make_name_unique( s);
-}
-
 void composition_t::add_node( std::auto_ptr<node_t> n)
 {
     node_map_.insert( n.get());
@@ -70,11 +63,6 @@ std::auto_ptr<node_t> composition_t::release_node( node_t *n)
     return g_.release_node( n);
 }
 
-node_t *composition_t::find_node( const std::string& name)
-{
-    return node_map_.find( name);
-}
-
 void composition_t::add_edge( const edge_t& e, bool notify)
 {
     g_.add_edge( e);
@@ -89,47 +77,6 @@ void composition_t::remove_edge( const edge_t& e, bool notify)
 
     if( notify)
         e.dst->connected( 0, e.port);
-}
-
-void composition_t::merge_composition( composition_t& other)
-{
-    // convert all relative paths
-    boost::filesystem::path doc_dir( composition_dir());
-
-    if( doc_dir.empty())
-        other.make_all_paths_absolute();
-    else
-        other.set_composition_dir( doc_dir);
-
-    // rename all nodes from other composition
-    unique_name_map_t<node_t*> nmap( node_map());
-
-    BOOST_FOREACH( node_t& n, other.nodes())
-    {
-        std::string new_name( nmap.make_name_unique( n.name()));
-
-        if( new_name != n.name())
-            other.rename_node( &n, new_name);
-
-        nmap.insert_null( n.name());
-    }
-
-    // save edges
-    std::vector<edge_t> other_edges( other.edges());
-
-    while( !other.edges().empty())
-        other.remove_edge( other.edges()[0]);
-
-    // transfer nodes
-    while( !other.nodes().empty())
-    {
-        node_t& n = other.nodes()[0];
-        std::auto_ptr<node_t> nn( other.release_node( &n));
-        add_node( nn);
-    }
-
-    BOOST_FOREACH( edge_t& e, other_edges)
-        add_edge( e);
 }
 
 void composition_t::rename_node( node_t *n, const std::string& new_name)

@@ -8,8 +8,6 @@
 
 namespace ramen
 {
-namespace image
-{
 
 generator_node_t::generator_node_t() : node_t()
 {
@@ -52,5 +50,4 @@ void generator_node_t::do_calc_hash_str( const render::context_t& context)
     hash_generator() << context.subsample;
 }
 
-} // image
 } // ramen

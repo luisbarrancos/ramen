@@ -30,6 +30,8 @@ private:
     virtual node_t *do_clone() const;
 
     virtual void do_create_params();
+
+    virtual void do_notify();
 };
 
 } // ramen

@@ -258,10 +258,10 @@ void main_window_t::create_actions()
     preferences_ = new QAction( "Preferences...", this);
     connect( preferences_, SIGNAL( triggered()), this, SLOT( show_preferences_dialog()));
 
-    comp_settings_ = new QAction( "Composition Settings...", this);
+    comp_settings_ = new QAction( "Composition Settings", this);
     comp_settings_->setShortcut( QString( "Ctrl+K"));
     comp_settings_->setShortcutContext( Qt::ApplicationShortcut);
-    connect( comp_settings_, SIGNAL( triggered()), this, SLOT( show_composition_settings_dialog()));
+    connect( comp_settings_, SIGNAL( triggered()), this, SLOT( show_composition_settings()));
 
     comp_flipbook_ = new QAction( "Render Flipbook...", this);
     connect( comp_flipbook_, SIGNAL( triggered()), this, SLOT( render_flipbook()));
@@ -807,9 +807,11 @@ void main_window_t::clear_cache()
     app().memory_manager().clear_caches();
 }
 
-void main_window_t::show_composition_settings_dialog()
+void main_window_t::show_composition_settings()
 {
-    composition_settings_dialog_t::instance().exec_dialog();
+    //composition_settings_dialog_t::instance().exec_dialog();
+    //ins
+    app().ui()->inspector().edit_node( &app().document().composition_node());
 }
 
 void main_window_t::render_composition()

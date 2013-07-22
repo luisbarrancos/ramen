@@ -99,7 +99,7 @@ public Q_SLOTS:
 
     void show_preferences_dialog();
 
-    void show_composition_settings_dialog();
+    void show_composition_settings();
 
     void render_flipbook();
     void render_composition();

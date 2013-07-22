@@ -78,6 +78,7 @@ public:
     edge_range_type& edges()                { return edges_;}
 
     // connections
+    bool can_connect( node_t *src, node_t *dst, int port);
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
 

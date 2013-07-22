@@ -14,7 +14,7 @@ class color_node_t : public generator_node_t
 public:
 
     static const node_info_t& color_node_info();
-    virtual const node_info_t *info() const;
+    virtual const node_info_t *node_info() const;
 
     color_node_t() : generator_node_t()
     {
@@ -59,7 +59,7 @@ private:
 // factory
 node_t *create_color_node() { return new color_node_t();}
 
-const node_info_t *color_node_t::info() const { return &color_node_info();}
+const node_info_t *color_node_t::node_info() const { return &color_node_info();}
 
 const node_info_t& color_node_t::color_node_info()
 {
