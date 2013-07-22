@@ -51,6 +51,7 @@ public:
     typedef const std::vector<edge_t>	const_edge_range_type;
 
     composite_node_t();
+    ~composite_node_t();
 
     void add_node( std::auto_ptr<node_t> n);
     std::auto_ptr<node_t> release_node( node_t *n);
@@ -89,6 +90,8 @@ protected:
 private:
 
     void operator=( const composite_node_t& other);
+
+    virtual void do_set_frame( float f);
 
     node_container_type nodes_;
     std::vector<edge_t> edges_;

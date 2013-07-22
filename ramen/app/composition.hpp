@@ -118,22 +118,11 @@ public:
     void set_frame_rate( int f)   { frame_rate_ = f;}
 
     // selections
-    typedef boost::signals2::signal<void ()> selection_signal_type;
-    selection_signal_type selection_changed;
-
-    connection_type attach_selection_observer( selection_signal_type::slot_function_type subscriber)
-    {
-        return selection_changed.connect( subscriber);
-    }
-
     void select_all();
     void deselect_all();
 
     bool any_selected() const;
     node_t *selected_node();
-
-    // composition settings
-    boost::signals2::signal<void ( composition_t *)> settings_changed;
 
     // home directory, for relative paths
     const boost::filesystem::path& composition_dir() const;

@@ -151,6 +151,9 @@ void user_interface_t::create_new_document()
     app().document().composition().attach_add_observer( boost::bind( &user_interface_t::node_added, this, _1));
     app().document().composition().attach_release_observer( boost::bind( &user_interface_t::node_released, this, _1));
 
+    //app().document().composition_node().node_added.connect( boost::bind( &user_interface_t::node_added, this, _1));
+    //app().document().composition_node().node_released.connect( boost::bind( &user_interface_t::node_released, this, _1));
+
     render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
                                                                 app().document().composition().end_frame());
 

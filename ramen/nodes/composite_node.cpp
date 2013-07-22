@@ -4,6 +4,9 @@
 
 #include<ramen/nodes/composite_node.hpp>
 
+#include<boost/range/algorithm/for_each.hpp>
+#include<boost/bind.hpp>
+
 #include<ramen/assert.hpp>
 
 #include<ramen/container/ptr_vector_util.hpp>
@@ -22,8 +25,12 @@ composite_node_t::composite_node_t( const composite_node_t& other) : node_t( oth
     throw core::not_implemented();
 }
 
+composite_node_t::~composite_node_t() {}
+
 void composite_node_t::add_node( std::auto_ptr<node_t> n)
 {
+    RAMEN_ASSERT( n->parent() == 0);
+
     n->set_parent( this);
     nodes_.push_back( n);
 }
@@ -32,8 +39,12 @@ std::auto_ptr<node_t> composite_node_t::release_node( node_t *n)
 {
     RAMEN_ASSERT( n->parent() == this);
 
-    n->set_parent( 0);
-    return container::release_ptr( n, nodes_);
+    std::auto_ptr<node_t> nn( container::release_ptr( n, nodes_));
+
+    if( nn.get())
+        nn->set_parent( 0);
+
+    return nn;
 }
 
 void composite_node_t::add_edge( const edge_t& e)
@@ -86,6 +97,11 @@ void composite_node_t::connect( node_t *src, node_t *dst, int port)
 void composite_node_t::disconnect( node_t *src, node_t *dst, int port)
 {
     remove_edge( edge_t( src, dst, port));
+}
+
+void composite_node_t::do_set_frame( float f)
+{
+    boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));
 }
 
 } // ramen
