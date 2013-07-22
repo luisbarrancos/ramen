@@ -77,7 +77,7 @@ Imath::Box2i numeric_param_t::frame_area() const
         ++area.max.y;
     }
     else
-        area = composition()->default_format().area();
+        area = composition_node()->default_format().area();
 
     return area;
 }

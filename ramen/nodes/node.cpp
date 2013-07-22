@@ -74,7 +74,7 @@ node_t::node_t( const node_t& other) :  manipulable_t( other),
 
 node_t::~node_t()
 {
-    deleted( this);
+    composition_node_t::node_deleted( this);
 }
 
 node_t *node_t::clone() const
@@ -207,7 +207,7 @@ bool node_t::is_context() const    { return util::test_flag( flags_, context_bit
 
 bool node_t::autokey() const
 {
-    if( const composition_t *c = composition())
+    if( const composition_node_t *c = composition_node())
         return c->autokey();
 
     return false;

@@ -9,6 +9,8 @@
 
 #include<ramen/nodes/composite_node.hpp>
 
+#include<ramen/render/context.hpp>
+
 namespace ramen
 {
 
@@ -18,6 +20,27 @@ public:
 
     /// Constructor
     composition_node_t();
+
+    // signals
+
+    /// Emitted when a node is created.
+    static boost::signals2::signal<void ( node_t*)> node_created;
+
+    /// Emitted when a node is deleted.
+    static boost::signals2::signal<void ( node_t*)> node_deleted;
+
+    int start_frame() const;
+    int end_frame() const;
+
+    float frame() const;
+
+    bool autokey() const;
+
+    image::format_t default_format() const;
+
+    int frame_rate() const;
+
+    render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
 protected:
 

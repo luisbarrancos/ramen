@@ -26,8 +26,8 @@ animated_param_command_t::animated_param_command_t( param_set_t& pset, const std
 
     previous_value_ = p->value();
 
-	for( int i = 0; i < p->num_curves(); ++i)
-		old_.push_back( p->curve( i));
+    for( int i = 0; i < p->num_curves(); ++i)
+        old_.push_back( p->curve( i));
 }
 
 void animated_param_command_t::swap_curves()
@@ -35,7 +35,7 @@ void animated_param_command_t::swap_curves()
     animated_param_t *p = dynamic_cast<animated_param_t*>( &pset_.find( id_));
 
     for( int i = 0; i < old_.size(); ++i)
-		old_[i].swap( p->curve( i));
+        old_[i].swap( p->curve( i));
 }
 
 void animated_param_command_t::undo()
@@ -44,22 +44,22 @@ void animated_param_command_t::undo()
     new_value_ = p.value();
     swap_curves();
     p.value() =  previous_value_;
-    p.evaluate( app().document().composition().frame());
+    p.evaluate( app().document().composition_node().frame());
     p.update_widgets();
-	p.emit_param_changed( param_t::user_edited);
+    p.emit_param_changed( param_t::user_edited);
     undo::command_t::undo();
 }
 
 void animated_param_command_t::redo()
 {
     RAMEN_ASSERT( !new_value_.is_empty() && "Empty value in animated param command");
-    
+
     param_t& p = pset_.find( id_);
     p.value() =  new_value_;
     swap_curves();
-    p.evaluate( app().document().composition().frame());
+    p.evaluate( app().document().composition_node().frame());
     p.update_widgets();
-	p.emit_param_changed( param_t::user_edited);
+    p.emit_param_changed( param_t::user_edited);
     undo::command_t::redo();
 }
 

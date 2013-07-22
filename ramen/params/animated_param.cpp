@@ -99,8 +99,8 @@ void animated_param_t::set_component_value( int index, float comp_value, change_
 {
     float frame = 1.0f;
 
-    if( composition())
-        frame = composition()->frame();
+    if( composition_node())
+        frame = composition_node()->frame();
 
     set_component_value_at_frame( index, comp_value, frame, reason);
 }
@@ -145,9 +145,9 @@ void animated_param_t::anim_curve_changed( anim::any_curve_ptr_t& c) { do_anim_c
 
 void animated_param_t::do_anim_curve_changed( anim::any_curve_ptr_t& c)
 {
-    RAMEN_ASSERT( composition());
+    RAMEN_ASSERT( composition_node());
 
-    evaluate( composition()->frame());
+    evaluate( composition_node()->frame());
     update_widgets();
     emit_param_changed( user_edited);
 }
@@ -170,17 +170,17 @@ void animated_param_t::set_key( int curve_index)
         poly_param_indexable_value_t *val =  core::poly_cast<poly_param_indexable_value_t*>( &value());
 
         if( val)
-            curve( curve_index).insert( composition()->frame(), val->get_component( curve_index));
+            curve( curve_index).insert( composition_node()->frame(), val->get_component( curve_index));
         else
         {
             RAMEN_ASSERT( curve_index == 0);
 
             float v = value().cast<float>();
-            curve( 0).insert( composition()->frame(), v);
+            curve( 0).insert( composition_node()->frame(), v);
         }
     }
     else
-        curve( curve_index).insert( composition()->frame());
+        curve( curve_index).insert( composition_node()->frame());
 
     param_set()->end_edit( true);
     app().ui()->update_anim_editors();
@@ -224,7 +224,7 @@ void animated_param_t::paste( int curve_index)
     anim::clipboard_t::instance().paste( curve( curve_index));
     param_set()->end_edit( true);
 
-    evaluate( composition()->frame());
+    evaluate( composition_node()->frame());
     update_widgets();
     app().ui()->update_anim_editors();
 }

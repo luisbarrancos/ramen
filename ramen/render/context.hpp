@@ -5,7 +5,7 @@
 #ifndef RAMEN_RENDER_CONTEXT_HPP
 #define RAMEN_RENDER_CONTEXT_HPP
 
-#include<ramen/config.hpp>
+#include<ramen/render/context_fwd.hpp>
 
 #include<ramen/image/format.hpp>
 
@@ -29,8 +29,10 @@ enum render_mode
     analisys_render
 };
 
-struct RAMEN_API context_t
+class RAMEN_API context_t
 {
+public:
+
     context_t();
 
     bool render_cancelled() const;
@@ -38,6 +40,7 @@ struct RAMEN_API context_t
     // data
 
     composition_t *composition;
+    composition_node_t *composition_node;
 
     render_mode mode;
 

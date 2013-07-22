@@ -40,16 +40,13 @@ panel_t::panel_t( node_t *n) : n_( n), panel_( 0)
 
 panel_t::~panel_t()
 {
-    connection_.disconnect();
     panel_->deleteLater();
 }
 
-void panel_t::set_connection( const boost::signals2::connection c)
+void panel_t::update()
 {
-    connection_ = c;
+    n_->update_widgets();
 }
-
-void panel_t::update() { n_->update_widgets();}
 
 } // ui
 } // ramen

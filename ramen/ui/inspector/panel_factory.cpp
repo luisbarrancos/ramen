@@ -6,7 +6,7 @@
 
 #include<boost/bind.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ui/inspector/panel.hpp>
 
@@ -15,7 +15,10 @@ namespace ramen
 namespace ui
 {
 
-panel_factory_t::panel_factory_t() {}
+panel_factory_t::panel_factory_t()
+{
+    composition_node_t::node_deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
+}
 
 panel_factory_t::~panel_factory_t()
 {
@@ -30,7 +33,8 @@ panel_factory_t::iterator panel_factory_t::create_panel( node_t *n)
 
     if( it == panels_.end())
     {
-        do_create_panel( n);
+        panel_t *panel = new panel_t( n);
+        panels_[ n] = panel;
         it = panels_.find( n);
     }
 
@@ -46,14 +50,6 @@ void panel_factory_t::delete_panel( node_t *n)
         delete it->second;
         panels_.erase( n);
     }
-}
-
-void panel_factory_t::do_create_panel( node_t *n)
-{
-    panel_t *panel = new panel_t( n);
-    panels_[ n] = panel;
-    boost::signals2::connection c = n->deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
-    panel->set_connection( c);
 }
 
 } // ui

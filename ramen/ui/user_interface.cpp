@@ -148,14 +148,8 @@ void user_interface_t::create_new_document()
 
     app().create_new_document();
 
-    app().document().composition().attach_add_observer( boost::bind( &user_interface_t::node_added, this, _1));
-    app().document().composition().attach_release_observer( boost::bind( &user_interface_t::node_released, this, _1));
-
-    //app().document().composition_node().node_added.connect( boost::bind( &user_interface_t::node_added, this, _1));
-    //app().document().composition_node().node_released.connect( boost::bind( &user_interface_t::node_released, this, _1));
-
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-                                                                app().document().composition().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
+                                                             app().document().composition_node().end_frame());
 
     render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
     update();
@@ -203,8 +197,8 @@ void user_interface_t::open_document( const boost::filesystem::path& p)
     // read here ui info
 
     // update the dialogs
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-                                                    app().document().composition().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
+                                                             app().document().composition_node().end_frame());
 
     render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
 
@@ -275,11 +269,6 @@ void user_interface_t::set_context_node( node_t *n)
     }
 }
 
-void user_interface_t::node_added( node_t *n)
-{
-    viewer().node_added( n);
-}
-
 void user_interface_t::node_released( node_t *n)
 {
     if( n == active_)
@@ -293,8 +282,6 @@ void user_interface_t::node_released( node_t *n)
         set_context_node( 0);
         update();
     }
-
-    viewer().node_released( n);
 }
 
 void user_interface_t::update()
@@ -326,47 +313,47 @@ void user_interface_t::end_interaction()
 
 int user_interface_t::start_frame() const
 {
-    return app().document().composition().start_frame();
+    return app().document().composition_node().start_frame();
 }
 
 int user_interface_t::end_frame() const
 {
-    return app().document().composition().end_frame();
+    return app().document().composition_node().end_frame();
 }
 
 float user_interface_t::frame() const
 {
-    return app().document().composition().frame();
+    return app().document().composition_node().frame();
 }
 
 void user_interface_t::set_start_frame( int t)
 {
     app().document().composition().set_start_frame( t);
-    main_window()->time_slider().update( app().document().composition().start_frame(),
-                                         app().document().composition().frame(),
-                                         app().document().composition().end_frame());
+    main_window()->time_slider().update( app().document().composition_node().start_frame(),
+                                         app().document().composition_node().frame(),
+                                         app().document().composition_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-                                                            app().document().composition().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
+                                                             app().document().composition_node().end_frame());
 }
 
 void user_interface_t::set_end_frame( int t)
 {
     app().document().composition().set_end_frame( t);
-    main_window()->time_slider().update( app().document().composition().start_frame(),
-                                         app().document().composition().frame(),
-                                         app().document().composition().end_frame());
+    main_window()->time_slider().update( app().document().composition_node().start_frame(),
+                                         app().document().composition_node().frame(),
+                                         app().document().composition_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-                                                            app().document().composition().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
+                                                             app().document().composition_node().end_frame());
 }
 
 void user_interface_t::set_frame( int t)
 {
     app().document().composition().set_frame( t);
-    main_window()->time_slider().update( app().document().composition().start_frame(),
-                                         app().document().composition().frame(),
-                                         app().document().composition().end_frame());
+    main_window()->time_slider().update( app().document().composition_node().start_frame(),
+                                         app().document().composition_node().frame(),
+                                         app().document().composition_node().end_frame());
 
     inspector().update();
     update_anim_editors();

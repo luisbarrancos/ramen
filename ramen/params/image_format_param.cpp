@@ -41,8 +41,8 @@ param_t *image_format_param_t::do_clone() const { return new image_format_param_
 
 void image_format_param_t::do_init()
 {
-    if( composition())
-        value().assign( composition()->default_format());
+    if( composition_node())
+        value().assign( composition_node()->default_format());
     else
         value().assign( image::format_t());
 }

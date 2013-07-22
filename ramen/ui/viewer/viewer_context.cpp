@@ -67,7 +67,7 @@ viewer_context_t::~viewer_context_t()
 }
 
 void viewer_context_t::set_view_mode( view_mode_t m)
-{ 
+{
     if( m != view_mode_)
     {
         view_mode_ = m;
@@ -89,18 +89,6 @@ void viewer_context_t::set_autoupdate( bool b)
         autoupdate_ = b;
         strategy().autoupdate_changed();
     }
-}
-
-void viewer_context_t::node_added( node_t *n)
-{
-    boost::range::for_each( strategies_,
-                            boost::bind( &viewer_strategy_t::node_added, _1, n));
-}
-
-void viewer_context_t::node_released( node_t *n)
-{
-    boost::range::for_each( strategies_,
-                            boost::bind( &viewer_strategy_t::node_released, _1, n));
 }
 
 void viewer_context_t::set_active_node( node_t *n)

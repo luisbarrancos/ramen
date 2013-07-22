@@ -108,7 +108,7 @@ time_controls_t::time_controls_t() : window_(0), stop_playing_( true)
     autokey_ = new QToolButton();
     autokey_->setText( "Autokey");
     autokey_->setCheckable( true);
-    autokey_->setChecked( app().document().composition().autokey());
+    autokey_->setChecked( app().document().composition_node().autokey());
     connect( autokey_, SIGNAL( toggled( bool)), this, SLOT( set_autokey(bool)));
     layout->addWidget( autokey_);
 }
@@ -147,7 +147,7 @@ void time_controls_t::update()
     node_t *n = app().document().composition().selected_node();
     flipbook_->setEnabled( n != 0);
     autokey_->blockSignals( true);
-    autokey_->setChecked( app().document().composition().autokey());
+    autokey_->setChecked( app().document().composition_node().autokey());
     autokey_->blockSignals( false);
 }
 

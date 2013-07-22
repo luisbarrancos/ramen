@@ -54,30 +54,6 @@ node_t *param_t::node()
     return param_set()->node();
 }
 
-const composition_t *param_t::composition() const
-{
-    RAMEN_ASSERT( param_set());
-
-    const node_t *n = node();
-
-    if( n)
-        return n->composition();
-
-    return 0;
-}
-
-composition_t *param_t::composition()
-{
-    RAMEN_ASSERT( param_set());
-
-    node_t *n = node();
-
-    if( n)
-        return n->composition();
-
-    return 0;
-}
-
 const composition_node_t *param_t::composition_node() const
 {
     RAMEN_ASSERT( param_set());

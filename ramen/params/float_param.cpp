@@ -50,7 +50,7 @@ void float_param_t::set_value( float x, change_reason reason)
 {
     float frame = 1.0;
 
-    if( composition_t * c = composition())
+    if( composition_node_t * c = composition_node())
         frame = c->frame();
 
     set_value_at_frame( x, frame, reason);
@@ -65,7 +65,7 @@ void float_param_t::set_value_at_frame( float x, float frame, change_reason reas
     {
         curve().insert( frame, x);
 
-        if( composition_t * c = composition())
+        if( composition_node_t * c = composition_node())
             evaluate( c->frame());
     }
     else

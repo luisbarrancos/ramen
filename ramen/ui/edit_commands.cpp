@@ -2,8 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
-
 #include<ramen/ui/edit_commands.hpp>
 
 #include<boost/bind.hpp>
@@ -14,6 +12,8 @@
 #include<ramen/app/document.hpp>
 
 #include<ramen/nodes/graph_algorithm.hpp>
+
+#include<ramen/ui/user_interface.hpp>
 
 namespace ramen
 {
@@ -29,26 +29,26 @@ void extract_command_t::add_dependent_node( node_t *n) { dependents_.insert( n);
 
 bool extract_command_t::edge_less( const edge_t& a, const edge_t& b)
 {
-	if( a.dst < b.dst)
-		return true;
-	else
-	{
-		if( a.dst > b.dst)
-			return false;
-		else
-			return a.port < b.port;
-	}
+    if( a.dst < b.dst)
+        return true;
+    else
+    {
+        if( a.dst > b.dst)
+            return false;
+        else
+            return a.port < b.port;
+    }
 }
 
 bool extract_command_t::edge_compare( const edge_t& a, const edge_t& b)
 {
-	return a.dst == b.dst && a.port == b.port;
+    return a.dst == b.dst && a.port == b.port;
 }
 
 void extract_command_t::add_candidate_edge( const edge_t& e, node_t *src, std::vector<edge_t>& edges)
 {
-	if( e.src->selected() && !e.dst->selected())
-		edges.push_back( edge_t( src, e.dst, e.port));
+    if( e.src->selected() && !e.dst->selected())
+        edges.push_back( edge_t( src, e.dst, e.port));
 }
 
 void extract_command_t::undo()
@@ -79,9 +79,9 @@ void delete_command_t::add_node( node_t *n)
 void delete_command_t::undo()
 {
     composition_t *comp = &app().document().composition();
-	
+
     boost::range::for_each( edges_to_add_, boost::bind( &composition_t::remove_edge, comp, _1, true));
-	
+
     while( !node_storage_.empty())
     {
         std::auto_ptr<node_t> ptr( node_storage_.pop_back().release());
@@ -98,13 +98,14 @@ void delete_command_t::redo()
     for( std::vector<node_t*>::const_iterator it( nodes_.begin()); it != nodes_.end(); ++it)
     {
         std::auto_ptr<node_t> ptr( app().document().composition().release_node( *it));
+        app().ui()->node_released( ptr.get());
         node_storage_.push_back( ptr);
     }
 
     composition_t *comp = &app().document().composition();
     boost::range::for_each( edges_to_remove_, boost::bind( &composition_t::remove_edge, comp, _1, true));
     boost::range::for_each( edges_to_add_, boost::bind( &composition_t::add_edge, comp, _1, true));
-	
+
     breadth_first_multiple_outputs_search( dependents_, boost::bind( &node_t::notify, _1));
     command_t::redo();
 }
@@ -124,6 +125,7 @@ void duplicate_command_t::undo()
     for( std::vector<node_t*>::const_iterator it( nodes_.begin()); it != nodes_.end(); ++it)
     {
         std::auto_ptr<node_t> ptr( app().document().composition().release_node( *it));
+        app().ui()->node_released( ptr.get());
         node_storage_.push_back( ptr);
     }
 

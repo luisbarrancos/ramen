@@ -55,9 +55,6 @@ public:
     void set_autoupdate( bool b);
 
     // nodes
-    void node_added( node_t *n);
-    void node_released( node_t *n);
-
     void set_active_node( node_t *n);
     void set_context_node( node_t *n);
 

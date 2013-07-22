@@ -147,6 +147,9 @@ void file_param_t::do_convert_relative_paths( const boost::filesystem::path& old
 
 void file_param_t::do_make_paths_absolute()
 {
+    RAMEN_ASSERT( false);
+
+    /*
     RAMEN_ASSERT( composition());
 
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
@@ -156,10 +159,14 @@ void file_param_t::do_make_paths_absolute()
         value().assign( composition()->relative_to_absolute( p));
         update_widgets();
     }
+    */
 }
 
 void file_param_t::do_make_paths_relative()
 {
+    RAMEN_ASSERT( false);
+
+    /*
     RAMEN_ASSERT( composition());
 
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
@@ -169,6 +176,7 @@ void file_param_t::do_make_paths_relative()
         value().assign( composition()->absolute_to_relative( p));
         update_widgets();
     }
+    */
 }
 
 QWidget *file_param_t::do_create_widgets()
@@ -257,8 +265,9 @@ void file_param_t::select_pushed()
 
         if( is_input_ && relative)
         {
-            RAMEN_ASSERT( composition());
-            p = composition()->absolute_to_relative( p);
+            RAMEN_ASSERT( false);
+            //RAMEN_ASSERT( composition());
+            //p = composition()->absolute_to_relative( p);
         }
 
         update_input_text( p);

@@ -156,10 +156,10 @@ int application_t::run()
             }
 
             if( !start_frame_)
-                start_frame_ = document().composition().start_frame();
+                start_frame_ = document().composition_node().start_frame();
 
             if( !end_frame_)
-                end_frame_ = document().composition().end_frame();
+                end_frame_ = document().composition_node().end_frame();
 
             if( !proxy_level_)
                 proxy_level_ = 0;

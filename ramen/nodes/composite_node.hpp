@@ -17,6 +17,8 @@
 #include<boost/bind.hpp>
 #include<boost/ptr_container/ptr_vector.hpp>
 
+#include<ramen/core/name.hpp>
+
 #include<ramen/nodes/edge.hpp>
 
 namespace ramen
@@ -82,6 +84,16 @@ public:
     bool can_connect( node_t *src, node_t *dst, int port);
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
+
+    // will be protected later...
+
+    std::auto_ptr<node_t> create_node( const std::string& id, bool ui);
+
+    std::auto_ptr<node_t> create_node( const std::string& id,
+                                       const std::pair<int,int>& version);
+
+    std::auto_ptr<node_t> create_unknown_node( const std::string& id,
+                                               const std::pair<int, int>& version);
 
 protected:
 

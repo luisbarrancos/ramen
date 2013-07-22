@@ -28,9 +28,9 @@ public:
     comp_settings_command_t( const image::format_t& new_format,
                              int new_frame_rate) : undo::command_t( "Comp Settings Changed")
     {
-        old_format_ = app().document().composition().default_format();
+        old_format_ = app().document().composition_node().default_format();
         new_format_ = new_format;
-        old_frame_rate_ = app().document().composition().frame_rate();
+        old_frame_rate_ = app().document().composition_node().frame_rate();
         new_frame_rate_ = new_frame_rate;
     }
 
@@ -71,13 +71,13 @@ composition_settings_dialog_t::composition_settings_dialog_t() : QDialog( app().
 void composition_settings_dialog_t::exec_dialog()
 {
     // update widgets here...
-    ui_.format_->set_value( app().document().composition().default_format());
-    ui_.rate_->setValue( app().document().composition().frame_rate());
+    ui_.format_->set_value( app().document().composition_node().default_format());
+    ui_.rate_->setValue( app().document().composition_node().frame_rate());
 
     if( exec() == QDialog::Accepted)
     {
-        if( ui_.format_->value() != app().document().composition().default_format() ||
-            ui_.rate_->value() != app().document().composition().frame_rate())
+        if( ui_.format_->value() != app().document().composition_node().default_format() ||
+            ui_.rate_->value() != app().document().composition_node().frame_rate())
         {
             std::auto_ptr<comp_settings_command_t> cmd( new comp_settings_command_t( ui_.format_->value(),
                                                                                      ui_.rate_->value()));

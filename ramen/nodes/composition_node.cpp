@@ -17,6 +17,9 @@
 namespace ramen
 {
 
+boost::signals2::signal<void ( node_t*)> composition_node_t::node_created;
+boost::signals2::signal<void ( node_t*)> composition_node_t::node_deleted;
+
 composition_node_t::composition_node_t() : composite_node_t()
 {
 }
@@ -83,6 +86,48 @@ void composition_node_t::do_create_params()
 
 void composition_node_t::do_notify()
 {
+}
+
+int composition_node_t::start_frame() const
+{
+    return get_value<float>( param( "start_frame"));
+}
+
+int composition_node_t::end_frame() const
+{
+    return get_value<float>( param( "end_frame"));
+}
+
+float composition_node_t::frame() const
+{
+    return get_value<float>( param( "frame"));
+}
+
+bool composition_node_t::autokey() const
+{
+    return get_value<bool>( param( "autokey"));
+}
+
+image::format_t composition_node_t::default_format() const
+{
+    return get_value<image::format_t>( param( "format"));
+}
+
+int composition_node_t::frame_rate() const
+{
+    return get_value<float>( param( "frame_rate"));
+}
+
+render::context_t composition_node_t::current_context( render::render_mode mode) const
+{
+    render::context_t c;
+    c.mode = mode;
+    c.composition = 0;
+    c.composition_node = const_cast<composition_node_t*>( this);
+    c.subsample = 1;
+    c.frame = frame();
+    c.default_format = default_format();
+    return c;
 }
 
 } // ramen

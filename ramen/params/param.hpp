@@ -5,8 +5,6 @@
 #ifndef RAMEN_PARAM_HPP
 #define RAMEN_PARAM_HPP
 
-#include<ramen/config.hpp>
-
 #include<ramen/params/param_fwd.hpp>
 
 #include<memory>
@@ -23,6 +21,8 @@
 #include<QObject>
 
 #include<ramen/assert.hpp>
+
+#include<ramen/core/name.hpp>
 
 #include<ramen/app/composition_fwd.hpp>
 
@@ -121,14 +121,6 @@ public:
 
     /// Returns a pointer to the node this param belongs to.
     node_t *node();
-
-    /* Start remove */
-    /// Returns a const pointer to the composition this param belongs to.
-    const composition_t *composition() const;
-
-    /// Returns a pointer to the composition this param belongs to.
-    composition_t *composition();
-    /* End remove */
 
     /// Returns a const pointer to the composition node this param belongs to.
     const composition_node_t *composition_node() const;

@@ -75,7 +75,6 @@ public:
     bool save_document();
 
     // nodes
-    void node_added( node_t *n);
     void node_released( node_t *n);
 
     void begin_interaction();

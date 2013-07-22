@@ -64,22 +64,6 @@ public:
     const_edge_range_type& edges() const	{ return g_.edges();}
     edge_range_type& edges()                { return g_.edges();}
 
-    // observer
-    typedef boost::signals2::connection connection_type;
-    typedef boost::signals2::signal<void ( node_t*)> signal_type;
-
-    // called when a node is added, used in the inspector and viewer
-    connection_type attach_add_observer( signal_type::slot_function_type subscriber)
-    {
-        return added_.connect( subscriber);
-    }
-
-    // called when a node is released, used in the inspector and viewer
-    connection_type attach_release_observer( signal_type::slot_function_type subscriber)
-    {
-        return released_.connect( subscriber);
-    }
-
     // connections
     bool can_connect( node_t *src, node_t *dst, int port);
     void connect( node_t *src, node_t *dst, int port);
@@ -97,24 +81,17 @@ public:
     void end_interaction();
 
     // settings
-    int start_frame() const	{ return start_frame_;}
-    int end_frame() const	{ return end_frame_;}
-
     void set_start_frame( int f)    { start_frame_ = f;}
     void set_end_frame( int f)      { end_frame_ = f;}
 
-    float frame() const		{ return frame_;}
     void set_frame( float f);
 
-    bool autokey() const        { return autokey_;}
     void set_autokey( bool b)   { autokey_ = b;}
 
     render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
-    image::format_t default_format() const             { return default_format_;}
     void set_default_format( const image::format_t& f) { default_format_ = f;}
 
-    int frame_rate() const        { return frame_rate_;}
     void set_frame_rate( int f)   { frame_rate_ = f;}
 
     // selections
@@ -150,9 +127,6 @@ private:
     //void read_nodes( serialization::yaml_iarchive_t& in);
     //void read_node( const serialization::yaml_node_t& node);
 
-    std::auto_ptr<node_t> create_node( const std::string& id, const std::pair<int,int>& version);
-    std::auto_ptr<node_t> create_unknown_node( const std::string& id, const std::pair<int, int>& version);
-
     //void read_edges( const serialization::yaml_iarchive_t& in);
     //void read_edge( const serialization::yaml_node_t& node);
 
@@ -162,9 +136,6 @@ private:
 
     graph_type g_;
     unique_name_map_t<node_t*> node_map_;
-
-    signal_type added_;
-    signal_type released_;
 
     int start_frame_, end_frame_;
     float frame_;

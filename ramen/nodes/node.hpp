@@ -72,9 +72,6 @@ public:
     node_t();
     virtual ~node_t();
 
-    /// Emitted when this node is deleted.
-    boost::signals2::signal<void ( node_t*)> deleted;
-
     /// Makes a copy of the node.
     node_t *clone() const;
 
@@ -88,14 +85,14 @@ public:
     void set_name( const std::string& n);
 
     /* Start remove */
-    /// Returns the composition this node belongs to.
-    const composition_t *composition() const;
+        /// Returns the composition this node belongs to.
+        const composition_t *composition() const;
 
-    /// Returns the composition this node belongs to.
-    composition_t *composition();
+        /// Returns the composition this node belongs to.
+        composition_t *composition();
 
-    /// Sets the composition this node belongs to.
-    virtual void set_composition( composition_t *comp);
+        /// Sets the composition this node belongs to.
+        virtual void set_composition( composition_t *comp);
     /* End remove */
 
     /// Returns composite node this node belongs to.

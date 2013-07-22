@@ -64,7 +64,7 @@ void float3_param_t::set_value( const Imath::V3f& x, change_reason reason)
 {
     float frame = 1.0f;
 
-    if( composition_t * c = composition())
+    if( composition_node_t * c = composition_node())
         frame = c->frame();
 
     set_value_at_frame( x, frame, reason);
@@ -89,7 +89,7 @@ void float3_param_t::set_value_at_frame( const Imath::V3f& x, float frame, chang
     if( !is_static() && ( autokey || !curve( 2).empty()))
         curve( 2).insert( frame, x.z);
 
-    if( composition_t * c = composition())
+    if( composition_node_t * c = composition_node())
         evaluate( c->frame());
 
     emit_param_changed( reason);

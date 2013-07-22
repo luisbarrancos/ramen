@@ -291,7 +291,11 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         params/motion_blur_param.cpp
                         params/numeric_param.cpp
                         params/ocio_colorspace_param.cpp
+                        params/param_fwd.hpp
+                        params/param.hpp
                         params/param.cpp
+                        params/param_set_fwd.hpp
+                        params/param_set.hpp
                         params/param_set.cpp
                         params/popup_param.cpp
                         params/proportional_param.cpp
@@ -301,6 +305,8 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         params/string_param.cpp
                         params/tab_group_param.cpp
 
+                        render/context_fwd.hpp
+                        render/context.hpp
                         render/context.cpp
                         render/context_guard.cpp
                         render/node_renderer.cpp

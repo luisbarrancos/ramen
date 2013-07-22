@@ -57,9 +57,6 @@ public:
     void set_active( bool b)	{ active_ = b;}
 
     // nodes
-    virtual void node_added( node_t *n)     {}
-    virtual void node_released( node_t *n)  {}
-
     virtual bool can_display_node( node_t *n) const = 0;
 
     virtual void set_active_node( node_t *n, bool process = false)  {}

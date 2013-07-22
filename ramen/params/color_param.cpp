@@ -86,8 +86,8 @@ void color_param_t::set_value( const Imath::Color4f& x, change_reason reason)
 {
     float frame = 1.0f;
 
-    if( composition())
-        frame = composition()->frame();
+    if( composition_node())
+        frame = composition_node()->frame();
 
     set_value_at_frame( x, frame, reason);
 }
@@ -114,7 +114,7 @@ void color_param_t::set_value_at_frame( const Imath::Color4f& x, float frame, ch
     if( is_rgba() && !is_static() && ( autokey || !curve( 3).empty()))
         curve( 3).insert( frame, x.a);
 
-    if( composition_t * c = composition())
+    if( composition_node_t * c = composition_node())
         evaluate( c->frame());
 
     emit_param_changed( reason);

@@ -29,8 +29,6 @@ public:
     panel_t( node_t *n);
     ~panel_t();
 
-    void set_connection( const boost::signals2::connection c);
-
     QWidget *widget() { return panel_;}
 
     void update();
@@ -39,7 +37,6 @@ private:
 
     node_t *n_;
     QWidget *panel_;
-    boost::signals2::connection connection_;
 };
 
 } // ui

@@ -36,8 +36,6 @@ private:
     panel_factory_t( const panel_factory_t&);
     panel_factory_t& operator=( const panel_factory_t&);
 
-    void do_create_panel( node_t *n);
-
     std::map<node_t*,panel_t*> panels_;
     std::map<node_t*,panel_t*>::iterator current_;
 };

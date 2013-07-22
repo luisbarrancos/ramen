@@ -946,9 +946,9 @@ void main_window_t::update()
         setWindowTitle( "Ramen");
 
     update_menus();
-    time_slider_->update( app().document().composition().start_frame(),
-                          app().document().composition().frame(),
-                          app().document().composition().end_frame());
+    time_slider_->update( app().document().composition_node().start_frame(),
+                          app().document().composition_node().frame(),
+                          app().document().composition_node().end_frame());
 
     composition_view().update();
     time_controls_->update();

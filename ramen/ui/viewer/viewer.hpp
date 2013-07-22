@@ -47,9 +47,9 @@ public:
     viewer_t();
     ~viewer_t();
 
-	int width() const;
-	int height() const;
-	
+    int width() const;
+    int height() const;
+
     QWidget *widget() { return window_;}
 
     int toolbar_height() const;
@@ -59,9 +59,6 @@ public:
     void set_active_node( node_t *n);
     void set_context_node( node_t *n);
 
-    void node_added( node_t *n);
-    void node_released( node_t *n);
-
     void frame_changed();
 
     void set_status( const std::string& text);
@@ -69,18 +66,18 @@ public:
     // ocio
     const std::string& display_device() const;
     const std::string& display_transform() const;
-	
-	float exposure() const;
-	float gamma() const;
-	
-	void update_display_transform();
-	
-	// access to current viewer strategy
-	const viewer::viewer_strategy_t& current_viewer() const;
-	viewer::viewer_strategy_t& current_viewer();	
-	
-	void begin_interaction();
-	void end_interaction();
+
+    float exposure() const;
+    float gamma() const;
+
+    void update_display_transform();
+
+    // access to current viewer strategy
+    const viewer::viewer_strategy_t& current_viewer() const;
+    viewer::viewer_strategy_t& current_viewer();
+
+    void begin_interaction();
+    void end_interaction();
 
 public Q_SLOTS:
 
@@ -91,13 +88,15 @@ public Q_SLOTS:
      void change_display_transform( int index);
 
      void change_exposure( double d);
-	 void change_gamma( double d);
+     void change_gamma( double d);
 
 private:
 
+    void node_released( node_t *n);
+
     void get_display_devices();
     void get_display_transforms();
-    
+
     QWidget *window_;
     int toolbar_height_;
 
@@ -110,7 +109,7 @@ private:
     QComboBox *result_combo_;
     QComboBox *ocio_device_combo_;
     QComboBox *ocio_transform_combo_;
-	
+
     double_spinbox_t *exposure_input_;
     double_spinbox_t *gamma_input_;
 

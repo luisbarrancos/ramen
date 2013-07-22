@@ -15,6 +15,7 @@ context_t::context_t()
     frame = 1;
     subsample = 1;
     composition = 0;
+    composition_node = 0;
     result_node = 0;
     proxy_level = 0;
     motion_blur_extra_samples = 0;

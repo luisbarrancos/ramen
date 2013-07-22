@@ -4,6 +4,8 @@
 
 #include<ramen/ui/viewer/viewer.hpp>
 
+#include<boost/bind.hpp>
+
 #include<QHBoxLayout>
 #include<QVBoxLayout>
 #include<QFrame>
@@ -14,7 +16,7 @@
 
 #include<ramen/app/application.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ocio/manager.hpp>
 
@@ -84,66 +86,66 @@ viewer_t::viewer_t() : QObject()
     QHBoxLayout *horizontalLayout = new QHBoxLayout( viewer_controls);
     horizontalLayout->setContentsMargins( 0, 0, 0, 0);
 
-	result_combo_ = new QComboBox();
-	result_combo_->insertItems(0, QStringList() << "Active" << "Context");
-	QSize s = result_combo_->sizeHint();
+    result_combo_ = new QComboBox();
+    result_combo_->insertItems(0, QStringList() << "Active" << "Context");
+    QSize s = result_combo_->sizeHint();
 
-	update_btn_ = new QToolButton();
-	update_btn_->setFocusPolicy( Qt::NoFocus);
-	update_btn_->setCheckable(true);
-	update_btn_->setChecked(true);
-	update_btn_->setText( "U");
-	update_btn_->setToolTip( "Auto-update");
-	update_btn_->setMaximumWidth( s.height());
-	update_btn_->setMaximumHeight( s.height());
-	connect( update_btn_, SIGNAL( toggled( bool)), this, SLOT( autoupdate_toggle( bool)));
-	horizontalLayout->addWidget(update_btn_);
+    update_btn_ = new QToolButton();
+    update_btn_->setFocusPolicy( Qt::NoFocus);
+    update_btn_->setCheckable(true);
+    update_btn_->setChecked(true);
+    update_btn_->setText( "U");
+    update_btn_->setToolTip( "Auto-update");
+    update_btn_->setMaximumWidth( s.height());
+    update_btn_->setMaximumHeight( s.height());
+    connect( update_btn_, SIGNAL( toggled( bool)), this, SLOT( autoupdate_toggle( bool)));
+    horizontalLayout->addWidget(update_btn_);
 
-	result_combo_->setFocusPolicy( Qt::NoFocus);
-	result_combo_->setToolTip( "Show result / context node");
-	connect( result_combo_, SIGNAL( activated( int)), this, SLOT( change_active_context_view( int)));
-	horizontalLayout->addWidget(result_combo_);
+    result_combo_->setFocusPolicy( Qt::NoFocus);
+    result_combo_->setToolTip( "Show result / context node");
+    connect( result_combo_, SIGNAL( activated( int)), this, SLOT( change_active_context_view( int)));
+    horizontalLayout->addWidget(result_combo_);
 
     separator = new QFrame();
     separator->setFrameStyle( QFrame::VLine | QFrame::Raised);
     separator->setLineWidth( 1);
     horizontalLayout->addWidget( separator);
 
-	ocio_device_combo_->setFocusPolicy( Qt::NoFocus);
-	ocio_device_combo_->setToolTip( "Display Device");
-	connect( ocio_device_combo_, SIGNAL( activated( int)), this, SLOT( change_display_device( int)));
-	horizontalLayout->addWidget( ocio_device_combo_);
+    ocio_device_combo_->setFocusPolicy( Qt::NoFocus);
+    ocio_device_combo_->setToolTip( "Display Device");
+    connect( ocio_device_combo_, SIGNAL( activated( int)), this, SLOT( change_display_device( int)));
+    horizontalLayout->addWidget( ocio_device_combo_);
 
-	ocio_transform_combo_->setFocusPolicy( Qt::NoFocus);
-	ocio_transform_combo_->setToolTip( "Display Transform");
-	connect( ocio_transform_combo_, SIGNAL( activated( int)), this, SLOT( change_display_transform( int)));
-	horizontalLayout->addWidget( ocio_transform_combo_);
+    ocio_transform_combo_->setFocusPolicy( Qt::NoFocus);
+    ocio_transform_combo_->setToolTip( "Display Transform");
+    connect( ocio_transform_combo_, SIGNAL( activated( int)), this, SLOT( change_display_transform( int)));
+    horizontalLayout->addWidget( ocio_transform_combo_);
 
     exposure_input_ = new ui::double_spinbox_t();
-	s = exposure_input_->sizeHint();
-	exposure_input_->setMinimumSize( s);
-	exposure_input_->setMaximumSize( s);
-	exposure_input_->setMinimum(-30.0);
-	exposure_input_->setMaximum( 30.0);
-	exposure_input_->setSingleStep( 0.1);
-	exposure_input_->setDecimals( 3);
-	exposure_input_->setToolTip( "Viewer Exposure");
-	connect( exposure_input_, SIGNAL( valueChanged( double)), this, SLOT( change_exposure( double)));
-	connect( exposure_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_exposure( double)));
-	horizontalLayout->addWidget( exposure_input_);
+    s = exposure_input_->sizeHint();
+    exposure_input_->setMinimumSize( s);
+    exposure_input_->setMaximumSize( s);
+    exposure_input_->setMinimum(-30.0);
+    exposure_input_->setMaximum( 30.0);
+    exposure_input_->setSingleStep( 0.1);
+    exposure_input_->setDecimals( 3);
+    exposure_input_->setToolTip( "Viewer Exposure");
+    connect( exposure_input_, SIGNAL( valueChanged( double)), this, SLOT( change_exposure( double)));
+    connect( exposure_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_exposure( double)));
+    horizontalLayout->addWidget( exposure_input_);
 
     gamma_input_ = new ui::double_spinbox_t();
-	gamma_input_->setMinimumSize( s);
-	gamma_input_->setMaximumSize( s);
-	gamma_input_->setMinimum( 0);
-	gamma_input_->setMaximum( 4);
-	gamma_input_->setValue( 1);
-	gamma_input_->setSingleStep( 0.1);
-	gamma_input_->setDecimals( 3);
-	gamma_input_->setToolTip( "Viewer Gamma");
-	connect( gamma_input_, SIGNAL( valueChanged( double)), this, SLOT( change_gamma( double)));
-	connect( gamma_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_gamma( double)));
-	horizontalLayout->addWidget( gamma_input_);
+    gamma_input_->setMinimumSize( s);
+    gamma_input_->setMaximumSize( s);
+    gamma_input_->setMinimum( 0);
+    gamma_input_->setMaximum( 4);
+    gamma_input_->setValue( 1);
+    gamma_input_->setSingleStep( 0.1);
+    gamma_input_->setDecimals( 3);
+    gamma_input_->setToolTip( "Viewer Gamma");
+    connect( gamma_input_, SIGNAL( valueChanged( double)), this, SLOT( change_gamma( double)));
+    connect( gamma_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_gamma( double)));
+    horizontalLayout->addWidget( gamma_input_);
 
     separator = new QFrame();
     separator->setFrameStyle( QFrame::VLine | QFrame::Raised);
@@ -159,6 +161,8 @@ viewer_t::viewer_t() : QObject()
     viewer_controls->setLayout( horizontalLayout);
     layout->addWidget( viewer_controls);
     window_->setLayout( layout);
+
+    composition_node_t::node_deleted.connect( boost::bind( &viewer_t::node_released, this, _1));
 }
 
 viewer_t::~viewer_t() {}
@@ -262,8 +266,6 @@ void viewer_t::set_active_node( node_t *n)
 
 void viewer_t::set_context_node( node_t *n) { view_->set_context_node( n);}
 
-void viewer_t::node_added( node_t *n) { view_->node_added( n);}
-
 void viewer_t::node_released( node_t *n)
 {
     std::map<node_t*, QWidget*>::iterator it( node_toolbars_.find( n));
@@ -273,8 +275,6 @@ void viewer_t::node_released( node_t *n)
         delete it->second;
         node_toolbars_.erase( n);
     }
-
-    view_->node_released( n);
 }
 
 void viewer_t::frame_changed() { view_->frame_changed();}
@@ -332,13 +332,13 @@ void viewer_t::change_display_device( int index)
     ocio_transform_combo_->setCurrentIndex( new_index);
     display_transform_ = ocio_transform_combo_->itemText( new_index).toStdString();
     ocio_transform_combo_->blockSignals( false);
-	view_->display_transform_changed();
+    view_->display_transform_changed();
 }
 
 void viewer_t::change_display_transform( int index)
 {
     display_transform_ = display_transforms_[index];
-	view_->display_transform_changed();
+    view_->display_transform_changed();
 }
 
 void viewer_t::change_exposure( double d)	{ view_->exposure_changed();}

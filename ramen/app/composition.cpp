@@ -22,6 +22,8 @@
 
 #include<ramen/params/composite_param.hpp>
 
+#include<ramen/ui/user_interface.hpp>
+
 #include<iostream>
 
 namespace ramen
@@ -39,8 +41,11 @@ composition_t::composition_t()
 
 composition_t::~composition_t()
 {
-    for( node_iterator it( nodes().begin()); it != nodes().end(); ++it)
-        released_( &(*it));
+    if( app().ui())
+    {
+        for( node_iterator it( nodes().begin()); it != nodes().end(); ++it)
+            app().ui()->node_released( &*it);
+    }
 }
 
 void composition_t::add_node( std::auto_ptr<node_t> n)
@@ -52,12 +57,10 @@ void composition_t::add_node( std::auto_ptr<node_t> n)
     n->calc_format( context);
     n->format_changed();
     g_.add_node( n);
-    added_( n.get());
 }
 
 std::auto_ptr<node_t> composition_t::release_node( node_t *n)
 {
-    released_( n);
     node_map_.remove( n->name());
     n->set_composition( 0);
     return g_.release_node( n);
@@ -329,38 +332,6 @@ void composition_t::read_node( const serialization::yaml_node_t& node)
     }
 }
 */
-
-std::auto_ptr<node_t> composition_t::create_node( const std::string& id, const std::pair<int,int>& version)
-{
-    RAMEN_ASSERT( !id.empty());
-    RAMEN_ASSERT( version.first >= 0 && version.second >= 0);
-
-    std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id_with_version( id, version));
-
-    // as a last resort, return an unknown node
-    if( !p.get())
-        return create_unknown_node( id, version);
-
-    try
-    {
-        p->set_composition( this);
-        p->create_params();
-        p->create_manipulators();
-    }
-    catch( ...)
-    {
-        return create_unknown_node( id, version);
-    }
-
-    return p;
-}
-
-std::auto_ptr<node_t> composition_t::create_unknown_node( const std::string& id, const std::pair<int,int>& version)
-{
-    // TODO: implement this.
-    RAMEN_ASSERT( 0 && "Create unknown node not implemented yet");
-    return std::auto_ptr<node_t>();
-}
 
 /*
 void composition_t::read_edges( const serialization::yaml_iarchive_t& in)
