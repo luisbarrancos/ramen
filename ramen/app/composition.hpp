@@ -9,8 +9,6 @@
 #include<utility>
 #include<memory>
 
-#include<boost/noncopyable.hpp>
-
 #include<ramen/nodes/node_graph.hpp>
 #include<ramen/nodes/node.hpp>
 

@@ -1,47 +1,70 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/image/generate/color_node.hpp>
+#include<ramen/nodes/image/generator_node.hpp>
 
 #include<ramen/params/color_param.hpp>
 
 namespace ramen
 {
-namespace image
+
+class color_node_t : public generator_node_t
 {
+public:
 
-color_node_t::color_node_t() : generator_node_t() { set_name( "color");}
+    static const node_info_t& color_node_info();
+    virtual const node_info_t *info() const;
 
-void color_node_t::do_create_params()
-{
-    generator_node_t::do_create_params();
+    color_node_t() : generator_node_t()
+    {
+        set_name( "color");
+    }
 
-    std::auto_ptr<color_param_t> c( new color_param_t( "Color"));
-    c->set_id( "color");
-    c->set_default_value( Imath::Color4f( 0, 0, 0, 0));
-    add_param( c);
-}
+protected:
 
-void color_node_t::do_process( const render::context_t& context)
-{
-    Imath::Color4f c( get_value<Imath::Color4f>( param( "color")));
+    color_node_t( const color_node_t& other) : generator_node_t( other)
+    {
+    }
 
-    image::pixel_t p;
-    boost::gil::get_color( p, boost::gil::red_t())   = c.r;
-    boost::gil::get_color( p, boost::gil::green_t()) = c.g;
-    boost::gil::get_color( p, boost::gil::blue_t())  = c.b;
-    boost::gil::get_color( p, boost::gil::alpha_t()) = c.a;
-    boost::gil::fill_pixels( image_view(), p);
-}
+private:
+
+    void operator=( const color_node_t&);
+
+    virtual node_t *do_clone() const { return new color_node_t( *this);}
+
+    virtual void do_create_params()
+    {
+        generator_node_t::do_create_params();
+
+        std::auto_ptr<color_param_t> c( new color_param_t( "Color"));
+        c->set_id( "color");
+        c->set_default_value( Imath::Color4f( 0, 0, 0, 0));
+        add_param( c);
+    }
+
+    virtual void do_process( const render::context_t& context)
+    {
+        Imath::Color4f c( get_value<Imath::Color4f>( param( "color")));
+
+        image::pixel_t p;
+        boost::gil::get_color( p, boost::gil::red_t())   = c.r;
+        boost::gil::get_color( p, boost::gil::green_t()) = c.g;
+        boost::gil::get_color( p, boost::gil::blue_t())  = c.b;
+        boost::gil::get_color( p, boost::gil::alpha_t()) = c.a;
+        boost::gil::fill_pixels( image_view(), p);
+    }
+};
 
 // factory
 node_t *create_color_node() { return new color_node_t();}
 
-const node_metaclass_t *color_node_t::metaclass() const { return &color_node_metaclass();}
+const node_info_t *color_node_t::info() const { return &color_node_info();}
 
-const node_metaclass_t& color_node_t::color_node_metaclass()
+const node_info_t& color_node_t::color_node_info()
 {
     static bool inited( false);
-    static node_metaclass_t info;
+    static node_info_t info;
 
     if( !inited)
     {
@@ -58,7 +81,6 @@ const node_metaclass_t& color_node_t::color_node_metaclass()
     return info;
 }
 
-static bool registered = node_factory_t::instance().register_node( color_node_t::color_node_metaclass());
+static bool registered = node_factory_t::instance().register_node( color_node_t::color_node_info());
 
-} // namespace
-} // namespace
+} // ramen

@@ -21,7 +21,8 @@ struct generate_pixels_fun
 {
 public:
 
-    generate_pixels_fun( const image::image_view_t& dst, const Imath::Box2i& defined, Fun f) : dst_( dst), f_( f)
+    generate_pixels_fun( const image::image_view_t& dst,
+                         const Imath::Box2i& defined, Fun f) : dst_( dst), f_( f)
     {
         defined_ = defined;
     }
@@ -53,7 +54,10 @@ public:
 
     generator_node_t();
 
-    virtual bool use_cache( const render::context_t& context) const { return false;}
+    virtual bool use_cache( const render::context_t& context) const
+    {
+        return false;
+    }
 
 protected:
 
@@ -66,7 +70,8 @@ protected:
     void generate_pixels( Fun f)
     {
         detail::generate_pixels_fun<Fun> g( image_view(), defined(), f);
-        tbb::parallel_for( tbb::blocked_range<int>( defined().min.y, defined().max.y + 1), g, tbb::auto_partitioner());
+        tbb::parallel_for( tbb::blocked_range<int>( defined().min.y, defined().max.y + 1),
+                           g, tbb::auto_partitioner());
     }
 
 protected:

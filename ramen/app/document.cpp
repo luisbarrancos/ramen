@@ -16,10 +16,11 @@ namespace ramen
 
 document_t::document_t() : dirty_( false)
 {
+    comp_node_.create_params();
+    comp_node_.create_manipulators();
+
     undo_.reset( new undo::stack_t());
 }
-
-document_t::~document_t() {}
 
 void document_t::set_file( const boost::filesystem::path& p)
 {
@@ -27,6 +28,16 @@ void document_t::set_file( const boost::filesystem::path& p)
 
     file_ = p;
     composition().set_composition_dir( file_.parent_path());
+}
+
+const composition_node_t& document_t::composition_node() const
+{
+    return comp_node_;
+}
+
+composition_node_t& document_t::composition_node()
+{
+    return comp_node_;
 }
 
 /*

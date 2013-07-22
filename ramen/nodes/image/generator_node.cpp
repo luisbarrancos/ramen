@@ -11,7 +11,10 @@ namespace ramen
 namespace image
 {
 
-generator_node_t::generator_node_t() : node_t() { add_output_plug();}
+generator_node_t::generator_node_t() : node_t()
+{
+    add_output_plug();
+}
 
 generator_node_t::generator_node_t( const generator_node_t& other) : node_t( other) {}
 
@@ -33,14 +36,14 @@ void generator_node_t::do_calc_format( const render::context_t& context)
     set_proxy_scale( Imath::V2f( 1, 1));
 }
 
-void generator_node_t::do_calc_bounds( const render::context_t& context) { set_bounds( format());}
+void generator_node_t::do_calc_bounds( const render::context_t& context)
+{
+    set_bounds( format());
+}
 
 void generator_node_t::do_calc_defined( const render::context_t& context)
 {
-    //if( crop_to_format())
-        set_defined( ImathExt::intersect( bounds(), interest()));
-    //else
-        //set_defined( interest()); // infinite images
+    set_defined( ImathExt::intersect( bounds(), interest()));
 }
 
 void generator_node_t::do_calc_hash_str( const render::context_t& context)
@@ -49,5 +52,5 @@ void generator_node_t::do_calc_hash_str( const render::context_t& context)
     hash_generator() << context.subsample;
 }
 
-} // namespace
-} // namespace
+} // image
+} // ramen

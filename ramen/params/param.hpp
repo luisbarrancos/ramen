@@ -58,15 +58,15 @@ protected:
 
     enum flag_bits
     {
-        static_bit					= 1 << 0,   // param does not animate.
-        secret_bit					= 1 << 1,   // param does not show on the inspector.
-        persist_bit					= 1 << 2,   // param value is not saved to file.
-        can_undo_bit				= 1 << 3,   // param uses undo.
-        enabled_bit					= 1 << 4,   // param widgets are enabled in the inspector.
-        dont_track_mouse_bit		= 1 << 5,   // notify is called on mouse up only.
-        round_to_int_bit			= 1 << 6,   // for float params, round to value to integer. Emulates an integer_param.
-        proportional_bit			= 1 << 7,   // param is a float2 or float3 and the values can be modified proportionally.
-        include_in_hash_bit			= 1 << 8	// param is included in hash
+        static_bit				= 1 << 0,   // param does not animate.
+        secret_bit				= 1 << 1,   // param does not show on the inspector.
+        persist_bit				= 1 << 2,   // param value is not saved to file.
+        can_undo_bit			= 1 << 3,   // param uses undo.
+        enabled_bit				= 1 << 4,   // param widgets are enabled in the inspector.
+        dont_track_mouse_bit	= 1 << 5,   // notify is called on mouse up only.
+        round_to_int_bit		= 1 << 6,   // for float params, round to value to integer. Emulates an integer_param.
+        proportional_bit		= 1 << 7,   // param is a float2 or float3 and the values can be modified proportionally.
+        include_in_hash_bit		= 1 << 8	// param is included in hash
     };
 
 public:
@@ -122,11 +122,19 @@ public:
     /// Returns a pointer to the node this param belongs to.
     node_t *node();
 
+    /* Start remove */
     /// Returns a const pointer to the composition this param belongs to.
     const composition_t *composition() const;
 
-    /// Returns a const pointer to the composition this param belongs to.
+    /// Returns a pointer to the composition this param belongs to.
     composition_t *composition();
+    /* End remove */
+
+    /// Returns a const pointer to the composition node this param belongs to.
+    const composition_node_t *composition_node() const;
+
+    /// Returns a pointer to the composition node this param belongs to.
+    composition_node_t *composition_node();
 
     // flags
     bool enabled() const;
@@ -158,7 +166,9 @@ public:
     void emit_param_changed( change_reason reason);
 
     // format
-    void format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale);
+    void format_changed( const Imath::Box2i& new_format,
+                         float aspect,
+                         const Imath::V2f& proxy_scale);
 
     // animation
     void create_tracks( anim::track_t *parent);
@@ -172,7 +182,8 @@ public:
     std::auto_ptr<undo::command_t> create_command();
 
     // paths
-    void convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base);
+    void convert_relative_paths( const boost::filesystem::path& old_base,
+                                 const boost::filesystem::path& new_base);
     void make_paths_absolute();
     void make_paths_relative();
 
@@ -215,7 +226,9 @@ private:
 
     virtual void do_init();
 
-    virtual void do_format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale);
+    virtual void do_format_changed( const Imath::Box2i& new_format,
+                                    float aspect,
+                                    const Imath::V2f& proxy_scale);
 
     virtual void do_set_param_set( param_set_t *parent);
 
@@ -231,7 +244,8 @@ private:
     virtual void do_add_to_hash( hash::generator_t& hash_gen) const;
 
     // paths
-    virtual void do_convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base);
+    virtual void do_convert_relative_paths( const boost::filesystem::path& old_base,
+                                            const boost::filesystem::path& new_base);
     virtual void do_make_paths_absolute();
     virtual void do_make_paths_relative();
 

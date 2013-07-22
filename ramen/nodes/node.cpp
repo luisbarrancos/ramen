@@ -20,6 +20,8 @@
 
 #include<ramen/memory/manager.hpp>
 
+#include<ramen/nodes/composition_node.hpp>
+
 #include<ramen/image/color_bars.hpp>
 
 #include<ramen/anim/track.hpp>
@@ -50,7 +52,7 @@ struct frames_needed_less
 
 } // unnamed
 
-node_t::node_t() : manipulable_t(), flags_( 0), composition_( 0), dont_persist_params_( false)
+node_t::node_t() : manipulable_t(), parent_( 0), flags_( 0), composition_( 0), dont_persist_params_( false)
 {
     params_.set_node( this);
 }
@@ -65,6 +67,7 @@ node_t::node_t( const node_t& other) :  manipulable_t( other),
     boost::range::for_each( outputs_, boost::bind( &node_output_plug_t::set_parent_node, _1, this));
     flags_ = other.flags_;
     loc_ = other.loc_;
+    parent_ = 0;
     composition_ = other.composition_;
     dont_persist_params_ = other.dont_persist_params_;
 }
@@ -111,6 +114,51 @@ composition_t *node_t::composition()
 void node_t::set_composition( composition_t *comp)
 {
     composition_ = comp;
+}
+
+const composite_node_t *node_t::parent() const
+{
+    return parent_;
+}
+
+composite_node_t *node_t::parent()
+{
+    return parent_;
+}
+
+void node_t::set_parent( composite_node_t *comp)
+{
+    parent_ = comp;
+}
+
+const composition_node_t *node_t::composition_node() const
+{
+    const node_t *p = parent();
+
+    while( p)
+    {
+        if( const composition_node_t *c = dynamic_cast<const composition_node_t*>( p))
+            return c;
+
+        p = p->parent();
+    }
+
+    return 0;
+}
+
+composition_node_t *node_t::composition_node()
+{
+    node_t *p = parent();
+
+    while( p)
+    {
+        if( composition_node_t *c = dynamic_cast<composition_node_t*>( p))
+            return c;
+
+        p = p->parent();
+    }
+
+    return 0;
 }
 
 // visitor

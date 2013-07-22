@@ -264,8 +264,8 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         nodes/node_plug.cpp
                         nodes/node_output_interface.cpp
                         nodes/node_visitor.cpp
-                        nodes/world_node.hpp
-                        nodes/world_node.cpp
+                        nodes/composition_node.hpp
+                        nodes/composition_node.cpp
 
                         ocio/manager.cpp
                         ocio/gl_display_manager.cpp
@@ -403,100 +403,101 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         )
 
 IF( WITH_NODES)
-    SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} nodes/image/input/image_channels_param.hpp
-                                                nodes/image/input/image_seq_param.hpp
+    SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} #nodes/image/input/image_channels_param.hpp
+                                                #nodes/image/input/image_seq_param.hpp
 
                                                 #nodes/image/roto/roto_shape_param.hpp
                                                 #nodes/image/roto/shape_transform_param.hpp
                                                 #nodes/image/roto/toolbar.hpp
 
-                                                params/transform2_param.hpp
-                                                params/transform3_param.hpp
+                                                #params/transform2_param.hpp
+                                                #params/transform3_param.hpp
                                                 )
 
-    SET( RAMEN_SOURCES ${RAMEN_SOURCES}	imageio/import_multichannel_exr.cpp
+    SET( RAMEN_SOURCES ${RAMEN_SOURCES}	#imageio/import_multichannel_exr.cpp
 
-                                        manipulators/circle_manipulator.cpp
-                                        manipulators/point2_manipulator.cpp
-                                        manipulators/quad_manipulator.cpp
-                                        manipulators/transform2_manipulator.cpp
+                                        #manipulators/circle_manipulator.cpp
+                                        #manipulators/point2_manipulator.cpp
+                                        #manipulators/quad_manipulator.cpp
+                                        #manipulators/transform2_manipulator.cpp
 
-                                        nodes/image/areaop_node.cpp
-                                        nodes/image/base_blur_node.cpp
-                                        nodes/image/base_layer_node.cpp
-                                        nodes/image/base_output_node.cpp
-                                        nodes/image/base_warp_node.cpp
-                                        nodes/image/distort_node.cpp
+                                        #nodes/image/areaop_node.cpp
+                                        #nodes/image/base_blur_node.cpp
+                                        #nodes/image/base_layer_node.cpp
+                                        #nodes/image/base_output_node.cpp
+                                        #nodes/image/base_warp_node.cpp
+                                        #nodes/image/distort_node.cpp
+                                        nodes/image/generator_node.hpp
                                         nodes/image/generator_node.cpp
-                                        nodes/image/keyer_node.cpp
-                                        nodes/image/pointop_node.cpp
-                                        nodes/image/xform_node.cpp
-                                        nodes/image/xform2d_node.cpp
+                                        #nodes/image/keyer_node.cpp
+                                        #nodes/image/pointop_node.cpp
+                                        #nodes/image/xform_node.cpp
+                                        #nodes/image/xform2d_node.cpp
 
-                                        nodes/image/channel/copy_channels_node.cpp
-                                        nodes/image/channel/invert_node.cpp
-                                        nodes/image/channel/premult_node.cpp
-                                        nodes/image/channel/set_channels_node.cpp
-                                        nodes/image/channel/set_matte_node.cpp
+                                        #nodes/image/channel/copy_channels_node.cpp
+                                        #nodes/image/channel/invert_node.cpp
+                                        #nodes/image/channel/premult_node.cpp
+                                        #nodes/image/channel/set_channels_node.cpp
+                                        #nodes/image/channel/set_matte_node.cpp
 
-                                        nodes/image/color/adjust_hsv_node.cpp
-                                        nodes/image/color/cdl_node.cpp
-                                        nodes/image/color/channel_mixer_node.cpp
-                                        nodes/image/color/clamp_colors_node.cpp
-                                        nodes/image/color/color_correct_node.cpp
-                                        nodes/image/color/color_match_node.cpp
-                                        nodes/image/color/color_replace_node.cpp
-                                        nodes/image/color/colorspace_node.cpp
-                                        nodes/image/color/curves_node.cpp
-                                        nodes/image/color/exposure_node.cpp
-                                        nodes/image/color/gamma_node.cpp
-                                        nodes/image/color/hsv_colorize_node.cpp
-                                        nodes/image/color/ocio_colorspace_node.cpp
-                                        nodes/image/color/ocio_file_transform_node.cpp
-                                        nodes/image/color/tint_node.cpp
+                                        #nodes/image/color/adjust_hsv_node.cpp
+                                        #nodes/image/color/cdl_node.cpp
+                                        #nodes/image/color/channel_mixer_node.cpp
+                                        #nodes/image/color/clamp_colors_node.cpp
+                                        #nodes/image/color/color_correct_node.cpp
+                                        #nodes/image/color/color_match_node.cpp
+                                        #nodes/image/color/color_replace_node.cpp
+                                        #nodes/image/color/colorspace_node.cpp
+                                        #nodes/image/color/curves_node.cpp
+                                        #nodes/image/color/exposure_node.cpp
+                                        #nodes/image/color/gamma_node.cpp
+                                        #nodes/image/color/hsv_colorize_node.cpp
+                                        #nodes/image/color/ocio_colorspace_node.cpp
+                                        #nodes/image/color/ocio_file_transform_node.cpp
+                                        #nodes/image/color/tint_node.cpp
 
-                                        nodes/image/distort/displace_node.cpp
-                                        nodes/image/distort/turbulent_displace_node.cpp
-                                        nodes/image/distort/twirl_node.cpp
+                                        #nodes/image/distort/displace_node.cpp
+                                        #nodes/image/distort/turbulent_displace_node.cpp
+                                        #nodes/image/distort/twirl_node.cpp
 
-                                        nodes/image/filter/blur_channels_node.cpp
-                                        nodes/image/filter/blur_mask_node.cpp
-                                        nodes/image/filter/blur_node.cpp
-                                        nodes/image/filter/chroma_blur_node.cpp
-                                        nodes/image/filter/gauss_blur_node.cpp
-                                        nodes/image/filter/percentile_filter_node.cpp
-                                        nodes/image/filter/smart_blur_node.cpp
-                                        nodes/image/filter/unsharp_mask_node.cpp
+                                        #nodes/image/filter/blur_channels_node.cpp
+                                        #nodes/image/filter/blur_mask_node.cpp
+                                        #nodes/image/filter/blur_node.cpp
+                                        #nodes/image/filter/chroma_blur_node.cpp
+                                        #nodes/image/filter/gauss_blur_node.cpp
+                                        #nodes/image/filter/percentile_filter_node.cpp
+                                        #nodes/image/filter/smart_blur_node.cpp
+                                        #nodes/image/filter/unsharp_mask_node.cpp
 
-                                        nodes/image/generate/checkerboard_node.cpp
+                                        #nodes/image/generate/checkerboard_node.cpp
                                         nodes/image/generate/color_bars_node.cpp
                                         nodes/image/generate/color_node.cpp
-                                        nodes/image/generate/fractal_noise_node.cpp
-                                        nodes/image/generate/gradient_node.cpp
-                                        nodes/image/generate/grid_node.cpp
-                                        nodes/image/generate/rgradient_node.cpp
+                                        #nodes/image/generate/fractal_noise_node.cpp
+                                        #nodes/image/generate/gradient_node.cpp
+                                        #nodes/image/generate/grid_node.cpp
+                                        #nodes/image/generate/rgradient_node.cpp
 
-                                        nodes/image/input/image_channels_param.cpp
-                                        nodes/image/input/image_input_command.cpp
-                                        nodes/image/input/image_seq_param.cpp
-                                        nodes/image/input/input_node.cpp
-                                        nodes/image/input/input_clip.cpp
+                                        #nodes/image/input/image_channels_param.cpp
+                                        #nodes/image/input/image_input_command.cpp
+                                        #nodes/image/input/image_seq_param.cpp
+                                        #nodes/image/input/input_node.cpp
+                                        #nodes/image/input/input_clip.cpp
 
-                                        nodes/image/key/color_diff_keyer_node.cpp
-                                        nodes/image/key/lum_key_node.cpp
-                                        nodes/image/key/spill_suppressor_node.cpp
+                                        #nodes/image/key/color_diff_keyer_node.cpp
+                                        #nodes/image/key/lum_key_node.cpp
+                                        #nodes/image/key/spill_suppressor_node.cpp
 
-                                        nodes/image/layer/add_mix_layer_node.cpp
-                                        nodes/image/layer/alpha_layer_node.cpp
-                                        nodes/image/layer/key_mix_layer_node.cpp
-                                        nodes/image/layer/layer_node.cpp
+                                        #nodes/image/layer/add_mix_layer_node.cpp
+                                        #nodes/image/layer/alpha_layer_node.cpp
+                                        #nodes/image/layer/key_mix_layer_node.cpp
+                                        #nodes/image/layer/layer_node.cpp
 
-                                        nodes/image/lighting/glow_node.cpp
+                                        #nodes/image/lighting/glow_node.cpp
 
-                                        nodes/image/matte/alpha_levels_node.cpp
-                                        nodes/image/matte/alpha_ops_node.cpp
+                                        #nodes/image/matte/alpha_levels_node.cpp
+                                        #nodes/image/matte/alpha_ops_node.cpp
 
-                                        nodes/image/output/output_node.cpp
+                                        #nodes/image/output/output_node.cpp
 
                                         #nodes/image/roto/convert_tool.cpp
                                         #nodes/image/roto/create_tool.cpp
@@ -515,21 +516,21 @@ IF( WITH_NODES)
                                         #nodes/image/roto/scene_renderer.cpp
                                         #nodes/image/roto/triple.cpp
 
-                                        nodes/image/tonemap/global_tonemap_node.cpp
+                                        #nodes/image/tonemap/global_tonemap_node.cpp
 
-                                        nodes/image/transform/camera_shake_node.cpp
-                                        nodes/image/transform/crop_node.cpp
-                                        nodes/image/transform/expand_node.cpp
-                                        nodes/image/transform/flip_node.cpp
-                                        nodes/image/transform/move2d_node.cpp
-                                        nodes/image/transform/resize_node.cpp
-                                        nodes/image/transform/transform_blur_node.cpp
+                                        #nodes/image/transform/camera_shake_node.cpp
+                                        #nodes/image/transform/crop_node.cpp
+                                        #nodes/image/transform/expand_node.cpp
+                                        #nodes/image/transform/flip_node.cpp
+                                        #nodes/image/transform/move2d_node.cpp
+                                        #nodes/image/transform/resize_node.cpp
+                                        #nodes/image/transform/transform_blur_node.cpp
 
                                         nodes/image/util/nop_node.cpp
-                                        nodes/image/util/set_dod_node.cpp
+                                        #nodes/image/util/set_dod_node.cpp
 
-                                        params/transform2_param.cpp
-                                        params/transform3_param.cpp
+                                        #params/transform2_param.cpp
+                                        #params/transform3_param.cpp
                                         )
 ENDIF()
 

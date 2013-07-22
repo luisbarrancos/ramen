@@ -1,13 +1,36 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/image/generate/color_bars_node.hpp>
+#include<ramen/nodes/image/generator_node.hpp>
 
 #include<ramen/image/color_bars.hpp>
 
 namespace ramen
 {
-namespace image
+
+class color_bars_node_t : public generator_node_t
 {
+public:
+
+    static const node_info_t& color_bars_node_info();
+    virtual const node_info_t *info() const;
+
+    color_bars_node_t();
+
+protected:
+
+    color_bars_node_t( const color_bars_node_t& other) : generator_node_t( other) {}
+    void operator=( const color_bars_node_t&);
+
+private:
+
+    virtual node_t *do_clone() const { return new color_bars_node_t( *this);}
+
+    virtual void do_create_params();
+
+    virtual void do_process( const render::context_t& context);
+};
 
 color_bars_node_t::color_bars_node_t() : generator_node_t() { set_name( "color bars");}
 
@@ -24,12 +47,12 @@ void color_bars_node_t::do_process( const render::context_t& context)
 // factory
 node_t *create_color_bars_node() { return new color_bars_node_t();}
 
-const node_metaclass_t *color_bars_node_t::metaclass() const { return &color_bars_node_metaclass();}
+const node_info_t *color_bars_node_t::info() const { return &color_bars_node_info();}
 
-const node_metaclass_t& color_bars_node_t::color_bars_node_metaclass()
+const node_info_t& color_bars_node_t::color_bars_node_info()
 {
     static bool inited( false);
-    static node_metaclass_t info;
+    static node_info_t info;
 
     if( !inited)
     {
@@ -46,7 +69,6 @@ const node_metaclass_t& color_bars_node_t::color_bars_node_metaclass()
     return info;
 }
 
-static bool registered = node_factory_t::instance().register_node( color_bars_node_t::color_bars_node_metaclass());
+static bool registered = node_factory_t::instance().register_node( color_bars_node_t::color_bars_node_info());
 
-} // namespace
-} // namespace
+} // ramen

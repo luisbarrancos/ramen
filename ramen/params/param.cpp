@@ -43,35 +43,63 @@ void param_t::do_set_param_set( param_set_t *parent) {}
 const node_t *param_t::node() const
 {
     RAMEN_ASSERT( param_set());
+
     return param_set()->node();
 }
 
 node_t *param_t::node()
 {
     RAMEN_ASSERT( param_set());
+
     return param_set()->node();
 }
 
 const composition_t *param_t::composition() const
 {
     RAMEN_ASSERT( param_set());
+
     const node_t *n = node();
 
     if( n)
         return n->composition();
-    else
-        return 0;
+
+    return 0;
 }
 
 composition_t *param_t::composition()
 {
     RAMEN_ASSERT( param_set());
+
     node_t *n = node();
 
     if( n)
         return n->composition();
-    else
-        return 0;
+
+    return 0;
+}
+
+const composition_node_t *param_t::composition_node() const
+{
+    RAMEN_ASSERT( param_set());
+
+    const node_t *n = node();
+
+    if( n)
+        return n->composition_node();
+
+    return 0;
+}
+
+composition_node_t *param_t::composition_node()
+{
+    RAMEN_ASSERT( param_set());
+
+    node_t *n = node();
+
+    if( n)
+        return n->composition_node();
+
+    return 0;
 }
 
 void param_t::set_id( const std::string& identifier)
@@ -152,12 +180,18 @@ void param_t::emit_param_changed( change_reason reason)
     }
 }
 
-void param_t::format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale)
+void param_t::format_changed( const Imath::Box2i& new_format,
+                              float aspect,
+                              const Imath::V2f& proxy_scale)
 {
     do_format_changed( new_format, aspect, proxy_scale);
 }
 
-void param_t::do_format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale) {}
+void param_t::do_format_changed( const Imath::Box2i& new_format,
+                                 float aspect,
+                                 const Imath::V2f& proxy_scale)
+{
+}
 
 void param_t::add_to_hash( hash::generator_t& hash_gen) const
 {
@@ -195,12 +229,16 @@ std::auto_ptr<undo::command_t> param_t::do_create_command()
 }
 
 // paths
-void param_t::convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base)
+void param_t::convert_relative_paths( const boost::filesystem::path& old_base,
+                                      const boost::filesystem::path& new_base)
 {
     do_convert_relative_paths( old_base, new_base);
 }
 
-void param_t::do_convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base) {}
+void param_t::do_convert_relative_paths( const boost::filesystem::path& old_base,
+                                         const boost::filesystem::path& new_base)
+{
+}
 
 void param_t::make_paths_absolute()     { do_make_paths_absolute();}
 void param_t::do_make_paths_absolute()  {}

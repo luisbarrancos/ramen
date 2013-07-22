@@ -87,6 +87,7 @@ public:
     /// Sets the node name.
     void set_name( const std::string& n);
 
+    /* Start remove */
     /// Returns the composition this node belongs to.
     const composition_t *composition() const;
 
@@ -95,6 +96,22 @@ public:
 
     /// Sets the composition this node belongs to.
     virtual void set_composition( composition_t *comp);
+    /* End remove */
+
+    /// Returns composite node this node belongs to.
+    const composite_node_t *parent() const;
+
+    /// Returns composite node this node belongs to.
+    composite_node_t *parent();
+
+    /// Sets the composition this node belongs to.
+    void set_parent( composite_node_t *comp);
+
+    /// Returns the composition node this node belongs to.
+    const composition_node_t *composition_node() const;
+
+    /// Returns the composition node this node belongs to.
+    composition_node_t *composition_node();
 
     // inputs
     std::size_t num_inputs() const { return inputs_.size();}
@@ -473,6 +490,8 @@ private:
     bool dont_persist_params_;
     math::point2f_t loc_;
     std::vector<std::pair<int, float> > frames_needed_;
+
+    composite_node_t *parent_;
 
     // composition this node belongs to.
     composition_t *composition_;
