@@ -1,4 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #include<ramen/render/render_sequence.hpp>
 
@@ -8,7 +10,6 @@
 #include<boost/bind.hpp>
 #include<boost/timer.hpp>
 
-#include<ramen/app/composition.hpp>
 #include<ramen/app/application.hpp>
 
 namespace ramen
@@ -35,6 +36,7 @@ struct compare_outputs
 
 } // unnamed
 
+/*
 int count_output_nodes( composition_t& comp, bool selected_only)
 {
     count_outputs f;
@@ -61,7 +63,6 @@ int total_frames_to_render( composition_t& comp, int start, int end, bool select
 void render_sequence( composition_t& comp, int start, int end, int proxy_level,
                       int subsample, int mb_extra_samples, float mb_shutter_factor)
 {
-    /*
     if( end < start)
         return;
 
@@ -106,8 +107,8 @@ void render_sequence( composition_t& comp, int start, int end, int proxy_level,
 
     for_each_output( comp, false, boost::bind( &node_output_interface::end_output, _1, true));
     std::cout << "\nRender done. Frames renderered = " << rendered_frames << ". Total time = " << total_timer.elapsed() << " seconds.\n";
-    */
 }
+*/
 
 } // render
 } // ramen

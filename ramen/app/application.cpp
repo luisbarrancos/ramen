@@ -173,8 +173,10 @@ int application_t::run()
             if( !mb_shutter_factor_)
                 mb_shutter_factor_ = 1.0f;
 
+            /*
             render::render_sequence( document().composition(), start_frame_.get(), end_frame_.get(),
                                      proxy_level_.get(), subsample_.get(), mb_extra_samples_.get(), mb_shutter_factor_.get());
+            */
         }
     }
 

@@ -8,10 +8,8 @@
 
 #include<boost/bind.hpp>
 
+#include<ramen/nodes/composition_node.hpp>
 #include<ramen/nodes/graph_algorithm.hpp>
-#include<ramen/nodes/node.hpp>
-
-#include<ramen/app/composition.hpp>
 
 #include<iostream>
 

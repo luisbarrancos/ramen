@@ -6,10 +6,8 @@
 
 #include<boost/bind.hpp>
 
-#include<ramen/app/composition.hpp>
-
+#include<ramen/nodes/composition_node.hpp>
 #include<ramen/nodes/graph_algorithm.hpp>
-#include<ramen/nodes/node.hpp>
 
 namespace ramen
 {
@@ -28,7 +26,7 @@ context_guard_t::context_guard_t( const context_t& context, node_t *n)
         save( n_);
     else
     {
-        for( composition_t::const_node_iterator it( context_.composition_node->nodes().begin());
+        for( composition_node_t::const_node_iterator it( context_.composition_node->nodes().begin());
              it != context_.composition_node->nodes().end(); ++it)
         {
             const node_t *n = &(*it);
@@ -47,7 +45,7 @@ context_guard_t::~context_guard_t()
         restore( n_);
     else
     {
-        for( composition_t::node_iterator it( context_.composition_node->nodes().begin());
+        for( composition_node_t::node_iterator it( context_.composition_node->nodes().begin());
              it != context_.composition_node->nodes().end(); ++it)
         {
             node_t *n = &(*it);

@@ -813,6 +813,7 @@ void main_window_t::show_composition_settings()
 
 void main_window_t::render_composition()
 {
+    /*
     bool any_output = ( render::count_output_nodes( app().document().composition()) != 0);
 
     if( !any_output)
@@ -841,6 +842,7 @@ void main_window_t::render_composition()
                                 render_composition_dialog_t::instance().mblur_shutter_factor(),
                                 render_composition_dialog_t::instance().selected_only());
     }
+    */
 }
 
 void main_window_t::render_flipbook()

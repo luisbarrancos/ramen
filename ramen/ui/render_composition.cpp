@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
-
-
+// Licensed under the terms of the CDDL License.
+// See CDDL_LICENSE.txt for a copy of the license.
 
 #include<ramen/ui/render_composition.hpp>
 
@@ -11,7 +11,6 @@
 #include<QProgressDialog>
 
 #include<ramen/app/application.hpp>
-#include<ramen/app/composition.hpp>
 #include<ramen/app/application.hpp>
 
 #include<ramen/ui/user_interface.hpp>
@@ -64,10 +63,10 @@ private:
 
 } // unnamed
 
+/*
 void render_composition( composition_t& comp, int start, int end, int proxy_level,
                          int subsample, int mb_extra_samples, float mb_shutter_factor, bool selected_only)
 {
-    /*
     int num_frames = render::total_frames_to_render( comp, start, end, selected_only);
 
     if( num_frames == 0)
@@ -138,8 +137,8 @@ void render_composition( composition_t& comp, int start, int end, int proxy_leve
 cleanup:
 
     render::for_each_output( comp, selected_only, boost::bind( &node_output_interface::end_output, _1, success));
-    */
 }
+*/
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

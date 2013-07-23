@@ -11,8 +11,6 @@
 
 #include<ramen/core/memory.hpp>
 
-#include<ramen/app/composition.hpp>
-
 #include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/undo/stack_fwd.hpp>
@@ -44,10 +42,6 @@ public:
     //void load( serialization::yaml_iarchive_t& in);
     //void save( serialization::yaml_oarchive_t& out) const;
 
-    // composition
-    const composition_t& composition() const	{ return comp_;}
-    composition_t& composition()                { return comp_;}
-
     const composition_node_t& composition_node() const;
     composition_node_t& composition_node();
 
@@ -57,7 +51,6 @@ private:
     document_t( const document_t&);
     document_t& operator=( const document_t&);
 
-    composition_t comp_;
     mutable bool dirty_;
     core::auto_ptr_t<undo::stack_t> undo_;
     boost::filesystem::path file_;

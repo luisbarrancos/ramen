@@ -29,7 +29,7 @@
 
 #include<ramen/bezier/algorithm.hpp>
 
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/palette.hpp>
@@ -353,8 +353,8 @@ void composition_view_t::move_nodes_drag_handler( QMouseEvent *event)
     float yoffset = ( event->y() - last_y_) / ( height() / viewport().world().size().y);
     math::vector2f_t offset( xoffset, yoffset);
 
-    for( composition_t::node_iterator it( app().document().composition_node().nodes().begin());
-            it != app().document().composition().nodes().end(); ++it)
+    for( composition_node_t::node_iterator it( app().document().composition_node().nodes().begin());
+            it != app().document().composition_node().nodes().end(); ++it)
     {
         if( it->selected())
             it->offset_location( offset);
@@ -548,8 +548,8 @@ void composition_view_t::pick_node( const Imath::V2f& p, pick_result_t& result) 
 
     pick_node_visitor visitor( *this, p, result);
 
-    composition_t::reverse_node_iterator it( app().document().composition_node().nodes().rbegin());
-    composition_t::reverse_node_iterator last( app().document().composition_node().nodes().rend());
+    composition_node_t::reverse_node_iterator it( app().document().composition_node().nodes().rbegin());
+    composition_node_t::reverse_node_iterator last( app().document().composition_node().nodes().rend());
 
     for( ; it != last; ++it)
     {

@@ -128,9 +128,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         app/application_fwd.hpp
                         app/application.hpp
                         app/application.cpp
-                        app/composition_fwd.hpp
-                        app/composition.hpp
-                        app/composition.cpp
                         app/document_fwd.hpp
                         app/document.hpp
                         app/document.cpp

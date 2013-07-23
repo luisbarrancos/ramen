@@ -9,8 +9,6 @@
 
 #include<boost/foreach.hpp>
 
-#include<ramen/app/composition.hpp>
-
 #include<ramen/nodes/node_output_interface.hpp>
 
 namespace ramen
@@ -37,6 +35,7 @@ F for_each_output( composition_t& comp, bool selected_only, F fun)
 }
 */
 
+/*
 int count_output_nodes( composition_t& comp, bool selected_only = false);
 void get_output_nodes( composition_t& comp, std::vector<node_output_interface*> outputs, bool selected_only = false);
 
@@ -44,6 +43,7 @@ int total_frames_to_render( composition_t& comp, int start, int end, bool select
 
 void render_sequence( composition_t& comp, int start, int end, int proxy_level,
                       int subsample, int mb_extra_samples, float mb_shutter_factor);
+*/
 
 } // render
 } // ramen

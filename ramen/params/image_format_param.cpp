@@ -8,7 +8,6 @@
 #include<QComboBox>
 
 #include<ramen/app/application.hpp>
-#include<ramen/app/composition.hpp>
 
 #include<ramen/nodes/composition_node.hpp>
 

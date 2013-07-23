@@ -24,8 +24,6 @@
 
 #include<ramen/core/name.hpp>
 
-#include<ramen/app/composition_fwd.hpp>
-
 #include<ramen/nodes/node_fwd.hpp>
 
 #include<ramen/params/poly_param_value.hpp>
