@@ -6,8 +6,6 @@
 
 namespace ramen
 {
-namespace image
-{
 
 pointop_node_t::pointop_node_t() : node_t()
 {
@@ -27,5 +25,4 @@ void pointop_node_t::do_process( const render::context_t& context)
     do_process( input()->const_subimage_view( area), subimage_view( area), context);
 }
 
-} // namespace
-} // namespace
+} // ramen

@@ -431,7 +431,8 @@ IF( WITH_NODES)
                                         nodes/image/generator_node.hpp
                                         nodes/image/generator_node.cpp
                                         #nodes/image/keyer_node.cpp
-                                        #nodes/image/pointop_node.cpp
+                                        nodes/image/pointop_node.hpp
+                                        nodes/image/pointop_node.cpp
                                         #nodes/image/xform_node.cpp
                                         #nodes/image/xform2d_node.cpp
 
@@ -443,7 +444,7 @@ IF( WITH_NODES)
 
                                         #nodes/image/color/adjust_hsv_node.cpp
                                         #nodes/image/color/cdl_node.cpp
-                                        #nodes/image/color/channel_mixer_node.cpp
+                                        nodes/image/color/channel_mixer_node.cpp
                                         #nodes/image/color/clamp_colors_node.cpp
                                         #nodes/image/color/color_correct_node.cpp
                                         #nodes/image/color/color_match_node.cpp

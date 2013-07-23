@@ -196,11 +196,13 @@ void copy_channels_node_t::copy_channel( const image::const_image_view_t& src, i
     switch( src_ch)
     {
         case set_zero:
-            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 0.0f));
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch),
+                                     boost::gil::gray32f_pixel_t( 0.0f));
         break;
 
         case set_one:
-            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 1.0f));
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch),
+                                     boost::gil::gray32f_pixel_t( 1.0f));
         break;
 
         case copy_lum:
@@ -208,7 +210,8 @@ void copy_channels_node_t::copy_channel( const image::const_image_view_t& src, i
         break;
 
         default:
-            boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch), boost::gil::nth_channel_view( dst, dst_ch));
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch),
+                                     boost::gil::nth_channel_view( dst, dst_ch));
     }
 }
 

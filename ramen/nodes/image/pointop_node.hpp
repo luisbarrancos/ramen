@@ -11,8 +11,6 @@
 
 namespace ramen
 {
-namespace image
-{
 
 class RAMEN_API pointop_node_t : public node_t
 {
@@ -30,10 +28,11 @@ protected:
 private:
 
     virtual void do_process( const render::context_t& context);
-    virtual void do_process( const image::const_image_view_t& src, const image::image_view_t& dst, const render::context_t& context) = 0;
+    virtual void do_process( const image::const_image_view_t& src,
+                             const image::image_view_t& dst,
+                             const render::context_t& context) = 0;
 };
 
-} // image
 } // ramen
 
 #endif
