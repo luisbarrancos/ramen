@@ -18,6 +18,7 @@ namespace ramen
 namespace render
 {
 
+/*
 template<class F>
 F for_each_output( composition_t& comp, bool selected_only, F fun)
 {
@@ -34,6 +35,7 @@ F for_each_output( composition_t& comp, bool selected_only, F fun)
 
     return fun;
 }
+*/
 
 int count_output_nodes( composition_t& comp, bool selected_only = false);
 void get_output_nodes( composition_t& comp, std::vector<node_output_interface*> outputs, bool selected_only = false);

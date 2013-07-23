@@ -82,7 +82,7 @@ void node_renderer_t::set_context( const context_t& context)
     RAMEN_ASSERT( n_);
     n_->release_image();
 
-    n_->composition()->set_frame( new_context_.frame);
+    n_->composition_node()->set_frame( new_context_.frame);
     depth_first_inputs_search( *n_, boost::bind( &node_t::calc_format_fun, _1, new_context_));
     depth_first_inputs_search( *n_, boost::bind( &node_t::calc_bounds_fun, _1, new_context_));
     depth_first_inputs_search( *n_, boost::bind( &node_t::clear_interest_fun, _1));

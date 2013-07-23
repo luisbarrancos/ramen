@@ -14,7 +14,6 @@ context_t::context_t()
     mode = interface_render;
     frame = 1;
     subsample = 1;
-    composition = 0;
     composition_node = 0;
     result_node = 0;
     proxy_level = 0;

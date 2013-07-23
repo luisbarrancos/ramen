@@ -29,18 +29,48 @@ public:
     /// Emitted when a node is deleted.
     static boost::signals2::signal<void ( node_t*)> node_deleted;
 
+    void add_node( std::auto_ptr<node_t> n);
+    std::auto_ptr<node_t> release_node( node_t *n);
+
     int start_frame() const;
+    void set_start_frame( int f);
+
     int end_frame() const;
+    void set_end_frame( int f);
 
     float frame() const;
+    void set_frame( float f);
 
     bool autokey() const;
+    void set_autokey( bool b);
 
     image::format_t default_format() const;
+    void set_default_format( const image::format_t& f);
 
     int frame_rate() const;
+    void set_frame_rate( int f);
 
     render::context_t current_context( render::render_mode mode = render::interface_render) const;
+
+    // misc
+    void rename_node( node_t *n, const std::string& new_name);
+
+    const boost::filesystem::path& composition_dir() const;
+    void set_composition_dir( const boost::filesystem::path& dir);
+
+    void convert_all_relative_paths( const boost::filesystem::path& new_base);
+    void make_all_paths_absolute();
+    void make_all_paths_relative();
+
+    boost::filesystem::path relative_to_absolute( const boost::filesystem::path& p) const;
+    boost::filesystem::path absolute_to_relative( const boost::filesystem::path& p) const;
+
+    // selections
+    void select_all();
+    void deselect_all();
+
+    bool any_selected() const;
+    node_t *selected_node();
 
 protected:
 
@@ -55,6 +85,15 @@ private:
     virtual void do_create_params();
 
     virtual void do_notify();
+
+    virtual void do_begin_interaction();
+    virtual void do_end_interaction();
+
+    // notifications
+    void notify_all_dirty();
+    void clear_all_notify_dirty_flags();
+
+    boost::filesystem::path composition_dir_;
 };
 
 } // ramen

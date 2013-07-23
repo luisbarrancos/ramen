@@ -27,8 +27,6 @@
 
 #include<ramen/image/buffer.hpp>
 
-#include<ramen/app/composition_fwd.hpp>
-
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/nodes/graph_color.hpp>
@@ -83,17 +81,6 @@ public:
 
     /// Sets the node name.
     void set_name( const std::string& n);
-
-    /* Start remove */
-        /// Returns the composition this node belongs to.
-        const composition_t *composition() const;
-
-        /// Returns the composition this node belongs to.
-        composition_t *composition();
-
-        /// Sets the composition this node belongs to.
-        virtual void set_composition( composition_t *comp);
-    /* End remove */
 
     /// Returns composite node this node belongs to.
     const composite_node_t *parent() const;
@@ -489,9 +476,6 @@ private:
     std::vector<std::pair<int, float> > frames_needed_;
 
     composite_node_t *parent_;
-
-    // composition this node belongs to.
-    composition_t *composition_;
 
     // hash
     hash::generator_t hash_gen_;

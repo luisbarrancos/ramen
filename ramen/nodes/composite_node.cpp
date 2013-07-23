@@ -161,4 +161,14 @@ std::auto_ptr<node_t> composite_node_t::create_unknown_node( const std::string& 
     return std::auto_ptr<node_t>();
 }
 
+void composite_node_t::do_begin_interaction()
+{
+    boost::range::for_each( nodes(), boost::bind( &node_t::begin_interaction, _1));
+}
+
+void composite_node_t::do_end_interaction()
+{
+    boost::range::for_each( nodes(), boost::bind( &node_t::end_interaction, _1));
+}
+
 } // ramen

@@ -52,7 +52,7 @@ struct frames_needed_less
 
 } // unnamed
 
-node_t::node_t() : manipulable_t(), parent_( 0), flags_( 0), composition_( 0), dont_persist_params_( false)
+node_t::node_t() : manipulable_t(), parent_( 0), flags_( 0), dont_persist_params_( false)
 {
     params_.set_node( this);
 }
@@ -68,7 +68,6 @@ node_t::node_t( const node_t& other) :  manipulable_t( other),
     flags_ = other.flags_;
     loc_ = other.loc_;
     parent_ = 0;
-    composition_ = other.composition_;
     dont_persist_params_ = other.dont_persist_params_;
 }
 
@@ -99,21 +98,6 @@ void node_t::set_name( const std::string& n)
         throw std::runtime_error( "Invalid name for node");
 
     name_ = n;
-}
-
-const composition_t *node_t::composition() const
-{
-    return composition_;
-}
-
-composition_t *node_t::composition()
-{
-    return composition_;
-}
-
-void node_t::set_composition( composition_t *comp)
-{
-    composition_ = comp;
 }
 
 const composite_node_t *node_t::parent() const
@@ -321,7 +305,7 @@ void node_t::add_new_input_plug()
 
 void node_t::reconnect_node()
 {
-    composition_t *comp = composition();
+    composition_node_t *comp = composition_node();
 
     if( comp)
     {
@@ -366,14 +350,14 @@ void node_t::notify()
 
 void node_t::do_notify()
 {
-    RAMEN_ASSERT( composition());
+    RAMEN_ASSERT( composition_node());
 
     // keep the format up to date
     Imath::Box2i old_format( full_format());
     float old_aspect = aspect_ratio();
     Imath::V2f old_proxy_scale = proxy_scale();
 
-    render::context_t context = composition()->current_context();
+    render::context_t context = composition_node()->current_context();
     context.subsample = 1;
     calc_format( context);
 

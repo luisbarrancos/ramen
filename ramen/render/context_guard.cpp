@@ -19,7 +19,8 @@ namespace render
 
 context_guard_t::context_guard_t( const context_t& context, node_t *n)
 {
-    RAMEN_ASSERT( context.composition);
+    RAMEN_ASSERT( context.composition_node);
+
     context_ = context;
     n_ = n;
 
@@ -27,7 +28,8 @@ context_guard_t::context_guard_t( const context_t& context, node_t *n)
         save( n_);
     else
     {
-        for( composition_t::const_node_iterator it( context_.composition->nodes().begin()); it != context_.composition->nodes().end(); ++it)
+        for( composition_t::const_node_iterator it( context_.composition_node->nodes().begin());
+             it != context_.composition_node->nodes().end(); ++it)
         {
             const node_t *n = &(*it);
 
@@ -39,13 +41,14 @@ context_guard_t::context_guard_t( const context_t& context, node_t *n)
 
 context_guard_t::~context_guard_t()
 {
-    context_.composition->set_frame( context_.frame);
+    context_.composition_node->set_frame( context_.frame);
 
     if( n_)
         restore( n_);
     else
     {
-        for( composition_t::node_iterator it( context_.composition->nodes().begin()); it != context_.composition->nodes().end(); ++it)
+        for( composition_t::node_iterator it( context_.composition_node->nodes().begin());
+             it != context_.composition_node->nodes().end(); ++it)
         {
             node_t *n = &(*it);
 

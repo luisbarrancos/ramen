@@ -27,7 +27,7 @@ void document_t::set_file( const boost::filesystem::path& p)
     RAMEN_ASSERT( p.empty() || p.is_absolute());
 
     file_ = p;
-    composition().set_composition_dir( file_.parent_path());
+    composition_node().set_composition_dir( file_.parent_path());
 }
 
 const composition_node_t& document_t::composition_node() const

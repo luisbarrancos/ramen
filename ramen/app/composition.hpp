@@ -5,18 +5,7 @@
 #ifndef RAMEN_COMPOSITION_HPP
 #define	RAMEN_COMPOSITION_HPP
 
-#include<vector>
-#include<utility>
-#include<memory>
-
-#include<ramen/nodes/node_graph.hpp>
-#include<ramen/nodes/node.hpp>
-
-#include<ramen/container/unique_name_map.hpp>
-
-#include<ramen/render/context.hpp>
-
-#include<ramen/image/format.hpp>
+#include<ramen/config.hpp>
 
 namespace ramen
 {
@@ -29,119 +18,12 @@ class composition_t
 {
 public:
 
-    typedef node_graph_t graph_type;
-
-    typedef graph_type::node_iterator		node_iterator;
-    typedef graph_type::const_node_iterator	const_node_iterator;
-
-    typedef graph_type::reverse_node_iterator		reverse_node_iterator;
-    typedef graph_type::const_reverse_node_iterator	const_reverse_node_iterator;
-
-    typedef graph_type::node_range_type         node_range_type;
-    typedef graph_type::const_node_range_type	const_node_range_type;
-
-    typedef graph_type::edge_iterator		edge_iterator;
-    typedef graph_type::const_edge_iterator	const_edge_iterator;
-
-    typedef graph_type::reverse_edge_iterator		reverse_edge_iterator;
-    typedef graph_type::const_reverse_edge_iterator	const_reverse_edge_iterator;
-
-    typedef graph_type::edge_range_type         edge_range_type;
-    typedef graph_type::const_edge_range_type	const_edge_range_type;
-
     composition_t();
-    ~composition_t();
-
-    void add_node( std::auto_ptr<node_t> n);
-    std::auto_ptr<node_t> release_node( node_t *n);
-
-    void add_edge( const edge_t& e, bool notify = false);
-    void remove_edge( const edge_t& e, bool notify = false);
-
-    node_range_type& nodes()                { return g_.nodes();}
-    const_node_range_type& nodes() const	{ return g_.nodes();}
-
-    const_edge_range_type& edges() const	{ return g_.edges();}
-    edge_range_type& edges()                { return g_.edges();}
-
-    // connections
-    bool can_connect( node_t *src, node_t *dst, int port);
-    void connect( node_t *src, node_t *dst, int port);
-    void disconnect( node_t *src, node_t *dst, int port);
-
-    // misc
-    void rename_node( node_t *n, const std::string& new_name);
-
-    // notifications
-    void notify_all_dirty();
-    void clear_all_notify_dirty_flags();
-
-    // interacting
-    void begin_interaction();
-    void end_interaction();
-
-    // settings
-    void set_start_frame( int f)    { start_frame_ = f;}
-    void set_end_frame( int f)      { end_frame_ = f;}
-
-    void set_frame( float f);
-
-    void set_autokey( bool b)   { autokey_ = b;}
-
-    render::context_t current_context( render::render_mode mode = render::interface_render) const;
-
-    void set_default_format( const image::format_t& f) { default_format_ = f;}
-
-    void set_frame_rate( int f)   { frame_rate_ = f;}
-
-    // selections
-    void select_all();
-    void deselect_all();
-
-    bool any_selected() const;
-    node_t *selected_node();
-
-    // home directory, for relative paths
-    const boost::filesystem::path& composition_dir() const;
-    void set_composition_dir( const boost::filesystem::path& dir);
-
-    // convert
-    void convert_all_relative_paths( const boost::filesystem::path& new_base);
-    void make_all_paths_absolute();
-    void make_all_paths_relative();
-
-    boost::filesystem::path relative_to_absolute( const boost::filesystem::path& p) const;
-    boost::filesystem::path absolute_to_relative( const boost::filesystem::path& p) const;
-
-    // serialization
-    void load_from_file( const boost::filesystem::path& p);
-
-    //void read( serialization::yaml_iarchive_t& in);
-    //void write( serialization::yaml_oarchive_t& out) const;
 
 private:
 
     composition_t( const composition_t&);
     composition_t& operator=( const composition_t&);
-
-    //void read_nodes( serialization::yaml_iarchive_t& in);
-    //void read_node( const serialization::yaml_node_t& node);
-
-    //void read_edges( const serialization::yaml_iarchive_t& in);
-    //void read_edge( const serialization::yaml_node_t& node);
-
-    //void write_edge( serialization::yaml_oarchive_t& out, const edge_t& e) const;
-
-    boost::filesystem::path composition_dir_;
-
-    graph_type g_;
-    unique_name_map_t<node_t*> node_map_;
-
-    int start_frame_, end_frame_;
-    float frame_;
-    image::format_t default_format_;
-    int frame_rate_;
-    bool autokey_;
 };
 
 } // ramen

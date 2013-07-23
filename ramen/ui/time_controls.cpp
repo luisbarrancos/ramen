@@ -144,7 +144,7 @@ bool time_controls_t::eventFilter( QObject *watched, QEvent *event)
 
 void time_controls_t::update()
 {
-    node_t *n = app().document().composition().selected_node();
+    node_t *n = app().document().composition_node().selected_node();
     flipbook_->setEnabled( n != 0);
     autokey_->blockSignals( true);
     autokey_->setChecked( app().document().composition_node().autokey());
@@ -245,7 +245,7 @@ void time_controls_t::stop_playing()
 
 void time_controls_t::set_autokey( bool b)
 {
-    app().document().composition().set_autokey( b);
+    app().document().composition_node().set_autokey( b);
 }
 
 void time_controls_t::make_flipbook()

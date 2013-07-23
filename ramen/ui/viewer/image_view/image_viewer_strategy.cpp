@@ -214,7 +214,7 @@ node_t *image_viewer_strategy_t::visible_node()
 
 void image_viewer_strategy_t::render_visible_node()
 {
-    render::context_t context = app().document().composition().current_context( render::interface_render);
+    render::context_t context = app().document().composition_node().current_context( render::interface_render);
     context.result_node = visible_node();
 
     render::context_guard_t guard( context, context.result_node);

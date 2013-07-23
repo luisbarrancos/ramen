@@ -297,7 +297,7 @@ void user_interface_t::update()
 
 void user_interface_t::begin_interaction()
 {
-    app().document().composition().begin_interaction();
+    app().document().composition_node().begin_interaction();
     viewer().begin_interaction();
     interacting_ = true;
     app().memory_manager().begin_interaction();
@@ -308,7 +308,7 @@ void user_interface_t::end_interaction()
     interacting_ = false;
     app().memory_manager().end_interaction();
     viewer().end_interaction();
-    app().document().composition().end_interaction();
+    app().document().composition_node().end_interaction();
 }
 
 int user_interface_t::start_frame() const
@@ -328,7 +328,7 @@ float user_interface_t::frame() const
 
 void user_interface_t::set_start_frame( int t)
 {
-    app().document().composition().set_start_frame( t);
+    app().document().composition_node().set_start_frame( t);
     main_window()->time_slider().update( app().document().composition_node().start_frame(),
                                          app().document().composition_node().frame(),
                                          app().document().composition_node().end_frame());
@@ -339,7 +339,7 @@ void user_interface_t::set_start_frame( int t)
 
 void user_interface_t::set_end_frame( int t)
 {
-    app().document().composition().set_end_frame( t);
+    app().document().composition_node().set_end_frame( t);
     main_window()->time_slider().update( app().document().composition_node().start_frame(),
                                          app().document().composition_node().frame(),
                                          app().document().composition_node().end_frame());
@@ -350,7 +350,7 @@ void user_interface_t::set_end_frame( int t)
 
 void user_interface_t::set_frame( int t)
 {
-    app().document().composition().set_frame( t);
+    app().document().composition_node().set_frame( t);
     main_window()->time_slider().update( app().document().composition_node().start_frame(),
                                          app().document().composition_node().frame(),
                                          app().document().composition_node().end_frame());
@@ -422,7 +422,7 @@ bool user_interface_t::image_sequence_file_selector( const std::string& title, c
 
     if( app().document().has_file())
     {
-        RAMEN_ASSERT( !app().document().composition().composition_dir().empty());
+        RAMEN_ASSERT( !app().document().composition_node().composition_dir().empty());
         relative_check->setChecked( was_relative);
     }
     else

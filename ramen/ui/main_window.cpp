@@ -619,7 +619,7 @@ void main_window_t::ignore_nodes()
 {
     std::auto_ptr<undo::ignore_nodes_command_t> c( new undo::ignore_nodes_command_t());
 
-    BOOST_FOREACH( node_t& n, app().document().composition().nodes())
+    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
             c->add_node( &n);
@@ -634,24 +634,24 @@ void main_window_t::delete_nodes()
 {
     bool autoconnect = true;
 
-    if( !app().document().composition().any_selected())
+    if( !app().document().composition_node().any_selected())
         return;
 
     std::auto_ptr<undo::delete_command_t> c( new undo::delete_command_t());
 
-    BOOST_FOREACH( edge_t& e, app().document().composition().edges())
+    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
         if( e.src->selected() && !(e.dst->selected()))
             c->add_dependent_node( e.dst);
     }
 
-    BOOST_FOREACH( node_t& n, app().document().composition().nodes())
+    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
             c->add_node( &n);
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition().edges())
+    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
         if( e.src->selected() || e.dst->selected())
             c->add_edge_to_remove( e);
@@ -661,7 +661,7 @@ void main_window_t::delete_nodes()
     {
         std::vector<edge_t> edges_to_add;
 
-        BOOST_FOREACH( node_t& n, app().document().composition().nodes())
+        BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
         {
             if( n.selected())
             {
@@ -710,7 +710,7 @@ void main_window_t::duplicate_nodes()
     std::map<node_t*, node_t*> relation;
     std::auto_ptr<undo::duplicate_command_t> c( new undo::duplicate_command_t());
 
-    BOOST_FOREACH( node_t& n, app().document().composition().nodes())
+    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
         {
@@ -721,13 +721,13 @@ void main_window_t::duplicate_nodes()
         }
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition().edges())
+    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
         if( e.src->selected() && e.dst->selected())
             c->add_edge( edge_t( relation[e.src], relation[e.dst], e.port));
     }
 
-    app().document().composition().deselect_all();
+    app().document().composition_node().deselect_all();
     c->redo();
     app().document().undo_stack().push_back( c);
     app().ui()->update();
@@ -737,18 +737,18 @@ void main_window_t::extract_nodes()
 {
     bool autoconnect = true;
 
-    if( !app().document().composition().any_selected())
+    if( !app().document().composition_node().any_selected())
         return;
 
     std::auto_ptr<undo::extract_command_t> c( new undo::extract_command_t());
 
-    BOOST_FOREACH( edge_t& e, app().document().composition().edges())
+    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
         if( e.src->selected() && !(e.dst->selected()))
             c->add_dependent_node( e.dst);
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition().edges())
+    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
         if( e.src->selected() || e.dst->selected())
             c->add_edge_to_remove( e);
@@ -758,7 +758,7 @@ void main_window_t::extract_nodes()
     {
         std::vector<edge_t> edges_to_add;
 
-        BOOST_FOREACH( node_t& n, app().document().composition().nodes())
+        BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
         {
             if( n.selected())
             {
@@ -895,7 +895,7 @@ void main_window_t::create_node()
 
     try
     {
-        p->set_composition( &( app().document().composition()));
+        p->set_parent( &( app().document().composition_node()));
         p->create_params();
         p->create_manipulators();
     }
@@ -907,11 +907,11 @@ void main_window_t::create_node()
     }
 
     // test to see if we can autoconnect
-    node_t *src = app().document().composition().selected_node();
+    node_t *src = app().document().composition_node().selected_node();
 
     if( src && src->has_output_plug() && p->num_inputs() != 0)
     {
-        if( !app().document().composition().can_connect( src, p.get(), 0))
+        if( !app().document().composition_node().can_connect( src, p.get(), 0))
             src = 0;
     }
     else
@@ -924,7 +924,7 @@ void main_window_t::create_node()
 
     node_t *n = p.get(); // save for later use
     std::auto_ptr<undo::command_t> c( new undo::add_node_command_t( p, src));
-    app().document().composition().deselect_all();
+    app().document().composition_node().deselect_all();
     n->select( true);
     c->redo();
     app().document().undo_stack().push_back( c);
@@ -1002,8 +1002,8 @@ void main_window_t::init_recent_files_menu()
 
 void main_window_t::update_menus()
 {
-    bool any_selected = app().document().composition().any_selected();
-    node_t *n = app().document().composition().selected_node();
+    bool any_selected = app().document().composition_node().any_selected();
+    node_t *n = app().document().composition_node().selected_node();
 
     save_->setEnabled( app().document().dirty());
     export_sel_->setEnabled( any_selected);

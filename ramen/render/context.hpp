@@ -11,7 +11,6 @@
 
 #include<boost/function.hpp>
 
-#include<ramen/app/composition_fwd.hpp>
 #include<ramen/nodes/node_fwd.hpp>
 
 #include<ramen/util/error_log.hpp>
@@ -39,7 +38,6 @@ public:
 
     // data
 
-    composition_t *composition;
     composition_node_t *composition_node;
 
     render_mode mode;

@@ -99,6 +99,9 @@ protected:
 
     composite_node_t( const composite_node_t& other);
 
+    virtual void do_begin_interaction();
+    virtual void do_end_interaction();
+
 private:
 
     void operator=( const composite_node_t& other);
