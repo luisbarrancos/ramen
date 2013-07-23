@@ -8,6 +8,12 @@
 
 namespace ramen
 {
+namespace
+{
+
+core::name_t g_color( "color");
+
+} // unnamed
 
 class color_node_t : public generator_node_t
 {
@@ -38,14 +44,14 @@ private:
         generator_node_t::do_create_params();
 
         std::auto_ptr<color_param_t> c( new color_param_t( "Color"));
-        c->set_id( "color");
+        c->set_id( g_color);
         c->set_default_value( Imath::Color4f( 0, 0, 0, 0));
         add_param( c);
     }
 
     virtual void do_process( const render::context_t& context)
     {
-        Imath::Color4f c( get_value<Imath::Color4f>( param( "color")));
+        Imath::Color4f c( get_value<Imath::Color4f>( param( g_color)));
 
         image::pixel_t p;
         boost::gil::get_color( p, boost::gil::red_t())   = c.r;

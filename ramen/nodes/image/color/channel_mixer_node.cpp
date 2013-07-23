@@ -13,6 +13,10 @@ namespace ramen
 namespace
 {
 
+core::name_t g_red( "red");
+core::name_t g_green( "green");
+core::name_t g_blue( "blue");
+
 struct channel_mixer_fun
 {
     channel_mixer_fun( float mr, float mg, float mb)
@@ -62,21 +66,21 @@ private:
     virtual void do_create_params()
     {
         std::auto_ptr<float_param_t> p( new float_param_t( "Red"));
-        p->set_id( "red");
+        p->set_id( g_red);
         p->set_default_value( 0.212671f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
         add_param( p);
 
         p.reset( new float_param_t( "Green"));
-        p->set_id( "green");
+        p->set_id( g_green);
         p->set_default_value( 0.715160f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
         add_param( p);
 
         p.reset( new float_param_t( "Blue"));
-        p->set_id( "blue");
+        p->set_id( g_blue);
         p->set_default_value( 0.072169f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
@@ -87,9 +91,9 @@ private:
                              const image::image_view_t& dst,
                              const render::context_t& context)
     {
-        boost::gil::tbb_transform_pixels( src, dst, channel_mixer_fun( get_value<float>( param( "red")),
-                                                                       get_value<float>( param( "green")),
-                                                                       get_value<float>( param( "blue"))));
+        boost::gil::tbb_transform_pixels( src, dst, channel_mixer_fun( get_value<float>( param( g_red)),
+                                                                       get_value<float>( param( g_green)),
+                                                                       get_value<float>( param( g_blue))));
     }
 };
 

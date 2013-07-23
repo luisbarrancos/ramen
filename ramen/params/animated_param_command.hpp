@@ -26,7 +26,7 @@ class animated_param_command_t : public undo::command_t
 {
 public:
 
-    animated_param_command_t( param_set_t& pset, const std::string& id);
+    animated_param_command_t( param_set_t& pset, const core::name_t& id);
 
     virtual void undo();
     virtual void redo();
@@ -36,12 +36,12 @@ private:
     void swap_curves();
 
     param_set_t& pset_;
-    std::string id_;
+    core::name_t id_;
 
     ramen::poly_param_value_t previous_value_, new_value_;
     std::vector<anim::float_curve_t> old_;
 };
 
-} // namespace
+} // ramen
 
 #endif

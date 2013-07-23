@@ -12,7 +12,7 @@ namespace ramen
 namespace util
 {
 
-bool is_string_valid_identifier( const std::string& str);
+bool is_string_valid_identifier( const char *str);
 
 void increment_string_number( std::string& str);
 

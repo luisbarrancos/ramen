@@ -64,8 +64,8 @@ public:
         do_add_param( p.release());
     }
 
-    const param_t& find( const std::string& id) const;
-    param_t& find( const std::string& id);
+    const param_t& find( const core::name_t& id) const;
+    param_t& find( const core::name_t& id);
 
     boost::signals2::signal<void ( param_t*, param_t::change_reason)> param_changed;
     void notify_node();

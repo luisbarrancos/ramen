@@ -35,8 +35,8 @@ public:
     template<class T>
     void add_param( std::auto_ptr<T> p) { do_add_param( p.release());}
 
-    const param_t *find( const std::string& id) const;
-    param_t *find( const std::string& id);
+    const param_t *find( const core::name_t& id) const;
+    param_t *find( const core::name_t& id);
 
 protected:
 

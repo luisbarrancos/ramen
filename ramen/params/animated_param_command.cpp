@@ -17,7 +17,8 @@
 namespace ramen
 {
 
-animated_param_command_t::animated_param_command_t( param_set_t& pset, const std::string& id) : undo::command_t( "Param Changed"), pset_( pset)
+animated_param_command_t::animated_param_command_t( param_set_t& pset,
+                                                    const core::name_t& id) : undo::command_t( "Param Changed"), pset_( pset)
 {
     id_ = id;
     set_done( true);

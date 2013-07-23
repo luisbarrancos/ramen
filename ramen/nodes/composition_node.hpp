@@ -94,6 +94,13 @@ private:
     void clear_all_notify_dirty_flags();
 
     boost::filesystem::path composition_dir_;
+
+    float_param_t *start_frame_;
+    float_param_t *end_frame_;
+    float_param_t *frame_;
+    image_format_param_t *default_format_;
+    float_param_t *frame_rate_;
+    bool_param_t *autokey_;
 };
 
 } // ramen

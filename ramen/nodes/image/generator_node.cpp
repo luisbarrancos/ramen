@@ -9,6 +9,8 @@
 namespace ramen
 {
 
+core::name_t generator_node_t::g_format( "format");
+
 generator_node_t::generator_node_t() : node_t()
 {
     add_output_plug();
@@ -19,13 +21,13 @@ generator_node_t::generator_node_t( const generator_node_t& other) : node_t( oth
 void generator_node_t::do_create_params()
 {
     std::auto_ptr<image_format_param_t> p( new image_format_param_t( "Format"));
-    p->set_id( "format");
+    p->set_id( g_format);
     add_param( p);
 }
 
 void generator_node_t::do_calc_format( const render::context_t& context)
 {
-    image::format_t f( get_value<image::format_t>( param( "format")));
+    image::format_t f( get_value<image::format_t>( param( g_format)));
     Imath::Box2i area( f.area());
     --area.max.x;
     --area.max.y;

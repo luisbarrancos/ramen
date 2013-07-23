@@ -123,13 +123,13 @@ void param_set_t::do_add_param( param_t *p)
     params_.push_back( p);
 }
 
-const param_t& param_set_t::find( const std::string& id) const
+const param_t& param_set_t::find( const core::name_t& id) const
 {
     param_set_t& self = const_cast<param_set_t&>( *this);
     return self.find( id);
 }
 
-param_t& param_set_t::find( const std::string& id)
+param_t& param_set_t::find( const core::name_t& id)
 {
     RAMEN_ASSERT( !id.empty());
 
@@ -147,7 +147,7 @@ param_t& param_set_t::find( const std::string& id)
         }
     }
 
-    throw std::runtime_error( std::string( "Param not found: ").append( id));
+    throw core::runtime_error( core::make_string( "Param not found: ", id.c_str()));
 }
 
 void param_set_t::notify_node()

@@ -52,26 +52,26 @@ void composite_param_t::do_add_param( param_t *p)
         try
         {
             param_set()->find( p->id());
-            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id()));
+            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id().c_str()));
         }
         catch( std::runtime_error& e) {}
     }
     else
     {
         if( find( p->id()))
-            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id()));
+            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id().c_str()));
     }
 
     params().push_back( p);
 }
 
-const param_t *composite_param_t::find( const std::string& id) const
+const param_t *composite_param_t::find( const core::name_t& id) const
 {
     composite_param_t& self = const_cast<composite_param_t&>( *this);
     return self.find( id);
 }
 
-param_t *composite_param_t::find( const std::string& id)
+param_t *composite_param_t::find( const core::name_t& id)
 {
     BOOST_FOREACH( param_t& p, params())
     {

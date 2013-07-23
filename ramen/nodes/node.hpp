@@ -195,10 +195,10 @@ public:
     param_set_t& param_set()				{ return params_;}
 
     /// Returns a const reference to the param with identifier id.
-    const param_t& param( const std::string& identifier) const;
+    const param_t& param( const core::name_t& identifier) const;
 
     /// Returns a reference to the param with identifier id.
-    param_t& param( const std::string& identifier);
+    param_t& param( const core::name_t& identifier);
 
     /// Adds a param to this node.
     template<class T>

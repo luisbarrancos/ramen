@@ -25,6 +25,17 @@
 
 namespace ramen
 {
+namespace
+{
+
+core::name_t g_start_frame( "start_frame");
+core::name_t g_end_frame( "end_frame");
+core::name_t g_frame( "frame");
+core::name_t g_format( "format");
+core::name_t g_frame_rate( "frame_rate");
+core::name_t g_autokey( "autokey");
+
+} // unnamed
 
 boost::signals2::signal<void ( node_t*)> composition_node_t::node_created;
 boost::signals2::signal<void ( node_t*)> composition_node_t::node_deleted;
@@ -46,7 +57,8 @@ node_t *composition_node_t::do_clone() const
 void composition_node_t::do_create_params()
 {
     std::auto_ptr<float_param_t> p( new float_param_t( "Start Frame"));
-    p->set_id( "start_frame");
+    start_frame_ = p.get();
+    p->set_id( g_start_frame);
     p->set_default_value( 1);
     p->set_static( true);
     p->set_round_to_int( true);
@@ -54,7 +66,8 @@ void composition_node_t::do_create_params()
     add_param( p);
 
     p.reset( new float_param_t( "End Frame"));
-    p->set_id( "end_frame");
+    end_frame_ = p.get();
+    p->set_id( g_end_frame);
     p->set_default_value( 100);
     p->set_static( true);
     p->set_round_to_int( true);
@@ -62,7 +75,8 @@ void composition_node_t::do_create_params()
     add_param( p);
 
     p.reset( new float_param_t( "Frame"));
-    p->set_id( "frame");
+    frame_ = p.get();
+    p->set_id( g_frame);
     p->set_default_value( 1);
     p->set_static( true);
     //p->set_secret( true);
@@ -70,12 +84,14 @@ void composition_node_t::do_create_params()
     add_param( p);
 
     std::auto_ptr<image_format_param_t> f( new image_format_param_t( "Default Format"));
-    f->set_id( "format");
+    default_format_ = f.get();
+    f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
     add_param( f);
 
     p.reset( new float_param_t( "Frame Rate"));
-    p->set_id( "frame_rate");
+    frame_rate_ = p.get();
+    p->set_id( g_frame_rate);
     p->set_range( 1, 60);
     p->set_default_value( app().preferences().frame_rate());
     p->set_round_to_int( true);
@@ -85,13 +101,12 @@ void composition_node_t::do_create_params()
     add_param( p);
 
     std::auto_ptr<bool_param_t> b( new bool_param_t( "Autokey"));
-    b->set_id( "autokey");
+    autokey_ = b.get();
+    b->set_id( g_autokey);
     add_param( b);
 }
 
-void composition_node_t::do_notify()
-{
-}
+void composition_node_t::do_notify() {}
 
 void composition_node_t::do_begin_interaction()
 {
@@ -122,69 +137,66 @@ std::auto_ptr<node_t> composition_node_t::release_node( node_t *n)
 
 int composition_node_t::start_frame() const
 {
-    return get_value<float>( param( "start_frame"));
+    return get_value<float>( *start_frame_);
 }
 
 void composition_node_t::set_start_frame( int f)
 {
-    // TODO: implement this...
+    start_frame_->set_value( f);
 }
 
 int composition_node_t::end_frame() const
 {
-    return get_value<float>( param( "end_frame"));
+    return get_value<float>( *end_frame_);
 }
 
 void composition_node_t::set_end_frame( int f)
 {
-    // TODO: implement this...
+    end_frame_->set_value( f);
 }
 
 float composition_node_t::frame() const
 {
-    return get_value<float>( param( "frame"));
+    return get_value<float>( *frame_);
 }
 
 void composition_node_t::set_frame( float f)
 {
-    // TODO: implement this...
-    /*
-    if( frame_ != f)
+    if( f != frame())
     {
-        frame_ = f;
+        frame_->set_value( f);
         boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));
     }
-    */
 }
 
 bool composition_node_t::autokey() const
 {
-    return get_value<bool>( param( "autokey"));
+    return get_value<bool>( *autokey_);
 }
 
 void composition_node_t::set_autokey( bool b)
 {
-    // TODO: implement this...
+    autokey_->set_value( b);
 }
 
 image::format_t composition_node_t::default_format() const
 {
-    return get_value<image::format_t>( param( "format"));
+    return get_value<image::format_t>( *default_format_);
 }
 
 void composition_node_t::set_default_format( const image::format_t& f)
 {
-    // TODO: implement this...
+    default_format_->set_value( f);
 }
 
 int composition_node_t::frame_rate() const
 {
-    return get_value<float>( param( "frame_rate"));
+    return get_value<float>( *frame_rate_);
 }
 
 void composition_node_t::set_frame_rate( int f)
 {
-    // TODO: implement this...
+    frame_rate_->set_value( f);
 }
 
 render::context_t composition_node_t::current_context( render::render_mode mode) const

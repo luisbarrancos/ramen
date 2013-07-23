@@ -100,10 +100,10 @@ public:
     void set_name( const std::string& name) { name_ = name;}
 
     /// Returns the param id.
-    const std::string& id() const { return id_;}
+    const core::name_t& id() const { return id_;}
 
     /// Sets the param id.
-    void set_id( const std::string& identifier);
+    void set_id( const core::name_t& identifier);
 
     /// Returns a const pointer to the param set this param belongs to.
     const param_set_t *param_set() const    { return param_set_;}
@@ -261,8 +261,8 @@ private:
 
     param_set_t *param_set_;
 
+    core::name_t id_;
     boost::flyweight<std::string> name_;
-    boost::flyweight<std::string> id_;
     boost::flyweight<std::string> tooltip_;
 
     boost::uint32_t flags_;

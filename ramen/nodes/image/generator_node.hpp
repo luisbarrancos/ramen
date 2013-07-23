@@ -79,6 +79,8 @@ protected:
     virtual void do_calc_defined( const render::context_t& context);
 
     virtual void do_calc_hash_str( const render::context_t& context);
+
+    static core::name_t g_format;
 };
 
 } // ramen

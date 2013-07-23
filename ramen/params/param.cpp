@@ -78,12 +78,10 @@ composition_node_t *param_t::composition_node()
     return 0;
 }
 
-void param_t::set_id( const std::string& identifier)
+void param_t::set_id( const core::name_t& identifier)
 {
-    RAMEN_ASSERT( util::is_string_valid_identifier( identifier));
-
-    if( !util::is_string_valid_identifier( identifier))
-        throw std::runtime_error( "Invalid id for param_t");
+    if( !util::is_string_valid_identifier( identifier.c_str()))
+        throw core::runtime_error( "Invalid id for param_t");
 
     id_ = identifier;
 }

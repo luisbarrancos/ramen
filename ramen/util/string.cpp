@@ -41,14 +41,14 @@ std::string get_number( const std::string& str)
 
 } // unnamed
 
-bool is_string_valid_identifier( const std::string& str)
+bool is_string_valid_identifier( const char *str)
 {
-	// TODO: write this!
-	
-	if( str.empty())
-		return false;
+    // TODO: write this!
 
-	return true;
+    //if( str.empty())
+    //    return false;
+
+    return true;
 }
 
 void increment_string_number( std::string& str)

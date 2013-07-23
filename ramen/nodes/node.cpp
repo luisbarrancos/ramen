@@ -91,10 +91,8 @@ void node_t::cloned()
 
 void node_t::set_name( const std::string& n)
 {
-    RAMEN_ASSERT( util::is_string_valid_identifier( n));
-
-    if( !util::is_string_valid_identifier( n))
-        throw std::runtime_error( "Invalid name for node");
+    if( !util::is_string_valid_identifier( n.c_str()))
+        throw core::runtime_error( "Invalid name for node");
 
     name_ = n;
 }
@@ -325,12 +323,12 @@ void node_t::create_params()
 
 void node_t::do_create_params() {}
 
-const param_t& node_t::param( const std::string& identifier) const
+const param_t& node_t::param( const core::name_t& identifier) const
 {
     return param_set().find( identifier);
 }
 
-param_t& node_t::param( const std::string& identifier)
+param_t& node_t::param( const core::name_t& identifier)
 {
     return param_set().find( identifier);
 }

@@ -21,7 +21,7 @@ class static_param_command_t : public undo::command_t
 {
 public:
 
-    static_param_command_t( param_set_t& pset, const std::string& id);
+    static_param_command_t( param_set_t& pset, const core::name_t& id);
 
     virtual void undo();
     virtual void redo();
@@ -29,10 +29,10 @@ public:
 protected:
 
     param_set_t& pset_;
-    std::string id_;
+    core::name_t id_;
     poly_param_value_t old_value_, new_value_;
 };
 
-} // namespace
+} // ramen
 
 #endif
