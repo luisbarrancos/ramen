@@ -161,11 +161,13 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         core/name_fwd.hpp
                         core/name.hpp
                         core/name.cpp
-                        core/types.cpp
-                        core/types.hpp
+                        core/simple_expression_evaluator.hpp
+                        core/simple_expression_evaluator.cpp
                         core/string_fwd.hpp
                         core/string.hpp
                         core/string.cpp
+                        core/types.cpp
+                        core/types.hpp
                         core/variant.hpp
                         core/variant.cpp
 
@@ -396,7 +398,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         undo/command.cpp
                         undo/stack.cpp
 
-                        util/calculator.cpp
                         util/command_line_parser.cpp
                         util/edit_distance.cpp
                         util/error_log.cpp

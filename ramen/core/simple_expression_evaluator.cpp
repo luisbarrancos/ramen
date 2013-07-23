@@ -18,7 +18,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ramen/util/calculator.hpp>
+#include<ramen/core/simple_expression_evaluator.hpp>
 
 #include<boost/spirit/include/qi.hpp>
 #include<boost/spirit/include/phoenix_operator.hpp>
@@ -28,10 +28,10 @@ namespace ascii = boost::spirit::ascii;
 
 namespace ramen
 {
-namespace util
+namespace core
 {
 
-struct calculator_t::impl
+struct simple_expression_evaluator_t::impl
 {
     template <typename Iterator>
     struct calc_grammar : qi::grammar<Iterator, double(), ascii::space_type>
@@ -66,33 +66,32 @@ struct calculator_t::impl
 
         qi::rule<Iterator, double(), ascii::space_type> expression, term, factor;
     };
-	
-	boost::optional<double> parse_and_eval( const std::string& s) const
-	{
-		using boost::spirit::ascii::space;
-		
-        std::string::const_iterator iter = s.begin();
-        std::string::const_iterator end = s.end();
-		double result;
-		
+
+    boost::optional<double> parse_and_eval( const core::string_t& s) const
+    {
+        using boost::spirit::ascii::space;
+
+        core::string_t::const_iterator iter = s.begin();
+        core::string_t::const_iterator end = s.end();
+        double result;
         bool r = phrase_parse( iter, end, calc, space, result);
 
         if( r && iter == end)
-			return result;
-		else
-			return boost::optional<double>();
-	}
-		
-	calc_grammar<std::string::const_iterator> calc;
+            return result;
+        else
+            return boost::optional<double>();
+    }
+
+    calc_grammar<core::string_t::const_iterator> calc;
 };
 
-calculator_t::calculator_t()	{ pimpl_ = new impl();}
-calculator_t::~calculator_t()	{ delete pimpl_;}
+simple_expression_evaluator_t::simple_expression_evaluator_t()	{ pimpl_ = new impl();}
+simple_expression_evaluator_t::~simple_expression_evaluator_t()	{ delete pimpl_;}
 
-boost::optional<double> calculator_t::operator()( const std::string& s) const
+boost::optional<double> simple_expression_evaluator_t::operator()( const core::string_t& s) const
 {
-	return pimpl_->parse_and_eval( s);
+    return pimpl_->parse_and_eval( s);
 }
 
-} // util
+} // core
 } // ramen
