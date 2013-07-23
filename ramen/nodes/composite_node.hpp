@@ -87,12 +87,12 @@ public:
 
     // will be protected later...
 
-    std::auto_ptr<node_t> create_node( const std::string& id, bool ui);
+    std::auto_ptr<node_t> create_node( const core::name_t& id, bool ui);
 
-    std::auto_ptr<node_t> create_node( const std::string& id,
+    std::auto_ptr<node_t> create_node( const core::name_t& id,
                                        const std::pair<int,int>& version);
 
-    std::auto_ptr<node_t> create_unknown_node( const std::string& id,
+    std::auto_ptr<node_t> create_unknown_node( const core::name_t& id,
                                                const std::pair<int, int>& version);
 
 protected:

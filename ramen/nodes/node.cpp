@@ -91,7 +91,7 @@ void node_t::cloned()
 
 void node_t::set_name( const std::string& n)
 {
-    if( !util::is_string_valid_identifier( n.c_str()))
+    if( !util::is_string_valid_identifier( n))
         throw core::runtime_error( "Invalid name for node");
 
     name_ = n;

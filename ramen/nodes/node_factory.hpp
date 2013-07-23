@@ -36,8 +36,8 @@ public:
     std::vector<node_info_t>& registered_nodes()               { return node_infos_;}
 
     // latest versions
-    typedef std::map<std::string, node_info_t>::const_iterator const_iterator;
-    typedef std::map<std::string, node_info_t>::iterator       iterator;
+    typedef std::map<core::name_t, node_info_t>::const_iterator const_iterator;
+    typedef std::map<core::name_t, node_info_t>::iterator       iterator;
 
     const_iterator latest_versions_begin() const    { return newest_node_infos_.begin();}
     const_iterator latest_versions_end() const	    { return newest_node_infos_.end();}
@@ -45,11 +45,11 @@ public:
     iterator latest_versions_begin()    { return newest_node_infos_.begin();}
     iterator latest_versions_end()      { return newest_node_infos_.end();}
 
-    bool is_latest_version( const std::string& id) const;
+    bool is_latest_version( const core::name_t& id) const;
 
     // creation
-    std::auto_ptr<node_t> create_by_id( const std::string& id, bool ui = false);
-    std::auto_ptr<node_t> create_by_id_with_version( const std::string& id,
+    std::auto_ptr<node_t> create_by_id( const core::name_t& id, bool ui = false);
+    std::auto_ptr<node_t> create_by_id_with_version( const core::name_t& id,
                                                      const std::pair<int, int>& version);
 
 private:
@@ -58,7 +58,7 @@ private:
     ~node_factory_t();
 
     std::vector<node_info_t> node_infos_;
-    std::map<std::string, node_info_t> newest_node_infos_;
+    std::map<core::name_t, node_info_t> newest_node_infos_;
 };
 
 } // ramen

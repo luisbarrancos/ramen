@@ -74,7 +74,9 @@ name_t::name_t( const char *str)
 
 void name_t::init( const char *str)
 {
-    data_ = singleton_name_pool_holder_t::get().add( std::string( str));
+    std::string tmp( str);
+    data_ = singleton_name_pool_holder_t::get().add( tmp);
+    size_ = tmp.size();
 }
 
 name_t& name_t::operator=( const name_t& other)
@@ -84,9 +86,19 @@ name_t& name_t::operator=( const name_t& other)
     return *this;
 }
 
+const char *name_t::c_str() const
+{
+    return data_;
+}
+
 bool name_t::empty() const
 {
     return c_str() == singleton_name_pool_holder_t::get().g_empty_string;
+}
+
+std::size_t name_t::size() const
+{
+    return size_;
 }
 
 } // core

@@ -74,7 +74,7 @@ const node_info_t& color_node_t::color_node_info()
 
     if( !inited)
     {
-        info.id = "image.builtin.color";
+        info.id = core::name_t( "image.builtin.color");
         info.major_version = 1;
         info.minor_version = 0;
         info.menu = "Image";

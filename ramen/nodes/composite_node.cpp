@@ -112,7 +112,7 @@ void composite_node_t::do_set_frame( float f)
     boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));
 }
 
-std::auto_ptr<node_t> composite_node_t::create_node( const std::string& id, bool ui)
+std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id, bool ui)
 {
     std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id( id, ui));
 
@@ -132,7 +132,7 @@ std::auto_ptr<node_t> composite_node_t::create_node( const std::string& id, bool
     return p;
 }
 
-std::auto_ptr<node_t> composite_node_t::create_node( const std::string& id,
+std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id,
                                                      const std::pair<int,int>& version)
 {
     RAMEN_ASSERT( !id.empty());
@@ -158,7 +158,7 @@ std::auto_ptr<node_t> composite_node_t::create_node( const std::string& id,
     return p;
 }
 
-std::auto_ptr<node_t> composite_node_t::create_unknown_node( const std::string& id,
+std::auto_ptr<node_t> composite_node_t::create_unknown_node( const core::name_t& id,
                                                              const std::pair<int, int>& version)
 {
     // TODO: implement this.

@@ -11,7 +11,7 @@
 
 #include<string>
 
-#include<boost/function.hpp>
+#include<ramen/core/name.hpp>
 
 namespace ramen
 {
@@ -27,7 +27,7 @@ public:
     node_info_t();
 
     /// Unique id for this node
-    std::string id;
+    core::name_t id;
 
     /// Major version
     int major_version;

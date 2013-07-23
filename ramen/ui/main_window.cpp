@@ -886,7 +886,7 @@ void main_window_t::create_node()
 {
     QAction *action = dynamic_cast<QAction*>( sender());
 
-    std::string id( create_node_actions_[action]);
+    core::name_t id( create_node_actions_[action]);
     std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id( id, true));
 
     if( !p.get())
@@ -903,7 +903,7 @@ void main_window_t::create_node()
     }
     catch( std::exception& e)
     {
-        app().ui()->error( std::string( "Couldn't create node ") + id
+        app().ui()->error( std::string( "Couldn't create node ") + id.c_str()
                            + std::string( " ") + e.what());
         return;
     }

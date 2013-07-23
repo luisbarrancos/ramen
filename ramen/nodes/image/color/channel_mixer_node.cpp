@@ -115,7 +115,7 @@ const node_info_t& channel_mixer_node_t::channel_mixer_node_info()
 
     if( !inited)
     {
-        info.id = "image.builtin.channel_mixer";
+        info.id = core::name_t( "image.builtin.channel_mixer");
         info.major_version = 1;
         info.minor_version = 0;
         info.menu = "Image";

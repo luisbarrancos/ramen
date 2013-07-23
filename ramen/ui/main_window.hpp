@@ -18,6 +18,7 @@
 #include<boost/filesystem/fstream.hpp>
 
 #include<ramen/core/memory.hpp>
+#include<ramen/core/name.hpp>
 
 #include<ramen/ui/node_menu.hpp>
 #include<ramen/ui/compview/composition_view_fwd.hpp>
@@ -170,13 +171,13 @@ private:
     QAction *next_frame_, *prev_frame_;
 
     std::vector<node_menu_t*> node_menus_;
-    std::map<QAction*,std::string> create_node_actions_;
+    std::map<QAction*,core::name_t> create_node_actions_;
 
     const static int max_recently_opened_files;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif
 

@@ -26,12 +26,15 @@ struct compare_menu_items
     }
 };
 
-bool check_node_class( const std::string& c)
+bool check_node_class( const core::name_t& c)
 {
-    if( boost::starts_with( c, "image."))
-        return true;
+    // TODO: implement this...
+    return true;
 
-    return false;
+    //if( boost::starts_with( c, "image."))
+    //    return true;
+
+    //return false;
 }
 
 } // unnamed
@@ -55,13 +58,8 @@ node_factory_t::~node_factory_t()
 
 bool node_factory_t::register_node( const node_info_t& m)
 {
-    #ifndef NDEBUG
-        if( !check_node_class( m.id))
-        {
-            std::cout << "Registered node class with unknown prefix " << m.id << "\n";
-            RAMEN_ASSERT( 0);
-        }
-    #endif
+    if( !check_node_class( m.id))
+        throw core::runtime_error( core::make_string( "Registered node class with unknown prefix ", m.id.c_str()));
 
     RAMEN_ASSERT( m.major_version >= 0);
     RAMEN_ASSERT( m.minor_version >= 0);
@@ -72,17 +70,18 @@ bool node_factory_t::register_node( const node_info_t& m)
 
     BOOST_FOREACH( const node_info_t& node_info, node_infos_)
     {
-        if( node_info.id == m.id && node_info.major_version == m.major_version && node_info.minor_version == m.minor_version)
+        if( node_info.id == m.id && node_info.major_version == m.major_version &&
+            node_info.minor_version == m.minor_version)
         {
-            std::cout << "Duplicated node_info in node factory: " << m.id << "\n";
-            RAMEN_ASSERT( 0);
+            throw core::runtime_error( core::make_string( "Duplicated node_info in node factory: ",
+                                                          m.id.c_str()));
         }
     }
 
     node_infos_.push_back( m);
 
     // if this version of the node is newer that the one we have...
-    std::map<std::string, node_info_t>::iterator it( newest_node_infos_.find( m.id));
+    std::map<core::name_t, node_info_t>::iterator it( newest_node_infos_.find( m.id));
 
     if( it != latest_versions_end())
     {
@@ -108,9 +107,9 @@ void node_factory_t::sort_by_menu_item()
     std::sort( node_infos_.begin(), node_infos_.end(), compare_menu_items());
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id( const std::string& id, bool ui)
+std::auto_ptr<node_t> node_factory_t::create_by_id( const core::name_t& id, bool ui)
 {
-    std::map<std::string, node_info_t>::iterator it( newest_node_infos_.find( id));
+    std::map<core::name_t, node_info_t>::iterator it( newest_node_infos_.find( id));
     std::auto_ptr<node_t> n;
 
     if( it != newest_node_infos_.end())
@@ -138,7 +137,8 @@ std::auto_ptr<node_t> node_factory_t::create_by_id( const std::string& id, bool 
     return n;
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const std::string& id, const std::pair<int, int>& version)
+std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const core::name_t& id,
+                                                                 const std::pair<int, int>& version)
 {
     std::vector<node_info_t>::iterator best( node_infos_.end());
     std::vector<node_info_t>::iterator it( node_infos_.begin());
@@ -186,7 +186,7 @@ std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const std::stri
     return n;
 }
 
-bool node_factory_t::is_latest_version( const std::string& id) const
+bool node_factory_t::is_latest_version( const core::name_t& id) const
 {
     const_iterator it( newest_node_infos_.find( id));
     return it != latest_versions_end();

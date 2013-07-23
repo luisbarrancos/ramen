@@ -80,7 +80,7 @@ composition_node_t *param_t::composition_node()
 
 void param_t::set_id( const core::name_t& identifier)
 {
-    if( !util::is_string_valid_identifier( identifier.c_str()))
+    if( !util::is_string_valid_identifier( identifier))
         throw core::runtime_error( "Invalid id for param_t");
 
     id_ = identifier;

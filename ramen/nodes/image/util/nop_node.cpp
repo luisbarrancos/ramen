@@ -51,7 +51,7 @@ const node_info_t& nop_node_t::nop_node_info()
 
     if( !inited)
     {
-        info.id = "image.builtin.nop";
+        info.id = core::name_t( "image.builtin.nop");
         info.major_version = 1;
         info.minor_version = 0;
         info.menu = "Image";

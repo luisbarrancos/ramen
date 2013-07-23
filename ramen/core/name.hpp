@@ -7,6 +7,7 @@
 
 #include<ramen/core/name_fwd.hpp>
 
+#include<algorithm>
 #include<iostream>
 
 namespace ramen
@@ -27,9 +28,11 @@ public:
 
     name_t& operator=( const name_t& other);
 
-    const char *c_str() const { return data_;}
+    const char *c_str() const;
 
     bool empty() const;
+
+    std::size_t size() const;
 
     bool operator==( const name_t& other) const { return data_ == other.data_;}
     bool operator!=( const name_t& other) const { return data_ != other.data_;}
@@ -37,9 +40,8 @@ public:
 
     void swap( name_t& other)
     {
-        const char *tmp = data_;
-        data_ = other.data_;
-        other.data_ = tmp;
+        std::swap( data_, other.data_);
+        std::swap( size_, other.size_);
     }
 
 private:
@@ -47,6 +49,7 @@ private:
     void init( const char *str);
 
     const char *data_;
+    std::size_t size_;
 };
 
 inline void swap( name_t& x, name_t& y)
