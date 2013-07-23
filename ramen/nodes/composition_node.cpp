@@ -105,7 +105,7 @@ void composition_node_t::do_end_interaction()
     notify_all_dirty();
 }
 
-void composition_t::add_node( std::auto_ptr<node_t> n)
+void composition_node_t::add_node( std::auto_ptr<node_t> n)
 {
     n->set_parent( this);
     n->set_frame( frame());
@@ -115,15 +115,9 @@ void composition_t::add_node( std::auto_ptr<node_t> n)
     composite_node_t::add_node( n);
 }
 
-std::auto_ptr<node_t> release_node( node_t *n)
+std::auto_ptr<node_t> composition_node_t::release_node( node_t *n)
 {
     return composite_node_t::release_node( n);
-}
-
-std::auto_ptr<node_t> composition_t::release_node( node_t *n)
-{
-    node_map_.remove( n->name());
-    return g_.release_node( n);
 }
 
 int composition_node_t::start_frame() const
@@ -257,26 +251,26 @@ boost::filesystem::path composition_node_t::absolute_to_relative( const boost::f
 // selections
 void composition_node_t::select_all()
 {
-    boost::range::for_each( nodes_, boost::bind( &node_t::select, _1, true));
+    boost::range::for_each( nodes(), boost::bind( &node_t::select, _1, true));
 }
 
 void composition_node_t::deselect_all()
 {
-    boost::range::for_each( nodes_, boost::bind( &node_t::select, _1, false));
+    boost::range::for_each( nodes(), boost::bind( &node_t::select, _1, false));
 }
 
 bool composition_node_t::any_selected() const
 {
-    return boost::range::find_if( nodes_, boost::bind( &node_t::selected, _1)) != nodes_.end();
+    return boost::range::find_if( nodes(), boost::bind( &node_t::selected, _1)) != nodes().end();
 }
 
 node_t *composition_node_t::selected_node()
 {
-    if( boost::range::count_if( nodes_, boost::bind( &node_t::selected, _1)) == 1)
+    if( boost::range::count_if( nodes(), boost::bind( &node_t::selected, _1)) == 1)
     {
-        node_iterator it( nodes_.begin());
+        node_iterator it( nodes().begin());
 
-        for( ; it != nodes_.end(); ++it)
+        for( ; it != nodes().end(); ++it)
         {
             if( it->selected())
                 return &(*it);
@@ -288,13 +282,13 @@ node_t *composition_node_t::selected_node()
 
 void composition_node_t::notify_all_dirty()
 {
-    for( node_iterator it( nodes_.begin()), ie = nodes_.end(); it != ie; ++it)
+    for( node_iterator it( nodes().begin()), ie = nodes().end(); it != ie; ++it)
     {
         if( it->notify_dirty())
             detail::set_outputs_color( *it, black);
     }
 
-    for( node_iterator it( nodes_.begin()), ie = nodes_.end(); it != ie; ++it)
+    for( node_iterator it( nodes().begin()), ie = nodes().end(); it != ie; ++it)
     {
         if( it->notify_dirty())
             detail::breadth_first_outputs_recursive_search( *it, boost::bind( &node_t::do_notify, _1));
@@ -303,7 +297,7 @@ void composition_node_t::notify_all_dirty()
 
 void composition_node_t::clear_all_notify_dirty_flags()
 {
-    boost::range::for_each( nodes_, boost::bind( &node_t::set_notify_dirty, _1, false));
+    boost::range::for_each( nodes(), boost::bind( &node_t::set_notify_dirty, _1, false));
 }
 
 } // ramen
