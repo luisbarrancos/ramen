@@ -4,3 +4,6 @@
 [submodule "google_testing_libs"]
 	path = google_testing_libs
 	url = https://github.com/est77/google_testing_libs.git
+[submodule "ramenlibs"]
+	path = ramenlibs
+	url = https://github.com/est77/ramenlibs.git
