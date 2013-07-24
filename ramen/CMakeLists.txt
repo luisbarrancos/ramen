@@ -140,13 +140,9 @@ SET( RAMEN_SOURCES      assert.hpp
                         bezier/algorithm.cpp
 
                         Concepts/ParamValueConcept.hpp
-                        Concepts/RegularConcept.hpp
 
                         container/ptr_vector_util.hpp
                         container/unique_name_map.hpp
-
-                        core/simple_expression_evaluator.hpp
-                        core/simple_expression_evaluator.cpp
 
                         filesystem/path.hpp
                         filesystem/path.cpp

@@ -113,6 +113,13 @@ FIND_PACKAGE( ZLIB REQUIRED)
 # ramen libs
 
 SET( RAMEN_USE_INTERPROCESS_NAMES OFF)
+SET( RAMEN_WITH_ARRAYS OFF)
+
+IF( WITH_TESTS)
+    SET( RAMEN_BUILD_TESTS ON)
+ELSE()
+    SET( RAMEN_BUILD_TESTS OFF)
+ENDIF()
 
 ADD_SUBDIRECTORY( ramenlibs)
 
@@ -122,6 +129,7 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
 
     SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -130,11 +138,9 @@ ELSE()
     MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
-IF( WITH_TESTS)
-    SET( RAMEN_BUILD_TESTS ON)
-ELSE()
-    SET( RAMEN_BUILD_TESTS OFF)
-ENDIF()
+SET( RAMENLIBS_LIBS ramen_core
+                    ramen_math
+                    )
 
 ######################################################
 # definitions
@@ -183,8 +189,7 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
 ######################################################
 # libraries
 
-SET( RAMEN_ALL_LIBS	ramen_core
-                        ramen_math
+SET( RAMEN_ALL_LIBS	${RAMENLIBS_LIBS}
                         ${NEEDED_QT_LIBS}
 
                         ${OPENCOLORIO_LIBRARIES}

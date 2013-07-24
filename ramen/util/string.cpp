@@ -66,7 +66,7 @@ bool is_string_valid_identifier( const core::name_t& str)
     if( str.empty())
         return false;
 
-    return check_identifier( str.c_str(), str.size());
+    return check_identifier( str.c_str(), strlen( str.c_str()));
 }
 
 void increment_string_number( std::string& str)

@@ -7,7 +7,7 @@
 
 #include<ramen/core/empty.hpp>
 
-#include<ramen/Concepts/RegularConcept.hpp>
+#include<ramen/core/Concepts/RegularConcept.hpp>
 
 namespace ramen
 {
@@ -24,12 +24,12 @@ struct ParamValueConcept :  boost::DefaultConstructible<T>,
 {
 private:
 
-    BOOST_CONCEPT_ASSERT(( RegularConcept<T>));
+    BOOST_CONCEPT_ASSERT(( core::RegularConcept<T>));
 
 public:
 
-	BOOST_CONCEPT_USAGE( ParamValueConcept)
-	{
+    BOOST_CONCEPT_USAGE( ParamValueConcept)
+    {
     }
 };
 
@@ -49,10 +49,10 @@ private:
 
 public:
 
-	BOOST_CONCEPT_USAGE( IndexableParamValueConcept)
-	{
+    BOOST_CONCEPT_USAGE( IndexableParamValueConcept)
+    {
         checkIndexOperator( t);
-	}
+    }
 
     T t;
 
