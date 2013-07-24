@@ -14,7 +14,7 @@ PROJECT( ramen)
 ######################################################
 # cmake stuff
 
-SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/Modules)
+SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/ramenlibs/cmake/Modules)
 
 #disable in source builds
 IF( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -38,7 +38,6 @@ SET( RAMEN_VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION
 # options
 
 OPTION( WITH_NODES "Build nodes" ON)
-OPTION( WITH_TESTS "Build tests" ON)
 
 ######################################################
 # platform specific
@@ -109,6 +108,34 @@ FIND_PACKAGE( ZLIB REQUIRED)
 ######################################################
 # optional dependencies
 
+
+######################################################
+# ramen libs
+
+SET( RAMEN_USE_INTERPROCESS_NAMES OFF)
+
+ADD_SUBDIRECTORY( ramenlibs)
+
+IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
+    SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
+    SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    MESSAGE( FATAL_ERROR "Windows not supported yet")
+ELSE()
+    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+ENDIF()
+
+IF( WITH_TESTS)
+    SET( RAMEN_BUILD_TESTS ON)
+ELSE()
+    SET( RAMEN_BUILD_TESTS OFF)
+ENDIF()
+
 ######################################################
 # definitions
 
@@ -124,6 +151,10 @@ SET( MOC_EXTRA_ARGS -DQT_MOC_RUN)
 # includes
 
 INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/config
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/core
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/math
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/color
                         ${PROJECT_SOURCE_DIR}/ramen/
 
                         ${NEEDED_QT_INCLUDES}
@@ -152,7 +183,9 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
 ######################################################
 # libraries
 
-SET( RAMEN_ALL_LIBS	${NEEDED_QT_LIBS}
+SET( RAMEN_ALL_LIBS	ramen_core
+                        ramen_math
+                        ${NEEDED_QT_LIBS}
 
                         ${OPENCOLORIO_LIBRARIES}
                         ${OPENIMAGEIO_LIBRARIES}
@@ -185,17 +218,13 @@ ADD_SUBDIRECTORY( ramen)
 
 IF( WITH_TESTS)
 
-    INCLUDE_DIRECTORIES(  google_testing_libs/google
-                          google_testing_libs/google/gtest
-                          google_testing_libs/google/gmock
+    INCLUDE_DIRECTORIES(  ramenlibs/google_testing_libs/google
+                          ramenlibs/google_testing_libs/google/gtest
+                          ramenlibs/google_testing_libs/google/gmock
                           )
 
-    ADD_LIBRARY( gmock STATIC   google_testing_libs/google/gtest/src/gtest-all.cc
-                                google_testing_libs/google/gmock/src/gmock-all.cc
-                                )
-
     ENABLE_TESTING()
-    ADD_SUBDIRECTORY( test)
+    #ADD_SUBDIRECTORY( test)
 ENDIF()
 
 ######################################################

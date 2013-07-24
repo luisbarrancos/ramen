@@ -5,14 +5,14 @@
 #ifndef RAMEN_CONFIG_HPP
 #define RAMEN_CONFIG_HPP
 
+#include<ramen/config/config.hpp>
 #include<ramen/config/os.hpp>
 #include<ramen/config/compiler.hpp>
-#include<ramen/config/visibility.hpp>
 
 #ifdef ramen_EXPORTS
-    #define RAMEN_API RAMEN_EXPORT
+    #define RAMEN_API RAMEN_CONFIG_EXPORT
 #else
-    #define RAMEN_API RAMEN_IMPORT
+    #define RAMEN_API RAMEN_CONFIG_IMPORT
 #endif
 
 // windows specific

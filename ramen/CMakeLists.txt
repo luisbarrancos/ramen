@@ -97,7 +97,10 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         #params/inspector_param.hpp
                         )
 
-SET( RAMEN_SOURCES      algorithm/clamp.hpp
+SET( RAMEN_SOURCES      assert.hpp
+                        config.hpp
+
+                        algorithm/clamp.hpp
                         algorithm/for_each_position.hpp
 
                         anim/any_curve.hpp
@@ -136,40 +139,14 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
 
                         bezier/algorithm.cpp
 
-                        color/color3.hpp
-                        color/color4.hpp
-
                         Concepts/ParamValueConcept.hpp
                         Concepts/RegularConcept.hpp
-
-                        config/compiler.hpp
-                        config/os.hpp
-                        config/visibility.hpp
 
                         container/ptr_vector_util.hpp
                         container/unique_name_map.hpp
 
-                        core/copy_on_write.hpp
-                        core/dictionary_fwd.hpp
-                        core/dictionary.hpp
-                        core/dictionary.cpp
-                        core/empty.hpp
-                        core/empty.cpp
-                        core/exceptions.hpp
-                        core/exceptions.cpp
-                        core/memory.hpp
-                        core/name_fwd.hpp
-                        core/name.hpp
-                        core/name.cpp
                         core/simple_expression_evaluator.hpp
                         core/simple_expression_evaluator.cpp
-                        core/string_fwd.hpp
-                        core/string.hpp
-                        core/string.cpp
-                        core/types.cpp
-                        core/types.hpp
-                        core/variant.hpp
-                        core/variant.cpp
 
                         filesystem/path.hpp
                         filesystem/path.cpp
@@ -228,21 +205,6 @@ SET( RAMEN_SOURCES      algorithm/clamp.hpp
                         manipulators/pick.cpp
                         manipulators/util.hpp
                         manipulators/util.cpp
-
-                        math/box2.hpp
-                        math/box3.hpp
-                        math/cmath.hpp
-                        math/constants.hpp
-                        math/fast_float.hpp
-                        math/hpoint2.hpp
-                        math/hpoint3.hpp
-                        math/matrix33.hpp
-                        math/matrix44.hpp
-                        math/normal.hpp
-                        math/point2.hpp
-                        math/point3.hpp
-                        math/vector2.hpp
-                        math/vector3.hpp
 
                         memory/image_cache.cpp
                         memory/manager.cpp

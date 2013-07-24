@@ -8,7 +8,7 @@
 #ifndef RAMEN_POLY_REGULAR_HPP
 #define RAMEN_POLY_REGULAR_HPP
 
-#include<ramen/Concepts/RegularConcept.hpp>
+#include<ramen/core/Concepts/RegularConcept.hpp>
 
 #include<ramen/core/poly.hpp>
 #include<ramen/core/empty.hpp>

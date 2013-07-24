@@ -252,7 +252,7 @@ void param_spinbox_t::textChanged()
         setModified( false);
 
         std::string s( text().toStdString());
-        boost::optional<double> result = calc()( core::string_t( s.c_str()));
+        boost::optional<double> result = calc()( core::string8_t( s.c_str()));
 
         if( result)
         {

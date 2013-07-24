@@ -7,7 +7,7 @@
 
 #include<ramen/config.hpp>
 
-#include<ramen/core/string.hpp>
+#include<ramen/core/string8.hpp>
 
 #include<boost/optional.hpp>
 
@@ -23,7 +23,7 @@ public:
     simple_expression_evaluator_t();
     ~simple_expression_evaluator_t();
 
-    boost::optional<double> operator()( const core::string_t& str) const;
+    boost::optional<double> operator()( const core::string8_t& str) const;
 
 private:
 

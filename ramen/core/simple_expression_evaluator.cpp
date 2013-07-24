@@ -67,12 +67,12 @@ struct simple_expression_evaluator_t::impl
         qi::rule<Iterator, double(), ascii::space_type> expression, term, factor;
     };
 
-    boost::optional<double> parse_and_eval( const core::string_t& s) const
+    boost::optional<double> parse_and_eval( const core::string8_t& s) const
     {
         using boost::spirit::ascii::space;
 
-        core::string_t::const_iterator iter = s.begin();
-        core::string_t::const_iterator end = s.end();
+        core::string8_t::const_iterator iter = s.begin();
+        core::string8_t::const_iterator end = s.end();
         double result;
         bool r = phrase_parse( iter, end, calc, space, result);
 
@@ -82,13 +82,13 @@ struct simple_expression_evaluator_t::impl
             return boost::optional<double>();
     }
 
-    calc_grammar<core::string_t::const_iterator> calc;
+    calc_grammar<core::string8_t::const_iterator> calc;
 };
 
 simple_expression_evaluator_t::simple_expression_evaluator_t()	{ pimpl_ = new impl();}
 simple_expression_evaluator_t::~simple_expression_evaluator_t()	{ delete pimpl_;}
 
-boost::optional<double> simple_expression_evaluator_t::operator()( const core::string_t& s) const
+boost::optional<double> simple_expression_evaluator_t::operator()( const core::string8_t& s) const
 {
     return pimpl_->parse_and_eval( s);
 }
