@@ -112,14 +112,8 @@ FIND_PACKAGE( ZLIB REQUIRED)
 ######################################################
 # ramen libs
 
-SET( RAMEN_USE_INTERPROCESS_NAMES OFF)
 SET( RAMEN_WITH_ARRAYS OFF)
-
-IF( WITH_TESTS)
-    SET( RAMEN_BUILD_TESTS ON)
-ELSE()
-    SET( RAMEN_BUILD_TESTS OFF)
-ENDIF()
+SET( RAMEN_WITH_OS OFF)
 
 ADD_SUBDIRECTORY( ramenlibs)
 
@@ -131,7 +125,11 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+    SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
+
+    SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()
@@ -221,8 +219,7 @@ ADD_SUBDIRECTORY( ramen)
 ######################################################
 # tests
 
-IF( WITH_TESTS)
-
+#IF( WITH_TESTS)
     INCLUDE_DIRECTORIES(  ramenlibs/google_testing_libs/google
                           ramenlibs/google_testing_libs/google/gtest
                           ramenlibs/google_testing_libs/google/gmock
@@ -230,7 +227,7 @@ IF( WITH_TESTS)
 
     ENABLE_TESTING()
     #ADD_SUBDIRECTORY( test)
-ENDIF()
+#ENDIF()
 
 ######################################################
 # docs
