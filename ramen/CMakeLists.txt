@@ -100,9 +100,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
 SET( RAMEN_SOURCES      assert.hpp
                         config.hpp
 
-                        algorithm/clamp.hpp
-                        algorithm/for_each_position.hpp
-
                         anim/any_curve.hpp
                         anim/any_curve.cpp
                         anim/clipboard.hpp
@@ -279,7 +276,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/events_util.hpp
                         ui/events_util.cpp
                         ui/main_window.cpp
-                        ui/nice_numbers.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
                         ui/render_composition.cpp
@@ -357,7 +353,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         undo/stack.cpp
 
                         util/command_line_parser.cpp
-                        util/edit_distance.cpp
                         util/error_log.cpp
                         util/string.cpp
                         )

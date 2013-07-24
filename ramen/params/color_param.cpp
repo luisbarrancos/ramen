@@ -73,7 +73,7 @@ poly_param_value_t color_param_t::value_at_frame(float frame) const
     if( is_rgba())
     {
         eval_curve( 3, frame, v.a);
-        v.a = ramen::clamp( v.a, 0.0f, 1.0f);
+        v.a = algorithm::clamp( v.a, 0.0f, 1.0f);
     }
     else
         v.a = 1.0f;

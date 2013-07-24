@@ -363,13 +363,13 @@ void float2_param_t::spinbox_dragged( double value)
         {
             float inc = value - v.x;
             v.x = value;
-            v.y = ramen::clamp( v.y + ( inc * proportional_factor.y), absolute_min(), absolute_max());
+            v.y = algorithm::clamp( v.y + ( inc * proportional_factor.y), absolute_min(), absolute_max());
         }
         else
         {
             float inc = value - v.y;
             v.y = value;
-            v.x = ramen::clamp( v.x + ( inc * proportional_factor.x), absolute_min(), absolute_max());
+            v.x = algorithm::clamp( v.x + ( inc * proportional_factor.x), absolute_min(), absolute_max());
         }
 
         set_value( absolute_to_relative( round ( v)));
