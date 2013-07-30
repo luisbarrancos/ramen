@@ -506,7 +506,7 @@ void anim_curves_view_t::frame_area( const Imath::Box2f& area)
 int anim_curves_view_t::span_num_steps( float t0, float t1) const
 {
     float pixel_len = ( t1 - t0) * time_scale();
-    return clamp( (int) pixel_len / 5, 5, 50);
+    return algorithm::clamp( (int) pixel_len / 5, 5, 50);
 }
 
 void anim_curves_view_t::draw_small_box( const Imath::V2f& p) const

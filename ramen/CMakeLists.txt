@@ -100,9 +100,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
 SET( RAMEN_SOURCES      assert.hpp
                         config.hpp
 
-                        algorithm/clamp.hpp
-                        algorithm/for_each_position.hpp
-
                         anim/any_curve.hpp
                         anim/any_curve.cpp
                         anim/clipboard.hpp
@@ -279,7 +276,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/image2.hpp
                         ui/image2.cpp
                         ui/main_window.cpp
-                        ui/nice_numbers.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
                         ui/render_composition.cpp
@@ -357,7 +353,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         undo/stack.cpp
 
                         util/command_line_parser.cpp
-                        util/edit_distance.cpp
                         util/error_log.cpp
                         util/string.cpp
                         )
@@ -563,7 +558,7 @@ ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     SET_TARGET_PROPERTIES( ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/MacOS/)
 
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES OUTPUT_NAME ramen)
+    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES OUTPUT_NAME Ramen)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()
