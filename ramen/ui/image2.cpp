@@ -31,7 +31,7 @@ struct image2_t::impl
             gl_tex_parameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             gl_tex_parameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
             gl_tex_parameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-            gl_tex_image2d( GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+            //gl_tex_image2d( GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
         }
 
         void draw() const
