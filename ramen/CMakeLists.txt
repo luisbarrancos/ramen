@@ -162,8 +162,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         GL/glu.hpp
                         GL/glu.cpp
                         GL/image_view_shaders.hpp
-                        GL/Imath_gl.hpp
-                        GL/Imath_gl.cpp
                         GL/lut3d.hpp
                         GL/lut3d.cpp
                         GL/program.hpp
@@ -278,6 +276,8 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/events.cpp
                         ui/events_util.hpp
                         ui/events_util.cpp
+                        ui/image2.hpp
+                        ui/image2.cpp
                         ui/main_window.cpp
                         ui/nice_numbers.cpp
                         ui/node_menu.cpp
