@@ -28,8 +28,17 @@ namespace ui
 namespace viewer
 {
 
+struct viewer_context_t::impl
+{
+    impl()
+    {
+    }
+};
+
 viewer_context_t::viewer_context_t( QWidget *parent) : QGLWidget( parent)
 {
+    pimpl_.reset( new impl());
+
     first_time_ = true;
     autoupdate_ = true;
     view_mode_ = view_active_node;

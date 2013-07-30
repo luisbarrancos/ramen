@@ -21,6 +21,8 @@
 #include<OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
+#include<ramen/core/memory.hpp>
+
 #include<ramen/ocio/gl_lut3d.hpp>
 
 #include<ramen/ui/viewer/viewer_strategy.hpp>
@@ -126,6 +128,9 @@ private:
     boost::shared_ptr<ocio::gl_lut3d_t> display_lut_;
 
     Imath::Color3f back_color_, fg_color_;
+
+    struct impl;
+    core::auto_ptr_t<impl> pimpl_;
 };
 
 } // viewer
