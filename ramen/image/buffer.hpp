@@ -35,7 +35,7 @@ public:
 
     bool empty() const  { return !pixels_;}
     bool unique() const { return pixels_.unique();}
-    
+
     void clear();
 
     const Imath::Box2i& bounds() const { return bounds_;}
@@ -43,38 +43,28 @@ public:
     // flags
     bool cached() const			{ return cached_pixels_;}
     void set_cached( bool b)	{ cached_pixels_ = true;}
-    
-	bool use_disk_cache() const			{ return use_disk_cache_;}
-	void set_use_disk_cache( bool b)	{ use_disk_cache_ = b;}
+
+    bool use_disk_cache() const			{ return use_disk_cache_;}
+    void set_use_disk_cache( bool b)	{ use_disk_cache_ = b;}
 
     // const views
     const_image_view_t const_rgba_view() const;
-    const_rgb_image_view_t const_rgb_view() const;
-    const_gray_image_view_t const_gray_view() const;
-
     const_image_view_t const_rgba_subimage_view( const Imath::Box2i& area) const;
-    const_rgb_image_view_t const_rgb_subimage_view( const Imath::Box2i& area) const;
-    const_gray_image_view_t const_gray_subimage_view( const Imath::Box2i& area) const;
 
     // non const views
     image_view_t rgba_view() const;
-    rgb_image_view_t rgb_view() const;
-    gray_image_view_t gray_view() const;
-
     image_view_t rgba_subimage_view( const Imath::Box2i& area) const;
-    rgb_image_view_t rgb_subimage_view( const Imath::Box2i& area) const;
-    gray_image_view_t gray_subimage_view( const Imath::Box2i& area) const;
-	
+
     bool operator==( const buffer_t& other) const;
     bool operator!=( const buffer_t& other) const;
 
 private:
 
-	void init();
+    void init();
 
     void alloc_pixels();
-	
-	// util
+
+    // util
     unsigned char *aligned_ptr() const;
 
     // for debugging help
@@ -83,9 +73,9 @@ private:
     Imath::Box2i bounds_;
     int channels_;
     boost::shared_array<unsigned char> pixels_;
-	std::size_t rowbytes_;
+    std::size_t rowbytes_;
     bool cached_pixels_;
-	bool use_disk_cache_;
+    bool use_disk_cache_;
 };
 
 } // image
