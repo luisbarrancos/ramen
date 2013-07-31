@@ -102,7 +102,9 @@ float float_param_t::integrate( float time1, float time2) const
     }
 }
 
-void float_param_t::do_format_changed( const Imath::Box2i& new_domain, float aspect, const Imath::V2f& proxy_scale)
+void float_param_t::do_format_changed( const math::box2i_t& new_domain,
+                                       float aspect,
+                                       const math::vector2f_t& proxy_scale)
 {
     if( num_curves())
     {

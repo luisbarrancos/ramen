@@ -130,7 +130,9 @@ void composite_param_t::do_enable_widgets( bool e)
     boost::range::for_each( params_, boost::bind( &param_t::enable_widgets, _1, e));
 }
 
-void composite_param_t::do_format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale)
+void composite_param_t::do_format_changed( const math::box2i_t& new_format,
+                                           float aspect,
+                                           const math::vector2f_t& proxy_scale)
 {
     boost::range::for_each( params_, boost::bind( &param_t::format_changed, _1, new_format, aspect, proxy_scale));
 }

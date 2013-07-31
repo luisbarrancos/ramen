@@ -37,7 +37,7 @@ private:
 
     struct saved_info_t
     {
-        Imath::Box2i roi;
+        math::box2i_t roi;
     };
 
     std::map<const node_t*, saved_info_t> saved_;

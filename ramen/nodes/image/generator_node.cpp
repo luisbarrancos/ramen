@@ -28,12 +28,12 @@ void generator_node_t::do_create_params()
 void generator_node_t::do_calc_format( const render::context_t& context)
 {
     image::format_t f( get_value<image::format_t>( param( g_format)));
-    Imath::Box2i area( f.area());
+    math::box2i_t area( f.area());
     --area.max.x;
     --area.max.y;
     set_format( area);
     set_aspect_ratio( f.aspect);
-    set_proxy_scale( Imath::V2f( 1, 1));
+    set_proxy_scale( math::vector2f_t( 1, 1));
 }
 
 void generator_node_t::do_calc_bounds( const render::context_t& context)

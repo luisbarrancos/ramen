@@ -19,7 +19,11 @@ format_t::format_t() : width( 768), height( 576), aspect( 1.0f) {}
 
 format_t::format_t( int w, int h, float asp) : width( w), height( h), aspect( asp) {}
 
-Imath::Box2i format_t::area() const { return Imath::Box2i( Imath::V2i( 0, 0), Imath::V2i( width, height));}
+math::box2i_t format_t::area() const
+{
+    return math::box2i_t( math::point2i_t( 0, 0),
+                          math::point2i_t( width, height));
+}
 
 // presets
 const std::vector<format_t::preset_type>& format_t::presets()

@@ -93,8 +93,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/widgets/spinbox.hpp
                         ui/widgets/text_edit.hpp
                         ui/widgets/time_slider.hpp
-
-                        #params/inspector_param.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -181,21 +179,12 @@ SET( RAMEN_SOURCES      assert.hpp
                         image/format.cpp
                         image/typedefs.hpp
 
-                        ImathExt/ImathBoxAlgo.cpp
-                        ImathExt/ImathMatrixColorAlgo.cpp
-
-                        manipulators/draw.hpp
-                        manipulators/draw.cpp
                         manipulators/manipulable_fwd.hpp
                         manipulators/manipulable.hpp
                         manipulators/manipulable.cpp
                         manipulators/manipulator_fwd.hpp
                         manipulators/manipulator.hpp
                         manipulators/manipulator.cpp
-                        manipulators/pick.hpp
-                        manipulators/pick.cpp
-                        manipulators/util.hpp
-                        manipulators/util.cpp
 
                         memory/image_cache.cpp
                         memory/manager.cpp
@@ -209,7 +198,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/node.hpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
-                        nodes/node_graph.cpp
                         nodes/node_info.hpp
                         nodes/node_info.cpp
                         nodes/node_plug.cpp
@@ -283,7 +271,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/user_interface_fwd.hpp
                         ui/user_interface.hpp
                         ui/user_interface.cpp
-                        ui/viewport.cpp
 
                         ui/anim/anim_curves_view.cpp
                         ui/anim/anim_editor.cpp

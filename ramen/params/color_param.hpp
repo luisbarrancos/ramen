@@ -7,7 +7,7 @@
 
 #include<ramen/params/animated_param.hpp>
 
-#include<OpenEXR/ImathColor.h>
+#include<ramen/color/rgba_color.hpp>
 
 #include<QPointer>
 #include<QToolButton>
@@ -28,12 +28,12 @@ public:
 
     explicit color_param_t( const std::string& name);
 
-    void set_default_value( const Imath::Color4f& x);
+    void set_default_value( const color::rgba_colorf_t& x);
 
     virtual poly_param_value_t value_at_frame( float frame) const;
 
-    void set_value( const Imath::Color4f& x, change_reason reason = user_edited);
-    void set_value_at_frame( const Imath::Color4f& x, float frame, change_reason reason = user_edited);
+    void set_value( const color::rgba_colorf_t& x, change_reason reason = user_edited);
+    void set_value_at_frame( const color::rgba_colorf_t& x, float frame, change_reason reason = user_edited);
 
     bool is_rgba() const	{ return is_rgba_;}
     void set_is_rgba( bool b)	{ is_rgba_ = b;}

@@ -26,11 +26,11 @@ public:
 
     void set_context( const context_t& context);
 
-    const Imath::Box2i& format() const;
-    const Imath::Box2i& bounds() const;
+    const math::box2i_t& format() const;
+    const math::box2i_t& bounds() const;
 
     void render();
-    void render( const Imath::Box2i& roi);
+    void render( const math::box2i_t& roi);
 
     image::buffer_t image();
     image::const_image_view_t format_image_view() const;

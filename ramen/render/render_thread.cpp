@@ -109,7 +109,8 @@ boost::unique_future<bool>& render_thread_t::render_image( node_renderer_t& rend
     return render_image( renderer, renderer.format());
 }
 
-boost::unique_future<bool>& render_thread_t::render_image( node_renderer_t& renderer, const Imath::Box2i& roi)
+boost::unique_future<bool>& render_thread_t::render_image(node_renderer_t& renderer,
+                                                           const math::box2i_t& roi)
 {
     return pimpl_->run_function( boost::bind( &node_renderer_t::render, boost::ref( renderer), roi));
 }

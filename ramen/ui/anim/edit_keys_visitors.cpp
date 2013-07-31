@@ -20,126 +20,130 @@ namespace ui
 
 void delete_selected_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	c->erase_selected_keyframes();
-	c->recalc_tangents_and_coefficients();
+    c->erase_selected_keyframes();
+    c->recalc_tangents_and_coefficients();
 }
 
-can_drag_keys_visitor::can_drag_keys_visitor( const Imath::V2f& offset) : offset_( offset) {}
+can_drag_keys_visitor::can_drag_keys_visitor( const math::vector2f_t& offset) : offset_( offset) {}
 void can_drag_keys_visitor::operator()( const anim::float_curve_t *c)
 {
-	result = ( offset_.x != 0 || offset_.y != 0);
+    result = ( offset_.x != 0 || offset_.y != 0);
 }
 
 void can_drag_keys_visitor::operator()( const anim::shape_curve2f_t *c)
 {
-	result = ( offset_.x != 0);
+    result = ( offset_.x != 0);
 }
 
-drag_keys_visitor::drag_keys_visitor( const Imath::V2f& offset, bool snap_frames) : offset_( offset), snap_frames_( snap_frames) {}
+drag_keys_visitor::drag_keys_visitor( const math::vector2f_t& offset,
+                                      bool snap_frames) : offset_( offset), snap_frames_( snap_frames) {}
 void drag_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	changed = true;
-	
-	if( offset_.y != 0.0f)
-		anim::move_selected_keyframes_value( *c, offset_.y / c->scale());
-	
-	if( offset_.x != 0.0f)
-		anim::move_selected_keyframes_time( *c, offset_.x, snap_frames_);
+    changed = true;
 
-	c->recalc_tangents_and_coefficients();
+    if( offset_.y != 0.0f)
+        anim::move_selected_keyframes_value( *c, offset_.y / c->scale());
+
+    if( offset_.x != 0.0f)
+        anim::move_selected_keyframes_time( *c, offset_.x, snap_frames_);
+
+    c->recalc_tangents_and_coefficients();
 }
 
 void drag_keys_visitor::operator()( anim::shape_curve2f_t *c)
 {
-	if( offset_.x != 0.0f)
-	{
-		anim::move_selected_keyframes_time( *c, offset_.x, snap_frames_);
-		changed = true;
-	}
-	else
-		changed = false;
+    if( offset_.x != 0.0f)
+    {
+        anim::move_selected_keyframes_time( *c, offset_.x, snap_frames_);
+        changed = true;
+    }
+    else
+        changed = false;
 }
 
 get_keyframe_value_visitor::get_keyframe_value_visitor( int index) : index_( index), value( 0), can_edit( false) {}
 void get_keyframe_value_visitor::operator()( const anim::float_curve_t *c)
-{ 
-	value = c->relative_to_absolute( (*c)[index_].value());
-	can_edit = true;
+{
+    value = c->relative_to_absolute( (*c)[index_].value());
+    can_edit = true;
 }
 
-can_insert_keyframe_visitor::can_insert_keyframe_visitor( const anim_curves_view_t& view, const Imath::V2i& p, bool snap) : view_( view), p_( p)
+can_insert_keyframe_visitor::can_insert_keyframe_visitor( const anim_curves_view_t& view,
+                                                          const math::point2i_t& p,
+                                                          bool snap) : view_( view), p_( p)
 {
-	snap_ = snap;
-	
-	if( snap_)
-	{
-		Imath::V2f q( view_.screen_to_world( p_));
-		q.x = (int) q.x;
-		time_ = q.x;
-		
-		p_ = view_.world_to_screen( q);
-	}
-	else
-		time_ = view_.screen_to_world( p).x;		
+    snap_ = snap;
+
+    if( snap_)
+    {
+        math::point2f_t q( view_.screen_to_world( p_));
+        q.x = (int) q.x;
+        time_ = q.x;
+        p_ = view_.world_to_screen( q);
+    }
+    else
+        time_ = view_.screen_to_world( p).x;
 }
 
 void can_insert_keyframe_visitor::operator()( const anim::float_curve_t *c)
 {
-	float val = c->evaluate( time_);
-	val = c->relative_to_absolute( val);
-	Imath::V2i qi( view_.world_to_screen( Imath::V2f( time_, val)));
-	can_insert = view_.inside_pick_distance( p_, qi);
+    float val = c->evaluate( time_);
+    val = c->relative_to_absolute( val);
+    math::point2i_t qi( view_.world_to_screen( math::point2f_t( time_, val)));
+    can_insert = view_.inside_pick_distance( p_, qi);
 }
 
-insert_keyframe_visitor::insert_keyframe_visitor( const anim_curves_view_t& view, const Imath::V2i& p, bool snap) : view_( view), p_( p)
+insert_keyframe_visitor::insert_keyframe_visitor( const anim_curves_view_t& view,
+                                                  const math::vector2i_t& p,
+                                                  bool snap) : view_( view), p_( p)
 {
-	snap_ = snap;
-	
-	if( snap_)
-	{
-		Imath::V2f q( view_.screen_to_world( p_));
-		q.x = (int) q.x;
-		time_ = q.x;
-		
-		p_ = view_.world_to_screen( q);
-	}
-	else
-		time_ = view_.screen_to_world( p).x;
-	
-	key_index = -1;
+    snap_ = snap;
+
+    if( snap_)
+    {
+        math::vector3f_t q( view_.screen_to_world( p_));
+        q.x = (int) q.x;
+        time_ = q.x;
+
+        p_ = view_.world_to_screen( q);
+    }
+    else
+        time_ = view_.screen_to_world( p).x;
+
+    key_index = -1;
 }
 
 void insert_keyframe_visitor::operator()( anim::float_curve_t *c)
 {
-	anim::float_curve_t::iterator it( c->insert( time_, true));
-	key_index = it - c->begin();
+    anim::float_curve_t::iterator it( c->insert( time_, true));
+    key_index = it - c->begin();
 }
 
 void negate_selected_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	anim::negate_keyframes( *c, true);
+    anim::negate_keyframes( *c, true);
 }
 
 void sample_selected_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	anim::sample_keyframes( *c, true);
+    anim::sample_keyframes( *c, true);
 }
 
 void smooth_selected_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	if( resample_)
-		anim::sample_keyframes( *c, true);
+    if( resample_)
+        anim::sample_keyframes( *c, true);
 
-	anim::smooth_keyframes( *c, filter_size_, true);
+    anim::smooth_keyframes( *c, filter_size_, true);
 }
 
 void high_pass_selected_keys_visitor::operator()( anim::float_curve_t *c)
 {
-	if( resample_)
-		anim::sample_keyframes( *c, true);
-	
-	anim::highpass_keyframes( *c, filter_size_, true);
+    if( resample_)
+        anim::sample_keyframes( *c, true);
+
+    anim::highpass_keyframes( *c, filter_size_, true);
 }
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

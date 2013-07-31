@@ -5,7 +5,9 @@
 #ifndef RAMEN_UI_ANIM_DRAW_CURVE_VISITORS_HPP
 #define	RAMEN_UI_ANIM_DRAW_CURVE_VISITORS_HPP
 
-#include<OpenEXR/ImathBox.h>
+#include<ramen/config.hpp>
+
+#include<ramen/math/box2.hpp>
 
 #include<ramen/anim/any_curve.hpp>
 
@@ -17,14 +19,17 @@ namespace ui
 {
 
 // utility function. Also used outside of here, so it's public.
-void tangents_mask( const anim::float_key_t& k, const anim::float_key_t *prev, const anim::float_key_t *next, bool& left, bool& right);
+void tangents_mask( const anim::float_key_t& k,
+                    const anim::float_key_t *prev,
+                    const anim::float_key_t *next,
+                    bool& left, bool& right);
 
 // visitors
 struct draw_curve_visitor : public boost::static_visitor<>
 {
     draw_curve_visitor( const anim_curves_view_t& view);
     void operator()( const anim::float_curve_t *c);
-	void operator ()( const anim::shape_curve2f_t *c);
+    void operator ()( const anim::shape_curve2f_t *c);
 
 private:
 
@@ -35,25 +40,25 @@ struct draw_keyframes_visitor : public boost::static_visitor<>
 {
     draw_keyframes_visitor( const anim_curves_view_t& view, bool draw_tangents = true);
     void operator()( const anim::float_curve_t *c);
-	void operator ()( const anim::shape_curve2f_t *c);
+    void operator ()( const anim::shape_curve2f_t *c);
 
 private:
 
     const anim_curves_view_t& view_;
-	bool draw_tangents_;
+    bool draw_tangents_;
 };
 
 struct bbox_curve_visitor : public boost::static_visitor<>
 {
-    bbox_curve_visitor( const Imath::Box2f box = Imath::Box2f(), bool sel_only = false);
+    bbox_curve_visitor( const math::box2f_t box = math::box2f_t(), bool sel_only = false);
     void operator()( const anim::float_curve_t *c);
-	void operator ()( const anim::shape_curve2f_t *c);
-	
-    Imath::Box2f bbox;
+    void operator ()( const anim::shape_curve2f_t *c);
+
+    math::box2f_t bbox;
     bool selected_only;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

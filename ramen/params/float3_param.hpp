@@ -7,7 +7,7 @@
 
 #include<ramen/params/proportional_param.hpp>
 
-#include<OpenEXR/ImathVec.h>
+#include<ramen/math/vector3.hpp>
 
 #include<QPointer>
 
@@ -24,15 +24,15 @@ public:
 
     explicit float3_param_t( const std::string& name);
 
-    void set_default_value( const Imath::V3f& x);
+    void set_default_value( const math::vector3f_t& x);
 
     virtual poly_param_value_t value_at_frame( float frame) const;
 
-    void set_value( const Imath::V3f& x, change_reason reason = user_edited);
-    void set_value_at_frame( const Imath::V3f& x, float frame, change_reason reason = user_edited);
+    void set_value( const math::vector3f_t& x, change_reason reason = user_edited);
+    void set_value_at_frame( const math::vector3f_t& x, float frame, change_reason reason = user_edited);
 
-    Imath::V3f derive( float time) const;
-    Imath::V3f integrate( float time1, float time2) const;
+    math::vector3f_t derive( float time) const;
+    math::vector3f_t integrate( float time1, float time2) const;
 
 protected:
 
@@ -67,6 +67,6 @@ private Q_SLOTS:
     void spinbox_released();
 };
 
-} // namespace
+} // ramen
 
 #endif

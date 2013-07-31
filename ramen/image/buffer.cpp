@@ -14,8 +14,6 @@
 
 #include<ramen/core/memory.hpp>
 
-#include<ramen/ImathExt/ImathBoxAlgo.h>
-
 #include<ramen/memory/manager.hpp>
 
 #include<ramen/app/application.hpp>
@@ -57,15 +55,16 @@ buffer_t::buffer_t( int width, int height, int channels)
 
     init();
     channels_ = channels;
-    bounds_ = Imath::Box2i( Imath::V2i( 0, 0), Imath::V2i( width-1, height-1));
+    bounds_ = math::box2i_t( math::point2i_t( 0, 0),
+                             math::point2i_t( width - 1, height - 1));
 
-    if( bounds_.isEmpty())
+    if( bounds_.is_empty())
         return;
 
     alloc_pixels();
 }
 
-buffer_t::buffer_t( const Imath::Box2i& bounds, int channels)
+buffer_t::buffer_t( const math::box2i_t& bounds, int channels)
 {
     RAMEN_ASSERT(( channels == 4) && "buffer_t: only 1, 3 and 4 channels images supported");
 
@@ -73,7 +72,7 @@ buffer_t::buffer_t( const Imath::Box2i& bounds, int channels)
     bounds_ = bounds;
     channels_ = channels;
 
-    if( bounds_.isEmpty())
+    if( bounds_.is_empty())
         return;
 
     alloc_pixels();
@@ -104,7 +103,7 @@ int buffer_t::channels() const { return channels_;}
 void buffer_t::clear()
 {
     cached_pixels_ = false;
-    bounds_ = Imath::Box2i();
+    bounds_ = math::box2i_t();
     pixels_.reset();
 }
 
@@ -113,16 +112,19 @@ const_image_view_t buffer_t::const_rgba_view() const
     RAMEN_ASSERT( !empty() && "Trying to get a view from an empty image");
     RAMEN_ASSERT( channels() == 4);
 
-    return boost::gil::interleaved_view<const pixel_t*>( width(), height(),
-                                                            reinterpret_cast<const pixel_t*>( aligned_ptr()),
-                                                            width() * channels() * sizeof( float));
+    return boost::gil::interleaved_view<const pixel_t*>( width(),
+                                                         height(),
+                                                         reinterpret_cast<const pixel_t*>( aligned_ptr()),
+                                                         width() * channels() * sizeof( float));
 }
 
-const_image_view_t buffer_t::const_rgba_subimage_view( const Imath::Box2i& area) const
+const_image_view_t buffer_t::const_rgba_subimage_view( const math::box2i_t& area) const
 {
     check_area_inside_image( area);
-    return boost::gil::subimage_view( const_rgba_view(), area.min.x - bounds_.min.x, area.min.y - bounds_.min.y,
-                                        area.size().x+1, area.size().y+1);
+    return boost::gil::subimage_view( const_rgba_view(),
+                                      area.min.x - bounds_.min.x,
+                                      area.min.y - bounds_.min.y,
+                                      area.size().x+1, area.size().y+1);
 }
 
 image_view_t buffer_t::rgba_view() const
@@ -131,23 +133,26 @@ image_view_t buffer_t::rgba_view() const
     RAMEN_ASSERT( !cached() && "Trying to get a non const view of an image cached");
     RAMEN_ASSERT( channels() == 4);
 
-    return boost::gil::interleaved_view<pixel_t*>( width(), height(),
-                                                      reinterpret_cast<pixel_t*>( aligned_ptr()),
-                                                        width() * channels() * sizeof( float));
+    return boost::gil::interleaved_view<pixel_t*>( width(),
+                                                   height(),
+                                                   reinterpret_cast<pixel_t*>( aligned_ptr()),
+                                                   width() * channels() * sizeof( float));
 
 }
 
-image_view_t buffer_t::rgba_subimage_view( const Imath::Box2i& area) const
+image_view_t buffer_t::rgba_subimage_view( const math::box2i_t& area) const
 {
     check_area_inside_image( area);
-    return boost::gil::subimage_view( rgba_view(), area.min.x - bounds_.min.x, area.min.y - bounds_.min.y,
-                                        area.size().x+1, area.size().y+1);
+    return boost::gil::subimage_view( rgba_view(),
+                                      area.min.x - bounds_.min.x,
+                                      area.min.y - bounds_.min.y,
+                                      area.size().x + 1, area.size().y + 1);
 }
 
-void buffer_t::check_area_inside_image( const Imath::Box2i& area) const
+void buffer_t::check_area_inside_image( const math::box2i_t& area) const
 {
     #ifndef NDEBUG
-        if( !ImathExt::isInside( bounds_, area))
+        if( !bounds_.is_inside( area))
         {
             // Not OK, print some debug info and exit
             std::cout << "Trying to access pixels outside buffer\n";

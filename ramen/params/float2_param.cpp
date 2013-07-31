@@ -37,10 +37,10 @@ void float2_param_t::private_init()
 {
     add_curve( "X");
     add_curve( "Y");
-    set_default_value( Imath::V2f( 0, 0));
+    set_default_value( math::vector2f_t( 0, 0));
 }
 
-void float2_param_t::set_default_value( const Imath::V2f& x)
+void float2_param_t::set_default_value( const math::vector2f_t& x)
 {
     poly_param_indexable_value_t v( x);
     value() = core::poly_cast<poly_param_value_t&>( v);
@@ -48,14 +48,14 @@ void float2_param_t::set_default_value( const Imath::V2f& x)
 
 poly_param_value_t float2_param_t::value_at_frame( float frame) const
 {
-    Imath::V2f v( get_value<Imath::V2f>( *this));
+    math::vector2f_t v( get_value<math::vector2f_t>( *this));
     eval_curve( 0, frame, v.x);
     eval_curve( 1, frame, v.y);
     poly_param_indexable_value_t val( v);
     return core::poly_cast<poly_param_value_t&>( val);
 }
 
-void float2_param_t::set_value( const Imath::V2f& x, change_reason reason)
+void float2_param_t::set_value( const math::vector2f_t& x, change_reason reason)
 {
     float frame = 1.0f;
 
@@ -65,7 +65,7 @@ void float2_param_t::set_value( const Imath::V2f& x, change_reason reason)
     set_value_at_frame( x, frame, reason);
 }
 
-void float2_param_t::set_value_at_frame( const Imath::V2f& x, float frame, change_reason reason)
+void float2_param_t::set_value_at_frame( const math::vector2f_t& x, float frame, change_reason reason)
 {
     if( can_undo())
         param_set()->add_command( this);
@@ -87,19 +87,19 @@ void float2_param_t::set_value_at_frame( const Imath::V2f& x, float frame, chang
     emit_param_changed( reason);
 }
 
-void float2_param_t::set_absolute_value( const Imath::V2f& x, change_reason reason)
+void float2_param_t::set_absolute_value( const math::vector2f_t& x, change_reason reason)
 {
     set_value( absolute_to_relative( round( x)), reason);
 }
 
-void float2_param_t::set_absolute_value_at_frame( const Imath::V2f& x, float frame, change_reason reason)
+void float2_param_t::set_absolute_value_at_frame( const math::vector2f_t& x, float frame, change_reason reason)
 {
     set_value_at_frame( absolute_to_relative( round( x)), frame, reason);
 }
 
-Imath::V2f float2_param_t::derive( float time) const
+math::vector2f_t float2_param_t::derive( float time) const
 {
-    Imath::V2f result( 0.0f, 0.0f);
+    math::vector2f_t result( 0.0f, 0.0f);
 
     if( !curve( 0).empty())
         result.x = curve( 0).derive( time);
@@ -110,9 +110,9 @@ Imath::V2f float2_param_t::derive( float time) const
     return result;
 }
 
-Imath::V2f float2_param_t::integrate( float time1, float time2) const
+math::vector2f_t float2_param_t::integrate( float time1, float time2) const
 {
-    Imath::V2f result = get_value<Imath::V2f>( *this);
+    math::vector2f_t result = get_value<math::vector2f_t>( *this);
     result.x  = (time2 - time1) * result.x;
     result.y  = (time2 - time1) * result.y;
 
@@ -125,9 +125,11 @@ Imath::V2f float2_param_t::integrate( float time1, float time2) const
     return result;
 }
 
-void float2_param_t::do_format_changed( const Imath::Box2i& new_domain, float aspect, const Imath::V2f& proxy_scale)
+void float2_param_t::do_format_changed( const math::box2i_t& new_domain,
+                                        float aspect,
+                                        const math::vector2f_t& proxy_scale)
 {
-    Imath::V2f scale, offset;
+    math::vector2f_t scale, offset;
     get_scale_and_offset( scale, offset);
     curve( 0).set_scale( scale.x);
     curve( 0).set_offset( offset.x);
@@ -152,7 +154,7 @@ void float2_param_t::do_format_changed( const Imath::Box2i& new_domain, float as
 
 void float2_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
-    Imath::V2f v( get_value<Imath::V2f>( *this));
+    math::vector2f_t v( get_value<math::vector2f_t>( *this));
     hash_gen << v.x << "," << v.y;
 }
 
@@ -161,7 +163,7 @@ void float2_param_t::do_read( const serialization::yaml_node_t& node)
 {
     read_curves( node);
 
-    Imath::V2f val;
+    math::vector2f_t val;
     if( node.get_optional_value( "value", val))
     {
         poly_param_indexable_value_t v( val);
@@ -177,7 +179,7 @@ void float2_param_t::do_write( serialization::yaml_oarchive_t& out) const
     bool two = curve( 1).empty(); // && expression( 1).empty();
 
     if( one || two)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::V2f>( *this);
+        out << YAML::Key << "value" << YAML::Value << get_value<math::vector2f_t>( *this);
 }
 */
 
@@ -188,7 +190,7 @@ void float2_param_t::do_update_widgets()
         input0_->blockSignals( true);
         input1_->blockSignals( true);
 
-        Imath::V2f v = get_absolute_value<Imath::V2f>( *this);
+        math::vector2f_t v = get_absolute_value<math::vector2f_t>( *this);
         input0_->setValue( v.x);
         input1_->setValue( v.y);
 
@@ -226,7 +228,7 @@ QWidget *float2_param_t::do_create_widgets()
 
     int xpos = app().ui()->inspector().left_margin();
 
-    Imath::V2f v = get_absolute_value<Imath::V2f>( *this);
+    math::vector2f_t v = get_absolute_value<math::vector2f_t>( *this);
     float low = absolute_min();
     float high = absolute_max();
 
@@ -275,9 +277,8 @@ QWidget *float2_param_t::do_create_widgets()
 
 void float2_param_t::calc_proportional_factors()
 {
-
-    proportional_factor = Imath::V3f( 1, 1, 1);
-    Imath::V2f v = get_absolute_value<Imath::V2f>( *this);
+    proportional_factor = math::vector3f_t( 1, 1, 1);
+    math::vector2f_t v = get_absolute_value<math::vector2f_t>( *this);
 
     if( sender() == input0_)
     {
@@ -293,7 +294,7 @@ void float2_param_t::calc_proportional_factors()
 
 void float2_param_t::set_component_value_from_slot()
 {
-    Imath::V2f v( absolute_to_relative( Imath::V2f( round (input0_->value()), round( input1_->value()))));
+    math::vector2f_t v( absolute_to_relative( math::vector2f_t( round (input0_->value()), round( input1_->value()))));
     int index;
     float comp_value;
 
@@ -318,7 +319,7 @@ void float2_param_t::value_changed( double value)
     if( proportional_checked())
     {
         calc_proportional_factors();
-        Imath::V2f v = get_absolute_value<Imath::V2f>( *this);
+        math::vector2f_t v = get_absolute_value<math::vector2f_t>( *this);
 
         if( sender() == input0_)
         {
@@ -357,7 +358,7 @@ void float2_param_t::spinbox_dragged( double value)
 {
     if( proportional_checked())
     {
-        Imath::V2f v = get_absolute_value<Imath::V2f>( *this);
+        math::vector2f_t v = get_absolute_value<math::vector2f_t>( *this);
 
         if( sender() == input0_)
         {

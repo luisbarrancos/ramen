@@ -11,6 +11,7 @@
 #include<iostream>
 
 #include<boost/operators.hpp>
+#include<boost/integer.hpp>
 
 #include<OpenEXR/half.h>
 
@@ -139,9 +140,11 @@ std::ostream& operator<<( std::ostream& os, const color3_t<T>& c)
 }
 
 // typedefs
-typedef color3_t<float>     color3f_t;
-typedef color3_t<double>    color3d_t;
-typedef color3_t<half>      color3h_t;
+typedef color3_t<boost::uint8_t>    color3c_t;
+typedef color3_t<boost::uint16_t>   color3s_t;
+typedef color3_t<float>             color3f_t;
+typedef color3_t<double>            color3d_t;
+typedef color3_t<half>              color3h_t;
 
 } // color
 } // ramen

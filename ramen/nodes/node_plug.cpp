@@ -59,11 +59,11 @@ struct match_output_connection_by_port
 
 node_output_plug_t::node_output_plug_t( node_t *parent,
                                         const std::string& id,
-										const Imath::Color3c& color,
-										const std::string& tooltip) : node_plug_t( id, color, tooltip),
+                                        const color::color3c_t& color,
+                                        const std::string& tooltip) : node_plug_t( id, color, tooltip),
                                                                         parent_( parent)
 {
-	RAMEN_ASSERT( parent_);
+    RAMEN_ASSERT( parent_);
 }
 
 node_output_plug_t::node_output_plug_t( const node_output_plug_t& other) : node_plug_t( other)
@@ -96,8 +96,8 @@ void node_output_plug_t::remove_output( node_t *n, const core::name_t& plug)
     iterator it( boost::range::find_if( connections_,
                                         match_output_connection( n, plug)));
 
-	if( it != connections_.end())
-		connections_.erase( it);
+    if( it != connections_.end())
+        connections_.erase( it);
 }
 
 void node_output_plug_t::remove_output( node_t *n, int port)
@@ -105,8 +105,8 @@ void node_output_plug_t::remove_output( node_t *n, int port)
     iterator it( boost::range::find_if( connections_,
                                         match_output_connection_by_port( n, port)));
 
-	if( it != connections_.end())
-		connections_.erase( it);
+    if( it != connections_.end())
+        connections_.erase( it);
 }
 
 node_output_plug_t *node_output_plug_t::do_clone() const

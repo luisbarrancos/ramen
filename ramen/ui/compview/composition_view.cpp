@@ -65,8 +65,15 @@ composition_view_toolbar_t *composition_view_t::create_toolbar()
     return toolbar_;
 }
 
-const viewport_t& composition_view_t::viewport() const	{ return viewport_;}
-viewport_t& composition_view_t::viewport()				{ return viewport_;}
+const math::viewport_t& composition_view_t::viewport() const
+{
+    return viewport_;
+}
+
+math::viewport_t& composition_view_t::viewport()
+{
+    return viewport_;
+}
 
 Imath::V2f composition_view_t::screen_to_world( const Imath::V2i& p) const
 {

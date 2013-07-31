@@ -39,12 +39,12 @@ void float3_param_t::private_init()
     add_curve( "X");
     add_curve( "Y");
     add_curve( "Z");
-    set_default_value( Imath::V3f( 0, 0, 0));
+    set_default_value( math::vector3f_t( 0, 0, 0));
 }
 
 poly_param_value_t float3_param_t::value_at_frame( float frame) const
 {
-    Imath::V3f v( get_value<Imath::V3f>( *this));
+    math::vector3f_t v( get_value<math::vector3f_t>( *this));
     eval_curve( 0, frame, v.x);
     eval_curve( 1, frame, v.y);
     eval_curve( 2, frame, v.z);
@@ -52,13 +52,13 @@ poly_param_value_t float3_param_t::value_at_frame( float frame) const
     return core::poly_cast<poly_param_value_t&>( val);
 }
 
-void float3_param_t::set_default_value( const Imath::V3f& x)
+void float3_param_t::set_default_value( const math::vector3f_t& x)
 {
     poly_param_indexable_value_t v( x);
     value() = core::poly_cast<poly_param_value_t&>( v);
 }
 
-void float3_param_t::set_value( const Imath::V3f& x, change_reason reason)
+void float3_param_t::set_value( const math::vector3f_t& x, change_reason reason)
 {
     float frame = 1.0f;
 
@@ -68,7 +68,7 @@ void float3_param_t::set_value( const Imath::V3f& x, change_reason reason)
     set_value_at_frame( x, frame, reason);
 }
 
-void float3_param_t::set_value_at_frame( const Imath::V3f& x, float frame, change_reason reason)
+void float3_param_t::set_value_at_frame( const math::vector3f_t& x, float frame, change_reason reason)
 {
     if( can_undo())
         param_set()->add_command( this);
@@ -93,9 +93,9 @@ void float3_param_t::set_value_at_frame( const Imath::V3f& x, float frame, chang
     emit_param_changed( reason);
 }
 
-Imath::V3f float3_param_t::derive( float time) const
+math::vector3f_t float3_param_t::derive( float time) const
 {
-    Imath::V3f result( 0.0f, 0.0f, 0.0f);
+    math::vector3f_t result( 0.0f, 0.0f, 0.0f);
 
     if( !curve( 0).empty())
         result.x = curve( 0).derive( time);
@@ -109,9 +109,9 @@ Imath::V3f float3_param_t::derive( float time) const
     return result;
 }
 
-Imath::V3f float3_param_t::integrate( float time1, float time2) const
+math::vector3f_t float3_param_t::integrate( float time1, float time2) const
 {
-    Imath::V3f result = get_value<Imath::V3f>( *this);
+    math::vector3f_t result = get_value<math::vector3f_t>( *this);
     result.x = (time2 - time1) * result.x;
     result.y = (time2 - time1) * result.y;
     result.z = (time2 - time1) * result.z;
@@ -130,7 +130,7 @@ Imath::V3f float3_param_t::integrate( float time1, float time2) const
 
 void float3_param_t::set_component_value_from_slot()
 {
-    Imath::V3f v( round (input0_->value()), round( input1_->value()), round( input2_->value()));
+    math::vector3f_t v( round (input0_->value()), round( input1_->value()), round( input2_->value()));
     int index;
     float comp_value;
 
@@ -158,8 +158,8 @@ void float3_param_t::set_component_value_from_slot()
 
 void float3_param_t::calc_proportional_factors()
 {
-    proportional_factor = Imath::V3f( 1, 1, 1);
-    Imath::V3f v = get_value<Imath::V3f>( *this);
+    proportional_factor = math::vector3f_t( 1, 1, 1);
+    math::vector3f_t v = get_value<math::vector3f_t>( *this);
 
     if( sender() == input0_)
     {
@@ -192,7 +192,7 @@ void float3_param_t::calc_proportional_factors()
 
 void float3_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
-    Imath::V3f v( get_value<Imath::V3f>( *this));
+    math::vector3f_t v( get_value<math::vector3f_t>( *this));
     hash_gen << v.x << "," << v.y << "," << v.z;
 }
 
@@ -201,7 +201,7 @@ void float3_param_t::do_read( const serialization::yaml_node_t& node)
 {
     read_curves( node);
 
-    Imath::V3f val;
+    math::vector3f_t val;
     if( node.get_optional_value( "value", val))
     {
         poly_param_indexable_value_t v( val);
@@ -217,7 +217,7 @@ void float3_param_t::do_write( serialization::yaml_oarchive_t& out) const
     bool three = curve( 2).empty(); // && expression( 2).empty();
 
     if( one || two || three)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::V3f>( *this);
+        out << YAML::Key << "value" << YAML::Value << get_value<math::vector3f_t>( *this);
 }
 */
 
@@ -236,7 +236,7 @@ QWidget *float3_param_t::do_create_widgets()
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
     label->setText( name().c_str());
     label->setToolTip( id().c_str());
-    Imath::V3f triple = get_value<Imath::V3f>( *this);
+    math::vector3f_t triple = get_value<math::vector3f_t>( *this);
 
     // make inputs bigger
     s.setWidth( s.width() + ( s.width() / 4));
@@ -304,7 +304,7 @@ void float3_param_t::do_update_widgets()
         input1_->blockSignals( true);
         input2_->blockSignals( true);
 
-        Imath::V3f triple = get_value<Imath::V3f>( *this);
+        math::vector3f_t triple = get_value<math::vector3f_t>( *this);
         input0_->setValue( triple.x);
         input1_->setValue( triple.y);
         input2_->setValue( triple.z);
@@ -335,7 +335,7 @@ void float3_param_t::value_changed( double value)
     if( proportional_checked())
     {
         calc_proportional_factors();
-        Imath::V3f v = get_value<Imath::V3f>( *this);
+        math::vector3f_t v = get_value<math::vector3f_t>( *this);
 
         if( sender() == input0_)
         {
@@ -386,7 +386,7 @@ void float3_param_t::spinbox_dragged( double value)
 {
     if( proportional_checked())
     {
-        Imath::V3f v = get_value<Imath::V3f>( *this);
+        math::vector3f_t v = get_value<math::vector3f_t>( *this);
 
         if( sender() == input0_)
         {

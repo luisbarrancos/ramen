@@ -32,18 +32,18 @@ float numeric_param_t::round( float x) const
     return x;
 }
 
-Imath::V2f numeric_param_t::round( const Imath::V2f& x) const
+math::vector2f_t numeric_param_t::round( const math::vector2f_t& x) const
 {
     if( round_to_int())
-        return Imath::V2f( (int) x.x, (int) x.y);
+        return math::vector2f_t( (int) x.x, (int) x.y);
 
     return x;
 }
 
-Imath::V3f numeric_param_t::round( const Imath::V3f& x) const
+math::vector3f_t numeric_param_t::round( const math::vector3f_t& x) const
 {
     if( round_to_int())
-        return Imath::V3f( (int) x.x, (int) x.y, (int) x.z);
+        return math::vector3f_t( (int) x.x, (int) x.y, (int) x.z);
 
     return x;
 }
@@ -54,9 +54,9 @@ void numeric_param_t::set_numeric_type( numeric_type_t type, int port)
     depends_on_port_ = port;
 }
 
-Imath::Box2i numeric_param_t::frame_area() const
+math::box2i_t numeric_param_t::frame_area() const
 {
-    Imath::Box2i area;
+    math::box2i_t area;
 
     if( depends_on_port_ == -1)
     {
@@ -84,54 +84,58 @@ float numeric_param_t::relative_to_absolute( float x) const
 {
     switch( type_)
     {
-    case relative_x:
-        return ( x * frame_area().size().x) + frame_area().min.x;
+        case relative_x:
+            return ( x * frame_area().size().x) + frame_area().min.x;
 
-    case relative_y:
-        return ( x * frame_area().size().y) + frame_area().min.y;
+        case relative_y:
+            return ( x * frame_area().size().y) + frame_area().min.y;
 
-    case relative_size_x:
-        return x * frame_area().size().x;
+        case relative_size_x:
+            return x * frame_area().size().x;
 
-    case relative_size_y:
-        return x * frame_area().size().y;
+        case relative_size_y:
+            return x * frame_area().size().y;
 
-    default:
-        return x;
+        default:
+            return x;
     }
 }
 
-Imath::V2f numeric_param_t::relative_to_absolute( const Imath::V2f& x) const
+math::vector2f_t numeric_param_t::relative_to_absolute( const math::vector2f_t& x) const
 {
     switch( type_)
     {
-    case relative_xy:
-        return Imath::V2f( ( x.x  * frame_area().size().x) + frame_area().min.x,
-                           ( x.y * frame_area().size().y) + frame_area().min.y);
+        case relative_xy:
+            return math::vector2f_t( ( x.x  * frame_area().size().x) + frame_area().min.x,
+                                     ( x.y * frame_area().size().y) + frame_area().min.y);
 
-    case relative_size_xy:
-        return Imath::V2f( x.x  * frame_area().size().x,
-                           x.y * frame_area().size().y);
+        case relative_size_xy:
+            return math::vector2f_t( x.x  * frame_area().size().x,
+                                     x.y * frame_area().size().y);
 
-    default:
-        return x;
+        default:
+            return x;
     }
 }
 
-Imath::Box2f numeric_param_t::relative_to_absolute( const Imath::Box2f& x) const
+math::box2f_t numeric_param_t::relative_to_absolute( const math::box2f_t& x) const
 {
     switch( type_)
     {
-    case relative_xy:
-        return Imath::Box2f( Imath::V2f( x.min.x * frame_area().size().x + frame_area().min.x, x.min.y * frame_area().size().y + frame_area().min.y),
-                             Imath::V2f( x.max.x * frame_area().size().x + frame_area().min.x, x.max.y * frame_area().size().y + frame_area().min.y));
+        case relative_xy:
+            return math::box2f_t( math::point2f_t( x.min.x * frame_area().size().x + frame_area().min.x,
+                                                   x.min.y * frame_area().size().y + frame_area().min.y),
+                                  math::point2f_t( x.max.x * frame_area().size().x + frame_area().min.x,
+                                                   x.max.y * frame_area().size().y + frame_area().min.y));
 
-    case relative_size_xy:
-        return Imath::Box2f( Imath::V2f( x.min.x * frame_area().size().x, x.min.y * frame_area().size().y),
-                             Imath::V2f( x.max.x * frame_area().size().x, x.max.y * frame_area().size().y));
+        case relative_size_xy:
+            return math::box2f_t( math::point2f_t( x.min.x * frame_area().size().x,
+                                                   x.min.y * frame_area().size().y),
+                                  math::point2f_t( x.max.x * frame_area().size().x,
+                                                   x.max.y * frame_area().size().y));
 
-    default:
-        return x;
+        default:
+            return x;
     }
 }
 
@@ -139,51 +143,56 @@ float numeric_param_t::absolute_to_relative( float x) const
 {
     switch( type_)
     {
-    case relative_x:
-        return ( x - frame_area().min.x) / frame_area().size().x;
+        case relative_x:
+            return ( x - frame_area().min.x) / frame_area().size().x;
 
-    case relative_y:
-        return ( x - frame_area().min.y) / frame_area().size().y;
+        case relative_y:
+            return ( x - frame_area().min.y) / frame_area().size().y;
 
-    case relative_size_x:
-        return x / frame_area().size().x;
+        case relative_size_x:
+            return x / frame_area().size().x;
 
-    case relative_size_y:
-        return x / frame_area().size().y;
+        case relative_size_y:
+            return x / frame_area().size().y;
 
-    default:
-        return x;
+        default:
+            return x;
     }
 }
 
-Imath::V2f numeric_param_t::absolute_to_relative( const Imath::V2f& x) const
+math::vector2f_t numeric_param_t::absolute_to_relative( const math::vector2f_t& x) const
 {
     switch( type_)
     {
-    case relative_xy:
-        return Imath::V2f( ( x.x - frame_area().min.x) / frame_area().size().x, ( x.y - frame_area().min.y) / frame_area().size().y);
+        case relative_xy:
+            return math::vector2f_t( ( x.x - frame_area().min.x) / frame_area().size().x,
+                                     ( x.y - frame_area().min.y) / frame_area().size().y);
 
-    case relative_size_xy:
-        return Imath::V2f( x.x / frame_area().size().x, x.y / frame_area().size().y);
+        case relative_size_xy:
+            return math::vector2f_t( x.x / frame_area().size().x, x.y / frame_area().size().y);
 
-    default:
-        return x;
+        default:
+            return x;
     }
 }
 
-Imath::Box2f numeric_param_t::absolute_to_relative( const Imath::Box2f& x) const
+math::box2f_t numeric_param_t::absolute_to_relative( const math::box2f_t& x) const
 {
     switch( type_)
     {
-    case relative_xy:
-        return Imath::Box2f( Imath::V2f( ( x.min.x - frame_area().min.x) / frame_area().size().x, ( x.min.y - frame_area().min.y) / frame_area().size().y),
-                             Imath::V2f( ( x.max.x - frame_area().min.x) / frame_area().size().x, ( x.max.y - frame_area().min.y) / frame_area().size().y));
+        case relative_xy:
+            return math::box2f_t( math::point2f_t( ( x.min.x - frame_area().min.x) / frame_area().size().x,
+                                                   ( x.min.y - frame_area().min.y) / frame_area().size().y),
+                                  math::point2f_t( ( x.max.x - frame_area().min.x) / frame_area().size().x,
+                                                   ( x.max.y - frame_area().min.y) / frame_area().size().y));
 
-    case relative_size_xy:
-        return Imath::Box2f( Imath::V2f( x.min.x / frame_area().size().x, x.min.y / frame_area().size().y),
-                             Imath::V2f( x.max.x / frame_area().size().x, x.max.y / frame_area().size().y));
-    default:
-        return x;
+        case relative_size_xy:
+            return math::box2f_t( math::point2f_t( x.min.x / frame_area().size().x,
+                                                   x.min.y / frame_area().size().y),
+                                  math::point2f_t( x.max.x / frame_area().size().x,
+                                                   x.max.y / frame_area().size().y));
+        default:
+            return x;
     }
 }
 
@@ -194,26 +203,26 @@ float numeric_param_t::absolute_min() const
 
     switch( type_)
     {
-    case relative_x:
-        return ( get_min() * frame_area().size().x) + frame_area().min.x;
+        case relative_x:
+            return ( get_min() * frame_area().size().x) + frame_area().min.x;
 
-    case relative_y:
-        return ( get_min() * frame_area().size().y) + frame_area().min.y;
+        case relative_y:
+            return ( get_min() * frame_area().size().y) + frame_area().min.y;
 
-    case relative_xy:
-        return ( get_min() * frame_area().size().x) + frame_area().min.x;
+        case relative_xy:
+            return ( get_min() * frame_area().size().x) + frame_area().min.x;
 
-    case relative_size_x:
-        return get_min() * frame_area().size().x;
+        case relative_size_x:
+            return get_min() * frame_area().size().x;
 
-    case relative_size_y:
-        return get_min() * frame_area().size().y;
+        case relative_size_y:
+            return get_min() * frame_area().size().y;
 
-    case relative_size_xy:
-        return get_min() * frame_area().size().x;
+        case relative_size_xy:
+            return get_min() * frame_area().size().x;
 
-    default:
-        return get_min();
+        default:
+            return get_min();
     }
 }
 
@@ -224,26 +233,26 @@ float numeric_param_t::absolute_max() const
 
     switch( type_)
     {
-    case relative_x:
-        return ( get_max() * frame_area().size().x) + frame_area().min.x;
+        case relative_x:
+            return ( get_max() * frame_area().size().x) + frame_area().min.x;
 
-    case relative_y:
-        return ( get_max() * frame_area().size().y) + frame_area().min.y;
+        case relative_y:
+            return ( get_max() * frame_area().size().y) + frame_area().min.y;
 
-    case relative_xy:
-        return ( get_max() * frame_area().size().x) + frame_area().min.x;
+        case relative_xy:
+            return ( get_max() * frame_area().size().x) + frame_area().min.x;
 
-    case relative_size_x:
-        return get_max() * frame_area().size().x;
+        case relative_size_x:
+            return get_max() * frame_area().size().x;
 
-    case relative_size_y:
-        return get_max() * frame_area().size().y;
+        case relative_size_y:
+            return get_max() * frame_area().size().y;
 
-    case relative_size_xy:
-        return get_max() * frame_area().size().x;
+        case relative_size_xy:
+            return get_max() * frame_area().size().x;
 
-    default:
-        return get_max();
+        default:
+            return get_max();
     }
 }
 
@@ -251,49 +260,49 @@ void numeric_param_t::get_scale_and_offset( float& scale, float& offset) const
 {
     switch( type_)
     {
-    case relative_x:
-        scale = frame_area().size().x;
-        offset = frame_area().min.x;
-    break;
+        case relative_x:
+            scale = frame_area().size().x;
+            offset = frame_area().min.x;
+        break;
 
-    case relative_y:
-        scale = frame_area().size().y;
-        offset = frame_area().min.y;
-    break;
+        case relative_y:
+            scale = frame_area().size().y;
+            offset = frame_area().min.y;
+        break;
 
-    case relative_size_x:
-        scale = frame_area().size().x;
-        offset = 0;
-    break;
+        case relative_size_x:
+            scale = frame_area().size().x;
+            offset = 0;
+        break;
 
-    case relative_size_y:
-        scale = frame_area().size().y;
-        offset = 0;
-    break;
+        case relative_size_y:
+            scale = frame_area().size().y;
+            offset = 0;
+        break;
 
-    default:
-        scale = 1.0f;
-        offset = 0.0f;
+        default:
+            scale = 1.0f;
+            offset = 0.0f;
     }
 }
 
-void numeric_param_t::get_scale_and_offset( Imath::V2f& scale, Imath::V2f& offset) const
+void numeric_param_t::get_scale_and_offset( math::vector2f_t& scale, math::vector2f_t& offset) const
 {
     switch( type_)
     {
-    case relative_xy:
-        scale = frame_area().size();
-        offset = frame_area().min;
-    break;
+        case relative_xy:
+            scale = math::vector2f_t( frame_area().size().x, frame_area().size().y);
+            offset = math::vector2f_t( frame_area().min.x, frame_area().min.y);
+        break;
 
-    case relative_size_xy:
-        scale = frame_area().size();
-        offset = Imath::V2f( 0, 0);
-    break;
+        case relative_size_xy:
+            scale = math::vector2f_t( frame_area().size().x, frame_area().size().y);
+            offset = math::vector2f_t( 0, 0);
+        break;
 
-    default:
-        scale = Imath::V2f( 1, 1);
-        offset = Imath::V2f( 0, 0);
+        default:
+            scale = math::vector2f_t( 1, 1);
+            offset = math::vector2f_t( 0, 0);
     }
 }
 
@@ -309,7 +318,7 @@ poly_param_value_t numeric_param_t::relative_to_absolute( const poly_param_value
 
     try
     {
-        Imath::V2f v = val.cast<Imath::V2f>();
+        math::vector2f_t v = val.cast<math::vector2f_t>();
         v = relative_to_absolute( v);
         poly_param_indexable_value_t result( v);
         return core::poly_cast<poly_param_value_t&>( result);
@@ -318,7 +327,7 @@ poly_param_value_t numeric_param_t::relative_to_absolute( const poly_param_value
 
     try
     {
-        Imath::Box2f v = val.cast<Imath::Box2f>();
+        math::box2f_t v = val.cast<math::box2f_t>();
         v = relative_to_absolute( v);
         return poly_param_value_t( v);
     }
@@ -339,7 +348,7 @@ poly_param_value_t numeric_param_t::absolute_to_relative( const poly_param_value
 
     try
     {
-        Imath::V2f v = val.cast<Imath::V2f>();
+        math::vector2f_t v = val.cast<math::vector2f_t>();
         v = absolute_to_relative( v);
         poly_param_indexable_value_t result( v);
         return core::poly_cast<poly_param_value_t&>( result);
@@ -348,7 +357,7 @@ poly_param_value_t numeric_param_t::absolute_to_relative( const poly_param_value
 
     try
     {
-        Imath::Box2f v = val.cast<Imath::Box2f>();
+        math::box2f_t v = val.cast<math::box2f_t>();
         v = absolute_to_relative( v);
         return poly_param_value_t( v);
     }

@@ -154,16 +154,16 @@ void param_t::emit_param_changed( change_reason reason)
     }
 }
 
-void param_t::format_changed( const Imath::Box2i& new_format,
+void param_t::format_changed( const math::box2i_t& new_format,
                               float aspect,
-                              const Imath::V2f& proxy_scale)
+                              const math::vector2f_t& proxy_scale)
 {
     do_format_changed( new_format, aspect, proxy_scale);
 }
 
-void param_t::do_format_changed( const Imath::Box2i& new_format,
+void param_t::do_format_changed( const math::box2i_t& new_format,
                                  float aspect,
-                                 const Imath::V2f& proxy_scale)
+                                 const math::vector2f_t& proxy_scale)
 {
 }
 

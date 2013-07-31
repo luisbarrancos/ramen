@@ -64,7 +64,9 @@ private:
 
     virtual void do_create_tracks( anim::track_t *parent);
 
-    virtual void do_format_changed( const Imath::Box2i& new_format, float aspect, const Imath::V2f& proxy_scale);
+    virtual void do_format_changed( const math::box2i_t& new_format,
+                                    float aspect,
+                                    const math::vector2f_t& proxy_scale);
 
     // paths
     virtual void do_convert_relative_paths( const boost::filesystem::path& old_base,

@@ -9,11 +9,11 @@
 
 #include<boost/noncopyable.hpp>
 
-#include<OpenEXR/ImathColor.h>
-
 #include<QColor>
 
 #include<ramen/core/memory.hpp>
+
+#include<ramen/color/color3.hpp>
 
 namespace ramen
 {
@@ -26,26 +26,26 @@ public:
 
     static palette_t& instance();
 
-	void rebuild();
+    void rebuild();
 
-    const Imath::Color3c& color( const std::string& k) const;
-	QColor qcolor( const std::string& k) const;
+    const color::color3c_t& color( const std::string& k) const;
+    QColor qcolor( const std::string& k) const;
 
-	bool find_color( const std::string& k) const;
+    bool find_color( const std::string& k) const;
 
-	void set_color( const std::string& k, const Imath::Color3c& c);
-	void set_color( const std::string& k, const QColor& c);
+    void set_color( const std::string& k, const color::color3c_t& c);
+    void set_color( const std::string& k, const QColor& c);
 
 private:
 
     palette_t();
-	~palette_t();
+    ~palette_t();
 
-	struct impl;
+    struct impl;
     core::auto_ptr_t<impl> pimpl_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

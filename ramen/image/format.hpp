@@ -9,7 +9,7 @@
 #include<string>
 #include<utility>
 
-#include<OpenEXR/ImathBox.h>
+#include<ramen/math/box2.hpp>
 
 #include<ramen/filesystem/path.hpp>
 
@@ -23,7 +23,7 @@ struct format_t
     format_t();
     format_t( int w, int h, float asp = 1.0f);
 
-    Imath::Box2i area() const;
+    math::box2i_t area() const;
 
     // presets
     typedef std::pair<std::string, format_t> preset_type;
@@ -52,9 +52,6 @@ private:
 };
 
 std::ostream& operator<<( std::ostream& os, const format_t& f);
-
-//void operator>>( const YAML::Node& in, format_t& f);
-//YAML::Emitter& operator<<( YAML::Emitter& out, const format_t& f);
 
 } // image
 } // ramen

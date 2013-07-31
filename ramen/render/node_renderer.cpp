@@ -18,7 +18,7 @@ namespace ramen
 namespace
 {
 
-std::ostream& print_box( std::ostream& os, const Imath::Box2i& box)
+std::ostream& print_box( std::ostream& os, const math::box2i_t& box)
 {
     os << "(( " << box.min.x << ", " << box.min.y << "), ( " << box.max.x << ", " << box.max.y << "))";
     return os;
@@ -35,7 +35,7 @@ struct print_areas
         std::cout << "interest    = "; print_box( std::cout, n.interest()) << "\n";
         std::cout << "defined     = "; print_box( std::cout, n.defined()) << "\n";
         std::cout << "aspect      = " << n.aspect_ratio() << ", ";
-        std::cout << "proxy_scale = " << n.proxy_scale() << "\n\n";
+        std::cout << "proxy_scale = " << n.proxy_scale().x << ", " << n.proxy_scale().y << "\n\n";
     }
 };
 
@@ -86,13 +86,13 @@ void node_renderer_t::set_context( const context_t& context)
     depth_first_inputs_search( *n_, boost::bind( &node_t::clear_interest_fun, _1));
 }
 
-const Imath::Box2i& node_renderer_t::format() const
+const math::box2i_t& node_renderer_t::format() const
 {
     RAMEN_ASSERT( has_context_);
     return n_->format();
 }
 
-const Imath::Box2i& node_renderer_t::bounds() const
+const math::box2i_t& node_renderer_t::bounds() const
 {
     RAMEN_ASSERT( has_context_);
     return n_->bounds();
@@ -100,10 +100,10 @@ const Imath::Box2i& node_renderer_t::bounds() const
 
 void node_renderer_t::render() { render( format());}
 
-void node_renderer_t::render( const Imath::Box2i& roi)
+void node_renderer_t::render( const math::box2i_t& roi)
 {
     RAMEN_ASSERT( has_context_);
-    RAMEN_ASSERT( !roi.isEmpty());
+    RAMEN_ASSERT( !roi.is_empty());
 
     n_->set_interest( roi);
     breadth_first_inputs_apply( *n_, boost::bind( &node_t::calc_inputs_interest_fun, _1, new_context_));
@@ -133,12 +133,14 @@ void node_renderer_t::render( const Imath::Box2i& roi)
 image::buffer_t node_renderer_t::image()
 {
     RAMEN_ASSERT( has_context_);
+
     return n_->image();
 }
 
 image::const_image_view_t node_renderer_t::format_image_view() const
 {
     RAMEN_ASSERT( has_context_);
+
     return n_->const_subimage_view( format());
 }
 

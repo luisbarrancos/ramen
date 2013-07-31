@@ -9,9 +9,10 @@
 
 #include<utility>
 
-#include<OpenEXR/ImathBox.h>
-
 #include<ramen/assert.hpp>
+
+#include<ramen/math/vector3.hpp>
+#include<ramen/math/box2.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -26,17 +27,17 @@ public:
 
     enum numeric_type_t
     {
-		absolute = 0,
-		relative_x,
-		relative_y,
-		relative_xy,
-		relative_size_x,
-		relative_size_y,
-		relative_size_xy
+        absolute = 0,
+        relative_x,
+        relative_y,
+        relative_xy,
+        relative_size_x,
+        relative_size_y,
+        relative_size_xy
     };
 
     explicit numeric_param_t( const std::string& name);
-	
+
     bool round_to_int() const { return flags() & round_to_int_bit;}
     void set_round_to_int( bool r);
 
@@ -44,12 +45,12 @@ public:
     void set_numeric_type( numeric_type_t type, int port = -1);
 
     float relative_to_absolute( float x) const;
-    Imath::V2f relative_to_absolute( const Imath::V2f& x) const;
-    Imath::Box2f relative_to_absolute( const Imath::Box2f& x) const;
+    math::vector2f_t relative_to_absolute( const math::vector2f_t& x) const;
+    math::box2f_t relative_to_absolute( const math::box2f_t& x) const;
 
     float absolute_to_relative( float x) const;
-    Imath::V2f absolute_to_relative( const Imath::V2f& x) const;
-    Imath::Box2f absolute_to_relative( const Imath::Box2f& x) const;
+    math::vector2f_t absolute_to_relative( const math::vector2f_t& x) const;
+    math::box2f_t absolute_to_relative( const math::box2f_t& x) const;
 
 protected:
 
@@ -60,18 +61,18 @@ protected:
     float absolute_max() const;
 
     float round( float x) const;
-    Imath::V2f round( const Imath::V2f& x) const;
-    Imath::V3f round( const Imath::V3f& x) const;
+    math::vector2f_t round( const math::vector2f_t& x) const;
+    math::vector3f_t round( const math::vector3f_t& x) const;
 
-	void get_scale_and_offset( float& scale, float& offset) const;
-	void get_scale_and_offset( Imath::V2f& scale, Imath::V2f& offset) const;
-	
+    void get_scale_and_offset( float& scale, float& offset) const;
+    void get_scale_and_offset( math::vector2f_t& scale, math::vector2f_t& offset) const;
+
 private:
 
-	poly_param_value_t relative_to_absolute( const poly_param_value_t& val) const;
+    poly_param_value_t relative_to_absolute( const poly_param_value_t& val) const;
     poly_param_value_t absolute_to_relative( const poly_param_value_t& val) const;
 
-    Imath::Box2i frame_area() const;
+    math::box2i_t frame_area() const;
 
     numeric_type_t type_;
     int depends_on_port_;
@@ -85,20 +86,20 @@ S get_absolute_value( const param_t& p)
 
     const poly_param_value_t& any( p.value());
 
-	#ifdef NDEBUG
-	    S v = any.cast<S>();
-		return q->relative_to_absolute( v);
-	#else
-		try
-		{
-			S v = any.cast<S>();
-			return q->relative_to_absolute( v);
-		}
+    #ifdef NDEBUG
+        S v = any.cast<S>();
+        return q->relative_to_absolute( v);
+    #else
+        try
+        {
+            S v = any.cast<S>();
+            return q->relative_to_absolute( v);
+        }
         catch( core::bad_cast& e)
-		{
-			RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
-		}
-	#endif
+        {
+            RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
+        }
+    #endif
 }
 
 template<class S>
@@ -109,20 +110,20 @@ S get_absolute_value_at_frame( const param_t& p, float frame)
 
     const poly_param_value_t& any( p.value_at_frame( frame));
 
-	#ifdef NDEBUG
-		S v = any.cast<S>();
-		return q->relative_to_absolute( v);
-	#else
-		try
-		{
-			S v = any.cast<S>();
-			return q->relative_to_absolute( v);
-		}
+    #ifdef NDEBUG
+        S v = any.cast<S>();
+        return q->relative_to_absolute( v);
+    #else
+        try
+        {
+            S v = any.cast<S>();
+            return q->relative_to_absolute( v);
+        }
         catch( core::bad_cast& e)
-		{
-			RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
-		}
-	#endif
+        {
+            RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
+        }
+    #endif
 }
 
 } // ramen

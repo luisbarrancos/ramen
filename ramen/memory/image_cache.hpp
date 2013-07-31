@@ -38,7 +38,7 @@ public:
 
     void insert( node_t *n, const digest_type& key, image::buffer_t& img);
 
-    boost::optional<image::buffer_t> find( const digest_type& key, const Imath::Box2i& area);
+    boost::optional<image::buffer_t> find( const digest_type& key, const math::box2i_t& area);
 
     virtual void erase_lru();
     virtual boost::posix_time::ptime lru_time() const;

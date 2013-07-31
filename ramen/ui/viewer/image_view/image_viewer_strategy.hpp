@@ -11,12 +11,13 @@
 #ifndef QT_MOC_RUN
     #include<memory>
 
+    #include<ramen/math/viewport.hpp>
+
     #include<ramen/nodes/node.hpp>
 
     #include<ramen/ocio/gl_display_manager.hpp>
 
     #include<ramen/ui/viewer/image_view/image.hpp>
-    #include<ramen/ui/viewport.hpp>
     #include<ramen/ui/events.hpp>
 #endif
 
@@ -135,7 +136,7 @@ private:
     void draw_image();
 
     bool first_image_loaded_;
-    ui::viewport_t viewport_;
+    math::viewport_t viewport_;
 
     boost::signals2::connection active_connection_;
     boost::signals2::connection active_overlay_connection_;

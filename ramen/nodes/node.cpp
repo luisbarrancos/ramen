@@ -226,7 +226,7 @@ node_t *node_t::input( std::size_t i)
 
 void node_t::add_input_plug( const std::string &id,
                              bool optional,
-                             const Imath::Color3c &color,
+                             const color::color3c_t &color,
                              const std::string &tooltip)
 {
     inputs_.push_back( node_input_plug_t( id, optional, color, tooltip));
@@ -267,7 +267,7 @@ node_t *node_t::output( std::size_t i)
 }
 
 void node_t::add_output_plug( const std::string &id,
-                              const Imath::Color3c& color,
+                              const color::color3c_t& color,
                               const std::string& tooltip)
 {
     RAMEN_ASSERT( !has_output_plug());
@@ -350,9 +350,9 @@ void node_t::do_notify()
     RAMEN_ASSERT( composition_node());
 
     // keep the format up to date
-    Imath::Box2i old_format( full_format());
+    math::box2i_t old_format( full_format());
     float old_aspect = aspect_ratio();
-    Imath::V2f old_proxy_scale = proxy_scale();
+    math::vector2f_t old_proxy_scale = proxy_scale();
 
     render::context_t context = composition_node()->current_context();
     context.subsample = 1;
@@ -758,7 +758,7 @@ void node_t::calc_format( const render::context_t& context)
     // init with invalid values, to catch the case
     // when we forget to set them.
     aspect_ = 0.0f;
-    proxy_scale_ =  Imath::V2f( 0, 0);
+    proxy_scale_ =  math::vector2f_t( 0, 0);
 
     if( is_valid_ && !is_identity_)
         do_calc_format( context);
@@ -785,10 +785,11 @@ void node_t::do_calc_format( const render::context_t& context)
     else
     {
         // init with default values
-        set_format( Imath::Box2i( Imath::V2i( 0, 0), Imath::V2i( context.default_format.area().max.x - 1,
-                                                                 context.default_format.area().max.y - 1)));
+        set_format( math::box2i_t( math::point2i_t( 0, 0),
+                                   math::point2i_t( context.default_format.area().max.x - 1,
+                                                    context.default_format.area().max.y - 1)));
         set_aspect_ratio( context.default_format.aspect);
-        set_proxy_scale( Imath::V2f( 1.0f, 1.0f));
+        set_proxy_scale( math::vector2f_t( 1.0f, 1.0f));
     }
 }
 
@@ -798,13 +799,13 @@ void node_t::set_aspect_ratio( float a)
     aspect_ = a;
 }
 
-void node_t::set_proxy_scale( const Imath::V2f& s)
+void node_t::set_proxy_scale( const math::vector2f_t& s)
 {
     RAMEN_ASSERT( s.x > 0 && s.y > 0);
     proxy_scale_ = s;
 }
 
-void node_t::set_bounds( const Imath::Box2i& bounds) { bounds_ = bounds;}
+void node_t::set_bounds( const math::box2i_t& bounds) { bounds_ = bounds;}
 
 void node_t::calc_bounds( const render::context_t& context)
 {
@@ -822,10 +823,10 @@ void node_t::do_calc_bounds( const render::context_t& context)
         set_bounds( format());
 }
 
-void node_t::clear_interest() { interest_ = Imath::Box2i();}
+void node_t::clear_interest() { interest_ = math::box2i_t();}
 
-void node_t::set_interest( const Imath::Box2i& roi) { interest_ = roi;}
-void node_t::add_interest( const Imath::Box2i& roi) { interest_.extendBy( roi);}
+void node_t::set_interest( const math::box2i_t& roi) { interest_ = roi;}
+void node_t::add_interest( const math::box2i_t& roi) { interest_.extend_by( roi);}
 
 void node_t::calc_inputs_interest( const render::context_t& context)
 {
@@ -851,12 +852,12 @@ void node_t::do_calc_inputs_interest( const render::context_t& context)
     }
 }
 
-void node_t::set_defined( const Imath::Box2i& b) { defined_ = b;}
+void node_t::set_defined( const math::box2i_t& b) { defined_ = b;}
 
 void node_t::calc_defined( const render::context_t& context)
 {
     if( !is_valid_)
-        defined_ = ImathExt::intersect( format_, interest_);
+        defined_ = math::intersect( format_, interest_);
     else
     {
         if( is_identity_)
@@ -883,17 +884,21 @@ void node_t::calc_defined( const render::context_t& context)
 
 void node_t::do_calc_defined( const render::context_t& context)
 {
-    defined_ = ImathExt::intersect( bounds_, interest_);
+    defined_ = math::intersect( bounds_, interest_);
 }
 
 void node_t::subsample_areas( const render::context_t& context)
 {
     if( context.subsample != 1)
     {
+        // TODO: re-enable this...
+        RAMEN_ASSERT( false);
+        /*
         format_   = ImathExt::scale( format_  , 1.0f / context.subsample);
         bounds_   = ImathExt::scale( bounds_  , 1.0f / context.subsample);
         interest_ = ImathExt::scale( interest_, 1.0f / context.subsample);
         defined_  = ImathExt::scale( defined_ , 1.0f / context.subsample);
+        */
     }
 }
 
@@ -936,7 +941,7 @@ void node_t::write_image_to_cache( const render::context_t& context)
     if( !cacheable() || !use_cache( context))
         return;
 
-    if( !defined().isEmpty())
+    if( !defined().is_empty())
         app().memory_manager().insert_in_cache( this, digest(), image_);
 }
 
@@ -957,20 +962,22 @@ image::const_image_view_t node_t::const_image_view() const { return image_.const
 
 image::image_view_t node_t::subimage_view( int x, int y, int w, int h)
 {
-    return image_.rgba_subimage_view( Imath::Box2i( Imath::V2i( x, y), Imath::V2i( w - 1, h - 1)));
+    return image_.rgba_subimage_view( math::box2i_t( math::point2i_t( x, y),
+                                                     math::point2i_t( w - 1, h - 1)));
 }
 
-image::image_view_t node_t::subimage_view( const Imath::Box2i& area)
+image::image_view_t node_t::subimage_view( const math::box2i_t& area)
 {
     return image_.rgba_subimage_view( area);
 }
 
 image::const_image_view_t node_t::const_subimage_view( int x, int y, int w, int h) const
 {
-    return image_.const_rgba_subimage_view( Imath::Box2i( Imath::V2i( x, y), Imath::V2i( w - 1, h - 1)));
+    return image_.const_rgba_subimage_view( math::box2i_t( math::point2i_t( x, y),
+                                                           math::point2i_t( w - 1, h - 1)));
 }
 
-image::const_image_view_t node_t::const_subimage_view( const Imath::Box2i& area) const
+image::const_image_view_t node_t::const_subimage_view( const math::box2i_t& area) const
 {
     return image_.const_rgba_subimage_view( area);
 }
@@ -1084,7 +1091,7 @@ void node_t::process( const render::context_t& context)
     if( context.render_cancelled())
         return;
 
-    if( !defined().isEmpty())
+    if( !defined().is_empty())
         do_process( context);
 }
 

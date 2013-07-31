@@ -4,8 +4,6 @@
 
 #include<ramen/memory/image_cache.hpp>
 
-#include<ImathExt/ImathBoxAlgo.h>
-
 #include<ramen/assert.hpp>
 
 namespace ramen
@@ -25,8 +23,8 @@ void image_cache_t::clear()
 
 void image_cache_t::begin_interaction()
 {
-	if( interacting_)
-		end_interaction();
+    if( interacting_)
+        end_interaction();
 
     interacting_ = true;
 }
@@ -46,12 +44,12 @@ void image_cache_t::insert( node_t *n, const digest_type& key, image::buffer_t& 
         std::pair<map_iterator, map_iterator> range = items_.equal_range( key);
         for( map_iterator it( range.first); it != range.second; ++it)
         {
-            if( ImathExt::isInside( it->second.buffer.bounds(), img.bounds()))
+            if( it->second.buffer.bounds().is_inside( img.bounds()))
             {
-				// in this case, just move the buffer to the front
-				// of the use list
-				touch( it);
-				return;
+                // in this case, just move the buffer to the front
+                // of the use list
+                touch( it);
+                return;
             }
         }
     }
@@ -76,29 +74,29 @@ void image_cache_t::insert( node_t *n, const digest_type& key, image::buffer_t& 
     std::pair<map_iterator, map_iterator> range = items_.equal_range( key);
     for( map_iterator it( range.first); it != range.second; )
     {
-        if( it != result && ImathExt::isInside( img.bounds(), it->second.buffer.bounds()))
+        if( it != result && img.bounds().is_inside( it->second.buffer.bounds()))
             erase( it++);
         else
             ++it;
     }
 }
 
-boost::optional<image::buffer_t> image_cache_t::find( const digest_type& key, const Imath::Box2i& area)
+boost::optional<image::buffer_t> image_cache_t::find( const digest_type& key, const math::box2i_t& area)
 {
     if( items_.find( key) != items_.end())
     {
         std::pair<map_iterator, map_iterator> range = items_.equal_range( key);
-		
+
         for( map_iterator it( range.first); it != range.second; ++it)
         {
-            if( ImathExt::isInside( it->second.buffer.bounds(), area))
+            if( it->second.buffer.bounds().is_inside( area))
             {
                 touch( it);
                 return it->second.buffer;
             }
         }
-	}
-	
+    }
+
     return boost::optional<image::buffer_t>();
 }
 
@@ -113,35 +111,35 @@ void image_cache_t::erase_lru()
 
 boost::posix_time::ptime image_cache_t::lru_time() const
 {
-	RAMEN_ASSERT( !empty());
-	map_iterator it( use_list_.back());
-	return it->second.touch_time;
+    RAMEN_ASSERT( !empty());
+    map_iterator it( use_list_.back());
+    return it->second.touch_time;
 }
 
 void image_cache_t::touch( map_iterator it)
 {
     use_list_.remove( it);
-	it->second.touch_time = boost::posix_time::microsec_clock::universal_time();
-	use_list_.push_front( it);
+    it->second.touch_time = boost::posix_time::microsec_clock::universal_time();
+    use_list_.push_front( it);
 }
 
 void image_cache_t::erase( map_iterator it)
 {
-	if( interacting_)
-	{
-		// remove the item from the added_while_interacting_ map
-		for( std::map<node_t*, map_iterator>::iterator it2( added_while_interacting_.begin()); it2 != added_while_interacting_.end(); ++it2)
-		{
-			if( it == it2->second)
-			{
-				added_while_interacting_.erase( it2);
-				break;
-			}
-		}
-	}
+    if( interacting_)
+    {
+        // remove the item from the added_while_interacting_ map
+        for( std::map<node_t*, map_iterator>::iterator it2( added_while_interacting_.begin()); it2 != added_while_interacting_.end(); ++it2)
+        {
+            if( it == it2->second)
+            {
+                added_while_interacting_.erase( it2);
+                break;
+            }
+        }
+    }
 
-	use_list_.remove( it);
-	items_.erase( it);
+    use_list_.remove( it);
+    items_.erase( it);
 }
 
 } // memory

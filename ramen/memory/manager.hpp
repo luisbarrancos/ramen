@@ -25,8 +25,8 @@ class manager_t
 {
 public:
 
-	typedef pool_allocator_t<pool_t>	image_allocator_type;
-	typedef image_cache_t::digest_type	digest_type;
+    typedef pool_allocator_t<pool_t>	image_allocator_type;
+    typedef image_cache_t::digest_type	digest_type;
 
     ~manager_t();
 
@@ -39,7 +39,7 @@ public:
     void insert_in_cache( node_t *n, const digest_type& key, image::buffer_t& img);
 
     boost::optional<image::buffer_t> find_in_cache( const digest_type& key,
-                                                    const Imath::Box2i& area);
+                                                    const math::box2i_t& area);
 
     image_allocator_type& image_allocator() { return *img_alloc_;}
 
@@ -54,7 +54,7 @@ private:
     manager_t& operator=( const manager_t&);
 
     image_cache_t& image_cache() { return *img_cache_;}
-	
+
     std::auto_ptr<image_allocator_type> img_alloc_;
     std::auto_ptr<image_cache_t> img_cache_;
 };

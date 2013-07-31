@@ -16,13 +16,13 @@
 #include<boost/flyweight.hpp>
 #include<boost/filesystem/fstream.hpp>
 
-#include<OpenEXR/ImathBox.h>
-
 #include<QObject>
 
 #include<ramen/assert.hpp>
 
 #include<ramen/core/name.hpp>
+
+#include<ramen/math/box2.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -156,9 +156,9 @@ public:
     void emit_param_changed( change_reason reason);
 
     // format
-    void format_changed( const Imath::Box2i& new_format,
+    void format_changed( const math::box2i_t& new_format,
                          float aspect,
-                         const Imath::V2f& proxy_scale);
+                         const math::vector2f_t& proxy_scale);
 
     // animation
     void create_tracks( anim::track_t *parent);
@@ -216,9 +216,9 @@ private:
 
     virtual void do_init();
 
-    virtual void do_format_changed( const Imath::Box2i& new_format,
+    virtual void do_format_changed( const math::box2i_t& new_format,
                                     float aspect,
-                                    const Imath::V2f& proxy_scale);
+                                    const math::vector2f_t& proxy_scale);
 
     virtual void do_set_param_set( param_set_t *parent);
 

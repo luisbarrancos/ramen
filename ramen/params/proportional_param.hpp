@@ -7,7 +7,7 @@
 
 #include<ramen/params/numeric_param.hpp>
 
-#include<OpenEXR/ImathVec.h>
+#include<ramen/math/vector3.hpp>
 
 #include<QPointer>
 #include<QToolButton>
@@ -30,8 +30,8 @@ public:
 
 private Q_SLOTS:
 
-	void proportional_toggle( bool state);
-		
+    void proportional_toggle( bool state);
+
 protected:
 
     proportional_param_t( const proportional_param_t& other);
@@ -41,7 +41,7 @@ protected:
 
     QPointer<QToolButton> prop_button_;
 
-    static Imath::V3f proportional_factor;
+    static math::vector3f_t proportional_factor;
 };
 
 } // namespace

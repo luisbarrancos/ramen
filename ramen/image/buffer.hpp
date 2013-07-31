@@ -10,7 +10,7 @@
 #include<boost/shared_array.hpp>
 #include<boost/cstdint.hpp>
 
-#include<OpenEXR/ImathBox.h>
+#include<ramen/math/box2.hpp>
 
 #include<ramen/image/typedefs.hpp>
 
@@ -27,7 +27,7 @@ public:
 
     buffer_t();
     buffer_t( int width, int height, int channels);
-    buffer_t( const Imath::Box2i& bounds, int channels);
+    buffer_t( const math::box2i_t& bounds, int channels);
 
     int width() const	{ return bounds_.size().x + 1;}
     int height() const	{ return bounds_.size().y + 1;}
@@ -38,7 +38,7 @@ public:
 
     void clear();
 
-    const Imath::Box2i& bounds() const { return bounds_;}
+    const math::box2i_t& bounds() const { return bounds_;}
 
     // flags
     bool cached() const			{ return cached_pixels_;}
@@ -49,11 +49,11 @@ public:
 
     // const views
     const_image_view_t const_rgba_view() const;
-    const_image_view_t const_rgba_subimage_view( const Imath::Box2i& area) const;
+    const_image_view_t const_rgba_subimage_view( const math::box2i_t& area) const;
 
     // non const views
     image_view_t rgba_view() const;
-    image_view_t rgba_subimage_view( const Imath::Box2i& area) const;
+    image_view_t rgba_subimage_view( const math::box2i_t& area) const;
 
     bool operator==( const buffer_t& other) const;
     bool operator!=( const buffer_t& other) const;
@@ -68,9 +68,9 @@ private:
     unsigned char *aligned_ptr() const;
 
     // for debugging help
-    void check_area_inside_image( const Imath::Box2i& area) const;
+    void check_area_inside_image( const math::box2i_t& area) const;
 
-    Imath::Box2i bounds_;
+    math::box2i_t bounds_;
     int channels_;
     boost::shared_array<unsigned char> pixels_;
     std::size_t rowbytes_;

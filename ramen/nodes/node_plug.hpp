@@ -14,11 +14,11 @@
 #include<boost/noncopyable.hpp>
 #include<boost/tuple/tuple.hpp>
 
-#include<OpenEXR/ImathColor.h>
-
 #include<ramen/assert.hpp>
 
 #include<ramen/core/name.hpp>
+
+#include<ramen/color/color3.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -35,13 +35,13 @@ public:
 
     /// Constructor.
     node_plug_t( const std::string& id,
-                 const Imath::Color3c& color,
+                 const color::color3c_t& color,
                  const std::string& tooltip)
-	{
+    {
         id_ = core::name_t( id.c_str());
-		color_ = color;
+        color_ = color;
         tooltip_ = core::name_t( tooltip.c_str());
-	}
+    }
 
     /// Copy constructor.
     node_plug_t( const node_plug_t& other) : tooltip_( other.tooltip_),
@@ -54,7 +54,7 @@ public:
     const core::name_t& id() const { return id_;}
 
     /// Returns this plug color. Used in the UI.
-	const Imath::Color3c& color() const	{ return color_;}
+    const color::color3c_t& color() const	{ return color_;}
 
     /// Returns this plug tooltip. Used in the UI.
     const core::name_t& tooltip() const	{ return tooltip_;}
@@ -69,7 +69,7 @@ public:
 private:
 
     core::name_t id_;
-	Imath::Color3c color_;
+    color::color3c_t color_;
     core::name_t tooltip_;
 };
 
@@ -85,25 +85,25 @@ public:
 
     node_input_plug_t( const std::string& id,
                        bool optional,
-                       const Imath::Color3c& color,
+                       const color::color3c_t& color,
                        const std::string& tooltip) : node_plug_t( id, color, tooltip)
-	{
-		input_.first = 0;
-		optional_ = optional;
-	}
+    {
+        input_.first = 0;
+        optional_ = optional;
+    }
 
     /// Copy constructor.
-	node_input_plug_t( const node_input_plug_t& other) : node_plug_t( other)
-	{
+    node_input_plug_t( const node_input_plug_t& other) : node_plug_t( other)
+    {
         input_.first = 0;
-		optional_ = other.optional();
-	}
+        optional_ = other.optional();
+    }
 
     /// Returns if this plug is optional.
-	bool optional() const { return optional_;}
+    bool optional() const { return optional_;}
 
     /// Returns true if there's a node connected to this plug.
-	bool connected() const	{ return input_.first != 0;}
+    bool connected() const	{ return input_.first != 0;}
 
     /// Returns the node connected to this plug, or null.
     const node_t *input_node() const { return input_.first;}
@@ -148,8 +148,10 @@ public:
     typedef boost::tuples::tuple<node_t*,core::name_t, int> connection_t;
 
     /// Constructor.
-    node_output_plug_t( node_t *parent, const std::string& id,
-						const Imath::Color3c& color, const std::string& tooltip);
+    node_output_plug_t( node_t *parent,
+                        const std::string& id,
+                        const color::color3c_t& color,
+                        const std::string& tooltip);
 
     virtual ~node_output_plug_t();
 
@@ -181,7 +183,7 @@ public:
     typedef std::vector<connection_t >::iterator        iterator;
 
     /// Returns a vector of connections from this plug.
-	const std::vector<connection_t >& connections() const { return connections_;}
+    const std::vector<connection_t >& connections() const { return connections_;}
 
     /// Returns a vector of connections from this plug.
     std::vector<connection_t >& connections() { return connections_;}
@@ -195,7 +197,7 @@ private:
     node_output_plug_t *do_clone() const;
 
     node_t *parent_;
-	std::vector<connection_t > connections_;
+    std::vector<connection_t > connections_;
 };
 
 RAMEN_API node_output_plug_t *new_clone( const node_output_plug_t& other);

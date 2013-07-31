@@ -11,7 +11,7 @@
 
 #include<boost/noncopyable.hpp>
 
-#include<ramen/ui/viewport.hpp>
+#include<ramen/math/viewport.hpp>
 
 #include<ramen/ui/anim/edit_keys_visitors.hpp>
 
@@ -34,35 +34,40 @@ public:
     float time_scale() const;
     float value_scale() const;
 
-    Imath::V2i world_to_screen( const Imath::V2f& p) const;
-    Imath::V2f screen_to_world( const Imath::V2i& p) const;
+    math::point2i_t world_to_screen( const math::point2f_t& p) const;
+    math::point2f_t screen_to_world( const math::point2i_t& p) const;
 
     QPainter *painter() const { return painter_;}
 
-    const ui::viewport_t& viewport() const	{ return viewport_;}
-    ui::viewport_t& viewport()              { return viewport_;}
-	
-	bool snap_frames() const	{ return snap_;}
-	bool show_tangents() const	{ return show_tangents_;}
-	
+    const math::viewport_t& viewport() const	{ return viewport_;}
+    math::viewport_t& viewport()              { return viewport_;}
+
+    bool snap_frames() const	{ return snap_;}
+    bool show_tangents() const	{ return show_tangents_;}
+
     // draw / pick helpers
     int span_num_steps( float t0, float t1) const;
-    void draw_small_box( const Imath::V2f& p) const;
-    void draw_small_box( const Imath::V2i& p) const;
+    void draw_small_box( const math::point2f_t& p) const;
+    void draw_small_box( const math::point2i_t& p) const;
 
     float tangent_length() const;
 
-    Imath::V2f left_tangent_dir( float tangent, float yscale = 1.0f) const;
-    Imath::V2f right_tangent_dir( float tangent, float yscale = 1.0f) const;
-	
-    Imath::V2i left_tangent_pos( const Imath::V2i& p, float tangent, float yscale = 1.0f) const;
-    Imath::V2i right_tangent_pos( const Imath::V2i& p, float tangent, float yscale = 1.0f) const;
+    math::vector2f_t left_tangent_dir( float tangent, float yscale = 1.0f) const;
+    math::vector2f_t right_tangent_dir( float tangent, float yscale = 1.0f) const;
 
-	// draw & pick util
-	int pick_distance() const;
-	int pick_distance2() const;
+    math::point2i_t left_tangent_pos( const math::point2i_t& p,
+                                       float tangent,
+                                       float yscale = 1.0f) const;
 
-	bool inside_pick_distance( const Imath::V2i& p, const Imath::V2i& q) const;
+    math::point2i_t right_tangent_pos( const math::point2i_t& p,
+                                        float tangent,
+                                        float yscale = 1.0f) const;
+
+    // draw & pick util
+    int pick_distance() const;
+    int pick_distance2() const;
+
+    bool inside_pick_distance( const math::point2i_t& p, const math::point2i_t& q) const;
 
 protected:
 
@@ -73,7 +78,7 @@ protected:
     virtual void mouseReleaseEvent( QMouseEvent *event);
     virtual void paintEvent ( QPaintEvent *event);
     virtual void resizeEvent( QResizeEvent *event);
-	virtual void contextMenuEvent( QContextMenuEvent *event);
+    virtual void contextMenuEvent( QContextMenuEvent *event);
 
 public Q_SLOTS:
 
@@ -81,10 +86,10 @@ public Q_SLOTS:
     void frame_selection();
 
 private Q_SLOTS:
-	
-	void set_snap_frames( bool b);
-	void set_show_tangents( bool b);
-	
+
+    void set_snap_frames( bool b);
+    void set_show_tangents( bool b);
+
 private:
 
     void reset_view();
@@ -100,34 +105,34 @@ private:
     {
         if( x < 0)
             return -x;
-	
+
         return x;
     }
 
-    void frame_area( const Imath::Box2f& area);
+    void frame_area( const math::box2f_t& area);
 
-	QAction *frame_all_, *frame_selected_;
-	QAction *snap_frames_, *show_tans_;
-	
+    QAction *frame_all_, *frame_selected_;
+    QAction *snap_frames_, *show_tans_;
+
     bool first_resize_;
-    ui::viewport_t viewport_;
+    math::viewport_t viewport_;
 
     int push_x_, push_y_;
     int last_x_, last_y_;
-	bool handle_mouse_event_;
-	
+    bool handle_mouse_event_;
+
     bool scroll_mode_;
     bool zoom_mode_;
-    Imath::V2f zoom_center_;
+    math::point2f_t zoom_center_;
 
     bool move_time_mode_;
-	bool snap_;
-	bool show_tangents_;
-	
-    QPainter *painter_;	
+    bool snap_;
+    bool show_tangents_;
+
+    QPainter *painter_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

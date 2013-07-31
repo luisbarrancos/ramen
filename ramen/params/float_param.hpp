@@ -51,7 +51,9 @@ private:
     //virtual void do_read( const serialization::yaml_node_t& node);
     //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
-    virtual void do_format_changed( const Imath::Box2i& new_domain, float aspect, const Imath::V2f& proxy_scale);
+    virtual void do_format_changed( const math::box2i_t& new_domain,
+                                    float aspect,
+                                    const math::vector2f_t& proxy_scale);
 
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);

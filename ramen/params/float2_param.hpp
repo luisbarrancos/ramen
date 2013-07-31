@@ -7,7 +7,7 @@
 
 #include<ramen/params/proportional_param.hpp>
 
-#include<OpenEXR/ImathVec.h>
+#include<ramen/math/vector2.hpp>
 
 #include<QPointer>
 
@@ -24,18 +24,22 @@ public:
 
     explicit float2_param_t( const std::string& name);
 
-    void set_default_value( const Imath::V2f& x);
+    void set_default_value( const math::vector2f_t& x);
 
     virtual poly_param_value_t value_at_frame( float frame) const;
 
-    void set_value( const Imath::V2f& x, change_reason reason = user_edited);
-    void set_value_at_frame( const Imath::V2f& x, float frame, change_reason reason = user_edited);
+    void set_value( const math::vector2f_t& x, change_reason reason = user_edited);
+    void set_value_at_frame( const math::vector2f_t& x,
+                             float frame,
+                             change_reason reason = user_edited);
 
-    void set_absolute_value( const Imath::V2f& x, change_reason reason = user_edited);
-    void set_absolute_value_at_frame( const Imath::V2f& x, float frame, change_reason reason = user_edited);
+    void set_absolute_value( const math::vector2f_t& x, change_reason reason = user_edited);
+    void set_absolute_value_at_frame( const math::vector2f_t& x,
+                                      float frame,
+                                      change_reason reason = user_edited);
 
-    Imath::V2f derive( float time) const;
-    Imath::V2f integrate( float time1, float time2) const;
+    math::vector2f_t derive( float time) const;
+    math::vector2f_t integrate( float time1, float time2) const;
 
 protected:
 
@@ -53,7 +57,9 @@ private:
     //virtual void do_read( const serialization::yaml_node_t& node);
     //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
-    virtual void do_format_changed( const Imath::Box2i& new_domain, float aspect, const Imath::V2f& proxy_scale);
+    virtual void do_format_changed( const math::box2i_t& new_domain,
+                                    float aspect,
+                                    const math::vector2f_t& proxy_scale);
 
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
@@ -73,7 +79,7 @@ private Q_SLOTS:
     void spinbox_released();
 };
 
-} // namespace
+} // ramen
 
 #endif
 

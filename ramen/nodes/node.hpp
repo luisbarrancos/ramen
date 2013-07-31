@@ -19,11 +19,8 @@
 
 #include<QWidget>
 
-#include<OpenEXR/ImathColor.h>
-
-#include<ramen/ImathExt/ImathBoxAlgo.h>
-
 #include<ramen/math/point2.hpp>
+#include<ramen/math/box2.hpp>
 
 #include<ramen/image/buffer.hpp>
 
@@ -122,7 +119,7 @@ public:
 
     void add_input_plug( const std::string& id,
                          bool optional,
-                         const Imath::Color3c& color,
+                         const color::color3c_t& color,
                          const std::string& tooltip);
 
     virtual void add_new_input_plug();
@@ -140,7 +137,7 @@ public:
     node_t *output( std::size_t i);
 
     void add_output_plug( const std::string& id,
-                          const Imath::Color3c& color,
+                          const color::color3c_t& color,
                           const std::string& tooltip);
 
     void add_output_plug();
@@ -298,9 +295,9 @@ public:
     //void write( serialization::yaml_oarchive_t& out) const;
 
     // format, bounds & aspect
-    const Imath::Box2i& format() const	    { return format_;}
-    const Imath::Box2i& full_format() const	{ return full_format_;}
-    void set_format( const Imath::Box2i& d) { format_ = d;}
+    const math::box2i_t& format() const	    { return format_;}
+    const math::box2i_t& full_format() const	{ return full_format_;}
+    void set_format( const math::box2i_t& d) { format_ = d;}
     virtual void format_changed();
 
     void calc_format( const render::context_t& context);
@@ -311,22 +308,22 @@ public:
     float aspect_ratio() const		{ return aspect_;}
     void set_aspect_ratio( float a);
 
-    const Imath::V2f& proxy_scale() const { return proxy_scale_;}
-    void set_proxy_scale( const Imath::V2f& s);
+    const math::vector2f_t& proxy_scale() const { return proxy_scale_;}
+    void set_proxy_scale( const math::vector2f_t& s);
 
-    const Imath::Box2i& bounds() const { return bounds_;}
-    void set_bounds( const Imath::Box2i& bounds);
+    const math::box2i_t& bounds() const { return bounds_;}
+    void set_bounds( const math::box2i_t& bounds);
 
     // interest
-    const Imath::Box2i& interest() const   { return interest_;}
+    const math::box2i_t& interest() const   { return interest_;}
     void clear_interest();
-    void set_interest( const Imath::Box2i& roi);
-    void add_interest( const Imath::Box2i& roi);
+    void set_interest( const math::box2i_t& roi);
+    void add_interest( const math::box2i_t& roi);
     void calc_inputs_interest( const render::context_t& context);
 
     // defined
-    const Imath::Box2i& defined() const	    { return defined_;}
-    void set_defined( const Imath::Box2i& b);
+    const math::box2i_t& defined() const	    { return defined_;}
+    void set_defined( const math::box2i_t& b);
     void calc_defined( const render::context_t& context);
 
     // subsample
@@ -349,10 +346,10 @@ public:
     image::const_image_view_t const_image_view() const;
 
     image::image_view_t subimage_view( int x, int y, int w, int h);
-    image::image_view_t subimage_view( const Imath::Box2i& area);
+    image::image_view_t subimage_view( const math::box2i_t& area);
 
     image::const_image_view_t const_subimage_view( int x, int y, int w, int h) const;
-    image::const_image_view_t const_subimage_view( const Imath::Box2i& area) const;
+    image::const_image_view_t const_subimage_view( const math::box2i_t& area) const;
 
     // processing
     void recursive_process( const render::context_t& context);
@@ -480,10 +477,10 @@ private:
     // hash
     hash::generator_t hash_gen_;
 
-    Imath::Box2i format_, bounds_, interest_, defined_;
-    Imath::Box2i full_format_;
+    math::box2i_t format_, bounds_, interest_, defined_;
+    math::box2i_t full_format_;
     float aspect_;
-    Imath::V2f proxy_scale_;
+    math::vector2f_t proxy_scale_;
     image::buffer_t image_;
 };
 

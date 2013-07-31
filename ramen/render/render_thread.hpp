@@ -23,7 +23,8 @@ struct RAMEN_API render_thread_t
     void init();
 
     boost::unique_future<bool>& render_image( node_renderer_t& renderer);
-    boost::unique_future<bool>& render_image( node_renderer_t& renderer, const Imath::Box2i& roi);
+    boost::unique_future<bool>& render_image( node_renderer_t& renderer,
+                                              const math::box2i_t& roi);
 
     bool cancelled() const;
     void cancel_render();

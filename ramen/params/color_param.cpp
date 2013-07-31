@@ -53,11 +53,11 @@ void color_param_t::private_init()
     set_min( 0);
     curve( 3).set_range( 0, 1); // <- Alpha channel
 
-    set_default_value( Imath::Color4f( 0, 0, 0, 0));
+    set_default_value( color::rgba_colorf_t( 0, 0, 0, 0));
     set_step( 0.025f);
 }
 
-void color_param_t::set_default_value( const Imath::Color4f& x)
+void color_param_t::set_default_value( const color::rgba_colorf_t& x)
 {
     poly_param_indexable_value_t v( x);
     value() = core::poly_cast<poly_param_value_t&>( v);
@@ -65,7 +65,7 @@ void color_param_t::set_default_value( const Imath::Color4f& x)
 
 poly_param_value_t color_param_t::value_at_frame(float frame) const
 {
-    Imath::Color4f v( get_value<Imath::Color4f>( *this));
+    color::rgba_colorf_t v( get_value<color::rgba_colorf_t>( *this));
     eval_curve( 0, frame, v.r);
     eval_curve( 1, frame, v.g);
     eval_curve( 2, frame, v.b);
@@ -82,7 +82,7 @@ poly_param_value_t color_param_t::value_at_frame(float frame) const
     return core::poly_cast<poly_param_value_t&>( val);
 }
 
-void color_param_t::set_value( const Imath::Color4f& x, change_reason reason)
+void color_param_t::set_value( const color::rgba_colorf_t& x, change_reason reason)
 {
     float frame = 1.0f;
 
@@ -92,7 +92,7 @@ void color_param_t::set_value( const Imath::Color4f& x, change_reason reason)
     set_value_at_frame( x, frame, reason);
 }
 
-void color_param_t::set_value_at_frame( const Imath::Color4f& x, float frame, change_reason reason)
+void color_param_t::set_value_at_frame( const color::rgba_colorf_t& x, float frame, change_reason reason)
 {
     if( can_undo())
         param_set()->add_command( this);
@@ -148,7 +148,7 @@ void color_param_t::do_create_tracks( anim::track_t *parent)
 
 void color_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
-    Imath::Color4f c = get_value<Imath::Color4f>( *this);
+    color::rgba_colorf_t c = get_value<color::rgba_colorf_t>( *this);
     hash_gen << c.r <<"," << c.g << "," << c.b;
 
     if( is_rgba())
@@ -160,7 +160,7 @@ void color_param_t::do_read( const serialization::yaml_node_t& node)
 {
     read_curves( node);
 
-    Imath::Color4f val;
+    color::rgba_colorf_t val;
     if( node.get_optional_value( "value", val))
     {
         poly_param_indexable_value_t v( val);
@@ -177,7 +177,7 @@ void color_param_t::do_write( serialization::yaml_oarchive_t& out) const
     bool four  = curve( 3).empty() && is_rgba();  // && expression( 3).empty()
 
     if( one || two || three || four)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::Color4f>( *this);
+        out << YAML::Key << "value" << YAML::Value << get_value<color::rgba_colorf_t>( *this);
 }
 */
 
@@ -194,7 +194,7 @@ void color_param_t::do_update_widgets()
 
         button_->blockSignals( true);
 
-        Imath::Color4f col = get_value<Imath::Color4f>( *this);
+        color::rgba_colorf_t col = get_value<color::rgba_colorf_t>( *this);
         input0_->setValue( col.r);
         input1_->setValue( col.g);
         input2_->setValue( col.b);
@@ -253,7 +253,7 @@ QWidget *color_param_t::do_create_widgets()
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
     label->setText( name().c_str());
     label->setToolTip( id().c_str());
-    Imath::Color4f col = get_value<Imath::Color4f>( *this);
+    color::rgba_colorf_t col = get_value<color::rgba_colorf_t>( *this);
 
     int xpos = app().ui()->inspector().left_margin();
 
@@ -342,7 +342,7 @@ QWidget *color_param_t::do_create_widgets()
 
 void color_param_t::set_component_value_from_slot()
 {
-    Imath::Color4f v( input0_->value(), input1_->value(), input2_->value(), 1.0f);
+    color::rgba_colorf_t v( input0_->value(), input1_->value(), input2_->value(), 1.0f);
 
     if( is_rgba())
         v.a = input3_->value();
@@ -420,9 +420,9 @@ void color_param_t::eyedropper_color_picked( const ramen::ui::color_t& c)
     param_set()->begin_edit();
 
     if( is_rgba())
-        set_value( Imath::Color4f( c.red(), c.green(), c.blue(), c.alpha()));
+        set_value( color::rgba_colorf_t( c.red(), c.green(), c.blue(), c.alpha()));
     else
-        set_value( Imath::Color4f( c.red(), c.green(), c.blue(), 1));
+        set_value( color::rgba_colorf_t( c.red(), c.green(), c.blue(), 1));
 
     update_widgets();
     param_set()->end_edit();
@@ -430,7 +430,7 @@ void color_param_t::eyedropper_color_picked( const ramen::ui::color_t& c)
 
 void color_param_t::color_button_pressed()
 {
-    Imath::Color4f col = get_value<Imath::Color4f>( *this);
+    color::rgba_colorf_t col = get_value<color::rgba_colorf_t>( *this);
     ui::color_t c( col.r, col.g, col.b);
     ui::color_picker_t *picker = new ui::color_picker_t( app().ui()->main_window(), c);
 
@@ -441,9 +441,9 @@ void color_param_t::color_button_pressed()
         param_set()->begin_edit();
 
         if( is_rgba())
-            set_value( Imath::Color4f( c.red(), c.green(), c.blue(), col.a));
+            set_value( color::rgba_colorf_t( c.red(), c.green(), c.blue(), col.a));
         else
-            set_value( Imath::Color4f( c.red(), c.green(), c.blue(), 1));
+            set_value( color::rgba_colorf_t( c.red(), c.green(), c.blue(), 1));
 
         update_widgets();
         param_set()->end_edit();
