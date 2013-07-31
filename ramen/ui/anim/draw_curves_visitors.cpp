@@ -105,14 +105,14 @@ void draw_keyframe( const anim_curves_view_t& view, const anim::float_curve_t *c
 
         if( draw_left_tan)
         {
-            Imath::V2i qt( view.left_tangent_pos( q, k.v0(), c->scale()));
+            math::point2i_t qt( view.left_tangent_pos( q, k.v0(), c->scale()));
             view.painter()->drawLine( QPoint( q.x, q.y), QPoint( qt.x, qt.y));
             view.draw_small_box( qt);
         }
 
         if( draw_right_tan)
         {
-            Imath::V2f qt( view.right_tangent_pos( q, k.v1(), c->scale()));
+            math::point2i_t qt( view.right_tangent_pos( q, k.v1(), c->scale()));
             view.painter()->drawLine( QPoint( q.x, q.y), QPoint( qt.x, qt.y));
             view.draw_small_box( qt);
         }
@@ -121,7 +121,10 @@ void draw_keyframe( const anim_curves_view_t& view, const anim::float_curve_t *c
 
 } // unnamed
 
-void tangents_mask( const anim::float_key_t& k, const anim::float_key_t *prev, const anim::float_key_t *next, bool& left, bool& right)
+void tangents_mask( const anim::float_key_t& k,
+                    const anim::float_key_t *prev,
+                    const anim::float_key_t *next,
+                    bool& left, bool& right)
 {
     left = right = true;
 
@@ -164,17 +167,17 @@ void draw_curve_visitor::operator()( const anim::float_curve_t *c)
         case anim::extrapolate_linear:
         {
             float v = c->relative_to_absolute( c->keys().front().value());
-            Imath::V2f p( c->start_time(), v);
-            Imath::V2f dir( -1, -c->keys().front().v1() * c->scale());
+            math::point2f_t p( c->start_time(), v);
+            math::vector2f_t dir( -1, -c->keys().front().v1() * c->scale());
             dir.normalize();
-            Imath::V2f q( view_.viewport().world().min.x, 0);
+            math::point2f_t q( view_.viewport().world().min.x, 0);
             float t = ( q.x - p.x) / dir.x;
             q.y = p.y + t * dir.y;
 
             float rmin = c->relative_to_absolute( c->get_min());
             if( q.y < rmin)
             {
-                Imath::V2f mid( 0, rmin);
+                math::point2f_t mid( 0, rmin);
                 float t = ( mid.y - p.y) / dir.y;
                 mid.x = p.x + t * dir.x;
                 view_.painter()->drawLine( QPointF( p.x, p.y), QPointF( mid.x, mid.y));
@@ -215,60 +218,60 @@ void draw_curve_visitor::operator()( const anim::float_curve_t *c)
     {
         switch( c->extrapolation())
         {
-        case anim::extrapolate_constant:
-        {
-            float v = c->relative_to_absolute( c->keys().back().value());
-            view_.painter()->drawLine( QPointF( c->end_time(), v), QPointF( view_.viewport().world().max.x, v));
-        }
-        break;
-
-        // TODO: check this
-        case anim::extrapolate_linear:
-        {
-            float v = c->relative_to_absolute( c->keys().back().value());
-            Imath::V2f p( c->end_time(), v);
-            Imath::V2f dir( 1, c->keys().back().v0() * c->scale());
-            dir.normalize();
-            Imath::V2f q( view_.viewport().world().max.x, 0);
-            float t = ( q.x - p.x) / dir.x;
-            q.y = p.y + t * dir.y;
-
-            float rmax = c->relative_to_absolute( c->get_max());
-            if( q.y > rmax)
+            case anim::extrapolate_constant:
             {
-                Imath::V2f mid( 0, rmax);
-                float t = ( mid.y - p.y) / dir.y;
-                mid.x = p.x + t * dir.x;
-                view_.painter()->drawLine( QPointF( p.x, p.y), QPointF( mid.x, mid.y));
-                view_.painter()->drawLine( QPointF( mid.x, mid.y), QPointF( q.x, rmax));
+                float v = c->relative_to_absolute( c->keys().back().value());
+                view_.painter()->drawLine( QPointF( c->end_time(), v), QPointF( view_.viewport().world().max.x, v));
             }
-            else
-                view_.painter()->drawLine( QPointF( p.x, p.y), QPointF( q.x, q.y));
-        }
-        break;
+            break;
 
-        default:
-        {
-            float pixel_len = ( c->start_time() - view_.viewport().world().min.x) * view_.time_scale();
-            int steps = algorithm::clamp( (int) pixel_len / 4, 5, 300);
-
-            float h0 = c->end_time();
-            float v0 = c->relative_to_absolute( c->evaluate( h0));
-
-            float h_inc = ( view_.viewport().world().max.x - c->end_time()) / (float) steps;
-            float h = h0 + h_inc;
-
-            for( int i = 1; i <= steps; ++i)
+            // TODO: check this
+            case anim::extrapolate_linear:
             {
-                float v = c->relative_to_absolute( c->evaluate( h));
-                view_.painter()->drawLine( QPointF( h0, v0), QPointF( h, v));
+                float v = c->relative_to_absolute( c->keys().back().value());
+                math::point2f_t p( c->end_time(), v);
+                math::vector2f_t dir( 1, c->keys().back().v0() * c->scale());
+                dir.normalize();
+                math::point2f_t q( view_.viewport().world().max.x, 0);
+                float t = ( q.x - p.x) / dir.x;
+                q.y = p.y + t * dir.y;
 
-                h0 = h;
-                v0 = v;
-                h += h_inc;
+                float rmax = c->relative_to_absolute( c->get_max());
+                if( q.y > rmax)
+                {
+                    math::point2f_t mid( 0, rmax);
+                    float t = ( mid.y - p.y) / dir.y;
+                    mid.x = p.x + t * dir.x;
+                    view_.painter()->drawLine( QPointF( p.x, p.y), QPointF( mid.x, mid.y));
+                    view_.painter()->drawLine( QPointF( mid.x, mid.y), QPointF( q.x, rmax));
+                }
+                else
+                    view_.painter()->drawLine( QPointF( p.x, p.y), QPointF( q.x, q.y));
             }
-        }
-        break;
+            break;
+
+            default:
+            {
+                float pixel_len = ( c->start_time() - view_.viewport().world().min.x) * view_.time_scale();
+                int steps = algorithm::clamp( (int) pixel_len / 4, 5, 300);
+
+                float h0 = c->end_time();
+                float v0 = c->relative_to_absolute( c->evaluate( h0));
+
+                float h_inc = ( view_.viewport().world().max.x - c->end_time()) / (float) steps;
+                float h = h0 + h_inc;
+
+                for( int i = 1; i <= steps; ++i)
+                {
+                    float v = c->relative_to_absolute( c->evaluate( h));
+                    view_.painter()->drawLine( QPointF( h0, v0), QPointF( h, v));
+
+                    h0 = h;
+                    v0 = v;
+                    h += h_inc;
+                }
+            }
+            break;
         }
     }
 }
@@ -389,13 +392,14 @@ void draw_keyframes_visitor::operator ()( const anim::shape_curve2f_t *c)
 
         view_.painter()->setPen( pen);
 
-        Imath::V2f p( curve[i].time(), i);
-        Imath::V2i q( view_.world_to_screen( p));
+        math::point2f_t p( curve[i].time(), i);
+        math::point2i_t q( view_.world_to_screen( p));
         view_.draw_small_box( q);
     }
 }
 
-bbox_curve_visitor::bbox_curve_visitor( const Imath::Box2f box, bool sel_only) : bbox( box), selected_only( sel_only) {}
+bbox_curve_visitor::bbox_curve_visitor( const math::box2f_t box,
+                                        bool sel_only) : bbox( box), selected_only( sel_only) {}
 
 void bbox_curve_visitor::operator()( const anim::float_curve_t *c)
 {
@@ -404,8 +408,8 @@ void bbox_curve_visitor::operator()( const anim::float_curve_t *c)
         if( selected_only && !it->selected())
             continue;
 
-        Imath::V2f v( it->time(), c->relative_to_absolute( it->value()));
-        bbox.extendBy( v);
+        math::point2f_t p( it->time(), c->relative_to_absolute( it->value()));
+        bbox.extend_by( p);
     }
 }
 
@@ -418,10 +422,10 @@ void bbox_curve_visitor::operator ()( const anim::shape_curve2f_t *c)
         if( selected_only && !curve[i].selected())
             continue;
 
-        Imath::V2f v( curve[i].time(), i);
-        bbox.extendBy( v);
+        math::point2f_t p( curve[i].time(), i);
+        bbox.extend_by( p);
     }
 }
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

@@ -9,7 +9,7 @@
 
 #include<map>
 
-#include<OpenEXR/ImathVec.h>
+#include<ramen/math/vector2.hpp>
 
 namespace ramen
 {
@@ -22,17 +22,17 @@ public:
 
     drag_keys_command_t( node_t *node, const boost::shared_ptr<ui::track_model_t>& model);
 
-	void start_drag( const Imath::V2f& offset, bool snap_frames);
-	void drag_curve( anim::track_t *t);
-	void end_drag();
-	
+    void start_drag( const math::vector2f_t& offset, bool snap_frames);
+    void drag_curve( anim::track_t *t);
+    void end_drag();
+
 private:
-	
-	Imath::V2f offset_;
-	bool snap_frames_;
+
+    math::vector2f_t offset_;
+    bool snap_frames_;
 };
 
-} // namespace
-} // namespace
+} // undo
+} // ramen
 
 #endif

@@ -7,8 +7,6 @@
 
 #include<ramen/ui/compview/composition_view_fwd.hpp>
 
-
-
 #include<boost/function.hpp>
 
 #include<QWidget>
@@ -42,8 +40,8 @@ public:
 
     composition_view_toolbar_t *create_toolbar();
 
-    Imath::V2f screen_to_world( const Imath::V2i& p) const;
-    Imath::V2i world_to_screen( const Imath::V2f& p) const;
+    math::point2f_t screen_to_world( const math::point2i_t& p) const;
+    math::point2i_t world_to_screen( const math::point2f_t& p) const;
 
     const math::viewport_t& viewport() const;
     math::viewport_t& viewport();
@@ -52,8 +50,13 @@ public:
     void place_node_near_node( node_t *n, node_t *other) const;
 
     // bezier edges
-    bool pick_bezier_edge( const Imath::V2f& p0, const Imath::V2f& p1, const Imath::V2f& q) const;
-    void draw_bezier_edge( QPainter& painter, const Imath::V2f& p0, const Imath::V2f& p1) const;
+    bool pick_bezier_edge( const math::point2f_t& p0,
+                           const math::point2f_t& p1,
+                           const math::point2f_t& q) const;
+
+    void draw_bezier_edge( QPainter& painter,
+                           const math::point2f_t& p0,
+                           const math::point2f_t& p1) const;
 
 protected:
 
@@ -87,12 +90,14 @@ private:
     void draw_nodes( QPainter& p);
 
     // pick
-    void pick_node( const Imath::V2f& p, pick_result_t& result) const;
-    bool box_pick_node( node_t *n, const Imath::Box2f& b) const;
-    bool pick_edge( const Imath::V2f& p, node_t *&src, node_t *&dst, int& port) const;
+    void pick_node( const math::point2f_t& p, pick_result_t& result) const;
+    bool box_pick_node( node_t *n, const math::box2f_t& b) const;
+    bool pick_edge( const math::point2f_t& p, node_t *&src, node_t *&dst, int& port) const;
 
     // util
-    void bezier_edge( const Imath::V2f& p0, const Imath::V2f& p1, bezier::curve_t<Imath::V2f>& c) const;
+    void bezier_edge( const math::point2f_t& p0,
+                      const math::point2f_t& p1,
+                      bezier::curve_t<math::point2f_t>& c) const;
 
     void delete_selected_nodes();
 
@@ -107,7 +112,7 @@ private:
 
     bool scroll_mode_;
     bool zoom_mode_;
-    Imath::V2f zoom_center_;
+    math::point2f_t zoom_center_;
 
     bool connect_mode_;
     bool box_pick_mode_;
@@ -118,7 +123,7 @@ private:
     composition_view_layout_t layout_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

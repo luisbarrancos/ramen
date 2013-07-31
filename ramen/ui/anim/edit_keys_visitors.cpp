@@ -94,14 +94,14 @@ void can_insert_keyframe_visitor::operator()( const anim::float_curve_t *c)
 }
 
 insert_keyframe_visitor::insert_keyframe_visitor( const anim_curves_view_t& view,
-                                                  const math::vector2i_t& p,
+                                                  const math::point2i_t& p,
                                                   bool snap) : view_( view), p_( p)
 {
     snap_ = snap;
 
     if( snap_)
     {
-        math::vector3f_t q( view_.screen_to_world( p_));
+        math::point2f_t q( view_.screen_to_world( p_));
         q.x = (int) q.x;
         time_ = q.x;
 

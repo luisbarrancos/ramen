@@ -37,12 +37,12 @@ public:
 
 private:
 
-	void select_keyframe( anim::any_curve_ptr_t& c, int index);
-	void toggle_select_keyframe( anim::any_curve_ptr_t& c, int index);
-	bool keyframe_is_selected( anim::any_curve_ptr_t& c, int index) const;
+    void select_keyframe( anim::any_curve_ptr_t& c, int index);
+    void toggle_select_keyframe( anim::any_curve_ptr_t& c, int index);
+    bool keyframe_is_selected( anim::any_curve_ptr_t& c, int index) const;
 
-	void create_drag_command();
-	
+    void create_drag_command();
+
     int push_x_, push_y_;
     int last_x_, last_y_;
 
@@ -51,16 +51,16 @@ private:
     bool box_pick_mode_;
     bool drag_tangents_mode_;
     bool insert_keyframe_;
-	
-	anim::track_t *track_;
+
+    anim::track_t *track_;
     int key_index_;
     bool left_;
-	bool break_tangents_;
-	
-	undo::drag_keys_command_t *drag_command_;
+    bool break_tangents_;
+
+    undo::drag_keys_command_t *drag_command_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif
