@@ -17,9 +17,9 @@ pointop_node_t::pointop_node_t( const pointop_node_t& other) : node_t( other) {}
 
 void pointop_node_t::do_process( const render::context_t& context)
 {
-    Imath::Box2i area( ImathExt::intersect( input()->defined(), defined()));
+    math::box2i_t area( math::intersect( input()->defined(), defined()));
 
-    if( area.isEmpty())
+    if( area.is_empty())
         return;
 
     do_process( input()->const_subimage_view( area), subimage_view( area), context);

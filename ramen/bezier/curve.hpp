@@ -10,8 +10,8 @@
 #include<boost/config.hpp>
 #include<boost/static_assert.hpp>
 
-#include<OpenEXR/ImathBox.h>
-#include<OpenEXR/ImathMatrix.h>
+#include<ramen/math/box2.hpp>
+#include<ramen/math/matrix33.hpp>
 
 #include<ramen/bezier/bernstein.hpp>
 
@@ -21,7 +21,7 @@ namespace bezier
 {
 
 // P is Imath::Vec 2, 3 or a similar class
-template<class P = Imath::V2f, int Degree = 3>
+template<class P = math::point2f_t, int Degree = 3>
 class curve_t
 {
     BOOST_STATIC_ASSERT( Degree >= 1);
@@ -31,13 +31,13 @@ public:
     BOOST_STATIC_CONSTANT( int, degree = Degree);
     BOOST_STATIC_CONSTANT( int, order  = Degree + 1);
 
-    typedef P                           point_type;
-    typedef P                           vector_type;
-    typedef typename P::BaseType        param_type;
-    typedef typename P::BaseType        coord_type;
-    typedef Imath::Box<P>				box_type;
-	typedef Imath::Matrix33<coord_type> matrix_type;
-	
+    typedef P                               point_type;
+    typedef typename P::vector_type         vector_type;
+    typedef typename P::value_type          param_type;
+    typedef typename P::value_type          coord_type;
+    typedef math::box2_t<coord_type>        box_type;
+    typedef math::matrix33_t<coord_type>    matrix_type;
+
     curve_t() {}
 
     curve_t( const point_type& q0, const point_type& q1)
@@ -55,7 +55,8 @@ public:
         p[2] = q2;
     }
 
-    curve_t( const point_type& q0, const point_type& q1, const point_type& q2, const point_type& q3)
+    curve_t( const point_type& q0, const point_type& q1,
+             const point_type& q2, const point_type& q3)
     {
         BOOST_STATIC_ASSERT( degree == 3);
         p[0] = q0;
@@ -83,12 +84,12 @@ public:
 
         point_type q;
 
-        for( unsigned int j = 0; j < point_type::dimensions(); ++j)
+        for( unsigned int j = 0; j < point_type::size_type::value; ++j)
         {
             q[j] = 0;
 
             for( int i = 0; i < order; ++i)
-                q[j] += B[i] * p[i][j];
+                q(j) += B[i] * p[i](j);
         }
 
         return q;
@@ -99,7 +100,7 @@ public:
         box_type b;
 
         for( int i = 0; i < order; ++i)
-            b.extendBy( p[i]);
+            b.extend_by( p[i]);
 
         return b;
     }
@@ -115,89 +116,6 @@ public:
         for( int i = 0; i < order; ++i)
 			p[i]  = m * p[i];
 	}
-	
-    curve_t<P, Degree-1> derivative_curve() const
-    {
-        BOOST_STATIC_ASSERT( degree > 1);
-
-        curve_t<P, Degree-1> result;
-
-        for( int i = 0; i < Degree; ++i)
-        {
-            point_type q;
-
-            for( unsigned int j = 0; j < point_type::dimensions(); ++j)
-                q[j] = p[i+1][j] - p[i][j];
-
-            result.p[i] = q;
-        }
-
-        return result;
-    }
-
-    vector_type start_derivative1() const
-    {
-        BOOST_STATIC_ASSERT( degree >= 1);
-
-        vector_type result;
-
-        for( unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * ( p[1][i] - p[0][i]);
-
-        return result;
-    }
-
-    vector_type end_derivative1() const
-    {
-        BOOST_STATIC_ASSERT( degree >= 1);
-
-        vector_type result;
-
-        for( unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * ( p[Degree][i] - p[Degree-1][i]);
-
-        return result;
-    }
-
-    vector_type start_derivative2() const
-    {
-        BOOST_STATIC_ASSERT( degree >= 2);
-
-        vector_type result;
-
-        for( unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * ( Degree - 1) * ( p[2][i] - p[1][i] - p[1][i] + p[0][i]);
-
-        return result;
-    }
-
-    vector_type end_derivative2() const
-    {
-        BOOST_STATIC_ASSERT( degree >= 2);
-
-        vector_type result;
-
-        for( unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * ( Degree - 1) * ( p[Degree][i] - p[Degree - 1][i] - p[Degree - 1][i] + p[Degree - 2][i]);
-
-        return result;
-    }
-
-    coord_type start_curvature() const
-    {
-        vector_type d1( start_derivative1());
-        vector_type d2( start_derivative2());
-        coord_type k = ( d1.x * d2.y) - ( d1.y * d2.x);
-        return k / ( std::pow( (double) d1.length2(), 3.0 / 2.0));
-    }
-
-    coord_type end_curvature() const
-    {
-        vector_type d1( end_derivative1());
-        vector_type d2( end_derivative2());
-        coord_type k = ( d1.x * d2.y) - ( d1.y * d2.x);
-        return k / ( std::pow( (double) d1.length2(), 3.0 / 2.0));
-    }
 
     point_type p[Degree+1];
 };

@@ -71,13 +71,13 @@ public:
 
     float pixel_scale() const;
 
-    Imath::V2f screen_to_world( const Imath::V2i& p) const;
-    Imath::V2i world_to_screen( const Imath::V2f& p) const;
+    math::point2f_t screen_to_world( const math::point2i_t& p) const;
+    math::point2i_t world_to_screen( const math::point2f_t& p) const;
 
-    Imath::Box2f screen_to_world( const Imath::Box2i& b) const;
-    Imath::Box2i world_to_screen( const Imath::Box2f& b) const;
+    math::box2f_t screen_to_world( const math::box2i_t& b) const;
+    math::box2i_t world_to_screen( const math::box2f_t& b) const;
 
-    Imath::V2f screen_to_world_dir( const Imath::V2f& v) const;
+    math::vector2f_t screen_to_world_dir( const math::vector2f_t& v) const;
 
     void save_projection();
     void restore_projection();
@@ -98,9 +98,9 @@ public:
     virtual void mouse_press_event( QMouseEvent *event);
     virtual void mouse_release_event( QMouseEvent *event);
 
-    virtual Imath::Color4f color_at( int x, int y) const;
-    virtual void pick_colors_in_box( const Imath::Box2i& b,
-                                     boost::function<void ( const Imath::Color4f&)> f) const;
+    virtual color::rgba_colorf_t color_at( int x, int y) const;
+    virtual void pick_colors_in_box( const math::box2i_t& b,
+                                     boost::function<void ( const color::rgba_colorf_t&)> f) const;
 
 public Q_SLOTS:
 
@@ -170,7 +170,7 @@ private:
 
     bool scroll_mode_;
     bool zoom_mode_;
-    Imath::V2f zoom_center_;
+    math::point2f_t zoom_center_;
     bool event_accepted_by_node_;
     float aspect_ratio_;
 };

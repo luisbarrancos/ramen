@@ -12,6 +12,8 @@
 #include<OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
+#include<ramen/color/color3.hpp>
+
 namespace ramen
 {
 namespace ocio
@@ -23,23 +25,27 @@ public:
 
     gl_lut3d_t( int lut_size = 32, GLenum texture_unit = GL_TEXTURE1);
 
-    void recreate( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransformRcPtr transform, const std::string& fun_name);
+    void recreate( OCIO::ConstConfigRcPtr config,
+                   OCIO::DisplayTransformRcPtr transform,
+                   const std::string& fun_name);
 
-    void recreate( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransformRcPtr transform,
-				OCIO::ConstProcessorRcPtr processor, const std::string& fun_name);
+    void recreate( OCIO::ConstConfigRcPtr config,
+                   OCIO::DisplayTransformRcPtr transform,
+                   OCIO::ConstProcessorRcPtr processor,
+                   const std::string& fun_name);
 
     const std::string& lookup_function() const { return lut_fun_;}
 
-	const Imath::Color3f& black() const;
+    const color::color3f_t& black() const;
 	
 private:
 
     std::string lut_fun_;
     std::string lut_cache_id_;
-	Imath::Color3f black_;
+    color::color3f_t black_;
 };
 
-} // namespace
-} // namespace
+} // ocio
+} // ramen
 
 #endif

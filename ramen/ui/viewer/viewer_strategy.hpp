@@ -15,8 +15,8 @@
 #ifndef QT_MOC_RUN
     #include<boost/function.hpp>
 
-    #include<OpenEXR/ImathBox.h>
-    #include<OpenEXR/ImathColor.h>
+    #include<ramen/math/box2.hpp>
+    #include<ramen/color/rgba_color.hpp>
 
     #include<ramen/assert.hpp>
 
@@ -92,12 +92,13 @@ public:
     virtual void mouse_release_event( QMouseEvent *event);
 
     // eyedropper & color picking
-    virtual Imath::Color4f color_at( int x, int y) const;
-    virtual void pick_colors_in_box( const Imath::Box2i& b, boost::function<void ( const Imath::Color4f&)> f) const;
+    virtual color::rgba_colorf_t color_at( int x, int y) const;
+    virtual void pick_colors_in_box( const math::box2i_t& b,
+                                     boost::function<void ( const color::rgba_colorf_t&)> f) const;
 
     // utils
-    virtual void frame_rect( const Imath::Box2f& b) const;
-    virtual void frame_rect( const Imath::Box2i& b) const;
+    virtual void frame_rect( const math::box2f_t& b) const;
+    virtual void frame_rect( const math::box2i_t& b) const;
 
 private:
 

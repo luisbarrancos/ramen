@@ -16,12 +16,13 @@
 #include<boost/shared_ptr.hpp>
 #include<boost/ptr_container/ptr_vector.hpp>
 
-#include<OpenEXR/ImathColor.h>
-
 #include<OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
 #include<ramen/core/memory.hpp>
+
+#include<ramen/color/color3.hpp>
+#include<ramen/color/rgba_color.hpp>
 
 #include<ramen/ocio/gl_lut3d.hpp>
 
@@ -78,8 +79,8 @@ public:
     void gamma_changed();
 
     // util
-    const Imath::Color3f& background_color() const { return back_color_;}
-    const Imath::Color3f& foreground_color() const { return fg_color_;}
+    const color::color3f_t& background_color() const { return back_color_;}
+    const color::color3f_t& foreground_color() const { return fg_color_;}
 
     void save_projection();
     void restore_projection();
@@ -87,7 +88,7 @@ public:
 
     void draw_checks_background() const;
 
-    Imath::Color4f color_at( int x, int y) const;
+    color::rgba_colorf_t color_at( int x, int y) const;
 
     const viewer_strategy_t& strategy() const	{ return *current_;}
     viewer_strategy_t& strategy()				{ return *current_;}
@@ -127,7 +128,7 @@ private:
 
     boost::shared_ptr<ocio::gl_lut3d_t> display_lut_;
 
-    Imath::Color3f back_color_, fg_color_;
+    color::color3f_t back_color_, fg_color_;
 
     struct impl;
     core::auto_ptr_t<impl> pimpl_;

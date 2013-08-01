@@ -28,16 +28,16 @@ const int radius = 4;
 
 } // unnamed
 
-Imath::V2f generic_input_location( const node_t *n, std::size_t i)
+math::point2f_t generic_input_location( const node_t *n, std::size_t i)
 {
     float off = generic_node_width( n) / ( n->num_inputs() + 1);
-    return Imath::V2f( n->location().x + (i+1)*off, n->location().y - 1);
+    return math::point2f_t( n->location().x + ( i + 1) * off, n->location().y - 1);
 }
 
-Imath::V2f generic_output_location( const node_t *n)
+math::point2f_t generic_output_location( const node_t *n)
 {
-    return Imath::V2f( n->location().x + generic_node_width( n) / 2,
-                       n->location().y + generic_node_height() + 2);
+    return math::point2f_t( n->location().x + generic_node_width( n) / 2,
+                            n->location().y + generic_node_height() + 2);
 }
 
 int generic_node_width( const node_t *n)
@@ -49,7 +49,7 @@ int generic_node_height() { return 20;}
 
 void draw_generic_node( QPainter& painter, const node_t *n)
 {
-    Imath::V2f p( n->location().x, n->location().y);
+    math::point2f_t p( n->location().x, n->location().y);
 
     QPen pen;
     QBrush brush;
@@ -59,13 +59,20 @@ void draw_generic_node( QPainter& painter, const node_t *n)
 
     painter.setPen( Qt::NoPen);
     painter.setBrush( brush);
-    painter.drawRoundedRect( QRectF( p.x + shadow_offset, p.y + shadow_offset, generic_node_width( n), generic_node_height()), radius, radius);
+    painter.drawRoundedRect( QRectF( p.x + shadow_offset,
+                                     p.y + shadow_offset,
+                                     generic_node_width( n),
+                                     generic_node_height()),
+                             radius, radius);
 
-    for( unsigned int i=0;i<n->num_inputs();++i)
+    for( unsigned int i = 0; i < n->num_inputs(); ++i)
     {
-        brush.setColor( QColor( n->input_plugs()[i].color().x, n->input_plugs()[i].color().y, n->input_plugs()[i].color().z));
+        brush.setColor( QColor( n->input_plugs()[i].color().x,
+                                n->input_plugs()[i].color().y,
+                                n->input_plugs()[i].color().z));
+
         painter.setBrush( brush);
-        Imath::V2f q = generic_input_location( n, i);
+        math::point2f_t q = generic_input_location( n, i);
         painter.drawRect( q.x - 3, q.y - 3, 6, 6);
     }
 
@@ -74,7 +81,7 @@ void draw_generic_node( QPainter& painter, const node_t *n)
         // TODO: use the output plug's color here.
         brush.setColor( palette_t::instance().qcolor( "out plug"));
         painter.setBrush( brush);
-        Imath::V2f q = generic_output_location( n);
+        math::point2f_t q = generic_output_location( n);
         painter.drawRect( q.x - 3, q.y - 3, 6, 6);
     }
 
@@ -119,7 +126,7 @@ void draw_generic_node( QPainter& painter, const node_t *n)
     }
 }
 
-bool box_pick_generic_node( const node_t *n, const Imath::Box2f& b)
+bool box_pick_generic_node( const node_t *n, const math::box2f_t& b)
 {
     if( n->location().x + generic_node_width( n) < b.min.x)
         return false;
@@ -136,7 +143,10 @@ bool box_pick_generic_node( const node_t *n, const Imath::Box2f& b)
     return true;
 }
 
-void pick_generic_node( node_t *n, const Imath::V2f& p, const composition_view_t& view, pick_result_t& result)
+void pick_generic_node( node_t *n,
+                        const math::point2f_t& p,
+                        const composition_view_t& view,
+                        pick_result_t& result)
 {
     result.node = 0;
     result.component = pick_result_t::no_pick;
@@ -151,10 +161,10 @@ void pick_generic_node( node_t *n, const Imath::V2f& p, const composition_view_t
     result.node = n;
     result.component = pick_result_t::body_picked;
 
-    Imath::V2f q( generic_output_location( n));
+    math::point2f_t q( generic_output_location( n));
 
-    Imath::V2i pi( view.world_to_screen( p));
-    Imath::V2i qi( view.world_to_screen( q));
+    math::point2i_t pi( view.world_to_screen( p));
+    math::point2i_t qi( view.world_to_screen( q));
 
     if( ( pi - qi).length2() < 25)
     {
@@ -163,7 +173,7 @@ void pick_generic_node( node_t *n, const Imath::V2f& p, const composition_view_t
         return;
     }
 
-    for( unsigned int i=0;i<n->num_inputs();++i)
+    for( unsigned int i = 0; i < n->num_inputs(); ++i)
     {
         q = generic_input_location( n, i);
         qi = view.world_to_screen( q);

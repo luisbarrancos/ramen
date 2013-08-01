@@ -33,7 +33,9 @@ public:
     virtual poly_param_value_t value_at_frame( float frame) const;
 
     void set_value( const color::rgba_colorf_t& x, change_reason reason = user_edited);
-    void set_value_at_frame( const color::rgba_colorf_t& x, float frame, change_reason reason = user_edited);
+    void set_value_at_frame( const color::rgba_colorf_t& x,
+                             float frame,
+                             change_reason reason = user_edited);
 
     bool is_rgba() const	{ return is_rgba_;}
     void set_is_rgba( bool b)	{ is_rgba_ = b;}

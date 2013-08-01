@@ -143,7 +143,7 @@ void box_pick_keyframes_visitor::operator()( const anim::float_curve_t *c)
         math::point2f_t q( (*c)[i].time(), c->relative_to_absolute( (*c)[i].value()));
         math::point2i_t qi( view_.world_to_screen( q));
 
-        if( box_.is_inside( qi))
+        if( box_.contains( qi))
         {
             (*c)[i].toggle_selection();
             any_picked = true;
@@ -158,7 +158,7 @@ void box_pick_keyframes_visitor::operator()( const anim::shape_curve2f_t *c)
         math::point2f_t q( (*c)[i].time(), i);
         math::point2i_t qi( view_.world_to_screen( q));
 
-        if( box_.is_inside( qi))
+        if( box_.contains( qi))
         {
             (*c)[i].toggle_selection();
             any_picked = true;

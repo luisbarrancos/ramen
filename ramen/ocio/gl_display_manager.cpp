@@ -73,18 +73,18 @@ void gl_display_manager_t::set_display_transform( OCIO::ConstConfigRcPtr config,
 	program_.compile( lut_->lookup_function().c_str(), ocio_display_shader_source);
 }
 
-Imath::Color3f gl_display_manager_t::transform( const Imath::Color3f& c) const
+color::color3f_t gl_display_manager_t::transform( const color::color3f_t& c) const
 {
 	RAMEN_ASSERT( processor_);
-	Imath::Color3f result( c);
+    color::color3f_t result( c);
 	processor_->applyRGB( ( float*) &( result.x));
 	return result;
 }
 
-Imath::Color4f gl_display_manager_t::transform( const Imath::Color4f& c) const
+color::rgba_colorf_t gl_display_manager_t::transform( const color::rgba_colorf_t& c) const
 {
 	RAMEN_ASSERT( processor_);
-	Imath::Color4f result( c);
+    color::rgba_colorf_t result( c);
 	processor_->applyRGBA( ( float*) &( result.r));
 	return result;
 }
@@ -102,21 +102,21 @@ void gl_display_manager_t::activate()
 	program_.uniform_1f( "exposure", std::pow( 2.0, ( double) exposure()));
 	program_.uniform_1f( "gamma", 1.0 / std::max( 1e-4, ( double) gamma()));
 
-	Imath::Color4f cmask( 1, 1, 1, 1);
+    color::rgba_colorf_t cmask( 1, 1, 1, 1);
 	float alpha = 0;
 
 	switch( view_channels_)
 	{
 	case view_red_channel:
-		cmask = Imath::Color4f( 1, 0, 0, 1);
+        cmask = color::rgba_colorf_t( 1, 0, 0, 1);
 	break;
 
 	case view_green_channel:
-		cmask = Imath::Color4f( 0, 1, 0, 1);
+        cmask = color::rgba_colorf_t( 0, 1, 0, 1);
 	break;
 
 	case view_blue_channel:
-		cmask = Imath::Color4f( 0, 0, 1, 1);
+        cmask = color::rgba_colorf_t( 0, 0, 1, 1);
 	break;
 
 	case view_alpha_channel:

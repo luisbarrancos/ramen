@@ -54,17 +54,17 @@ void viewer_strategy_t::mouse_move_event( QMouseEvent *event)     { event->ignor
 void viewer_strategy_t::mouse_press_event( QMouseEvent *event)    { event->ignore();}
 void viewer_strategy_t::mouse_release_event( QMouseEvent *event)  { event->ignore();}
 
-Imath::Color4f viewer_strategy_t::color_at( int x, int y) const
+color::rgba_colorf_t viewer_strategy_t::color_at( int x, int y) const
 {
-	return Imath::Color4f( 0, 0, 0, 0);
+    return color::rgba_colorf_t( 0, 0, 0, 0);
 }
 
-void viewer_strategy_t::pick_colors_in_box( const Imath::Box2i& b,
-                                            boost::function<void ( const Imath::Color4f&)> f) const
+void viewer_strategy_t::pick_colors_in_box( const math::box2i_t& b,
+                                            boost::function<void ( const color::rgba_colorf_t&)> f) const
 {
 }
 
-void viewer_strategy_t::frame_rect( const Imath::Box2f& b) const
+void viewer_strategy_t::frame_rect( const math::box2f_t& b) const
 {
 	gl_begin( GL_LINE_LOOP);
 		gl_vertex2f( b.min.x, b.min.y);
@@ -74,7 +74,7 @@ void viewer_strategy_t::frame_rect( const Imath::Box2f& b) const
 	gl_end();
 }
 
-void viewer_strategy_t::frame_rect( const Imath::Box2i& b) const
+void viewer_strategy_t::frame_rect( const math::box2i_t& b) const
 {
 	gl_begin( GL_LINE_LOOP);
 		gl_vertex2i( b.min.x, b.min.y);

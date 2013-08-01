@@ -44,7 +44,7 @@ void image_cache_t::insert( node_t *n, const digest_type& key, image::buffer_t& 
         std::pair<map_iterator, map_iterator> range = items_.equal_range( key);
         for( map_iterator it( range.first); it != range.second; ++it)
         {
-            if( it->second.buffer.bounds().is_inside( img.bounds()))
+            if( it->second.buffer.bounds().contains( img.bounds()))
             {
                 // in this case, just move the buffer to the front
                 // of the use list
@@ -74,7 +74,7 @@ void image_cache_t::insert( node_t *n, const digest_type& key, image::buffer_t& 
     std::pair<map_iterator, map_iterator> range = items_.equal_range( key);
     for( map_iterator it( range.first); it != range.second; )
     {
-        if( it != result && img.bounds().is_inside( it->second.buffer.bounds()))
+        if( it != result && img.bounds().contains( it->second.buffer.bounds()))
             erase( it++);
         else
             ++it;
@@ -89,7 +89,7 @@ boost::optional<image::buffer_t> image_cache_t::find( const digest_type& key, co
 
         for( map_iterator it( range.first); it != range.second; ++it)
         {
-            if( it->second.buffer.bounds().is_inside( area))
+            if( it->second.buffer.bounds().contains( area))
             {
                 touch( it);
                 return it->second.buffer;

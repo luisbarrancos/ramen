@@ -45,14 +45,13 @@ private:
 
         std::auto_ptr<color_param_t> c( new color_param_t( "Color"));
         c->set_id( g_color);
-        c->set_default_value( Imath::Color4f( 0, 0, 0, 0));
+        c->set_default_value( color::rgba_colorf_t( 0, 0, 0, 0));
         add_param( c);
     }
 
     virtual void do_process( const render::context_t& context)
     {
-        Imath::Color4f c( get_value<Imath::Color4f>( param( g_color)));
-
+        color::rgba_colorf_t c( get_value<color::rgba_colorf_t>( param( g_color)));
         image::pixel_t p;
         boost::gil::get_color( p, boost::gil::red_t())   = c.r;
         boost::gil::get_color( p, boost::gil::green_t()) = c.g;

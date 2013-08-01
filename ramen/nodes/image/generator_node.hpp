@@ -20,7 +20,8 @@ struct generate_pixels_fun
 public:
 
     generate_pixels_fun( const image::image_view_t& dst,
-                         const Imath::Box2i& defined, Fun f) : dst_( dst), f_( f)
+                         const math::box2i_t& defined,
+                         Fun f) : dst_( dst), f_( f)
     {
         defined_ = defined;
     }
@@ -39,7 +40,7 @@ public:
 private:
 
     const image::image_view_t& dst_;
-    Imath::Box2i defined_;
+    math::box2i_t defined_;
     Fun f_;
 };
 

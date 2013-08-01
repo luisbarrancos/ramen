@@ -60,14 +60,14 @@ viewer_context_t::viewer_context_t( QWidget *parent) : QGLWidget( parent)
 
     // get the palette colors
     QColor col( palette().color( QPalette::Base));
-    back_color_ = Imath::Color3f( col.red() / 255.0f,
-                                  col.green() / 255.0f,
-                                  col.blue() / 255.0f);
+    back_color_ = color::color3f_t( col.red() / 255.0f,
+                                    col.green() / 255.0f,
+                                    col.blue() / 255.0f);
 
     col = palette().color( QPalette::ButtonText);
-    fg_color_ = Imath::Color3f( col.red() / 255.0f,
-                                col.green() / 255.0f,
-                                col.blue() / 255.0f);
+    fg_color_ = color::color3f_t( col.red() / 255.0f,
+                                  col.green() / 255.0f,
+                                  col.blue() / 255.0f);
 }
 
 viewer_context_t::~viewer_context_t()
@@ -385,7 +385,7 @@ void viewer_context_t::draw_checks_background() const
     }
 }
 
-Imath::Color4f viewer_context_t::color_at( int x, int y) const
+color::rgba_colorf_t viewer_context_t::color_at( int x, int y) const
 {
     return strategy().color_at( x, y);
 }

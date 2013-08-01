@@ -48,7 +48,7 @@ bool eyedropper_button_t::eventFilter( QObject *watched, QEvent *event)
 		if( const ui::viewer::viewer_context_t *view = dynamic_cast<const ui::viewer::viewer_context_t*>( watched))
 		{
 		    QPoint local_pos = view->mapFromGlobal( mouse_event->globalPos());
-			Imath::Color4f col = view->color_at( local_pos.x(), local_pos.y());
+            color::rgba_colorf_t col = view->color_at( local_pos.x(), local_pos.y());
 		    value_ = color_t( col.r, col.g, col.b, col.a);
 		}
 		else

@@ -7,10 +7,11 @@
 
 #include<boost/optional.hpp>
 
-#include<OpenEXR/ImathBox.h>
 #include<OpenEXR/ImathRandom.h>
 
 #include<ramen/nodes/node_fwd.hpp>
+
+#include<ramen/math/box2.hpp>
 
 namespace ramen
 {
@@ -23,27 +24,27 @@ public:
 
     composition_view_layout_t();
 
-	void set_world( const Imath::Box2f& w);
+    void set_world( const math::box2f_t& w);
 
-    void set_interest_point( const Imath::V2f& p);
+    void set_interest_point( const math::point2f_t& p);
 
     void place_node( node_t *n) const;
     void place_node_near_node( node_t *n, node_t *other) const;
 
 private:
 
-	Imath::Box2f get_node_bbox( node_t *n) const;
-	bool box_intersects_any_node( const Imath::Box2f& box) const;
+    math::box2f_t get_node_bbox( node_t *n) const;
+    bool box_intersects_any_node( const math::box2f_t& box) const;
 	
-	void do_place_node( node_t *n, const Imath::V2f& p) const;
+    void do_place_node( node_t *n, const math::point2f_t& p) const;
 	
-	Imath::Box2f world_;
-	boost::optional<Imath::V2f> interest_point_;
+    math::box2f_t world_;
+    boost::optional<math::point2f_t> interest_point_;
 
-	mutable Imath::Rand48 rng_;
+    mutable Imath::Rand48 rng_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

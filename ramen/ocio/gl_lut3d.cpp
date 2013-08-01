@@ -13,18 +13,22 @@ namespace ocio
 
 gl_lut3d_t::gl_lut3d_t( int lut_size, GLenum texture_unit) : gl::lut3d_t( lut_size, texture_unit)
 {
-	black_ = Imath::Color3f( 0, 0, 0);
+    black_ = color::color3f_t( 0, 0, 0);
 }
 
-void gl_lut3d_t::recreate( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransformRcPtr transform, const std::string& fun_name)
+void gl_lut3d_t::recreate( OCIO::ConstConfigRcPtr config,
+                           OCIO::DisplayTransformRcPtr transform,
+                           const std::string& fun_name)
 {
     RAMEN_ASSERT( transform);
     OCIO::ConstProcessorRcPtr processor = config->getProcessor( transform);
 	recreate( config, transform, processor, fun_name);
 }
 
-void gl_lut3d_t::recreate( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransformRcPtr transform,
-							OCIO::ConstProcessorRcPtr processor, const std::string& fun_name)
+void gl_lut3d_t::recreate( OCIO::ConstConfigRcPtr config,
+                           OCIO::DisplayTransformRcPtr transform,
+                           OCIO::ConstProcessorRcPtr processor,
+                           const std::string& fun_name)
 {
     OCIO::GpuShaderDesc desc;
     desc.setLanguage( OCIO::GPU_LANGUAGE_GLSL_1_0);
@@ -43,7 +47,7 @@ void gl_lut3d_t::recreate( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransform
 	update_gl_texture();
 }
 
-const Imath::Color3f& gl_lut3d_t::black() const { return black_;}
+const color::color3f_t& gl_lut3d_t::black() const { return black_;}
 
-} // namespace
-} // namespace
+} // ocio
+} // ramen

@@ -11,7 +11,8 @@
 #include<boost/shared_ptr.hpp>
 #include<boost/function.hpp>
 
-#include<OpenEXR/ImathColor.h>
+#include<ramen/color/color3.hpp>
+#include<ramen/color/rgba_color.hpp>
 
 #include<ramen/GL/program.hpp>
 
@@ -42,12 +43,13 @@ public:
 
 	void set_context_callback( const get_context_callback_t& f);
 	
-	void set_display_transform( OCIO::ConstConfigRcPtr config, OCIO::DisplayTransformRcPtr transform);
+    void set_display_transform( OCIO::ConstConfigRcPtr config,
+                                OCIO::DisplayTransformRcPtr transform);
 
-	Imath::Color3f transform( const Imath::Color3f& c) const;
-	Imath::Color4f transform( const Imath::Color4f& c) const;
+    color::color3f_t transform( const color::color3f_t& c) const;
+    color::rgba_colorf_t transform( const color::rgba_colorf_t& c) const;
 
-	const Imath::Color3f& black() const { return lut_->black();}
+    const color::color3f_t& black() const { return lut_->black();}
 	
 	view_channels_t view_channels() const		{ return view_channels_;}
 	void set_view_channels( view_channels_t v)	{ view_channels_ = v;}

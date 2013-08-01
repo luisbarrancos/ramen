@@ -152,7 +152,7 @@ image_view_t buffer_t::rgba_subimage_view( const math::box2i_t& area) const
 void buffer_t::check_area_inside_image( const math::box2i_t& area) const
 {
     #ifndef NDEBUG
-        if( !bounds_.is_inside( area))
+        if( !bounds_.contains( area))
         {
             // Not OK, print some debug info and exit
             std::cout << "Trying to access pixels outside buffer\n";

@@ -5,7 +5,9 @@
 #ifndef RAMEN_COLOR_BARS_HPP
 #define RAMEN_COLOR_BARS_HPP
 
-#include<OpenEXR/ImathBox.h>
+#include<ramen/config.hpp>
+
+#include<ramen/math/box2.hpp>
 
 #include<ramen/image/typedefs.hpp>
 
@@ -15,7 +17,9 @@ namespace image
 {
 
 void make_color_bars( const image_view_t& view);
-void make_color_bars( const image_view_t& view, const Imath::Box2i& domain, const Imath::Box2i& defined);
+void make_color_bars( const image_view_t& view,
+                      const math::box2i_t& domain,
+                      const math::box2i_t& defined);
 
 } // namespace
 } // namespace

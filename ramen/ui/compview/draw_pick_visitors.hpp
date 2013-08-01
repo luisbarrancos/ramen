@@ -7,7 +7,7 @@
 
 #include<ramen/nodes/node_visitor.hpp>
 
-#include<OpenEXR/ImathBox.h>
+#include<ramen/math/box2.hpp>
 
 #include<ramen/ui/compview/pick_result.hpp>
 
@@ -26,7 +26,7 @@ struct input_location_node_visitor : public node_visitor
     virtual void visit( node_t *n);
 
     int index;
-    Imath::V2f loc;
+    math::point2f_t loc;
 };
 
 struct output_location_node_visitor : public node_visitor
@@ -35,7 +35,7 @@ struct output_location_node_visitor : public node_visitor
     virtual void visit( node_t *n);
 
     int index;
-    Imath::V2f loc;
+    math::point2f_t loc;
 };
 
 struct size_node_visitor : public node_visitor
@@ -43,7 +43,7 @@ struct size_node_visitor : public node_visitor
     size_node_visitor();
     virtual void visit( node_t *n);
 
-    Imath::V2i size;
+    math::vector2i_t size;
 };
 
 struct draw_node_visitor : public node_visitor
@@ -69,31 +69,33 @@ private:
 
 struct pick_node_visitor : public node_visitor
 {
-    pick_node_visitor( const composition_view_t& view, const Imath::V2f& p, pick_result_t& result);
+    pick_node_visitor( const composition_view_t& view,
+                       const math::point2f_t& p,
+                       pick_result_t& result);
     virtual void visit( node_t *n);
 
 private:
 
     const composition_view_t& view_;
-    Imath::V2f p_;
+    math::point2f_t p_;
     pick_result_t& result_;
 };
 
 struct box_pick_node_visitor : public node_visitor
 {
-    box_pick_node_visitor( const Imath::Box2f& box);
+    box_pick_node_visitor( const math::box2f_t& box);
     virtual void visit( node_t *n);
 
     bool result;
 
 private:
 
-    Imath::Box2f box_;
+    math::box2f_t box_;
 };
 
 struct pick_edge_visitor : public node_visitor
 {
-    pick_edge_visitor( const composition_view_t& view, const Imath::V2f& p);
+    pick_edge_visitor( const composition_view_t& view, const math::point2f_t& p);
     virtual void visit( node_t *n);
 
     node_t *src, *dst;
@@ -101,7 +103,7 @@ struct pick_edge_visitor : public node_visitor
 
 private:
 
-    Imath::V2f p_;
+    math::point2f_t p_;
     const composition_view_t& view_;
 };
 

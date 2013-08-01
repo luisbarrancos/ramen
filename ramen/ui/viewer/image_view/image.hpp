@@ -9,8 +9,8 @@
 
 #include<boost/optional.hpp>
 
-#include<OpenEXR/ImathBox.h>
-#include<OpenEXR/ImathColor.h>
+#include<ramen/math/box2.hpp>
+#include<ramen/color/rgba_color.hpp>
 
 #include<ramen/image/buffer.hpp>
 
@@ -34,11 +34,11 @@ public:
 
     void reset();
     void reset( image::buffer_t pixels,
-                const Imath::Box2i& display_window,
-                const Imath::Box2i& data_window);
+                const math::box2i_t& display_window,
+                const math::box2i_t& data_window);
 
-    Imath::Box2i display_window() const;
-    Imath::Box2i data_window() const;
+    math::box2i_t display_window() const;
+    math::box2i_t data_window() const;
 
     // draw
     void draw_background() const;
@@ -49,16 +49,16 @@ public:
     void frame_data_window() const;
 
     // get colors
-    boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const;
+    boost::optional<color::rgba_colorf_t> color_at( const math::point2i_t& p) const;
 
 private:
 
     void create_impl( const image::buffer_t& pixels,
-                      const Imath::Box2i& display_window,
-                      const Imath::Box2i& data_window);
+                      const math::box2i_t& display_window,
+                      const math::box2i_t& data_window);
 
-    void frame_rect( const Imath::Box2i& b) const;
-    void gl_vertices_for_box( const Imath::Box2i& b) const;
+    void frame_rect( const math::box2i_t& b) const;
+    void gl_vertices_for_box( const math::box2i_t& b) const;
 
     GLenum texture_unit_;
 

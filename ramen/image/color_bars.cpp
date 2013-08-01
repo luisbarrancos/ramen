@@ -69,7 +69,9 @@ void make_color_bars( const image_view_t& view)
     boost::gil::copy_pixels( bars, view);
 }
 
-void make_color_bars( const image_view_t& view, const Imath::Box2i& domain, const Imath::Box2i& defined)
+void make_color_bars( const image_view_t& view,
+                      const math::box2i_t& domain,
+                      const math::box2i_t& defined)
 {
     typedef detail::color_bars_fn deref_t;
     typedef deref_t::point_t point_t;
@@ -79,10 +81,12 @@ void make_color_bars( const image_view_t& view, const Imath::Box2i& domain, cons
     point_t dims( domain.size().x+1, domain.size().y+1);
     my_virt_view_t bars( dims, locator_t( point_t(0,0), point_t(1,1), deref_t( dims)));
 
-    boost::gil::copy_pixels( boost::gil::subimage_view( bars, defined.min.x - domain.min.x,
-                                defined.min.y - domain.min.y,
-                                defined.size().x+1, defined.size().y+1), view);
+    boost::gil::copy_pixels( boost::gil::subimage_view( bars,
+                                                        defined.min.x - domain.min.x,
+                                                        defined.min.y - domain.min.y,
+                                                        defined.size().x+1, defined.size().y+1),
+                             view);
 }
 
-} // namespace
-} // namespace
+} // image
+} // ramen

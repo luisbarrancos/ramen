@@ -43,7 +43,7 @@ void generator_node_t::do_calc_bounds( const render::context_t& context)
 
 void generator_node_t::do_calc_defined( const render::context_t& context)
 {
-    set_defined( ImathExt::intersect( bounds(), interest()));
+    set_defined( math::intersect( bounds(), interest()));
 }
 
 void generator_node_t::do_calc_hash_str( const render::context_t& context)

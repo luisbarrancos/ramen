@@ -23,12 +23,12 @@ namespace viewer
 struct image_t::impl
 {
     impl( const image::buffer_t& pixels,
-          const Imath::Box2i& display_window,
-          const Imath::Box2i& data_window,
+          const math::box2i_t& display_window,
+          const math::box2i_t& data_window,
           GLenum texture_unit = GL_TEXTURE0)
     {
-        RAMEN_ASSERT( !data_window.isEmpty());
-        RAMEN_ASSERT( !display_window.isEmpty());
+        RAMEN_ASSERT( !data_window.is_empty());
+        RAMEN_ASSERT( !display_window.is_empty());
 
         texture_unit_ = texture_unit;
         data_window_ = data_window;
@@ -43,7 +43,7 @@ struct image_t::impl
         {
             for( int i = 0; i < xtiles; ++i)
             {
-                Imath::Box2i area( area_for_tile( i, j));
+                math::box2i_t area( area_for_tile( i, j));
                 tile_t *tile = new tile_t( pixels_, area);
                 tiles_.push_back( tile);
             }
@@ -55,7 +55,7 @@ struct image_t::impl
 
     int width() const
     {
-        if( !data_window().isEmpty())
+        if( !data_window().is_empty())
             return data_window().size().x + 1;
 
         return 0;
@@ -63,18 +63,18 @@ struct image_t::impl
 
     int height() const
     {
-        if( !data_window().isEmpty())
+        if( !data_window().is_empty())
             return data_window().size().y + 1;
 
         return 0;
     }
 
-    const Imath::Box2i& display_window() const	{ return display_window_;}
-    const Imath::Box2i& data_window() const		{ return data_window_;}
+    const math::box2i_t& display_window() const	{ return display_window_;}
+    const math::box2i_t& data_window() const    { return data_window_;}
 
     bool update_pixels( const image::buffer_t& pixels,
-                        const Imath::Box2i& display_window,
-                        const Imath::Box2i& data_window)
+                        const math::box2i_t& display_window,
+                        const math::box2i_t& data_window)
     {
         //if( pixels.width() == width() && pixels.height() == height())
         if( data_window.size().x + 1 == width() && data_window.size().y + 1 == height())
@@ -94,7 +94,7 @@ struct image_t::impl
             {
                 for( int i = 0; i < xtiles; ++i)
                 {
-                    Imath::Box2i area( area_for_tile( i, j));
+                    math::box2i_t area( area_for_tile( i, j));
                     char *ptr = tile_t::pixel_ptr( pixels_, area.min.x, area.max.y);
                     tiles_[index].update_texture( area, ptr, rowsize);
                     ++index;
@@ -116,28 +116,29 @@ struct image_t::impl
         boost::range::for_each( tiles_, boost::bind( &tile_t::draw, _1));
     }
 
-    boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const
+    boost::optional<color::rgba_colorf_t> color_at( const math::point2i_t& p) const
     {
         if( p.x < data_window().min.x || p.x > data_window().max.x)
-            return boost::optional<Imath::Color4f>();
+            return boost::optional<color::rgba_colorf_t>();
 
         if( p.y < data_window().min.y || p.y > data_window().max.y)
-            return boost::optional<Imath::Color4f>();
+            return boost::optional<color::rgba_colorf_t>();
 
-        image::pixel_t px( pixels_.const_rgba_view()( p.x - data_window().min.x, p.y - data_window().min.y));
-        return Imath::Color4f( boost::gil::get_color( px, boost::gil::red_t()),
-                               boost::gil::get_color( px, boost::gil::green_t()),
-                               boost::gil::get_color( px, boost::gil::blue_t()),
-                               boost::gil::get_color( px, boost::gil::alpha_t()));
+        image::pixel_t px( pixels_.const_rgba_view()( p.x - data_window().min.x,
+                                                      p.y - data_window().min.y));
+        return color::rgba_colorf_t( boost::gil::get_color( px, boost::gil::red_t()),
+                                     boost::gil::get_color( px, boost::gil::green_t()),
+                                     boost::gil::get_color( px, boost::gil::blue_t()),
+                                     boost::gil::get_color( px, boost::gil::alpha_t()));
     }
 
 private:
 
     static int tile_size() { return 1024;}
 
-    Imath::Box2i area_for_tile( int x, int y) const
+    math::box2i_t area_for_tile( int x, int y) const
     {
-        Imath::Box2i area;
+        math::box2i_t area;
         area.min.x = ( x * tile_size()) + data_window().min.x;
         area.min.y = ( y * tile_size()) + data_window().min.y;
         area.max.x = std::min( area.min.x + tile_size() - 1, data_window().max.x);
@@ -149,9 +150,9 @@ private:
     {
     public:
 
-        tile_t( const image::buffer_t& pixels, const Imath::Box2i& area)  : texture_id_( 0)
+        tile_t( const image::buffer_t& pixels, const math::box2i_t& area)  : texture_id_( 0)
         {
-            RAMEN_ASSERT( !area.isEmpty());
+            RAMEN_ASSERT( !area.is_empty());
 
             area_ = area;
             alloc_tile( area_.size().x + 1, area_.size().y + 1);
@@ -165,7 +166,7 @@ private:
             gl_delete_texture( &texture_id_);
         }
 
-        void update_texture( const Imath::Box2i& area, char *ptr, std::size_t rowsize)
+        void update_texture( const math::box2i_t& area, char *ptr, std::size_t rowsize)
         {
             RAMEN_ASSERT( texture_id_ != 0);
             RAMEN_ASSERT( area_.size() == area.size());
@@ -197,7 +198,8 @@ private:
         {
             RAMEN_ASSERT( y >= pixels.bounds().min.y && y <= pixels.bounds().max.y);
             RAMEN_ASSERT( x >= pixels.bounds().min.x && x <= pixels.bounds().max.x);
-            return ( char *) &( pixels.const_rgba_view()( x - pixels.bounds().min.x, y - pixels.bounds().min.y)[0]);
+            return ( char *) &( pixels.const_rgba_view()( x - pixels.bounds().min.x,
+                                                          y - pixels.bounds().min.y)[0]);
         }
 
         static std::size_t rowbytes( const image::buffer_t& pixels)
@@ -226,11 +228,11 @@ private:
         }
 
         GLuint texture_id_;
-        Imath::Box2i area_;
+        math::box2i_t area_;
     };
 
     GLenum texture_unit_;
-    Imath::Box2i display_window_, data_window_;
+    math::box2i_t display_window_, data_window_;
     image::buffer_t pixels_;
     boost::ptr_vector<tile_t> tiles_;
 };
@@ -258,8 +260,8 @@ void image_t::reset()
 }
 
 void image_t::reset( image::buffer_t pixels,
-                     const Imath::Box2i& display_window,
-                     const Imath::Box2i& data_window)
+                     const math::box2i_t& display_window,
+                     const math::box2i_t& data_window)
 {
     if( pimpl_.get() && pimpl_->update_pixels( pixels, display_window, data_window))
         return;
@@ -268,16 +270,16 @@ void image_t::reset( image::buffer_t pixels,
 }
 
 void image_t::create_impl( const image::buffer_t& pixels,
-                           const Imath::Box2i& display_window,
-                           const Imath::Box2i& data_window)
+                           const math::box2i_t& display_window,
+                           const math::box2i_t& data_window)
 {
-    if( display_window.isEmpty())
+    if( display_window.is_empty())
     {
         reset();
         return;
     }
 
-    if( data_window.isEmpty())
+    if( data_window.is_empty())
     {
         reset();
         return;
@@ -286,20 +288,20 @@ void image_t::create_impl( const image::buffer_t& pixels,
     pimpl_.reset( new impl( pixels, display_window, data_window));
 }
 
-Imath::Box2i image_t::display_window() const
+math::box2i_t image_t::display_window() const
 {
     if( pimpl_.get())
         return pimpl_->display_window();
 
-    return Imath::Box2i();
+    return math::box2i_t();
 }
 
-Imath::Box2i image_t::data_window() const
+math::box2i_t image_t::data_window() const
 {
     if( pimpl_.get())
         return pimpl_->data_window();
 
-    return Imath::Box2i();
+    return math::box2i_t();
 }
 
 void image_t::draw() const
@@ -312,9 +314,9 @@ void image_t::draw_background() const
 {
     if( pimpl_.get())
     {
-        const Imath::Box2i& dw( pimpl_->display_window());
+        const math::box2i_t& dw( pimpl_->display_window());
 
-        if( !dw.isEmpty())
+        if( !dw.is_empty())
         {
             gl_begin( GL_QUADS);
                 gl_vertices_for_box( dw);
@@ -335,18 +337,18 @@ void image_t::frame_data_window() const
         frame_rect( pimpl_->data_window());
 }
 
-boost::optional<Imath::Color4f> image_t::color_at( const Imath::V2i& p) const
+boost::optional<color::rgba_colorf_t> image_t::color_at( const math::point2i_t& p) const
 {
     if( pimpl_.get())
         return pimpl_->color_at( p);
 
-    return boost::optional<Imath::Color4f>();
+    return boost::optional<color::rgba_colorf_t>();
 }
 
 // draw utils
-void image_t::frame_rect( const Imath::Box2i& b) const
+void image_t::frame_rect( const math::box2i_t& b) const
 {
-    if( !b.isEmpty())
+    if( !b.is_empty())
     {
         gl_begin( GL_LINE_LOOP);
         gl_vertices_for_box( b);
@@ -354,7 +356,7 @@ void image_t::frame_rect( const Imath::Box2i& b) const
     }
 }
 
-void image_t::gl_vertices_for_box( const Imath::Box2i& b) const
+void image_t::gl_vertices_for_box( const math::box2i_t& b) const
 {
     gl_vertex2i( b.min.x		, b.min.y);
     gl_vertex2i( b.max.x + 1	, b.min.y);
