@@ -5,13 +5,15 @@
 #ifndef RAMEN_SYSTEM_HPP
 #define RAMEN_SYSTEM_HPP
 
-#include<ramen/config.hpp>
+#include<ramen/system/system_fwd.hpp>
 
 #include<string>
 
+#include<boost/filesystem/path.hpp>
+
 #include<ramen/app/application_fwd.hpp>
 
-#include<boost/filesystem/path.hpp>
+#include<ramen/os/system_info.hpp>
 
 namespace ramen
 {
@@ -20,30 +22,33 @@ namespace system
 
 /**
 \ingroup app
-\brief class that contains os & hardware related data and methods
+\brief class that contains os & hardware related info
 */
 class RAMEN_API system_t
 {
 public:
 
-    const std::string& system_name() const
+    system_t();
+    ~system_t();
+
+    const core::string8_t& system_name() const
     {
         return system_name_;
     }
 
-    const std::string& user_name() const
+    const core::string8_t& user_name() const
     {
-        return user_name_;
+        return sys_info_.user_name();
     }
 
     const boost::filesystem::path& home_path() const
     {
-        return home_path_;
+        return sys_info_.home_path();
     }
 
     const boost::filesystem::path& executable_path() const
     {
-        return executable_path_;
+        return sys_info_.executable_path();
     }
 
     const boost::filesystem::path& application_path() const
@@ -59,33 +64,25 @@ public:
     // ram
     boost::uint64_t ram_size() const
     {
-        return ram_size_;
+        return sys_info_.ram_size();
     }
 
 private:
-
-    friend class ramen::application_t;
-
-    system_t();
-    ~system_t();
 
     // non-copyable
     system_t( const system_t&);
     system_t& operator=( const system_t&);
 
-    std::string system_name_;
-    std::string user_name_;
-
-    boost::uint64_t ram_size_;
+    core::string8_t system_name_;
 
     // paths
-    boost::filesystem::path home_path_;
-    boost::filesystem::path executable_path_;
     boost::filesystem::path application_path_;
     boost::filesystem::path application_user_path_;
 
     struct impl;
     impl *pimpl_;
+
+    os::system_info_t sys_info_;
 };
 
 } // system

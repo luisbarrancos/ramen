@@ -10,6 +10,8 @@
 
 #include<ramen/config/os.hpp>
 
+#include<ramen/core/exceptions.hpp>
+
 #include<ramen/version.hpp>
 #include<ramen/assert.hpp>
 
@@ -28,30 +30,18 @@ namespace ramen
 namespace system
 {
 
-system_t::system_t() : ram_size_( 0)
+system_t::system_t()
 {
     pimpl_ = new impl( *this);
 
     // validate data
     if( system_name_.empty())
-        throw std::runtime_error( "Error creating system class");
-
-    if( user_name_.empty())
-        throw std::runtime_error( "Error creating system class");
-
-    if( !ram_size_)
-        throw std::runtime_error( "Error creating system class");
-
-    if( executable_path_.empty())
-        throw std::runtime_error( "Error creating system class");
-
-    if( home_path_.empty())
-        throw std::runtime_error( "Error creating system class");
+        throw core::runtime_error( "Error creating system class");
 
     if( application_user_path_.empty())
-        throw std::runtime_error( "Error creating system class");
+        throw core::runtime_error( "Error creating system class");
 
-    application_path_ = boost::filesystem::canonical( executable_path_.parent_path() / "..");
+    application_path_ = boost::filesystem::canonical( executable_path().parent_path() / "..");
 }
 
 system_t::~system_t()

@@ -28,6 +28,8 @@
 
 #include<ramen/assert.hpp>
 
+#include<ramen/system/system.hpp>
+
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
 #include<ramen/app/preferences.hpp>

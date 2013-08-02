@@ -23,6 +23,8 @@
 
 #include<ramen/version.hpp>
 
+#include<ramen/system/system.hpp>
+
 #include<ramen/app/preferences.hpp>
 #include<ramen/app/document.hpp>
 
@@ -56,6 +58,8 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
 {
     RAMEN_ASSERT( g_app == 0 );
     g_app = this;
+
+    system_.reset( new system::system_t());
 
     max_threads_ = 0;
     img_cache_size_ = 0;
@@ -181,6 +185,13 @@ int application_t::run()
     }
 
     return 0;
+}
+
+const system::system_t& application_t::system() const
+{
+    RAMEN_ASSERT( system_.get());
+
+    return *system_;
 }
 
 // command line things

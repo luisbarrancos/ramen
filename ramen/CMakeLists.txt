@@ -252,6 +252,8 @@ SET( RAMEN_SOURCES      assert.hpp
                         render/render_sequence.cpp
                         render/render_thread.cpp
 
+                        system/system_fwd.hpp
+                        system/system.hpp
                         system/system.cpp
 
                         ui/add_node_command.cpp
