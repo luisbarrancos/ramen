@@ -12,7 +12,7 @@
 #include<boost/ptr_container/ptr_vector.hpp>
 #include<boost/signals2/signal.hpp>
 
-#include<OpenEXR/ImathColor.h>
+#include<ramen/color/color3.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -51,15 +51,15 @@ public:
     const std::string& name() const;
     void set_name( const std::string& name);
 
-	const std::string& full_name() const;
-	void make_full_names();
+    const std::string& full_name() const;
+    void make_full_names();
 
-	const std::string& curve_name() const;
-	
+    const std::string& curve_name() const;
+
     bool is_leaf() const { return num_children() == 0;}
 
-    const Imath::Color3c& color() const { return color_;}
-    void set_color( const Imath::Color3c& col);
+    const color::color3c_t& color() const { return color_;}
+    void set_color( const color::color3c_t& col);
 
     // observer
     boost::signals2::signal<void ( any_curve_ptr_t&)> changed;
@@ -71,17 +71,17 @@ public:
 
 private:
 
-	void init();
+    void init();
 
-	void do_make_full_names();
+    void do_make_full_names();
 
-	void make_curve_name();
-	
+    void make_curve_name();
+
     std::string name_, full_name_, curve_name_;
     track_t *parent_;
     boost::ptr_vector<track_t> children_;
     boost::optional<any_curve_ptr_t> curve_;
-    Imath::Color3c color_;
+    color::color3c_t color_;
 };
 
 template<class Fun>
@@ -117,7 +117,7 @@ void for_each_curve( track_t *t, Fun f)
     }
 }
 
-} // namespace
-} // namespace
+} // anim
+} // ramen
 
 #endif

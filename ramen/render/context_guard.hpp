@@ -5,11 +5,11 @@
 #ifndef RAMEN_RENDER_CONTEXT_GUARD_HPP
 #define	RAMEN_RENDER_CONTEXT_GUARD_HPP
 
+#include<ramen/config.hpp>
+
 #include<map>
 
 #include<boost/noncopyable.hpp>
-
-#include<OpenEXR/ImathBox.h>
 
 #include<ramen/nodes/node_fwd.hpp>
 

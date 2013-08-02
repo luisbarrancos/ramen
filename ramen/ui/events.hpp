@@ -9,8 +9,6 @@
 
 #include<ramen/math/point2.hpp>
 
-#include<OpenEXR/ImathVec.h>
-
 #include<ramen/ui/viewer/viewer_strategy_fwd.hpp>
 
 namespace ramen

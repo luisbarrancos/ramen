@@ -20,7 +20,7 @@ curve_param_t::curve_param_t( const curve_param_t& other) : animated_param_t( ot
 void curve_param_t::private_init()
 {
     add_curve( name());
-    color_ = Imath::Color3c( 255, 255, 255);
+    color_ = color::color3c_t( 255, 255, 255);
 }
 
 void curve_param_t::do_create_tracks( anim::track_t *parent)

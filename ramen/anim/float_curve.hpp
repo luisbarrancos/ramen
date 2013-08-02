@@ -8,9 +8,9 @@
 #include<ramen/anim/curve_fwd.hpp>
 #include<ramen/anim/curve.hpp>
 
-#include<OpenEXR/ImathBox.h>
-
 #include<ramen/assert.hpp>
+
+#include<ramen/math/box2.hpp>
 
 #include<ramen/anim/float_key.hpp>
 
@@ -82,8 +82,8 @@ public:
     value_type derive( time_type time) const;
     value_type integrate( time_type time1, time_type time2) const;
 
-    Imath::Box2f bounds() const;
-    Imath::Box2f selection_bounds() const;
+    math::box2f_t bounds() const;
+    math::box2f_t selection_bounds() const;
 
     std::string str() const;
 

@@ -33,7 +33,7 @@ public:
             image::image_view_t::x_iterator dst_it( dst_.row_begin( y - defined_.min.y));
 
             for( int x = defined_.min.x; x <= defined_.max.x; ++x)
-                *dst_it++ = f_( Imath::V2i( x, y));
+                *dst_it++ = f_( math::point2i_t( x, y));
         }
     }
 

@@ -6,8 +6,6 @@
 
 #include<boost/foreach.hpp>
 
-#include<OpenEXR/ImathFun.h>
-
 #include<ramen/assert.hpp>
 
 #include<ramen/app/application.hpp>
@@ -20,7 +18,7 @@ namespace ramen
 namespace ui
 {
 
-composition_view_layout_t::composition_view_layout_t() : rng_( 0) {}
+composition_view_layout_t::composition_view_layout_t() {}
 
 void composition_view_layout_t::set_world( const math::box2f_t& w)
 {

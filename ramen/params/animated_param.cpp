@@ -7,8 +7,6 @@
 #include<boost/bind.hpp>
 #include<boost/foreach.hpp>
 
-#include<OpenEXR/ImathFun.h>
-
 #include<ramen/params/animated_param_command.hpp>
 
 #include<ramen/anim/track.hpp>

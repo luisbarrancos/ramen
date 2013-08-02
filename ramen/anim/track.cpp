@@ -19,18 +19,18 @@ track_t::track_t() { init();}
 
 track_t::track_t( const std::string& name) : name_( name)
 {
-	init();
+    init();
 }
 
 track_t::track_t( const std::string& name, const any_curve_ptr_t& curve) : name_( name), curve_( curve)
 {
-	init();
+    init();
 }
 
 void track_t::init()
 {
-	parent_ = 0;
-	color_ = Imath::Color3c( 255, 255, 255);
+    parent_ = 0;
+    color_ = color::color3c_t( 255, 255, 255);
 }
 
 track_t *track_t::child( int i)
@@ -60,15 +60,15 @@ int track_t::row() const
 }
 
 const std::string& track_t::name() const
-{ 
-	RAMEN_ASSERT( !name_.empty());
-	return name_;
+{
+    RAMEN_ASSERT( !name_.empty());
+    return name_;
 }
 
 void track_t::set_name( const std::string& name)
-{ 
-	RAMEN_ASSERT( !name.empty());
-	name_ = name;
+{
+    RAMEN_ASSERT( !name.empty());
+    name_ = name;
 }
 
 const std::string& track_t::full_name() const	{ return full_name_;}
@@ -76,42 +76,45 @@ const std::string& track_t::curve_name() const	{ return curve_name_;}
 
 void track_t::make_full_names()
 {
-	full_name_ = name_;
+    full_name_ = name_;
 
-	for( int i = 0; i < num_children(); ++i)
-		child( i)->do_make_full_names();
-		
-	for_each_track_depth_first( this, boost::bind( &track_t::make_curve_name, _1));
+    for( int i = 0; i < num_children(); ++i)
+        child( i)->do_make_full_names();
+
+    for_each_track_depth_first( this, boost::bind( &track_t::make_curve_name, _1));
 }
 
 void track_t::do_make_full_names()
 {
-	RAMEN_ASSERT( full_name_.empty());
-		
-	if( track_t *p = parent())
-		full_name_ = p->full_name() + "." + name();
-	else
-		full_name_ = name();
-	
-	for( int i = 0; i < num_children(); ++i)
-		child( i)->do_make_full_names();	
+    RAMEN_ASSERT( full_name_.empty());
+
+    if( track_t *p = parent())
+        full_name_ = p->full_name() + "." + name();
+    else
+        full_name_ = name();
+
+    for( int i = 0; i < num_children(); ++i)
+        child( i)->do_make_full_names();
 }
 
 void track_t::make_curve_name()
-{	
-	std::string::size_type pos = full_name_.find_first_of( '.');
-	
-	if( pos != std::string::npos)
-		curve_name_ = std::string( full_name_, pos + 1, full_name_.size() - pos + 1);
+{
+    std::string::size_type pos = full_name_.find_first_of( '.');
+
+    if( pos != std::string::npos)
+        curve_name_ = std::string( full_name_, pos + 1, full_name_.size() - pos + 1);
 }
 
-void track_t::set_color( const Imath::Color3c& col) { color_ = col;}
+void track_t::set_color( const color::color3c_t& col)
+{
+    color_ = col;
+}
 
 void track_t::notify()
 {
-	RAMEN_ASSERT( curve());
+    RAMEN_ASSERT( curve());
     changed( curve().get());
 }
 
-} // namespace
-} // namespace
+} // anim
+} // ramen

@@ -5,7 +5,9 @@
 #ifndef RAMEN_ANIM_CURVE_FWD_HPP
 #define RAMEN_ANIM_CURVE_FWD_HPP
 
-#include<OpenEXR/ImathVec.h>
+#include<ramen/config.hpp>
+
+#include<ramen/math/point2.hpp>
 
 namespace ramen
 {
@@ -18,16 +20,14 @@ class float_curve_t;
 template<class T>
 class shape_key_t;
 
-typedef shape_key_t<Imath::V2f> shape_key2f_t;
-typedef shape_key_t<Imath::V3f> shape_key3f_t;
+typedef shape_key_t<math::point2f_t> shape_key2f_t;
 
 template<class P>
 class shape_curve_t;
 
-typedef shape_curve_t<Imath::V2f> shape_curve2f_t;
-typedef shape_curve_t<Imath::V3f> shape_curve3f_t;
+typedef shape_curve_t<math::point2f_t> shape_curve2f_t;
 
-} // namespace
-} // namespace
+} // anim
+} // ramen
 
 #endif

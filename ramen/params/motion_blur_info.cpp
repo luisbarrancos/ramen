@@ -4,12 +4,45 @@
 
 #include<ramen/params/motion_blur_info.hpp>
 
-#include<OpenEXR/ImathFun.h>
+#include<limits>
 
 #include<ramen/assert.hpp>
 
 namespace ramen
 {
+
+namespace
+{
+
+template<class T>
+inline T abs( T a)
+{
+    return ( a > T(0)) ? a : -a;
+}
+
+template <class T>
+inline T lerpfactor( T m, T a, T b)
+{
+    //
+    // Return how far m is between a and b, that is return t such that
+    // if:
+    //     t = lerpfactor(m, a, b);
+    // then:
+    //     m = lerp(a, b, t);
+    //
+    // If a==b, return 0.
+    //
+
+    T d = b - a;
+    T n = m - a;
+
+    if( abs( d) > T(1) || abs( n) < std::numeric_limits<T>::max() * abs( d))
+        return n / d;
+
+    return T(0);
+}
+
+} // unnamed
 
 bool motion_blur_info_t::operator==( const motion_blur_info_t& other) const
 {
@@ -45,17 +78,17 @@ float motion_blur_info_t::loop_data_t::weight_for_time( float t) const
 
     case triangle_filter:
     {
-        float x = Imath::abs( t - center_time);
+        float x = abs( t - center_time);
         float b = (end_time - center_time) + ( time_step / 2.0);
-        return Imath::lerpfactor( x, b, 0.0f);
+        return lerpfactor( x, b, 0.0f);
     }
     break;
 
     case cubic_filter:
     {
-        float x = Imath::abs( t - center_time);
+        float x = abs( t - center_time);
         float b = (end_time - center_time) + ( time_step / 2.0);
-        float t = Imath::lerpfactor( x, 0.0f, b);
+        float t = lerpfactor( x, 0.0f, b);
         return ( 2.0f * t * t * t) - ( 3.0f * t * t) + 1.0f;
     }
     break;

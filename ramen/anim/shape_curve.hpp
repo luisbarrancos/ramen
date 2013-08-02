@@ -5,8 +5,7 @@
 #ifndef RAMEN_ANIM_SHAPE_CURVE_HPP
 #define	RAMEN_ANIM_SHAPE_CURVE_HPP
 
-#include<OpenEXR/ImathBox.h>
-#include<OpenEXR/ImathFun.h>
+#include<ramen/config.hpp>
 
 #include<boost/range/algorithm/copy.hpp>
 
@@ -120,7 +119,8 @@ public:
 
             for( int i = 0; i < v0.size(); ++i)
             {
-                point_type q( Imath::lerp( v0[i], v1[i], t));
+                // TODO: reimplement this...
+                point_type q; //( Imath::lerp( v0[i], v1[i], t));
                 *out = q;
                 ++out;
             }
@@ -171,8 +171,7 @@ private:
     void copy_keyframe( const key_type& k, OutIter out) const { boost::range::copy( k.value(), out);}
 };
 
-typedef shape_curve_t<Imath::V2f> shape_curve2f_t;
-typedef shape_curve_t<Imath::V3f> shape_curve3f_t;
+typedef shape_curve_t<math::point2f_t> shape_curve2f_t;
 
 } // anim
 } // ramen

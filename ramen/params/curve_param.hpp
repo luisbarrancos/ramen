@@ -7,7 +7,7 @@
 
 #include<ramen/params/animated_param.hpp>
 
-#include<OpenEXR/ImathColor.h>
+#include<ramen/color/color3.hpp>
 
 namespace ramen
 {
@@ -20,8 +20,8 @@ public:
 
     explicit curve_param_t( const std::string& name);
 
-    const Imath::Color3c& color() const       { return color_;}
-    void set_color( const Imath::Color3c& c)  { color_ = c;}
+    const color::color3c_t& color() const       { return color_;}
+    void set_color( const color::color3c_t& c)  { color_ = c;}
 
 protected:
 
@@ -41,9 +41,9 @@ private:
     //virtual void do_read( const serialization::yaml_node_t& node);
     //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
-    Imath::Color3c color_;
+    color::color3c_t color_;
 };
 
-} // namespace
+} // ramen
 
 #endif

@@ -5,14 +5,16 @@
 #ifndef RAMEN_SHAPE_KEY_HPP
 #define RAMEN_SHAPE_KEY_HPP
 
+#include<ramen/config.hpp>
+
 #include<vector>
 #include<algorithm>
-
-#include<OpenEXR/ImathVec.h>
 
 #include<ramen/assert.hpp>
 
 #include<ramen/core/copy_on_write.hpp>
+
+#include<ramen/math/point2.hpp>
 
 #include<ramen/anim/keyframe.hpp>
 
@@ -58,8 +60,8 @@ public:
         std::swap( value_, other.value_);
     }
 
-    std::size_t size() const { return value().size();}
-    bool empty() const { return value().empty();}
+    std::size_t size() const    { return value().size();}
+    bool empty() const          { return value().empty();}
 
     typedef typename std::vector<T>::const_iterator const_iterator;
     typedef typename std::vector<T>::iterator		iterator;
@@ -126,8 +128,7 @@ private:
     core::copy_on_write_t<std::vector<T> > value_;
 };
 
-typedef shape_key_t<Imath::V2f> shape_key2f_t;
-typedef shape_key_t<Imath::V3f> shape_key3f_t;
+typedef shape_key_t<math::point2f_t> shape_key2f_t;
 
 } // anim
 } // ramen

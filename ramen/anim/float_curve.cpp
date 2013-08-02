@@ -14,9 +14,8 @@
 #include<boost/foreach.hpp>
 #include<boost/range/algorithm/for_each.hpp>
 
-#include<OpenEXR/ImathFun.h>
-
 #include<ramen/algorithm/for_each_position.hpp>
+#include<ramen/algorithm/clamp.hpp>
 
 #include<ramen/anim/util.hpp>
 
@@ -113,7 +112,10 @@ float_curve_t::iterator float_curve_t::insert( time_type time, bool recalc)
     return insert( time, value, recalc);
 }
 
-float_curve_t::value_type float_curve_t::evaluate( time_type time) const { return Imath::clamp( do_evaluate( time), min_, max_);}
+float_curve_t::value_type float_curve_t::evaluate( time_type time) const
+{
+    return algorithm::clamp( do_evaluate( time), min_, max_);
+}
 
 float_curve_t::value_type float_curve_t::do_evaluate( time_type time) const
 {
@@ -124,17 +126,17 @@ float_curve_t::value_type float_curve_t::do_evaluate( time_type time) const
     {
         switch( extrapolation())
         {
-        case extrapolate_constant:
-            return keys().front().value();
+            case extrapolate_constant:
+                return keys().front().value();
 
-        case extrapolate_linear:
-        {
-            value_type dir = keys().front().v1();
-            return keys().front().value() + (( time - keys().front().time()) * dir);
-        }
+            case extrapolate_linear:
+            {
+                value_type dir = keys().front().v1();
+                return keys().front().value() + (( time - keys().front().time()) * dir);
+            }
 
-        case extrapolate_repeat:
-            return do_evaluate( repeat_time( time, start_time(), end_time()));
+            case extrapolate_repeat:
+                return do_evaluate( repeat_time( time, start_time(), end_time()));
         }
     }
 
@@ -241,24 +243,24 @@ void float_curve_t::recalc_tangents_and_coefficients()
                                   _1));
 }
 
-Imath::Box2f float_curve_t::bounds() const
+math::box2f_t float_curve_t::bounds() const
 {
-    Imath::Box2f bounds;
+    math::box2f_t bounds;
 
     BOOST_FOREACH( const anim::float_key_t& k, keys())
-        bounds.extendBy( Imath::V2f( k.time(), k.value()));
+        bounds.extend_by( math::point2f_t( k.time(), k.value()));
 
     return bounds;
 }
 
-Imath::Box2f float_curve_t::selection_bounds() const
+math::box2f_t float_curve_t::selection_bounds() const
 {
-    Imath::Box2f bounds;
+    math::box2f_t bounds;
 
     BOOST_FOREACH( const anim::float_key_t& k, keys())
     {
         if( k.selected())
-            bounds.extendBy( Imath::V2f( k.time(), k.value()));
+            bounds.extend_by( math::point2f_t( k.time(), k.value()));
     }
 
     return bounds;
