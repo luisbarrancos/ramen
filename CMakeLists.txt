@@ -112,12 +112,12 @@ FIND_PACKAGE( ZLIB REQUIRED)
 ######################################################
 # ramen libs
 
-SET( RAMEN_WITH_ARRAYS OFF)
-SET( RAMEN_WITH_OS OFF)
-
 ADD_SUBDIRECTORY( ramenlibs)
 
 IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
+    SET_TARGET_PROPERTIES( ramen_arrays PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
     SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
@@ -125,15 +125,30 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
     SET_TARGET_PROPERTIES( ramen_iterators PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
+    SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
+    SET_TARGET_PROPERTIES( ramen_os PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    SET_TARGET_PROPERTIES( ramen_arrays PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
+
     SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 
     SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 
+    SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
+
     SET_TARGET_PROPERTIES( ramen_iterators PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
+
+    SET_TARGET_PROPERTIES( ramen_os PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
@@ -144,6 +159,8 @@ ENDIF()
 SET( RAMENLIBS_LIBS ramen_core
                     ramen_math
                     ramen_iterators
+                    ramen_gl
+                    ramen_os
                     )
 
 ######################################################
@@ -161,12 +178,15 @@ SET( MOC_EXTRA_ARGS -DQT_MOC_RUN)
 # includes
 
 INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/arrays
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/algorithm
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/color
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/config
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/core
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/gl
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/iterators
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/math
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/os
                         ${PROJECT_SOURCE_DIR}/ramen/
 
                         ${NEEDED_QT_INCLUDES}
