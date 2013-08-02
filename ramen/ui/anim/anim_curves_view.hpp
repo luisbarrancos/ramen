@@ -5,6 +5,8 @@
 #ifndef RAMEN_ANIM_CURVES_VIEW_HPP
 #define	RAMEN_ANIM_CURVES_VIEW_HPP
 
+#include<ramen/config.hpp>
+
 #include<QWidget>
 
 #include<vector>
@@ -97,9 +99,6 @@ private:
     void draw_grid() const;
     void draw_axes() const;
     void draw_time_bar() const;
-
-    // from paul heckberts' code
-    double nice_num( double x, bool round) const;
 
     int abs( int x) const
     {

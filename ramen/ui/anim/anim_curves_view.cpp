@@ -5,7 +5,6 @@
 #include<ramen/ui/anim/anim_curves_view.hpp>
 
 #include<algorithm>
-#include<cmath>
 
 #include<boost/foreach.hpp>
 #include<boost/bind.hpp>
@@ -25,7 +24,11 @@
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
 
+#include<ramen/math/cmath.hpp>
+
 #include<ramen/algorithm/clamp.hpp>
+
+#include<ramen/iterators/nice_numbers.hpp>
 
 #include<ramen/anim/track.hpp>
 
@@ -366,15 +369,10 @@ void anim_curves_view_t::draw_grid() const
 
     // vertical
     {
-        int nticks = std::floor( (double) width() / spacing);
-        double range = nice_num( viewport_.world().max.x - viewport_.world().min.x, 0);
-        double d = nice_num(range/( nticks-1), 1);
-        double graphmin = std::floor( (double) viewport_.world().min.x / d) * d;
-        double graphmax = std::ceil((double)  viewport_.world().max.x / d) * d;
-
-        for( double x = graphmin; x < graphmax + 0.5 * d; x += d)
+        int nticks = math::cmath<double>::floor( (double) width() / spacing);
+        for( iterators::nice_numbers_t it( viewport_.world().min.x, viewport_.world().max.x, nticks), e; it != e; ++it)
         {
-            math::point2f_t p( x, 0);
+            math::point2f_t p( *it, 0);
             math::point2i_t q( world_to_screen( p));
             painter_->drawLine( QPointF( q.x, 0), QPointF( q.x, height()));
         }
@@ -382,15 +380,10 @@ void anim_curves_view_t::draw_grid() const
 
     // horizontal
     {
-        int nticks = std::floor( (double) height() / spacing);
-        double range = nice_num( viewport_.world().max.y - viewport_.world().min.y, 0);
-        double d = nice_num(range/( nticks-1), 1);
-        double graphmin = std::floor( (double) viewport_.world().min.y / d) * d;
-        double graphmax = std::ceil( (double) viewport_.world().max.y / d) * d;
-
-        for( double y = graphmin; y < graphmax + 0.5 * d; y += d)
+        int nticks = math::cmath<double>::floor( (double) height() / spacing);
+        for( iterators::nice_numbers_t it( viewport_.world().min.y, viewport_.world().max.y, nticks), e; it != e; ++it)
         {
-            math::point2f_t p( 0, y);
+            math::point2f_t p( 0, *it);
             math::point2i_t q( world_to_screen( p));
             painter_->drawLine( QPointF( 0, q.y), QPointF( width(), q.y));
         }
@@ -409,38 +402,26 @@ void anim_curves_view_t::draw_axes() const
     // horizontal
     {
         painter_->drawLine( QPointF( 0, height() - spacing), QPointF( width(), height() - spacing));
-
-        int nticks = std::floor( (double) width() / spacing);
-        double range = nice_num( viewport_.world().max.x - viewport_.world().min.x, 0);
-        double d = nice_num(range/( nticks-1), 1);
-        double graphmin = std::floor( (double) viewport_.world().min.x / d) * d;
-        double graphmax = std::ceil( (double) viewport_.world().max.x / d) * d;
-
-        for( double x = graphmin; x < graphmax + 0.5 * d; x += d)
+        int nticks = math::cmath<double>::floor( (double) width() / spacing);
+        for( iterators::nice_numbers_t it( viewport_.world().min.x, viewport_.world().max.x, nticks), e; it != e; ++it)
         {
-            math::point2f_t p( x, 0);
+            math::point2f_t p( *it, 0);
             math::point2i_t q( world_to_screen( p));
             painter_->drawLine( QPointF( q.x, height() - spacing - 3), QPointF( q.x, height() - spacing + 3));
-            painter_->drawText( QPoint( q.x, height() - 10), QString::number( x));
+            painter_->drawText( QPoint( q.x, height() - 10), QString::number( *it));
         }
     }
 
     // vertical
     {
         painter_->drawLine( QPointF( spacing * 2, 0), QPointF( spacing * 2, height()));
-
-        int nticks = std::floor( (double) height() / spacing);
-        double range = nice_num( viewport_.world().max.y - viewport_.world().min.y, 0);
-        double d = nice_num(range/( nticks-1), 1);
-        double graphmin = std::floor( (double) viewport_.world().min.y / d) * d;
-        double graphmax = std::ceil( (double) viewport_.world().max.y / d) * d;
-
-        for( double y = graphmin; y < graphmax + 0.5 * d; y += d)
+        int nticks = math::cmath<double>::floor( (double) height() / spacing);
+        for( iterators::nice_numbers_t it( viewport_.world().min.y, viewport_.world().max.y, nticks), e; it != e; ++it)
         {
-            math::point2f_t p( 0, y);
+            math::point2f_t p( 0, *it);
             math::point2i_t q( world_to_screen( p));
             painter_->drawLine( QPointF( spacing * 2 - 3, q.y), QPointF( spacing * 2 + 3, q.y));
-            painter_->drawText( QPointF( 20, q.y), QString::number( y));
+            painter_->drawText( QPointF( 20, q.y), QString::number( *it));
         }
     }
 }
@@ -455,25 +436,6 @@ void anim_curves_view_t::draw_time_bar() const
     pen.setWidth( 2);
     painter_->setPen( pen);
     painter_->drawLine( QPoint( q.x, 0), QPoint( q.x, height()));
-}
-
-double anim_curves_view_t::nice_num( double x, bool round) const
-{
-    int expv = std::floor( std::log10( (double) x));
-    double f = x / std::pow( 10.0, expv);		/* between 1 and 10 */
-    double nf;									/* nice, rounded fraction */
-
-    if (round)
-    if (f<1.5) nf = 1.;
-    else if (f<3.) nf = 2.;
-    else if (f<7.) nf = 5.;
-    else nf = 10.;
-    else
-    if (f<=1.) nf = 1.;
-    else if (f<=2.) nf = 2.;
-    else if (f<=5.) nf = 5.;
-    else nf = 10.;
-    return nf * std::pow(10.0, expv);
 }
 
 void anim_curves_view_t::frame_area( const math::box2f_t& area)
