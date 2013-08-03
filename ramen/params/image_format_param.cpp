@@ -19,7 +19,7 @@
 namespace ramen
 {
 
-image_format_param_t::image_format_param_t( const std::string& name) : static_param_t( name) {}
+image_format_param_t::image_format_param_t( const core::string8_t& name) : static_param_t( name) {}
 
 image_format_param_t::image_format_param_t( const image_format_param_t& other) : static_param_t( other)
 {

@@ -11,11 +11,11 @@ namespace ramen
 class RAMEN_API separator_param_t : public param_t
 {
     Q_OBJECT
-    
+
 public:
 
     separator_param_t();
-    explicit separator_param_t( const std::string& name);
+    explicit separator_param_t( const core::string8_t& name);
 
 protected:
 

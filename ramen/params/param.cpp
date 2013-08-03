@@ -8,6 +8,8 @@
 
 #include<ramen/nodes/node.hpp>
 
+#include<ramen/string_algo/valid_c_identifier.hpp>
+
 #include<ramen/util/string.hpp>
 #include<ramen/util/flags.hpp>
 
@@ -19,7 +21,7 @@ param_t::param_t() : QObject(), param_set_(0)
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
 
-param_t::param_t( const std::string& name) : QObject(), param_set_(0), name_(name)
+param_t::param_t( const core::string8_t& name) : QObject(), param_set_(0), name_(name)
 {
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
@@ -80,7 +82,7 @@ composition_node_t *param_t::composition_node()
 
 void param_t::set_id( const core::name_t& identifier)
 {
-    if( !util::is_string_valid_identifier( identifier))
+    if( !string_algo::is_valid_c_identifier( identifier.c_str()))
         throw core::runtime_error( "Invalid id for param_t");
 
     id_ = identifier;

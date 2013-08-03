@@ -18,7 +18,7 @@ class RAMEN_API curve_param_t : public animated_param_t
 
 public:
 
-    explicit curve_param_t( const std::string& name);
+    explicit curve_param_t( const core::string8_t& name);
 
     const color::color3c_t& color() const       { return color_;}
     void set_color( const color::color3c_t& c)  { color_ = c;}

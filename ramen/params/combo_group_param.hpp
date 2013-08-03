@@ -21,7 +21,7 @@ class RAMEN_API combo_group_param_t : public composite_param_t
 
 public:
 
-    explicit combo_group_param_t( const std::string& name);
+    explicit combo_group_param_t( const core::string8_t& name);
 
     void set_default_value( int x);
 

@@ -53,7 +53,7 @@ public:
     render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
     // misc
-    void rename_node( node_t *n, const std::string& new_name);
+    void rename_node( node_t *n, const core::string8_t& new_name);
 
     const boost::filesystem::path& composition_dir() const;
     void set_composition_dir( const boost::filesystem::path& dir);

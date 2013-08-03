@@ -25,7 +25,7 @@ class RAMEN_API composite_param_t : public param_t
 public:
 
     composite_param_t();
-    explicit composite_param_t( const std::string& name);
+    explicit composite_param_t( const core::string8_t& name);
 
     void set_create_track( bool b) { create_track_ = b;}
 

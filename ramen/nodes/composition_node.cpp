@@ -210,7 +210,7 @@ render::context_t composition_node_t::current_context( render::render_mode mode)
     return c;
 }
 
-void composition_node_t::rename_node( node_t *n, const std::string& new_name)
+void composition_node_t::rename_node( node_t *n, const core::string8_t& new_name)
 {
     n->set_name( new_name);
 }

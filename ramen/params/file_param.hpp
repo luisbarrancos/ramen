@@ -22,7 +22,7 @@ class RAMEN_API file_param_t : public static_param_t
 
 public:
 
-    explicit file_param_t( const std::string& name);
+    explicit file_param_t( const core::string8_t& name);
 
     void set_default_value( const boost::filesystem::path& p);
 
@@ -34,10 +34,10 @@ public:
     bool file_exists() const;
 
     // extensions
-    void set_extension_list_string( const std::string& str) { ext_list_string_ = str;}
+    void set_extension_list_string( const core::string8_t& str) { ext_list_string_ = str;}
 
-    std::string extension() const;
-    void set_extension( const std::string& ext);
+    core::string8_t extension() const;
+    void set_extension( const core::string8_t& ext);
 
 protected:
 
@@ -71,7 +71,7 @@ private:
     QPointer<ui::line_edit_t> input_;
     QPointer<QPushButton> button_;
 
-    std::string ext_list_string_;
+    core::string8_t ext_list_string_;
 
 private Q_SLOTS:
 

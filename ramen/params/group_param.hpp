@@ -20,7 +20,7 @@ class RAMEN_API group_param_t : public composite_param_t
 
 public:
 
-    explicit group_param_t( const std::string& name);
+    explicit group_param_t( const core::string8_t& name);
 
     bool can_collapse() const		{ return can_collapse_;}
     void set_can_collapse( bool b)	{ can_collapse_ = b;}

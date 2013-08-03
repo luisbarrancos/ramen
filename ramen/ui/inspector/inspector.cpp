@@ -68,7 +68,7 @@ private:
     void rename( const std::string& name)
     {
         name_edit_->blockSignals( true);
-        app().document().composition_node().rename_node( n_, name);
+        app().document().composition_node().rename_node( n_, name.c_str());
 
         if( n_->is_active())
         {

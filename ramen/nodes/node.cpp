@@ -25,7 +25,8 @@
 
 #include<ramen/anim/track.hpp>
 
-#include<ramen/util/string.hpp>
+#include<ramen/string_algo/valid_c_identifier.hpp>
+
 #include<ramen/util/flags.hpp>
 
 #include<ramen/ui/palette.hpp>
@@ -89,9 +90,9 @@ void node_t::cloned()
     format_changed();
 }
 
-void node_t::set_name( const std::string& n)
+void node_t::set_name( const core::string8_t& n)
 {
-    if( !util::is_string_valid_identifier( n))
+    if( !string_algo::is_valid_c_identifier( n))
         throw core::runtime_error( "Invalid name for node");
 
     name_ = n;

@@ -21,7 +21,7 @@ class RAMEN_API proportional_param_t : public numeric_param_t
 
 public:
 
-    explicit proportional_param_t( const std::string& name);
+    explicit proportional_param_t( const core::string8_t& name);
 
     bool proportional() const	    { return flags() & proportional_bit;}
     void set_proportional( bool p);

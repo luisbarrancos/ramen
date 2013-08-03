@@ -36,7 +36,7 @@ public:
         relative_size_xy
     };
 
-    explicit numeric_param_t( const std::string& name);
+    explicit numeric_param_t( const core::string8_t& name);
 
     bool round_to_int() const { return flags() & round_to_int_bit;}
     void set_round_to_int( bool r);

@@ -187,6 +187,7 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/iterators
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/math
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/os
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/string_algo
                         ${PROJECT_SOURCE_DIR}/ramen/
 
                         ${NEEDED_QT_INCLUDES}

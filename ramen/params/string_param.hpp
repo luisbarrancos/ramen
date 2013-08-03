@@ -21,17 +21,17 @@ class string_param_t : public static_param_t
 
 public:
 
-    explicit string_param_t( const std::string& name);
-    string_param_t( const std::string& name, bool read_only);
+    explicit string_param_t( const core::string8_t& name);
+    string_param_t( const core::string8_t& name, bool read_only);
 
     bool read_only() const { return read_only_;}
 
     bool multiline() const		{ return multiline_;}
     void set_multiline( bool b)	{ multiline_ = b;}
 
-    void set_default_value( const std::string& x);
+    void set_default_value( const core::string8_t& x);
 
-    void set_value( const std::string& x, change_reason reason = user_edited);
+    void set_value( const core::string8_t& x, change_reason reason = user_edited);
 
 protected:
 

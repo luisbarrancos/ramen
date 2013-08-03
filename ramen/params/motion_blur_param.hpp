@@ -24,7 +24,7 @@ class RAMEN_API motion_blur_param_t : public static_param_t
 
 public:
 
-    explicit motion_blur_param_t( const std::string& name);
+    explicit motion_blur_param_t( const core::string8_t& name);
 
     bool motion_blur_enabled() const;
 

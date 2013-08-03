@@ -5,12 +5,15 @@
 #ifndef RAMEN_ANIM_TRACK_HPP
 #define	RAMEN_ANIM_TRACK_HPP
 
-#include<string>
+#include<ramen/config.hpp>
+
 #include<memory>
 
 #include<boost/optional.hpp>
 #include<boost/ptr_container/ptr_vector.hpp>
 #include<boost/signals2/signal.hpp>
+
+#include<ramen/core/string8.hpp>
 
 #include<ramen/color/color3.hpp>
 
@@ -28,8 +31,8 @@ class track_t
 public:
 
     track_t();
-    explicit track_t( const std::string& name);
-    track_t( const std::string& name, const any_curve_ptr_t& curve);
+    explicit track_t( const core::string8_t& name);
+    track_t( const core::string8_t& name, const any_curve_ptr_t& curve);
 
     track_t *parent() const         { return parent_;}
     void set_parent( track_t *p)    { parent_ = p;}
@@ -48,13 +51,13 @@ public:
     const boost::ptr_vector<track_t>& children() const	{ return children_;}
     boost::ptr_vector<track_t>& children()              { return children_;}
 
-    const std::string& name() const;
-    void set_name( const std::string& name);
+    const core::string8_t& name() const;
+    void set_name( const core::string8_t& name);
 
-    const std::string& full_name() const;
+    const core::string8_t& full_name() const;
     void make_full_names();
 
-    const std::string& curve_name() const;
+    const core::string8_t& curve_name() const;
 
     bool is_leaf() const { return num_children() == 0;}
 
@@ -77,7 +80,7 @@ private:
 
     void make_curve_name();
 
-    std::string name_, full_name_, curve_name_;
+    core::string8_t name_, full_name_, curve_name_;
     track_t *parent_;
     boost::ptr_vector<track_t> children_;
     boost::optional<any_curve_ptr_t> curve_;

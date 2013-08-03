@@ -14,7 +14,7 @@ class RAMEN_API static_param_t : public param_t
 
 public:
 
-    explicit static_param_t( const std::string& name);
+    explicit static_param_t( const core::string8_t& name);
 
 protected:
 

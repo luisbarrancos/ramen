@@ -25,14 +25,14 @@ class RAMEN_API aspect_ratio_param_t : public static_param_t
 
 public:
 
-    explicit aspect_ratio_param_t( const std::string& name);
+    explicit aspect_ratio_param_t( const core::string8_t& name);
 
     void set_default_value( float x);
 
     void set_value( float x, change_reason reason = user_edited);
 
     static void init_presets();
-    static void add_preset( const std::pair<std::string, float>& p);
+    static void add_preset( const std::pair<core::string8_t, float>& p);
 
 protected:
 
@@ -51,7 +51,7 @@ private:
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
 
-    typedef std::vector<std::pair<std::string, float> > presets_type;
+    typedef std::vector<std::pair<core::string8_t, float> > presets_type;
 
     static const presets_type& presets();
     int index_for_value( float x) const;

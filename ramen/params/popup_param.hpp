@@ -25,16 +25,16 @@ class RAMEN_API popup_param_t : public static_param_t
 
 public:
 
-    explicit popup_param_t( const std::string& name);
+    explicit popup_param_t( const core::string8_t& name);
 
     void set_default_value( int x);
 
     void set_value( int x, change_reason reason = user_edited);
 
-    void add_menu_item( const std::string& item);
+    void add_menu_item( const core::string8_t& item);
 
-    const std::vector<std::string>& menu_items() const	{ return menu_items_;}
-    std::vector<std::string>& menu_items()				{ return menu_items_;}
+    const std::vector<core::string8_t>& menu_items() const	{ return menu_items_;}
+    std::vector<core::string8_t>& menu_items()				{ return menu_items_;}
 
 protected:
 
@@ -52,9 +52,9 @@ private:
     //virtual void do_read( const serialization::yaml_node_t& node);
     //virtual void do_write( serialization::yaml_oarchive_t& out) const;
 
-    int find_index_for_string( const std::string& s) const;
+    int find_index_for_string( const core::string8_t& s) const;
 
-    std::vector<std::string> menu_items_;
+    std::vector<core::string8_t> menu_items_;
 
     virtual QWidget *do_create_widgets();
     virtual void do_update_widgets();

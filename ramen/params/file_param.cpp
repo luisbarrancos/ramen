@@ -25,7 +25,7 @@
 namespace ramen
 {
 
-file_param_t::file_param_t( const std::string& name) : static_param_t( name)
+file_param_t::file_param_t( const core::string8_t& name) : static_param_t( name)
 {
     is_input_ = true;
     set_default_value( boost::filesystem::path());
@@ -67,13 +67,13 @@ bool file_param_t::file_exists() const
     return false;
 }
 
-std::string file_param_t::extension() const
+core::string8_t file_param_t::extension() const
 {
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
     return p.extension().string();
 }
 
-void file_param_t::set_extension( const std::string& ext)
+void file_param_t::set_extension( const core::string8_t& ext)
 {
     RAMEN_ASSERT( !is_input_);
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
@@ -91,8 +91,8 @@ void file_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 /*
 void file_param_t::do_read( const serialization::yaml_node_t& node)
 {
-    std::string val;
-    node.get_value<std::string>( "value", val);
+    core::string8_t val;
+    node.get_value<core::string8_t>( "value", val);
     set_value( boost::filesystem::path( val), silent_edit);
 }
 
