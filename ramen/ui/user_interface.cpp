@@ -554,11 +554,6 @@ boost::unique_future<bool>& user_interface_t::render_image( render::context_t co
     return future;
 }
 
-int user_interface_t::viewer_toolbar_height() const
-{
-    return viewer().toolbar_height();
-}
-
 QFont user_interface_t::get_fixed_width_code_font()
 {
     QFont font;

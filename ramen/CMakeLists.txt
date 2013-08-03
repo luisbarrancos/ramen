@@ -66,11 +66,7 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
                         ui/inspector/inspector.hpp
                         ui/inspector/panel.hpp
-                        ui/viewer/image_view/image_view_toolbar.hpp
-                        ui/viewer/image_view/image_viewer_strategy.hpp
                         ui/viewer/viewer.hpp
-                        ui/viewer/viewer_context.hpp
-                        ui/viewer/viewer_strategy.hpp
                         ui/widgets/color_button.hpp
                         ui/widgets/color_picker.hpp
                         ui/widgets/color_swatch.hpp
@@ -304,12 +300,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/inspector/panel.cpp
                         ui/inspector/panel_factory.cpp
 
-                        ui/viewer/image_view/image.cpp
-                        ui/viewer/image_view/image_viewer_strategy.cpp
-                        ui/viewer/image_view/image_view_toolbar.cpp
-
-                        ui/viewer/viewer_context.cpp
-                        ui/viewer/viewer_strategy.cpp
                         ui/viewer/viewer.cpp
 
                         ui/widgets/color.cpp

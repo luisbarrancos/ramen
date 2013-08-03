@@ -19,7 +19,6 @@
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/inspector/inspector.hpp>
 #include<ramen/ui/viewer/viewer.hpp>
-#include<ramen/ui/viewer/image_view/image_viewer_strategy.hpp>
 
 namespace ramen
 {
@@ -29,10 +28,10 @@ namespace ui
 time_controls_t::time_controls_t() : window_(0), stop_playing_( true)
 {
     window_ = new QWidget();
-    window_->resize( width(), height());
-    window_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    window_->setMinimumSize( width(), height());
-    window_->setMaximumSize( width(), height());
+    //window_->resize( width(), height());
+    //window_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //window_->setMinimumSize( width(), height());
+    //window_->setMaximumSize( width(), height());
     window_->setWindowTitle( "Time Controls");
     window_->setContentsMargins( 0, 0, 0, 0);
 
@@ -96,7 +95,7 @@ time_controls_t::time_controls_t() : window_(0), stop_playing_( true)
     connect( end_, SIGNAL( pressed()), this, SLOT( goto_end()));
     layout->addWidget( end_);
 
-    QSpacerItem *horizontal_spacer = new QSpacerItem(40, height(), QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem *horizontal_spacer = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     layout->addItem( horizontal_spacer);
 
     flipbook_ = new QPushButton();
@@ -112,13 +111,6 @@ time_controls_t::time_controls_t() : window_(0), stop_playing_( true)
     connect( autokey_, SIGNAL( toggled( bool)), this, SLOT( set_autokey(bool)));
     layout->addWidget( autokey_);
 }
-
-int time_controls_t::width() const
-{
-    return app().ui()->inspector().widget()->width();
-}
-
-int time_controls_t::height() const { return 64;}
 
 bool time_controls_t::eventFilter( QObject *watched, QEvent *event)
 {

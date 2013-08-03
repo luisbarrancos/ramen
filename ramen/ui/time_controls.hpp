@@ -7,10 +7,6 @@
 
 #include<ramen/ui/time_controls_fwd.hpp>
 
-#include<map>
-
-#include<boost/noncopyable.hpp>
-
 #include<QWidget>
 
 class QToolButton;
@@ -31,9 +27,6 @@ public:
 
     QWidget *widget() { return window_;}
 
-    int width() const;
-    int height() const;
-
     bool eventFilter( QObject *watched, QEvent *event);
 
     void update();
@@ -51,7 +44,7 @@ public Q_SLOTS:
     void goto_end();
 
     void make_flipbook();
-	void set_autokey( bool b);
+    void set_autokey( bool b);
 
 private:
 
@@ -64,7 +57,7 @@ private:
 
     QToolButton *autokey_;
     QPushButton *flipbook_;
-    
+
     bool stop_playing_;
 };
 

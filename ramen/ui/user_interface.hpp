@@ -121,9 +121,6 @@ public:
 
     bool rendering() const { return rendering_;}
 
-    // util
-    int viewer_toolbar_height() const;
-
     const QString& image_types_string() const { return image_types_str_;}
 
     QFont get_fixed_width_code_font();

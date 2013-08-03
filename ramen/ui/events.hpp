@@ -9,8 +9,6 @@
 
 #include<ramen/math/point2.hpp>
 
-#include<ramen/ui/viewer/viewer_strategy_fwd.hpp>
-
 namespace ramen
 {
 namespace ui
@@ -35,7 +33,6 @@ struct event_t
 
     int modifiers;
 
-    viewer::viewer_strategy_t *view;
     float aspect_ratio;
     float pixel_scale;
     int subsample;
@@ -179,7 +176,6 @@ struct paint_event_t
 {
     paint_event_t();
 
-    const viewer::viewer_strategy_t *view;
     float aspect_ratio;
     float pixel_scale;
     int subsample;
