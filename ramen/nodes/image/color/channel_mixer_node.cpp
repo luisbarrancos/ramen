@@ -65,21 +65,24 @@ private:
 
     virtual void do_create_params()
     {
-        std::auto_ptr<float_param_t> p( new float_param_t( "Red"));
+        std::auto_ptr<float_param_t> p( new float_param_t());
+        p->set_name( "Red");
         p->set_id( g_red);
         p->set_default_value( 0.212671f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
         add_param( p);
 
-        p.reset( new float_param_t( "Green"));
+        p.reset( new float_param_t());
+        p->set_name( "Green");
         p->set_id( g_green);
         p->set_default_value( 0.715160f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
         add_param( p);
 
-        p.reset( new float_param_t( "Blue"));
+        p.reset( new float_param_t());
+        p->set_name( "Blue");
         p->set_id( g_blue);
         p->set_default_value( 0.072169f);
         p->set_range( 0, 1);

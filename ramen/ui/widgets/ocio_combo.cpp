@@ -16,7 +16,7 @@ ocio_combo_t::ocio_combo_t( QWidget *parent) : QComboBox( parent)
 
 int ocio_combo_t::index_for_string( const core::string8_t& s) const
 {
-    return findText( QString::fromStdString( std::strint( s.c_str())));
+    return findText( QString::fromStdString( std::string( s.c_str())));
 }
 
 } // ui

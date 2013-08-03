@@ -22,6 +22,8 @@
 
 #include<ramen/undo/stack.hpp>
 
+#include<ramen/string_algo/valid_c_identifier.hpp>
+
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/inspector/panel.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
@@ -42,7 +44,7 @@ class rename_node_command_t : public undo::command_t
 public:
 
     rename_node_command_t( node_t *n,
-                           const std::string& new_name,
+                           const core::string8_t& new_name,
                            ui::line_edit_t *name_edit) : undo::command_t( "Rename Node")
     {
         n_ = n;
@@ -65,7 +67,7 @@ public:
 
 private:
 
-    void rename( const std::string& name)
+    void rename( const core::string8_t& name)
     {
         name_edit_->blockSignals( true);
         app().document().composition_node().rename_node( n_, name.c_str());
@@ -82,8 +84,8 @@ private:
     }
 
     node_t *n_;
-    std::string new_name_;
-    std::string old_name_;
+    core::string8_t new_name_;
+    core::string8_t old_name_;
 
     ui::line_edit_t *name_edit_;
 };
@@ -262,11 +264,9 @@ void inspector_t::rename_node()
         node_t *n = app().ui()->active_node();
         RAMEN_ASSERT( n);
 
-        std::string new_name = name_edit_->text().toStdString();
+        core::string8_t new_name = name_edit_->text().toStdString().c_str();
 
-        // TODO: redo this...
-        //if( util::is_string_valid_identifier( new_name))
-        if( true)
+        if( string_algo::is_valid_c_identifier( new_name))
         {
             std::auto_ptr<rename_node_command_t> c( new rename_node_command_t( n, new_name, name_edit_));
             c->redo();

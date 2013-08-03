@@ -20,64 +20,64 @@ namespace ui
 
 ocio_view_combo_t::ocio_view_combo_t( QWidget *parent) : ocio_combo_t( parent)
 {
-	std::vector<std::string> views;
-	int default_view;
+    std::vector<core::string8_t> views;
+    int default_view;
 
-	ocio::manager_t& manager( app().ocio_manager());
-	manager.get_views( manager.default_display(), views, default_view);
+    ocio::manager_t& manager( app().ocio_manager());
+    manager.get_views( manager.default_display(), views, default_view);
 
-	for( int i = 0; i < views.size(); ++i)
-		addItem( QString::fromStdString( views[i]));
+    for( int i = 0; i < views.size(); ++i)
+        addItem( QString::fromStdString( views[i].c_str()));
 
-	current_view_ = views[default_view];
-	setCurrentIndex( default_view);
-	connect( this, SIGNAL( currentIndexChanged(int)), this, SLOT( combo_index_changed(int)));
+    current_view_ = views[default_view];
+    setCurrentIndex( default_view);
+    connect( this, SIGNAL( currentIndexChanged(int)), this, SLOT( combo_index_changed(int)));
 }
 
-void ocio_view_combo_t::set_view( const std::string& v)
+void ocio_view_combo_t::set_view( const core::string8_t& v)
 {
-	int index = index_for_string( v);
-	RAMEN_ASSERT( index != -1);
+    int index = index_for_string( v);
+    RAMEN_ASSERT( index != -1);
 
-	current_view_ = v;
-	setCurrentIndex( index);
+    current_view_ = v;
+    setCurrentIndex( index);
 }
 
-void ocio_view_combo_t::update_views( const std::string& display)
+void ocio_view_combo_t::update_views( const core::string8_t& display)
 {
-	blockSignals( true);
-	clear();
+    blockSignals( true);
+    clear();
 
-	std::vector<std::string> views;
-	int default_view, new_index = -1;
+    std::vector<core::string8_t> views;
+    int default_view, new_index = -1;
 
-	ocio::manager_t& manager( app().ocio_manager());
-	manager.get_views( display, views, default_view);
+    ocio::manager_t& manager( app().ocio_manager());
+    manager.get_views( display, views, default_view);
 
-	for( int i = 0; i < views.size(); ++i)
-	{
-		QString view = QString::fromStdString( views[i]);
-		addItem( view);
+    for( int i = 0; i < views.size(); ++i)
+    {
+        QString view = QString::fromStdString( views[i].c_str());
+        addItem( view);
 
-		if( views[i] == current_view_)
-			new_index = i;
-	}
+        if( views[i] == current_view_)
+            new_index = i;
+    }
 
-	blockSignals( false);
+    blockSignals( false);
 
-	if( new_index == -1)
-	{
-		new_index = default_view;
-		current_view_ = views[new_index];
-	}
+    if( new_index == -1)
+    {
+        new_index = default_view;
+        current_view_ = views[new_index];
+    }
 
-	setCurrentIndex( new_index);
+    setCurrentIndex( new_index);
 }
 
 void ocio_view_combo_t::combo_index_changed( int indx)
 {
-	current_view_ = currentText().toStdString();
-	view_changed( current_view_);
+    current_view_ = currentText().toStdString().c_str();
+    view_changed( current_view_);
 }
 
 } // ui

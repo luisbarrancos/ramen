@@ -13,6 +13,7 @@
 #include<vector>
 #include<utility>
 
+#include<boost/function.hpp>
 #include<boost/flyweight.hpp>
 #include<boost/filesystem/fstream.hpp>
 

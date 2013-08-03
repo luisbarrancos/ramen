@@ -5,6 +5,8 @@
 #ifndef RAMEN_UI_INSPECTOR_FWD_HPP
 #define	RAMEN_UI_INSPECTOR_FWD_HPP
 
+#include<ramen/config.hpp>
+
 namespace ramen
 {
 namespace ui

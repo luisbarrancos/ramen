@@ -7,7 +7,7 @@
 
 #include<QComboBox>
 
-#include<string>
+#include<ramen/core/string8.hpp>
 
 namespace ramen
 {

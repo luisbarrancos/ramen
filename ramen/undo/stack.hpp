@@ -25,7 +25,7 @@ namespace undo
 \ingroup undo
 \brief An undo stack.
 */
-class stack_t : boost::noncopyable
+class stack_t
 {
 public:
 
@@ -74,6 +74,10 @@ public:
     bool redo_empty() const { return redo_stack_.empty();}
 
 private:
+
+    // non-copyable
+    stack_t( const stack_t&);
+    stack_t& operator=( const stack_t&);
 
     boost::ptr_deque<command_t> undo_stack_;
     boost::ptr_deque<command_t> redo_stack_;

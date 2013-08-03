@@ -7,7 +7,7 @@
 
 #include<ramen/undo/command_fwd.hpp>
 
-#include<boost/function.hpp>
+#include<boost/ptr_container/ptr_vector.hpp>
 
 #include<ramen/core/string8.hpp>
 

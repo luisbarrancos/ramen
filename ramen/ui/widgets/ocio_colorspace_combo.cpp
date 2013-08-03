@@ -2,8 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
-
 #include<ramen/ui/widgets/ocio_colorspace_combo.hpp>
 
 #include<ramen/assert.hpp>
@@ -74,7 +72,7 @@ void ocio_colorspace_combo_t::set_default()
 
 void ocio_colorspace_combo_t::combo_index_changed( int indx)
 {
-    current_colorspace_ = currentText().toStdString();
+    current_colorspace_ = currentText().toStdString().c_str();
     colorspace_changed( current_colorspace_);
 }
 
