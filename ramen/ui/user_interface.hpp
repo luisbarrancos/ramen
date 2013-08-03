@@ -5,9 +5,13 @@
 #ifndef RAMEN_UI_HPP
 #define RAMEN_UI_HPP
 
+#include<ramen/config.hpp>
+
 #include<QObject>
 #include<QString>
 #include<QFont>
+
+#include<ramen/core/string8.hpp>
 
 // avoid a moc error, when including boost
 #ifndef QT_MOC_RUN
@@ -98,10 +102,10 @@ public:
     void update_anim_editors();
 
     // error reporting
-    void fatal_error( const std::string& msg) const;
-    void error( const std::string& msg) const;
-    void inform( const std::string& msg) const;
-    bool question( const std::string& what, bool default_answer = true) const;
+    void fatal_error( const core::string8_t& msg) const;
+    void error( const core::string8_t& msg) const;
+    void inform( const core::string8_t& msg) const;
+    bool question( const core::string8_t& what, bool default_answer = true) const;
 
     // sequence file selector
     bool image_sequence_file_selector( boost::filesystem::path& p, bool& sequence, bool& relative) const;

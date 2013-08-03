@@ -137,7 +137,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         Concepts/ParamValueConcept.hpp
 
                         container/ptr_vector_util.hpp
-                        container/unique_name_map.hpp
 
                         filesystem/path.hpp
                         filesystem/path.cpp

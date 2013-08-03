@@ -903,8 +903,7 @@ void main_window_t::create_node()
     }
     catch( std::exception& e)
     {
-        app().ui()->error( std::string( "Couldn't create node ") + id.c_str()
-                           + std::string( " ") + e.what());
+        app().ui()->error( core::make_string( "Couldn't create node ", id.c_str(), " ", e.what()));
         return;
     }
 

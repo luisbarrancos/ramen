@@ -228,9 +228,14 @@ bool user_interface_t::save_document()
         app().document().set_dirty( false);
         */
     }
+    catch( core::exception& e)
+    {
+        error( core::make_string( "Couldn't save file. Exception, what = ", e.what()));
+        return false;
+    }
     catch( std::exception& e)
     {
-        error( std::string( "Couldn't save file. Exception, what = ") + e.what());
+        error( core::make_string( "Couldn't save file. Exception, what = ", e.what()));
         return false;
     }
 
@@ -368,22 +373,22 @@ void user_interface_t::update_anim_editors()
         anim_editor().update();
 }
 
-void user_interface_t::fatal_error( const std::string& msg) const
+void user_interface_t::fatal_error( const core::string8_t& msg) const
 {
     QMessageBox::critical( 0, "Fatal Error", msg.c_str());
 }
 
-void user_interface_t::error( const std::string& msg) const
+void user_interface_t::error( const core::string8_t& msg) const
 {
     QMessageBox::warning( ( QWidget *) main_window(), "Error", msg.c_str());
 }
 
-void user_interface_t::inform( const std::string& msg) const
+void user_interface_t::inform( const core::string8_t& msg) const
 {
     QMessageBox::information( ( QWidget *) main_window(), "Info", msg.c_str());
 }
 
-bool user_interface_t::question( const std::string& what, bool default_answer) const
+bool user_interface_t::question( const core::string8_t& what, bool default_answer) const
 {
     QMessageBox::StandardButton result;
 

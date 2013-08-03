@@ -329,12 +329,12 @@ void composition_t::load_from_file( const boost::filesystem::path& p)
     boost::filesystem::ifstream ifs( p, serialization::yaml_iarchive_t::file_open_mode());
 
     if( !ifs.is_open() || !ifs.good())
-        throw std::runtime_error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't open input file ") + filesystem::file_string( p));
 
     std::auto_ptr<serialization::yaml_iarchive_t> in( new serialization::yaml_iarchive_t( ifs));
 
     if( !in->read_composition_header())
-        throw std::runtime_error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't open input file ") + filesystem::file_string( p));
 
     set_composition_dir( p.parent_path());
     read( *in);
@@ -373,7 +373,7 @@ void composition_t::read_node( const serialization::yaml_node_t& node)
     {
         serialization::yaml_node_t class_node( node.get_node( "class"));
 
-        std::string id;
+        core::string8_t id;
         std::pair<int,int> version;
 
         class_node[0] >> id;
@@ -422,7 +422,7 @@ void composition_t::read_edges( const serialization::yaml_iarchive_t& in)
 
 void composition_t::read_edge( const serialization::yaml_node_t& node)
 {
-    std::string src, dst;
+    core::string8_t src, dst;
     int port;
 
     node[0] >> src;
