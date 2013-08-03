@@ -56,8 +56,9 @@ node_t *composition_node_t::do_clone() const
 
 void composition_node_t::do_create_params()
 {
-    std::auto_ptr<float_param_t> p( new float_param_t( "Start Frame"));
+    std::auto_ptr<float_param_t> p( new float_param_t());
     start_frame_ = p.get();
+    p->set_name( "Start Frame");
     p->set_id( g_start_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -65,8 +66,9 @@ void composition_node_t::do_create_params()
     //p->set_secret( true);
     add_param( p);
 
-    p.reset( new float_param_t( "End Frame"));
+    p.reset( new float_param_t());
     end_frame_ = p.get();
+    p->set_name( "End Frame");
     p->set_id( g_end_frame);
     p->set_default_value( 100);
     p->set_static( true);
@@ -74,8 +76,9 @@ void composition_node_t::do_create_params()
     //p->set_secret( true);
     add_param( p);
 
-    p.reset( new float_param_t( "Frame"));
+    p.reset( new float_param_t());
     frame_ = p.get();
+    p->set_name( "Frame");
     p->set_id( g_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -83,14 +86,16 @@ void composition_node_t::do_create_params()
     p->set_can_undo( false);
     add_param( p);
 
-    std::auto_ptr<image_format_param_t> f( new image_format_param_t( "Default Format"));
+    std::auto_ptr<image_format_param_t> f( new image_format_param_t());
     default_format_ = f.get();
+    f->set_name( "Default Format");
     f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
     add_param( f);
 
-    p.reset( new float_param_t( "Frame Rate"));
+    p.reset( new float_param_t());
     frame_rate_ = p.get();
+    p->set_name( "Frame Rate");
     p->set_id( g_frame_rate);
     p->set_range( 1, 60);
     p->set_default_value( app().preferences().frame_rate());
@@ -100,8 +105,9 @@ void composition_node_t::do_create_params()
     p->set_can_undo( false);
     add_param( p);
 
-    std::auto_ptr<bool_param_t> b( new bool_param_t( "Autokey"));
+    std::auto_ptr<bool_param_t> b( new bool_param_t());
     autokey_ = b.get();
+    b->set_name( "Autokey");
     b->set_id( g_autokey);
     add_param( b);
 }

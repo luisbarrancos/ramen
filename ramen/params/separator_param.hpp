@@ -15,7 +15,6 @@ class RAMEN_API separator_param_t : public param_t
 public:
 
     separator_param_t();
-    explicit separator_param_t( const core::string8_t& name);
 
 protected:
 

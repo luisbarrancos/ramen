@@ -19,7 +19,7 @@ class RAMEN_API bool_param_t : public static_param_t
 
 public:
 
-    explicit bool_param_t( const core::string8_t& name);
+    bool_param_t();
 
     void set_default_value( bool x);
 

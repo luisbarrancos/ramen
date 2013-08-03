@@ -21,11 +21,6 @@ param_t::param_t() : QObject(), param_set_(0)
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
 
-param_t::param_t( const core::string8_t& name) : QObject(), param_set_(0), name_(name)
-{
-    flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
-}
-
 param_t::param_t( const param_t& other) : QObject(), param_set_(0), id_( other.id_), name_( other.name_),
                                             value_( other.value_), flags_( other.flags_)
 {

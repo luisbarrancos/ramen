@@ -21,7 +21,7 @@ namespace ramen
 
 aspect_ratio_param_t::presets_type aspect_ratio_param_t::presets_;
 
-aspect_ratio_param_t::aspect_ratio_param_t( const core::string8_t& name) : static_param_t( name)
+aspect_ratio_param_t::aspect_ratio_param_t() : static_param_t()
 {
     set_default_value( 1.0f);
 }

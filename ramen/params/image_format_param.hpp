@@ -24,7 +24,7 @@ class RAMEN_API image_format_param_t : public static_param_t
 
 public:
 
-    explicit image_format_param_t( const core::string8_t& name);
+    image_format_param_t();
 
     void set_value( const image::format_t& format, change_reason = user_edited);
 

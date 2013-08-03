@@ -21,8 +21,7 @@ class string_param_t : public static_param_t
 
 public:
 
-    explicit string_param_t( const core::string8_t& name);
-    string_param_t( const core::string8_t& name, bool read_only);
+    explicit string_param_t( bool read_only);
 
     bool read_only() const { return read_only_;}
 

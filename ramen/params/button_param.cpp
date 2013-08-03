@@ -16,7 +16,7 @@
 namespace ramen
 {
 
-button_param_t::button_param_t( const core::string8_t& name) : param_t( name) { set_static( true);}
+button_param_t::button_param_t() : param_t() { set_static( true);}
 button_param_t::button_param_t( const button_param_t& other) : param_t( other)
 {
     button_ = 0;

@@ -26,7 +26,7 @@
 namespace ramen
 {
 
-combo_group_param_t::combo_group_param_t( const core::string8_t& name) : composite_param_t( name)
+combo_group_param_t::combo_group_param_t() : composite_param_t()
 {
     set_default_value( 0);
 }

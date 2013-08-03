@@ -82,9 +82,6 @@ public:
     /// Constructor.
     param_t();
 
-    /// Constructor.
-    explicit param_t( const core::string8_t& name);
-
     /// Destructor.
     virtual ~param_t() {}
 

@@ -25,7 +25,7 @@
 namespace ramen
 {
 
-file_param_t::file_param_t( const core::string8_t& name) : static_param_t( name)
+file_param_t::file_param_t() : static_param_t()
 {
     is_input_ = true;
     set_default_value( boost::filesystem::path());
@@ -70,14 +70,14 @@ bool file_param_t::file_exists() const
 core::string8_t file_param_t::extension() const
 {
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
-    return p.extension().string();
+    return core::string8_t( p.extension().string().c_str());
 }
 
 void file_param_t::set_extension( const core::string8_t& ext)
 {
     RAMEN_ASSERT( !is_input_);
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
-    p.replace_extension( ext);
+    p.replace_extension( ext.c_str());
     value().assign( p);
     update_input_text();
 }

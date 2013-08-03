@@ -338,7 +338,11 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/text_edit.cpp
                         ui/widgets/time_slider.cpp
 
+                        undo/command_fwd.hpp
+                        undo/command.hpp
                         undo/command.cpp
+                        undo/stack_fwd.hpp
+                        undo/stack.hpp
                         undo/stack.cpp
 
                         util/command_line_parser.cpp

@@ -22,24 +22,24 @@ ocio_colorspace_combo_t::ocio_colorspace_combo_t( QWidget *parent) : ocio_combo_
     int num_color_spaces = config->getNumColorSpaces();
 
     for( int i = 0; i < num_color_spaces; ++i )
-		addItem( config->getColorSpaceNameByIndex( i));
+        addItem( config->getColorSpaceNameByIndex( i));
 
-	set_default();
-	connect( this, SIGNAL( currentIndexChanged(int)), this, SLOT( combo_index_changed(int)));
+    set_default();
+    connect( this, SIGNAL( currentIndexChanged(int)), this, SLOT( combo_index_changed(int)));
 }
 
-void ocio_colorspace_combo_t::set_colorspace( const std::string& cs)
+void ocio_colorspace_combo_t::set_colorspace( const core::string8_t& cs)
 {
-	int index = index_for_string( cs);
-	RAMEN_ASSERT( index != -1);
+    int index = index_for_string( cs);
+    RAMEN_ASSERT( index != -1);
 
-	current_colorspace_ = cs;
-	setCurrentIndex( index);
+    current_colorspace_ = cs;
+    setCurrentIndex( index);
 }
 
-bool ocio_colorspace_combo_t::set_colorspace_or_default( const std::string& cs)
+bool ocio_colorspace_combo_t::set_colorspace_or_default( const core::string8_t& cs)
 {
-	int index = index_for_string( cs);
+    int index = index_for_string( cs);
 
     if( index != -1)
     {
@@ -57,7 +57,7 @@ bool ocio_colorspace_combo_t::set_colorspace_or_default( const std::string& cs)
 void ocio_colorspace_combo_t::set_default()
 {
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
-    std::string default_cs_name = config->getColorSpace( OCIO::ROLE_SCENE_LINEAR)->getName();
+    core::string8_t default_cs_name = config->getColorSpace( OCIO::ROLE_SCENE_LINEAR)->getName();
 
     int index = 0;
     int num_color_spaces = config->getNumColorSpaces();
@@ -74,8 +74,8 @@ void ocio_colorspace_combo_t::set_default()
 
 void ocio_colorspace_combo_t::combo_index_changed( int indx)
 {
-	current_colorspace_ = currentText().toStdString();
-	colorspace_changed( current_colorspace_);
+    current_colorspace_ = currentText().toStdString();
+    colorspace_changed( current_colorspace_);
 }
 
 } // ui

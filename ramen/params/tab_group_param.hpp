@@ -21,7 +21,6 @@ class tab_group_param_t : public composite_param_t
 public:
 
     tab_group_param_t();
-    explicit tab_group_param_t( const core::string8_t& name);
 
 protected:
 

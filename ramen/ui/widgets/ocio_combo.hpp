@@ -16,15 +16,15 @@ namespace ui
 
 class ocio_combo_t : public QComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ocio_combo_t( QWidget *parent = 0);
+    ocio_combo_t( QWidget *parent = 0);
 
 protected:
 
-	int index_for_string( const std::string& s) const;
+    int index_for_string( const core::string8_t& s) const;
 };
 
 } // ui

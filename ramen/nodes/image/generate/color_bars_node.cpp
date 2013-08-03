@@ -27,17 +27,10 @@ private:
 
     virtual node_t *do_clone() const { return new color_bars_node_t( *this);}
 
-    virtual void do_create_params();
-
     virtual void do_process( const render::context_t& context);
 };
 
 color_bars_node_t::color_bars_node_t() : generator_node_t() { set_name( "color bars");}
-
-void color_bars_node_t::do_create_params()
-{
-    generator_node_t::do_create_params();
-}
 
 void color_bars_node_t::do_process( const render::context_t& context)
 {

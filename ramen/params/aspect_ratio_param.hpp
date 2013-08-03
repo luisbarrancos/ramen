@@ -25,7 +25,7 @@ class RAMEN_API aspect_ratio_param_t : public static_param_t
 
 public:
 
-    explicit aspect_ratio_param_t( const core::string8_t& name);
+    aspect_ratio_param_t();
 
     void set_default_value( float x);
 

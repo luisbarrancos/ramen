@@ -16,7 +16,6 @@ namespace ramen
 {
 
 tab_group_param_t::tab_group_param_t() : composite_param_t() {}
-tab_group_param_t::tab_group_param_t( const core::string8_t& name) : composite_param_t( name) {}
 
 tab_group_param_t::tab_group_param_t( const tab_group_param_t& other) : composite_param_t( other), tab_(0) {}
 

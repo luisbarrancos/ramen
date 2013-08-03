@@ -22,7 +22,7 @@ class RAMEN_API float3_param_t : public proportional_param_t
 
 public:
 
-    explicit float3_param_t( const core::string8_t& name);
+    float3_param_t();
 
     void set_default_value( const math::vector3f_t& x);
 

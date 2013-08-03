@@ -43,7 +43,8 @@ private:
     {
         generator_node_t::do_create_params();
 
-        std::auto_ptr<color_param_t> c( new color_param_t( "Color"));
+        std::auto_ptr<color_param_t> c( new color_param_t());
+        c->set_name( "Color");
         c->set_id( g_color);
         c->set_default_value( color::rgba_colorf_t( 0, 0, 0, 0));
         add_param( c);

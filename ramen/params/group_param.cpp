@@ -16,7 +16,7 @@
 namespace ramen
 {
 
-group_param_t::group_param_t( const core::string8_t& name) : composite_param_t( name), can_collapse_( true) {}
+group_param_t::group_param_t() : composite_param_t(), can_collapse_( true) {}
 
 group_param_t::group_param_t( const group_param_t& other) : composite_param_t( other), group_( 0) {}
 

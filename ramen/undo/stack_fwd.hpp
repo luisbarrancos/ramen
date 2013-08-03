@@ -5,6 +5,8 @@
 #ifndef RAMEN_UNDO_STACK_FWD_HPP
 #define RAMEN_UNDO_STACK_FWD_HPP
 
+#include<ramen/config.hpp>
+
 namespace ramen
 {
 namespace undo
@@ -12,7 +14,7 @@ namespace undo
 
 class stack_t;
 
-} // namespace
-} // namespace
+} // undo
+} // ramen
 
 #endif

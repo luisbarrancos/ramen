@@ -5,12 +5,14 @@
 #ifndef RAMEN_ANIM_CLIPBOARD_HPP
 #define	RAMEN_ANIM_CLIPBOARD_HPP
 
+#include<ramen/config.hpp>
+
 #include<vector>
-#include<string>
 #include<memory>
 
-#include<boost/noncopyable.hpp>
 #include<boost/shared_ptr.hpp>
+
+#include<ramen/core/string8.hpp>
 
 #include<ramen/string_algo/edit_distance.hpp>
 
@@ -21,11 +23,11 @@ namespace ramen
 namespace anim
 {
 
-class clipboard_t : boost::noncopyable
+class clipboard_t
 {
 public:
 
-    typedef std::pair<std::string, boost::shared_ptr<any_curve_t> > named_curve_type;
+    typedef std::pair<core::string8_t, boost::shared_ptr<any_curve_t> > named_curve_type;
 
     static clipboard_t& instance();
 
@@ -34,13 +36,13 @@ public:
 
     void begin_copy();
 
-    void copy_curve( const std::string& name, const anim::any_curve_ptr_t& c);
-    void copy_keys( const std::string& name, const anim::any_curve_ptr_t& c);
+    void copy_curve( const core::string8_t& name, const anim::any_curve_ptr_t& c);
+    void copy_keys( const core::string8_t& name, const anim::any_curve_ptr_t& c);
 
     void end_copy();
 
-    bool can_paste( const std::string& name, const anim::any_curve_ptr_t& c);
-    void paste( const std::string& name, anim::any_curve_ptr_t& c, float frame);
+    bool can_paste( const core::string8_t& name, const anim::any_curve_ptr_t& c);
+    void paste( const core::string8_t& name, anim::any_curve_ptr_t& c, float frame);
 
     // param spinboxes
     bool can_paste();
@@ -52,13 +54,17 @@ private:
     clipboard_t();
     ~clipboard_t();
 
-    int find_compatible_curve( const std::string& name, const anim::any_curve_ptr_t& c);
+    // non-copyable
+    clipboard_t( const clipboard_t&);
+    clipboard_t& operator=( const clipboard_t&);
+
+    int find_compatible_curve( const core::string8_t& name, const anim::any_curve_ptr_t& c);
 
     std::vector<named_curve_type> contents_;
     bool copy_curves_mode_;
     bool copying_;
 
-    string_algo::edit_distance_t<std::string> distance_fun_;
+    string_algo::edit_distance_t<core::string8_t> distance_fun_;
 };
 
 } // anim

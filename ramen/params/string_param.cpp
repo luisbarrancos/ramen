@@ -18,14 +18,7 @@
 namespace ramen
 {
 
-string_param_t::string_param_t( const core::string8_t& name) : static_param_t( name)
-{
-    set_default_value( core::string8_t());
-    read_only_ = false;
-    multiline_ = false;
-}
-
-string_param_t::string_param_t( const core::string8_t& name, bool read_only) : static_param_t( name)
+string_param_t::string_param_t( bool read_only) : static_param_t()
 {
     set_default_value( core::string8_t());
     multiline_ = false;

@@ -25,7 +25,7 @@ class RAMEN_API popup_param_t : public static_param_t
 
 public:
 
-    explicit popup_param_t( const core::string8_t& name);
+    popup_param_t();
 
     void set_default_value( int x);
 

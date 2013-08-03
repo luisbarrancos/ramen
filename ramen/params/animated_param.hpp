@@ -25,7 +25,7 @@ public:
 
     typedef anim::float_key_t::time_type time_type;
 
-    explicit animated_param_t( const core::string8_t& name);
+    animated_param_t();
 
     int num_curves() const;
 

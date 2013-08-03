@@ -21,7 +21,7 @@
 namespace ramen
 {
 
-animated_param_t::animated_param_t( const core::string8_t& name) : param_t(name), step_( 1.0f)
+animated_param_t::animated_param_t() : param_t(), step_( 1.0f)
 {
 }
 

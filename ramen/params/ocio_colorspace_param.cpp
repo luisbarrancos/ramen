@@ -21,7 +21,7 @@
 namespace ramen
 {
 
-ocio_colorspace_param_t::ocio_colorspace_param_t( const core::string8_t& name) : static_param_t( name)
+ocio_colorspace_param_t::ocio_colorspace_param_t() : static_param_t()
 {
     set_default_value( default_colorspace());
 }

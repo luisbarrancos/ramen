@@ -11,12 +11,12 @@ namespace ui
 
 ocio_combo_t::ocio_combo_t( QWidget *parent) : QComboBox( parent)
 {
-	setFocusPolicy( Qt::NoFocus);
+    setFocusPolicy( Qt::NoFocus);
 }
 
-int ocio_combo_t::index_for_string( const std::string& s) const
+int ocio_combo_t::index_for_string( const core::string8_t& s) const
 {
-	return findText( QString::fromStdString( s));
+    return findText( QString::fromStdString( std::strint( s.c_str())));
 }
 
 } // ui

@@ -22,7 +22,7 @@ class RAMEN_API file_param_t : public static_param_t
 
 public:
 
-    explicit file_param_t( const core::string8_t& name);
+    file_param_t();
 
     void set_default_value( const boost::filesystem::path& p);
 

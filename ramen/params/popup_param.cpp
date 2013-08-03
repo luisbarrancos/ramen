@@ -17,7 +17,7 @@
 namespace ramen
 {
 
-popup_param_t::popup_param_t( const core::string8_t& name) : static_param_t( name)
+popup_param_t::popup_param_t() : static_param_t()
 {
     set_default_value( 0);
 }

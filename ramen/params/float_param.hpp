@@ -20,7 +20,7 @@ class RAMEN_API float_param_t : public numeric_param_t
 
 public:
 
-    explicit float_param_t( const core::string8_t& name);
+    float_param_t();
 
     void set_default_value( float x);
 

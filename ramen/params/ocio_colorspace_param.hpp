@@ -7,9 +7,6 @@
 
 #include<ramen/params/static_param.hpp>
 
-#include<string>
-#include<vector>
-
 #include<QPointer>
 
 #include<ramen/ui/widgets/ocio_colorspace_combo_fwd.hpp>
@@ -23,7 +20,7 @@ class RAMEN_API ocio_colorspace_param_t : public static_param_t
 
 public:
 
-    explicit ocio_colorspace_param_t( const core::string8_t& name);
+    ocio_colorspace_param_t();
 
     void set_default_value( const core::string8_t& cs);
     void set_value( const core::string8_t& cs, change_reason reason = user_edited);
@@ -55,6 +52,6 @@ private Q_SLOTS:
     void colorspace_picked( const core::string8_t& cs);
 };
 
-} // namespace
+} // ramen
 
 #endif

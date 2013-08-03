@@ -9,7 +9,7 @@
 namespace ramen
 {
 
-numeric_param_t::numeric_param_t( const core::string8_t& name) : animated_param_t( name), type_( absolute) {}
+numeric_param_t::numeric_param_t() : animated_param_t(), type_( absolute) {}
 
 numeric_param_t::numeric_param_t( const numeric_param_t& other) : animated_param_t( other), type_( other.type_)
 {

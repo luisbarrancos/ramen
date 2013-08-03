@@ -20,7 +20,7 @@ class RAMEN_API button_param_t : public param_t
 
 public:
 
-    explicit button_param_t( const core::string8_t& name);
+    explicit button_param_t();
 
 protected:
 
