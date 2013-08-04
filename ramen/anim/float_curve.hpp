@@ -85,7 +85,7 @@ public:
     math::box2f_t bounds() const;
     math::box2f_t selection_bounds() const;
 
-    std::string str() const;
+    core::string8_t str() const;
 
     //void read( const serialization::yaml_node_t& in);
     //void write( serialization::yaml_oarchive_t& out) const;

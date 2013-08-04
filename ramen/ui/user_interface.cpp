@@ -406,14 +406,19 @@ bool user_interface_t::question( const core::string8_t& what, bool default_answe
     }
 }
 
-bool user_interface_t::image_sequence_file_selector( boost::filesystem::path& p, bool& sequence, bool& relative) const
+bool user_interface_t::image_sequence_file_selector( boost::filesystem::path& p,
+                                                     bool& sequence,
+                                                     bool& relative) const
 {
-    std::string types( image_types_string().toStdString());
+    core::string8_t types( image_types_string().toStdString().c_str());
     return image_sequence_file_selector( "Open Image", types, p, sequence, relative);
 }
 
-bool user_interface_t::image_sequence_file_selector( const std::string& title, const std::string& types,
-                               boost::filesystem::path& p, bool& sequence, bool& relative) const
+bool user_interface_t::image_sequence_file_selector( const core::string8_t& title,
+                                                     const core::string8_t& types,
+                                                     boost::filesystem::path& p,
+                                                     bool& sequence,
+                                                     bool& relative) const
 {
     static bool was_relative = false;
     static bool was_sequence = true;

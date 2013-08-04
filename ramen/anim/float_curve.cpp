@@ -266,12 +266,12 @@ math::box2f_t float_curve_t::selection_bounds() const
     return bounds;
 }
 
-std::string float_curve_t::str() const
+core::string8_t float_curve_t::str() const
 {
     std::stringstream s;
     s << extrapolation();
     boost::range::for_each( keys(), boost::bind( &float_key_t::str, _1, boost::ref( s)));
-    return s.str();
+    return core::string8_t( s.str().c_str());
 }
 
 // serialization

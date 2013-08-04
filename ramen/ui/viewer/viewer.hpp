@@ -7,7 +7,6 @@
 
 #include<ramen/ui/viewer/viewer_fwd.hpp>
 
-#include<string>
 #include<vector>
 #include<map>
 
@@ -16,6 +15,8 @@
 #include<map>
 
 #include<boost/function.hpp>
+
+#include<ramen/core/string8.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -61,11 +62,11 @@ public:
 
     void frame_changed();
 
-    void set_status( const std::string& text);
+    void set_status( const core::string8_t& text);
 
     // ocio
-    const std::string& display_device() const;
-    const std::string& display_transform() const;
+    const core::string8_t& display_device() const;
+    const core::string8_t& display_transform() const;
 
     float exposure() const;
     float gamma() const;
@@ -118,10 +119,10 @@ private:
     std::map<node_t*, QWidget*>::iterator current_node_toolbar_;
 
     // OpenColorIO
-    std::vector<std::string> display_devices_;
-    std::vector<std::string> display_transforms_;
-    std::string display_device_;
-    std::string display_transform_;
+    std::vector<core::string8_t> display_devices_;
+    std::vector<core::string8_t> display_transforms_;
+    core::string8_t display_device_;
+    core::string8_t display_transform_;
 };
 
 } // ui

@@ -6,8 +6,9 @@
 #define RAMEN_IMAGE_FORMAT_HPP
 
 #include<vector>
-#include<string>
 #include<utility>
+
+#include<ramen/core/string8.hpp>
 
 #include<ramen/math/box2.hpp>
 
@@ -26,7 +27,7 @@ struct format_t
     math::box2i_t area() const;
 
     // presets
-    typedef std::pair<std::string, format_t> preset_type;
+    typedef std::pair<core::string8_t, format_t> preset_type;
 
     static const std::vector<preset_type>& presets();
 

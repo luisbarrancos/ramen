@@ -99,22 +99,22 @@ float motion_blur_info_t::loop_data_t::weight_for_time( float t) const
     }
 }
 
-std::string motion_blur_info_t::filter_to_string( motion_blur_info_t::filter_type f) const
+core::string8_t motion_blur_info_t::filter_to_string( motion_blur_info_t::filter_type f) const
 {
     switch( f)
     {
-    case box_filter:
-        return "box_filter";
+        case box_filter:
+            return "box_filter";
 
-    case triangle_filter:
-        return "triangle_filter";
+        case triangle_filter:
+            return "triangle_filter";
 
-    case cubic_filter:
-        return "cubic_filter";
+        case cubic_filter:
+            return "cubic_filter";
     }
 }
 
-motion_blur_info_t::filter_type motion_blur_info_t::string_to_filter( const std::string& s) const
+motion_blur_info_t::filter_type motion_blur_info_t::string_to_filter( const core::string8_t& s) const
 {
     if( s == "box_filter")
         return box_filter;

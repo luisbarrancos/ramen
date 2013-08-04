@@ -356,7 +356,7 @@ void main_window_t::create_import_export_menus()
     //export_->addAction( export_sel_);
 }
 
-node_menu_t *main_window_t::find_node_menu( const std::string& s)
+node_menu_t *main_window_t::find_node_menu( const core::string8_t& s)
 {
     for( int i = 0; i < node_menus_.size(); ++i)
     {
@@ -487,10 +487,14 @@ void main_window_t::save_document()
 
 void main_window_t::save_document_as()
 {
-    QString fname = QFileDialog::getSaveFileName( 0, "Save Composition As", QString::null, file_dialog_extension(),
-                                                  0, QFileDialog::DontUseNativeDialog);
+    QString fname = QFileDialog::getSaveFileName( 0,
+                                                  "Save Composition As",
+                                                  QString::null,
+                                                  file_dialog_extension(),
+                                                  0,
+                                                  QFileDialog::DontUseNativeDialog);
 
-    if( !(fname.isEmpty()))
+    if( !fname.isEmpty())
     {
         boost::filesystem::path p( fname.toStdString());
 

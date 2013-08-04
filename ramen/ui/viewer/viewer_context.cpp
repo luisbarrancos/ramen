@@ -187,12 +187,12 @@ boost::shared_ptr<ocio::gl_lut3d_t>& viewer_context_t::display_lut()
     return display_lut_;
 }
 
-const std::string& viewer_context_t::display_device() const
+const core::string8_t& viewer_context_t::display_device() const
 {
     return app().ui()->viewer().display_device();
 }
 
-const std::string& viewer_context_t::display_transform() const
+const core::string8_t& viewer_context_t::display_transform() const
 {
     return app().ui()->viewer().display_transform();
 }
@@ -395,7 +395,7 @@ color::rgba_colorf_t viewer_context_t::color_at( int x, int y) const
 } // ramen
 
 /*
-std::pair<std::string, std::string>  viewer_context_t::get_context_pair( int index)
+std::pair<core::string8_t, core::string8_t>  viewer_context_t::get_context_pair( int index)
 {
     return app().document().composition().ocio_context_pairs()[ index];
 }

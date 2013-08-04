@@ -11,6 +11,7 @@
 
 #include<QColor>
 
+#include<ramen/core/string8.hpp>
 #include<ramen/core/memory.hpp>
 
 #include<ramen/color/color3.hpp>
@@ -28,13 +29,13 @@ public:
 
     void rebuild();
 
-    const color::color3c_t& color( const std::string& k) const;
-    QColor qcolor( const std::string& k) const;
+    const color::color3c_t& color( const core::string8_t& k) const;
+    QColor qcolor( const core::string8_t& k) const;
 
-    bool find_color( const std::string& k) const;
+    bool find_color( const core::string8_t& k) const;
 
-    void set_color( const std::string& k, const color::color3c_t& c);
-    void set_color( const std::string& k, const QColor& c);
+    void set_color( const core::string8_t& k, const color::color3c_t& c);
+    void set_color( const core::string8_t& k, const QColor& c);
 
 private:
 

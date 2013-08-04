@@ -7,7 +7,7 @@
 
 #include<ramen/config.hpp>
 
-#include<string>
+#include<ramen/core/string8.hpp>
 
 namespace ramen
 {
@@ -46,8 +46,8 @@ struct RAMEN_API motion_blur_info_t
         filter_type filter;
     };
 
-    std::string filter_to_string( filter_type f) const;
-    filter_type string_to_filter( const std::string& s) const;
+    core::string8_t filter_to_string( filter_type f) const;
+    filter_type string_to_filter( const core::string8_t& s) const;
 };
 
 //void operator>>( const YAML::Node& in, motion_blur_info_t& f);

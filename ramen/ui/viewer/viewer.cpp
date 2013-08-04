@@ -179,12 +179,12 @@ void viewer_t::get_display_devices()
     int index = 0;
     QStringList slist;
 
-    std::string default_device_name = config->getDefaultDisplay();
+    core::string8_t default_device_name = config->getDefaultDisplay();
     int num_device_names = config->getNumDisplays();
 
     for(int i = 0; i < num_device_names; i++)
     {
-        std::string devname = config->getDisplay( i);
+        core::string8_t devname = config->getDisplay( i);
         display_devices_.push_back( devname);
 
         slist << devname.c_str();
@@ -202,8 +202,8 @@ void viewer_t::get_display_transforms()
 {
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
 
-    std::string device_name = display_devices_[ ocio_device_combo_->currentIndex()];
-    std::string default_transform = config->getDefaultView( device_name.c_str());
+    core::string8_t device_name = display_devices_[ ocio_device_combo_->currentIndex()];
+    core::string8_t default_transform = config->getDefaultView( device_name.c_str());
 
     int index = 0;
     QStringList slist;
@@ -211,7 +211,7 @@ void viewer_t::get_display_transforms()
 
     for( int i = 0; i < num_transform_names; ++i)
     {
-        std::string trname = config->getView( device_name.c_str(), i);
+        core::string8_t trname = config->getView( device_name.c_str(), i);
         display_transforms_.push_back( trname);
         slist << trname.c_str();
 
@@ -224,8 +224,8 @@ void viewer_t::get_display_transforms()
     display_transform_ = default_transform;
 }
 
-const std::string& viewer_t::display_device() const      { return display_device_;}
-const std::string& viewer_t::display_transform() const   { return display_transform_;}
+const core::string8_t& viewer_t::display_device() const      { return display_device_;}
+const core::string8_t& viewer_t::display_transform() const   { return display_transform_;}
 
 float viewer_t::exposure() const	{ return exposure_input_->value();}
 float viewer_t::gamma() const	{ return gamma_input_->value();}
@@ -279,9 +279,9 @@ void viewer_t::node_released( node_t *n)
 
 void viewer_t::frame_changed() { view_->frame_changed();}
 
-void viewer_t::set_status( const std::string& text)
+void viewer_t::set_status( const core::string8_t& text)
 {
-    status_->setText( QString::fromStdString( text));
+    status_->setText( QString::fromStdString( text.c_str()));
 }
 
 void viewer_t::begin_interaction() {}
@@ -305,7 +305,7 @@ void viewer_t::change_display_device( int index)
 
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
 
-    std::string default_transform = config->getDefaultView( display_device_.c_str());
+    core::string8_t default_transform = config->getDefaultView( display_device_.c_str());
     int num_transform_names = config->getNumViews( display_device_.c_str());
 
     int default_index = 0, new_index = -1;
@@ -313,7 +313,7 @@ void viewer_t::change_display_device( int index)
 
     for( int i = 0; i < num_transform_names; ++i)
     {
-        std::string trname = config->getView( display_device_.c_str(), i);
+        core::string8_t trname = config->getView( display_device_.c_str(), i);
         display_transforms_.push_back( trname);
         slist << trname.c_str();
 

@@ -123,7 +123,7 @@ private:
     void init_recent_files_menu();
     void update_menus();
 
-    node_menu_t *find_node_menu( const std::string& s);
+    node_menu_t *find_node_menu( const core::string8_t& s);
 
     static const char *document_extension();
     static const char *file_dialog_extension();

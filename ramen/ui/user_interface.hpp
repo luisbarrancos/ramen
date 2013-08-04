@@ -21,8 +21,6 @@
 
     #include<memory>
 
-    #include<boost/noncopyable.hpp>
-    #include<boost/signals.hpp>
     #include<boost/thread/future.hpp>
 
     #include<ramen/filesystem/path.hpp>
@@ -108,9 +106,15 @@ public:
     bool question( const core::string8_t& what, bool default_answer = true) const;
 
     // sequence file selector
-    bool image_sequence_file_selector( boost::filesystem::path& p, bool& sequence, bool& relative) const;
-    bool image_sequence_file_selector( const std::string& title, const std::string& types, boost::filesystem::path& p,
-                                        bool& sequence, bool& relative) const;
+    bool image_sequence_file_selector( boost::filesystem::path& p,
+                                       bool& sequence,
+                                       bool& relative) const;
+
+    bool image_sequence_file_selector( const core::string8_t& title,
+                                       const core::string8_t& types,
+                                       boost::filesystem::path& p,
+                                       bool& sequence,
+                                       bool& relative) const;
 
     // event filtering
     void start_long_process();

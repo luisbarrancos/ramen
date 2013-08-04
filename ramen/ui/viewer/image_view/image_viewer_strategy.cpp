@@ -743,7 +743,7 @@ void image_viewer_strategy_t::mouse_move_event( QMouseEvent *event)
         s << "X = " << (int) pw.x << " Y = " << (int) pw.y;
         s << " Color = " << col.r << ", " << col.g << ", " << col.b << ", " << col.a;
 
-        app().ui()->viewer().set_status( s.str());
+        app().ui()->viewer().set_status( s.str().c_str());
 
         if( parent()->view_mode() == viewer_context_t::view_active_node)
         {
