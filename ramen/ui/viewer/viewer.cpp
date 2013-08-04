@@ -330,7 +330,7 @@ void viewer_t::change_display_device( int index)
         new_index = default_index;
 
     ocio_transform_combo_->setCurrentIndex( new_index);
-    display_transform_ = ocio_transform_combo_->itemText( new_index).toStdString();
+    display_transform_ = ocio_transform_combo_->itemText( new_index).toStdString().c_str();
     ocio_transform_combo_->blockSignals( false);
     view_->display_transform_changed();
 }
