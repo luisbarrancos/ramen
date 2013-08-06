@@ -69,7 +69,7 @@ bool manager_t::init_from_file( const boost::filesystem::path& p)
 
     try
     {
-        OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromFile( filesystem::file_string( p).c_str());
+        OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromFile( p.string().c_str());
         OCIO::SetCurrentConfig( config);
         return true;
     }

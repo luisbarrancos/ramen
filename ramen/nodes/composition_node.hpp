@@ -72,6 +72,18 @@ public:
     bool any_selected() const;
     node_t *selected_node();
 
+    // paths
+
+    boost::filesystem::path make_absolute_path( const boost::filesystem::path& p,
+                                                const boost::filesystem::path& from) const;
+
+    boost::filesystem::path make_relative_path( const boost::filesystem::path& p,
+                                                const boost::filesystem::path& from) const;
+
+    boost::filesystem::path convert_relative_path( const boost::filesystem::path& p,
+                                                   const boost::filesystem::path& old_base,
+                                                   const boost::filesystem::path& new_base) const;
+
 protected:
 
     composition_node_t( const composition_node_t& other);

@@ -11,6 +11,8 @@
 #include<boost/range/algorithm/count_if.hpp>
 #include<boost/range/algorithm/find_if.hpp>
 
+#include<QDir>
+
 #include<ramen/core/exceptions.hpp>
 
 #include<ramen/app/application.hpp>
@@ -257,13 +259,45 @@ void composition_node_t::make_all_paths_relative()
 boost::filesystem::path composition_node_t::relative_to_absolute( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
-    return filesystem::make_absolute_path( p, composition_dir());
+    return make_absolute_path( p, composition_dir());
 }
 
 boost::filesystem::path composition_node_t::absolute_to_relative( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
-    return filesystem::make_relative_path( p, composition_dir());
+    return make_relative_path( p, composition_dir());
+}
+
+boost::filesystem::path composition_node_t::make_absolute_path( const boost::filesystem::path& p,
+                                                                const boost::filesystem::path& from) const
+{
+    RAMEN_ASSERT( p.is_relative());
+    RAMEN_ASSERT( from.is_absolute());
+
+    QDir dir( QString( from.string().c_str()));
+    QString fname( QString( p.string().c_str()));
+    QString abs_path( QDir::cleanPath( dir.absoluteFilePath( fname)));
+    return boost::filesystem::path( abs_path.toStdString());
+}
+
+boost::filesystem::path composition_node_t::make_relative_path( const boost::filesystem::path& p,
+                                                                const boost::filesystem::path& from) const
+{
+    RAMEN_ASSERT( p.is_absolute());
+    RAMEN_ASSERT( from.is_absolute());
+
+    QDir dir( QString( from.string().c_str()));
+    QString fname( QString( p.string().c_str()));
+    QString rel_path( dir.relativeFilePath( fname));
+    return boost::filesystem::path( rel_path.toStdString());
+}
+
+boost::filesystem::path composition_node_t::convert_relative_path( const boost::filesystem::path& p,
+                                                                   const boost::filesystem::path& old_base,
+                                                                   const boost::filesystem::path& new_base) const
+{
+    boost::filesystem::path p0( make_absolute_path( p, old_base));
+    return make_relative_path( p0, new_base);
 }
 
 // selections

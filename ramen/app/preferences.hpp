@@ -14,8 +14,6 @@
 
 #include<ramen/app/application_fwd.hpp>
 
-#include<ramen/filesystem/path.hpp>
-
 #include<ramen/image/format.hpp>
 
 namespace ramen

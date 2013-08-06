@@ -138,11 +138,6 @@ SET( RAMEN_SOURCES      assert.hpp
 
                         container/ptr_vector_util.hpp
 
-                        filesystem/path.hpp
-                        filesystem/path.cpp
-                        filesystem/path_sequence.hpp
-                        filesystem/path_sequence.cpp
-
                         ggems/graphicsgems.h
                         ggems/ggveclib.c
                         ggems/nearestpoint.h

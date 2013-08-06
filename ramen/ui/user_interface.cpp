@@ -102,7 +102,7 @@ void user_interface_t::save_window_state()
 {
     QByteArray window_state = window_->saveState();
     boost::filesystem::path p = app().system().application_user_path() / "wstate.ui";
-    QFile file( filesystem::file_cstring( p));
+    QFile file( p.string().c_str());
 
     if( file.open( QIODevice::WriteOnly))
         file.write( window_state);
@@ -112,7 +112,7 @@ void user_interface_t::restore_window_state()
 {
     boost::filesystem::path p = app().system().application_user_path() / "wstate.ui";
     {
-        QFile file(filesystem::file_cstring( p));
+        QFile file( p.string().c_str());
 
         if( file.open( QIODevice::ReadOnly))
         {
@@ -468,7 +468,10 @@ bool user_interface_t::image_sequence_file_selector( const core::string8_t& titl
         if( relative_check->isChecked())
         {
             boost::filesystem::path dir = app().document().file().parent_path();
-            p = filesystem::make_relative_path( p, dir);
+            QDir qdir( QString( p.string().c_str()));
+            QString fname( QString( dir.string().c_str()));
+            QString rel_path( qdir.relativeFilePath( fname));
+            p =boost::filesystem::path( rel_path.toStdString());
         }
 
         sequence = sequence_check->isChecked();

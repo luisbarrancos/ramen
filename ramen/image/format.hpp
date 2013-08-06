@@ -12,8 +12,6 @@
 
 #include<ramen/math/box2.hpp>
 
-#include<ramen/filesystem/path.hpp>
-
 namespace ramen
 {
 namespace image

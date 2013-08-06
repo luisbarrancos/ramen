@@ -958,7 +958,7 @@ void main_window_t::update()
 
 void main_window_t::update_recent_files_menu( const boost::filesystem::path& p)
 {
-    QString fileName( filesystem::file_cstring( p));
+    QString fileName( p.string().c_str());
 
     QSettings settings( "com.ramen.qt", "Ramen Recent Files");
     QStringList files = settings.value( "recent_file_list").toStringList();
