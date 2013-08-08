@@ -21,7 +21,7 @@ namespace ramen
 
 aspect_ratio_param_t::presets_type aspect_ratio_param_t::presets_;
 
-aspect_ratio_param_t::aspect_ratio_param_t( const std::string& name) : static_param_t( name)
+aspect_ratio_param_t::aspect_ratio_param_t() : static_param_t()
 {
     set_default_value( 1.0f);
 }
@@ -108,7 +108,7 @@ const aspect_ratio_param_t::presets_type& aspect_ratio_param_t::presets()
     return presets_;
 }
 
-void aspect_ratio_param_t::add_preset( const std::pair<std::string, float>& p)
+void aspect_ratio_param_t::add_preset( const std::pair<core::string8_t, float>& p)
 {
     for( int i = 0; i < presets_.size(); ++i)
     {

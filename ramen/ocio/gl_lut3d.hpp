@@ -7,10 +7,10 @@
 
 #include<ramen/GL/lut3d.hpp>
 
-#include<string>
-
 #include<OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
+
+#include<ramen/core/string8.hpp>
 
 #include<ramen/color/color3.hpp>
 
@@ -27,21 +27,21 @@ public:
 
     void recreate( OCIO::ConstConfigRcPtr config,
                    OCIO::DisplayTransformRcPtr transform,
-                   const std::string& fun_name);
+                   const core::string8_t& fun_name);
 
     void recreate( OCIO::ConstConfigRcPtr config,
                    OCIO::DisplayTransformRcPtr transform,
                    OCIO::ConstProcessorRcPtr processor,
-                   const std::string& fun_name);
+                   const core::string8_t& fun_name);
 
-    const std::string& lookup_function() const { return lut_fun_;}
+    const core::string8_t& lookup_function() const { return lut_fun_;}
 
     const color::color3f_t& black() const;
-	
+
 private:
 
-    std::string lut_fun_;
-    std::string lut_cache_id_;
+    core::string8_t lut_fun_;
+    core::string8_t lut_cache_id_;
     color::color3f_t black_;
 };
 

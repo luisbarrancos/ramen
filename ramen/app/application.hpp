@@ -9,15 +9,15 @@
 
 #include<ramen/app/application_fwd.hpp>
 
-#include<string>
 #include<memory>
 
-#include<boost/noncopyable.hpp>
 #include<boost/cstdint.hpp>
+#include<boost/filesystem/path.hpp>
 
 #include<tbb/task_scheduler_init.h>
 
 #include<ramen/core/memory.hpp>
+#include<ramen/core/string8.hpp>
 
 #include<ramen/system/system_fwd.hpp>
 
@@ -27,8 +27,6 @@
 #include<ramen/memory/manager_fwd.hpp>
 #include<ramen/render/render_thread.hpp>
 #include<ramen/ocio/manager_fwd.hpp>
-
-#include<ramen/filesystem/path.hpp>
 
 #include<ramen/util/command_line_parser_fwd.hpp>
 
@@ -42,7 +40,7 @@ namespace ramen
 \ingroup app
 \brief Application class.
 */
-class RAMEN_API application_t : boost::noncopyable
+class RAMEN_API application_t
 {
 public:
 
@@ -56,10 +54,10 @@ public:
     int max_threads() const { return max_threads_;}
 
     // messages
-    void fatal_error( const std::string& message, bool no_gui = false) const;
-    void error( const std::string& message, bool no_gui = false) const;
-    void inform( const std::string& message, bool no_gui = false) const;
-    bool question( const std::string& what, bool default_answer = true) const;
+    void fatal_error( const core::string8_t& message, bool no_gui = false) const;
+    void error( const core::string8_t& message, bool no_gui = false) const;
+    void inform( const core::string8_t& message, bool no_gui = false) const;
+    bool question( const core::string8_t& what, bool default_answer = true) const;
 
     const system::system_t& system() const;
 
@@ -91,6 +89,10 @@ public:
     void set_quitting( bool b)  { quitting_ = b;}
 
 private:
+
+    // non-copyable
+    application_t( const application_t&);
+    application_t& operator=( const application_t&);
 
     // command line
     bool matches_option( char *arg, const char *opt) const;

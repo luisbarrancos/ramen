@@ -69,7 +69,7 @@ bool manager_t::init_from_file( const boost::filesystem::path& p)
 
     try
     {
-        OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromFile( filesystem::file_string( p).c_str());
+        OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromFile( p.string().c_str());
         OCIO::SetCurrentConfig( config);
         return true;
     }
@@ -87,7 +87,7 @@ void manager_t::get_displays()
 
     for(int i = 0; i < num_device_names; i++)
     {
-        std::string dispname = cfg->getDisplay( i);
+        core::string8_t dispname = cfg->getDisplay( i);
         displays_.push_back( dispname);
 
         if( default_display_ == dispname)
@@ -95,19 +95,19 @@ void manager_t::get_displays()
     }
 }
 
-void manager_t::get_views( const std::string& display,
-                           std::vector<std::string>& views,
+void manager_t::get_views( const core::string8_t& display,
+                           std::vector<core::string8_t>& views,
                            int& default_index) const
 {
     OCIO::ConstConfigRcPtr cfg = config();
     int num_views = cfg->getNumViews( display.c_str());
-    std::string default_view = cfg->getDefaultView( display.c_str());
+    core::string8_t default_view = cfg->getDefaultView( display.c_str());
     default_index = 0;
     views.clear();
 
     for( int i = 0; i < num_views; ++i)
     {
-        std::string vname = cfg->getView( display.c_str(), i);
+        core::string8_t vname = cfg->getView( display.c_str(), i);
         views.push_back( vname);
 
         if( default_view == vname)
@@ -115,7 +115,7 @@ void manager_t::get_views( const std::string& display,
     }
 }
 
-std::string manager_t::default_view( const std::string& display) const
+core::string8_t manager_t::default_view( const core::string8_t& display) const
 {
     OCIO::ConstConfigRcPtr cfg = config();
     return cfg->getDefaultView( display.c_str());
@@ -134,7 +134,7 @@ OCIO::ConstContextRcPtr manager_t::get_context( const context_t *ctx) const
 
     for( int i = 0; i < ctx->size(); ++i)
     {
-        std::pair<std::string, std::string> ctx_pair = (*ctx)[i];
+        std::pair<core::string8_t, core::string8_t> ctx_pair = (*ctx)[i];
 
         if( !ctx_pair.first.empty())
         {

@@ -6,7 +6,8 @@
 #define	RAMEN_UI_NODE_MENU_HPP
 
 #include<vector>
-#include<string>
+
+#include<ramen/core/string8.hpp>
 
 class QAction;
 class QMenu;
@@ -20,22 +21,22 @@ class node_menu_t
 {
 public:
 
-    node_menu_t( const std::string& name);
+    node_menu_t( const core::string8_t& name);
 
-    const std::string& name() const { return name_;}
+    const core::string8_t& name() const { return name_;}
     QMenu *menu() { return menu_;}
 
     std::vector<QMenu*>& submenus() { return submenus_;}
 
-    void add_submenu( const std::string& name);
+    void add_submenu( const core::string8_t& name);
 
-    void add_action( const std::string& submenu, QAction *action);
+    void add_action( const core::string8_t& submenu, QAction *action);
 
 private:
 
-    std::vector<QMenu*>::iterator find_submenu( const std::string& name);
+    std::vector<QMenu*>::iterator find_submenu( const core::string8_t& name);
 
-    std::string name_;
+    core::string8_t name_;
     QMenu *menu_;
     std::vector<QMenu*> submenus_;
 };

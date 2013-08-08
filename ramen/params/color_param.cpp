@@ -33,7 +33,7 @@
 namespace ramen
 {
 
-color_param_t::color_param_t( const std::string& name) : animated_param_t( name) { private_init();}
+color_param_t::color_param_t() : animated_param_t() { private_init();}
 
 color_param_t::color_param_t( const color_param_t& other) : animated_param_t( other)
 {

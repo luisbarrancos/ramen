@@ -26,7 +26,7 @@
 namespace ramen
 {
 
-combo_group_param_t::combo_group_param_t( const std::string& name) : composite_param_t( name)
+combo_group_param_t::combo_group_param_t() : composite_param_t()
 {
     set_default_value( 0);
 }
@@ -68,7 +68,7 @@ void combo_group_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 void combo_group_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
-    std::string val;
+    core::string8_t val;
     n >> val;
 
     for( int i = 0; i < params().size(); ++i)

@@ -10,7 +10,6 @@
 #include<vector>
 #include<stack>
 
-#include<boost/noncopyable.hpp>
 #include<boost/ptr_container/ptr_deque.hpp>
 
 #include<ramen/assert.hpp>
@@ -26,7 +25,7 @@ namespace undo
 \ingroup undo
 \brief An undo stack.
 */
-class stack_t : boost::noncopyable
+class stack_t
 {
 public:
 
@@ -46,11 +45,11 @@ public:
     template<class T>
     void push_back( std::auto_ptr<T> c)
     {
-		RAMEN_ASSERT( dynamic_cast<command_t*>( c.get()) != 0); // I think this is not needed...
-		undo_stack_.push_back( c.release());
+        RAMEN_ASSERT( dynamic_cast<command_t*>( c.get()) != 0); // I think this is not needed...
+        undo_stack_.push_back( c.release());
 
-		if( undo_stack_.size() > 50)
-			undo_stack_.pop_front();
+        if( undo_stack_.size() > 50)
+            undo_stack_.pop_front();
     }
 
     /// Erases the last undo command.
@@ -73,14 +72,18 @@ public:
 
     /// Returns true if the redo stack is empty.
     bool redo_empty() const { return redo_stack_.empty();}
-	
+
 private:
+
+    // non-copyable
+    stack_t( const stack_t&);
+    stack_t& operator=( const stack_t&);
 
     boost::ptr_deque<command_t> undo_stack_;
     boost::ptr_deque<command_t> redo_stack_;
 };
 
-} // namespace
-} // namespace
+} // undo
+} // ramen
 
 #endif

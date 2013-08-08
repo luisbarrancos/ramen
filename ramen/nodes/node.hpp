@@ -19,6 +19,8 @@
 
 #include<QWidget>
 
+#include<ramen/core/string8.hpp>
+
 #include<ramen/math/point2.hpp>
 #include<ramen/math/box2.hpp>
 
@@ -74,10 +76,10 @@ public:
     virtual void cloned();
 
     /// Returns the node name.
-    const std::string& name() const { return name_;}
+    const core::string8_t& name() const { return name_;}
 
     /// Sets the node name.
-    void set_name( const std::string& n);
+    void set_name( const core::string8_t& n);
 
     /// Returns composite node this node belongs to.
     const composite_node_t *parent() const;
@@ -458,7 +460,7 @@ private:
     virtual void do_update_widgets() {}
 
     // data
-    std::string name_;
+    core::string8_t name_;
 
     std::vector<node_input_plug_t> inputs_;
     boost::ptr_vector<node_output_plug_t> outputs_;

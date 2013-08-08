@@ -39,35 +39,7 @@ std::string get_number( const std::string& str)
     return std::string( str, n + 1, str.length());
 }
 
-bool check_identifier( const char *str, std::size_t len)
-{
-    const char *p = str;
-    for( int i = 0; i < len; ++i)
-    {
-        // TODO: check *p here...
-        ++p;
-    }
-
-    return true;
-}
-
 } // unnamed
-
-bool is_string_valid_identifier( const std::string& str)
-{
-    if( str.empty())
-        return false;
-
-    return check_identifier( str.c_str(), str.size());
-}
-
-bool is_string_valid_identifier( const core::name_t& str)
-{
-    if( str.empty())
-        return false;
-
-    return check_identifier( str.c_str(), strlen( str.c_str()));
-}
 
 void increment_string_number( std::string& str)
 {

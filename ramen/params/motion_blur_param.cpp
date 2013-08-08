@@ -18,7 +18,7 @@
 namespace ramen
 {
 
-motion_blur_param_t::motion_blur_param_t( const std::string& name) : static_param_t( name)
+motion_blur_param_t::motion_blur_param_t() : static_param_t()
 {
     value().assign( motion_blur_info_t());
     samples_ = 0;

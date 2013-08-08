@@ -9,8 +9,7 @@
 
 #include<ramen/nodes/node_fwd.hpp>
 
-#include<string>
-
+#include<ramen/core/string8.hpp>
 #include<ramen/core/name.hpp>
 
 namespace ramen
@@ -39,16 +38,16 @@ public:
     bool ui_visible;
 
     /// Menu, for example "Image"
-    std::string menu;
+    core::string8_t menu;
 
     /// Submenu, for example "Filter"
-    std::string submenu;
+    core::string8_t submenu;
 
     /// Menu item, for example "Blur"
-    std::string menu_item;
+    core::string8_t menu_item;
 
     /// Hotkey for menu item
-    std::string hotkey;
+    core::string8_t hotkey;
 
     /// Short help for this node
     const char *help;

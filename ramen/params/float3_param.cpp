@@ -27,7 +27,7 @@
 namespace ramen
 {
 
-float3_param_t::float3_param_t( const std::string& name) : proportional_param_t( name) { private_init();}
+float3_param_t::float3_param_t() : proportional_param_t() { private_init();}
 
 float3_param_t::float3_param_t( const float3_param_t& other) : proportional_param_t( other)
 {

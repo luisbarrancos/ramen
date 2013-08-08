@@ -57,9 +57,9 @@ struct palette_t::impl
         colors_["box_pick"] = color::color3c_t( 255, 0, 0);
     }
 
-    const color::color3c_t& get_color( const std::string& k) const
+    const color::color3c_t& get_color( const core::string8_t& k) const
     {
-        std::map<std::string, color::color3c_t>::const_iterator it;
+        std::map<core::string8_t, color::color3c_t>::const_iterator it;
         it = colors_.find( k);
 
         if( it != colors_.end())
@@ -72,7 +72,7 @@ struct palette_t::impl
         return error_color_;
     }
 
-    std::map<std::string, color::color3c_t> colors_;
+    std::map<core::string8_t, color::color3c_t> colors_;
     color::color3c_t error_color_;
 };
 
@@ -91,30 +91,30 @@ palette_t::~palette_t()
 
 void palette_t::rebuild() { pimpl_->rebuild_palette();}
 
-const color::color3c_t& palette_t::color( const std::string& k) const
+const color::color3c_t& palette_t::color( const core::string8_t& k) const
 {
     return pimpl_->get_color( k);
 }
 
-QColor palette_t::qcolor( const std::string& k) const
+QColor palette_t::qcolor( const core::string8_t& k) const
 {
     color::color3c_t c = pimpl_->get_color( k);
     return QColor( c.x, c.y, c.z, 255);
 }
 
-bool palette_t::find_color( const std::string& k) const
+bool palette_t::find_color( const core::string8_t& k) const
 {
     // TODO: implement this.
     RAMEN_ASSERT( 0);
 }
 
-void palette_t::set_color( const std::string& k, const color::color3c_t& c)
+void palette_t::set_color( const core::string8_t& k, const color::color3c_t& c)
 {
     // TODO: implement this.
     RAMEN_ASSERT( 0);
 }
 
-void palette_t::set_color( const std::string& k, const QColor& c)
+void palette_t::set_color( const core::string8_t& k, const QColor& c)
 {
     // TODO: implement this.
     RAMEN_ASSERT( 0);

@@ -21,16 +21,16 @@
 namespace ramen
 {
 
-ocio_colorspace_param_t::ocio_colorspace_param_t( const std::string& name) : static_param_t( name)
+ocio_colorspace_param_t::ocio_colorspace_param_t() : static_param_t()
 {
     set_default_value( default_colorspace());
 }
 
 ocio_colorspace_param_t::ocio_colorspace_param_t( const ocio_colorspace_param_t& other) : static_param_t( other), menu_( 0) {}
 
-void ocio_colorspace_param_t::set_default_value( const std::string& cs) { value().assign( cs);}
+void ocio_colorspace_param_t::set_default_value( const core::string8_t& cs) { value().assign( cs);}
 
-void ocio_colorspace_param_t::set_value( const std::string& cs, change_reason reason)
+void ocio_colorspace_param_t::set_value( const core::string8_t& cs, change_reason reason)
 {
     if( param_set() && can_undo())
         param_set()->add_command( this);
@@ -56,10 +56,10 @@ QWidget *ocio_colorspace_param_t::do_create_widgets()
     menu_->move( app().ui()->inspector().left_margin(), 0);
     menu_->resize( s.width(), s.height());
 
-    std::string current_colorspace = get_value<std::string>( *this);
+    core::string8_t current_colorspace = get_value<core::string8_t>( *this);
     menu_->set_colorspace_or_default( current_colorspace);
     menu_->setEnabled( enabled());
-    connect( menu_, SIGNAL( colorspace_changed( const std::string&)), this, SLOT( colorspace_picked( const std::string&)));
+    connect( menu_, SIGNAL( colorspace_changed( const core::string8_t&)), this, SLOT( colorspace_picked( const core::string8_t&)));
 
     top->setMinimumSize( app().ui()->inspector().width(), s.height());
     top->setMaximumSize( app().ui()->inspector().width(), s.height());
@@ -73,7 +73,7 @@ void ocio_colorspace_param_t::do_update_widgets()
     {
         menu_->blockSignals( true);
 
-        std::string csname = get_value<std::string>( *this);
+        core::string8_t csname = get_value<core::string8_t>( *this);
         menu_->set_colorspace( csname);
         menu_->blockSignals( false);
     }
@@ -85,7 +85,7 @@ void ocio_colorspace_param_t::do_enable_widgets( bool e)
         menu_->setEnabled( e);
 }
 
-void ocio_colorspace_param_t::colorspace_picked( const std::string& cs)
+void ocio_colorspace_param_t::colorspace_picked( const core::string8_t& cs)
 {
     param_set()->begin_edit();
     set_value( menu_->get_current_colorspace());
@@ -94,14 +94,14 @@ void ocio_colorspace_param_t::colorspace_picked( const std::string& cs)
 
 void ocio_colorspace_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
-    hash_gen << get_value<std::string>( *this);
+    hash_gen << get_value<core::string8_t>( *this);
 }
 
 /*
 void ocio_colorspace_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
-    std::string val;
+    core::string8_t val;
     n >> val;
 
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
@@ -111,7 +111,7 @@ void ocio_colorspace_param_t::do_read( const serialization::yaml_node_t& node)
 
     for(int i = 0; i < num_color_spaces; i++)
     {
-        std::string csname = config->getColorSpaceNameByIndex( i);
+        core::string8_t csname = config->getColorSpaceNameByIndex( i);
 
         if( csname == val)
             index = i;
@@ -129,11 +129,11 @@ void ocio_colorspace_param_t::do_read( const serialization::yaml_node_t& node)
 
 void ocio_colorspace_param_t::do_write( serialization::yaml_oarchive_t& out) const
 {
-    out << YAML::Key << "value" << YAML::Value << get_value<std::string>( *this);
+    out << YAML::Key << "value" << YAML::Value << get_value<core::string8_t>( *this);
 }
 */
 
-std::string ocio_colorspace_param_t::default_colorspace() const
+core::string8_t ocio_colorspace_param_t::default_colorspace() const
 {
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
     return config->getColorSpace( OCIO::ROLE_SCENE_LINEAR)->getName();

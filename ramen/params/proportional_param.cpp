@@ -9,7 +9,7 @@ namespace ramen
 
 math::vector3f_t proportional_param_t::proportional_factor = math::vector3f_t( 0, 0, 0);
 
-proportional_param_t::proportional_param_t( const std::string& name) : numeric_param_t( name) {}
+proportional_param_t::proportional_param_t() : numeric_param_t() {}
 
 proportional_param_t::proportional_param_t( const proportional_param_t& other) : numeric_param_t( other)
 {

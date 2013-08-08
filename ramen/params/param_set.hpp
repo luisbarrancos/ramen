@@ -9,7 +9,6 @@
 
 #include<map>
 #include<memory>
-#include<string>
 
 #include<boost/signals2/signal.hpp>
 

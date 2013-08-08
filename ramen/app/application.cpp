@@ -275,7 +275,7 @@ bool application_t::parse_common_option( int argc, char **argv, int& num)
     else
     {
         if( argv[num][0] == '-')
-            fatal_error( std::string( "unknown option: ") + argv[num], true);
+            fatal_error( core::string8_t( "unknown option: ") + argv[num], true);
     }
 
     return false;
@@ -401,18 +401,18 @@ void application_t::open_document( const boost::filesystem::path& p)
     boost::filesystem::ifstream ifs( p, serialization::yaml_iarchive_t::file_open_mode());
 
     if( !ifs.is_open() || !ifs.good())
-        throw std::runtime_error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't open input file ") + filesystem::file_string( p));
 
     core::auto_ptr_t<serialization::yaml_iarchive_t> in;
     in.reset( new serialization::yaml_iarchive_t( ifs));
 
     if( !in->read_composition_header())
-        throw std::runtime_error( std::string( "Couldn't read file header ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't read file header ") + filesystem::file_string( p));
 
     document().set_file( p);
     document().load( *in);
 
-    std::string err = in->errors();
+    core::string8_t err = in->errors();
 
     if( !err.empty())
     {
@@ -429,7 +429,7 @@ void application_t::delete_document()
 }
 
 // messages
-void application_t::fatal_error( const std::string& message, bool no_gui) const
+void application_t::fatal_error( const core::string8_t& message, bool no_gui) const
 {
     if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
         ui()->fatal_error( message);
@@ -439,7 +439,7 @@ void application_t::fatal_error( const std::string& message, bool no_gui) const
     std::exit( EXIT_FAILURE);
 }
 
-void application_t::error( const std::string& message, bool no_gui) const
+void application_t::error( const core::string8_t& message, bool no_gui) const
 {
     if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
         ui()->error( message);
@@ -449,7 +449,7 @@ void application_t::error( const std::string& message, bool no_gui) const
     }
 }
 
-void application_t::inform( const std::string& message, bool no_gui) const
+void application_t::inform( const core::string8_t& message, bool no_gui) const
 {
     if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
         ui()->inform( message);
@@ -457,7 +457,7 @@ void application_t::inform( const std::string& message, bool no_gui) const
         std::cerr << "Info: " << message << "\n";
 }
 
-bool application_t::question( const std::string& what, bool default_answer) const
+bool application_t::question( const core::string8_t& what, bool default_answer) const
 {
     if( !command_line_ && ui() && !ui()->rendering())
         return ui()->question( what, default_answer);

@@ -11,6 +11,8 @@
 #include<boost/range/algorithm/count_if.hpp>
 #include<boost/range/algorithm/find_if.hpp>
 
+#include<QDir>
+
 #include<ramen/core/exceptions.hpp>
 
 #include<ramen/app/application.hpp>
@@ -56,8 +58,9 @@ node_t *composition_node_t::do_clone() const
 
 void composition_node_t::do_create_params()
 {
-    std::auto_ptr<float_param_t> p( new float_param_t( "Start Frame"));
+    std::auto_ptr<float_param_t> p( new float_param_t());
     start_frame_ = p.get();
+    p->set_name( "Start Frame");
     p->set_id( g_start_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -65,8 +68,9 @@ void composition_node_t::do_create_params()
     //p->set_secret( true);
     add_param( p);
 
-    p.reset( new float_param_t( "End Frame"));
+    p.reset( new float_param_t());
     end_frame_ = p.get();
+    p->set_name( "End Frame");
     p->set_id( g_end_frame);
     p->set_default_value( 100);
     p->set_static( true);
@@ -74,8 +78,9 @@ void composition_node_t::do_create_params()
     //p->set_secret( true);
     add_param( p);
 
-    p.reset( new float_param_t( "Frame"));
+    p.reset( new float_param_t());
     frame_ = p.get();
+    p->set_name( "Frame");
     p->set_id( g_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -83,14 +88,16 @@ void composition_node_t::do_create_params()
     p->set_can_undo( false);
     add_param( p);
 
-    std::auto_ptr<image_format_param_t> f( new image_format_param_t( "Default Format"));
+    std::auto_ptr<image_format_param_t> f( new image_format_param_t());
     default_format_ = f.get();
+    f->set_name( "Default Format");
     f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
     add_param( f);
 
-    p.reset( new float_param_t( "Frame Rate"));
+    p.reset( new float_param_t());
     frame_rate_ = p.get();
+    p->set_name( "Frame Rate");
     p->set_id( g_frame_rate);
     p->set_range( 1, 60);
     p->set_default_value( app().preferences().frame_rate());
@@ -100,8 +107,9 @@ void composition_node_t::do_create_params()
     p->set_can_undo( false);
     add_param( p);
 
-    std::auto_ptr<bool_param_t> b( new bool_param_t( "Autokey"));
+    std::auto_ptr<bool_param_t> b( new bool_param_t());
     autokey_ = b.get();
+    b->set_name( "Autokey");
     b->set_id( g_autokey);
     add_param( b);
 }
@@ -210,7 +218,7 @@ render::context_t composition_node_t::current_context( render::render_mode mode)
     return c;
 }
 
-void composition_node_t::rename_node( node_t *n, const std::string& new_name)
+void composition_node_t::rename_node( node_t *n, const core::string8_t& new_name)
 {
     n->set_name( new_name);
 }
@@ -251,13 +259,45 @@ void composition_node_t::make_all_paths_relative()
 boost::filesystem::path composition_node_t::relative_to_absolute( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
-    return filesystem::make_absolute_path( p, composition_dir());
+    return make_absolute_path( p, composition_dir());
 }
 
 boost::filesystem::path composition_node_t::absolute_to_relative( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
-    return filesystem::make_relative_path( p, composition_dir());
+    return make_relative_path( p, composition_dir());
+}
+
+boost::filesystem::path composition_node_t::make_absolute_path( const boost::filesystem::path& p,
+                                                                const boost::filesystem::path& from) const
+{
+    RAMEN_ASSERT( p.is_relative());
+    RAMEN_ASSERT( from.is_absolute());
+
+    QDir dir( QString( from.string().c_str()));
+    QString fname( QString( p.string().c_str()));
+    QString abs_path( QDir::cleanPath( dir.absoluteFilePath( fname)));
+    return boost::filesystem::path( abs_path.toStdString());
+}
+
+boost::filesystem::path composition_node_t::make_relative_path( const boost::filesystem::path& p,
+                                                                const boost::filesystem::path& from) const
+{
+    RAMEN_ASSERT( p.is_absolute());
+    RAMEN_ASSERT( from.is_absolute());
+
+    QDir dir( QString( from.string().c_str()));
+    QString fname( QString( p.string().c_str()));
+    QString rel_path( dir.relativeFilePath( fname));
+    return boost::filesystem::path( rel_path.toStdString());
+}
+
+boost::filesystem::path composition_node_t::convert_relative_path( const boost::filesystem::path& p,
+                                                                   const boost::filesystem::path& old_base,
+                                                                   const boost::filesystem::path& new_base) const
+{
+    boost::filesystem::path p0( make_absolute_path( p, old_base));
+    return make_relative_path( p0, new_base);
 }
 
 // selections
@@ -323,12 +363,12 @@ void composition_t::load_from_file( const boost::filesystem::path& p)
     boost::filesystem::ifstream ifs( p, serialization::yaml_iarchive_t::file_open_mode());
 
     if( !ifs.is_open() || !ifs.good())
-        throw std::runtime_error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't open input file ") + filesystem::file_string( p));
 
     std::auto_ptr<serialization::yaml_iarchive_t> in( new serialization::yaml_iarchive_t( ifs));
 
     if( !in->read_composition_header())
-        throw std::runtime_error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+        throw std::runtime_error( core::string8_t( "Couldn't open input file ") + filesystem::file_string( p));
 
     set_composition_dir( p.parent_path());
     read( *in);
@@ -367,7 +407,7 @@ void composition_t::read_node( const serialization::yaml_node_t& node)
     {
         serialization::yaml_node_t class_node( node.get_node( "class"));
 
-        std::string id;
+        core::string8_t id;
         std::pair<int,int> version;
 
         class_node[0] >> id;
@@ -416,7 +456,7 @@ void composition_t::read_edges( const serialization::yaml_iarchive_t& in)
 
 void composition_t::read_edge( const serialization::yaml_node_t& node)
 {
-    std::string src, dst;
+    core::string8_t src, dst;
     int port;
 
     node[0] >> src;

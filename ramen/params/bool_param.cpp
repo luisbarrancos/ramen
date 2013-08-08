@@ -14,7 +14,7 @@
 namespace ramen
 {
 
-bool_param_t::bool_param_t( const std::string& name) : static_param_t( name)
+bool_param_t::bool_param_t() : static_param_t()
 {
     set_default_value( false);
 }

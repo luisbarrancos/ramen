@@ -25,7 +25,7 @@
 namespace ramen
 {
 
-file_param_t::file_param_t( const std::string& name) : static_param_t( name)
+file_param_t::file_param_t() : static_param_t()
 {
     is_input_ = true;
     set_default_value( boost::filesystem::path());
@@ -67,17 +67,17 @@ bool file_param_t::file_exists() const
     return false;
 }
 
-std::string file_param_t::extension() const
+core::string8_t file_param_t::extension() const
 {
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
-    return p.extension().string();
+    return core::string8_t( p.extension().string().c_str());
 }
 
-void file_param_t::set_extension( const std::string& ext)
+void file_param_t::set_extension( const core::string8_t& ext)
 {
     RAMEN_ASSERT( !is_input_);
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
-    p.replace_extension( ext);
+    p.replace_extension( ext.c_str());
     value().assign( p);
     update_input_text();
 }
@@ -85,14 +85,26 @@ void file_param_t::set_extension( const std::string& ext)
 void file_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
     if( is_input_)
-        hash_gen << filesystem::hash_string( get_value<boost::filesystem::path>( *this));
+    {
+        boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
+        std::stringstream s;
+        s << p;
+
+        if( boost::filesystem::exists( p))
+        {
+            std::time_t t = boost::filesystem::last_write_time( p);
+            s << t;
+        }
+
+        hash_gen << s.str();
+    }
 }
 
 /*
 void file_param_t::do_read( const serialization::yaml_node_t& node)
 {
-    std::string val;
-    node.get_value<std::string>( "value", val);
+    core::string8_t val;
+    node.get_value<core::string8_t>( "value", val);
     set_value( boost::filesystem::path( val), silent_edit);
 }
 
@@ -124,7 +136,7 @@ void file_param_t::update_input_text( const boost::filesystem::path& p)
     if( input_)
     {
         input_->blockSignals( true);
-        input_->setText( filesystem::file_cstring( p));
+        input_->setText( p.string().c_str());
         input_->blockSignals( false);
     }
 }
@@ -134,13 +146,14 @@ void file_param_t::update_input_text()
     update_input_text( get_value<boost::filesystem::path>( *this));
 }
 
-void file_param_t::do_convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base)
+void file_param_t::do_convert_relative_paths( const boost::filesystem::path& old_base,
+                                              const boost::filesystem::path& new_base)
 {
     boost::filesystem::path p( get_value<boost::filesystem::path>( *this));
 
     if( p.is_relative())
     {
-        value().assign( filesystem::convert_relative_path( p, old_base, new_base));
+        value().assign( composition_node()->convert_relative_path( p, old_base, new_base));
         update_widgets();
     }
 }

@@ -356,7 +356,7 @@ void main_window_t::create_import_export_menus()
     //export_->addAction( export_sel_);
 }
 
-node_menu_t *main_window_t::find_node_menu( const std::string& s)
+node_menu_t *main_window_t::find_node_menu( const core::string8_t& s)
 {
     for( int i = 0; i < node_menus_.size(); ++i)
     {
@@ -487,10 +487,14 @@ void main_window_t::save_document()
 
 void main_window_t::save_document_as()
 {
-    QString fname = QFileDialog::getSaveFileName( 0, "Save Composition As", QString::null, file_dialog_extension(),
-                                                  0, QFileDialog::DontUseNativeDialog);
+    QString fname = QFileDialog::getSaveFileName( 0,
+                                                  "Save Composition As",
+                                                  QString::null,
+                                                  file_dialog_extension(),
+                                                  0,
+                                                  QFileDialog::DontUseNativeDialog);
 
-    if( !(fname.isEmpty()))
+    if( !fname.isEmpty())
     {
         boost::filesystem::path p( fname.toStdString());
 
@@ -903,8 +907,7 @@ void main_window_t::create_node()
     }
     catch( std::exception& e)
     {
-        app().ui()->error( std::string( "Couldn't create node ") + id.c_str()
-                           + std::string( " ") + e.what());
+        app().ui()->error( core::make_string( "Couldn't create node ", id.c_str(), " ", e.what()));
         return;
     }
 
@@ -955,7 +958,7 @@ void main_window_t::update()
 
 void main_window_t::update_recent_files_menu( const boost::filesystem::path& p)
 {
-    QString fileName( filesystem::file_cstring( p));
+    QString fileName( p.string().c_str());
 
     QSettings settings( "com.ramen.qt", "Ramen Recent Files");
     QStringList files = settings.value( "recent_file_list").toStringList();

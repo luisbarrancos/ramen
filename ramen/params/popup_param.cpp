@@ -17,7 +17,7 @@
 namespace ramen
 {
 
-popup_param_t::popup_param_t( const std::string& name) : static_param_t( name)
+popup_param_t::popup_param_t() : static_param_t()
 {
     set_default_value( 0);
 }
@@ -38,7 +38,7 @@ void popup_param_t::set_value( int x, change_reason reason)
     emit_param_changed( reason);
 }
 
-void popup_param_t::add_menu_item( const std::string& item) { menu_items_.push_back( item);}
+void popup_param_t::add_menu_item( const core::string8_t& item) { menu_items_.push_back( item);}
 
 void popup_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
@@ -49,7 +49,7 @@ void popup_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 void popup_param_t::do_read( const serialization::yaml_node_t& node)
 {
     serialization::yaml_node_t n = node.get_node( "value");
-    std::string val;
+    core::string8_t val;
     n >> val;
 
     int index = find_index_for_string( val);
@@ -71,7 +71,7 @@ void popup_param_t::do_write( serialization::yaml_oarchive_t& out) const
 }
 */
 
-int popup_param_t::find_index_for_string( const std::string& s) const
+int popup_param_t::find_index_for_string( const core::string8_t& s) const
 {
     for( int i = 0; i < menu_items().size(); ++i)
     {

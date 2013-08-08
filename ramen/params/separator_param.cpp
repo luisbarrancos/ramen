@@ -16,8 +16,6 @@ namespace ramen
 
 separator_param_t::separator_param_t() : param_t() { set_static( true);}
 
-separator_param_t::separator_param_t( const std::string& name) : param_t( name) { set_static( true);}
-
 separator_param_t::separator_param_t( const separator_param_t& other) : param_t( other) {}
 
 QWidget *separator_param_t::do_create_widgets()

@@ -13,6 +13,7 @@
 #include<vector>
 #include<utility>
 
+#include<boost/function.hpp>
 #include<boost/flyweight.hpp>
 #include<boost/filesystem/fstream.hpp>
 
@@ -21,6 +22,7 @@
 #include<ramen/assert.hpp>
 
 #include<ramen/core/name.hpp>
+#include<ramen/core/string8.hpp>
 
 #include<ramen/math/box2.hpp>
 
@@ -81,9 +83,6 @@ public:
     /// Constructor.
     param_t();
 
-    /// Constructor.
-    explicit param_t( const std::string& name);
-
     /// Destructor.
     virtual ~param_t() {}
 
@@ -94,10 +93,10 @@ public:
     param_t *clone() const { return do_clone();}
 
     /// Returns the param name.
-    const std::string& name() const         { return name_;}
+    const core::string8_t& name() const         { return name_;}
 
     /// Sets the param name.
-    void set_name( const std::string& name) { name_ = name;}
+    void set_name( const core::string8_t& name) { name_ = name;}
 
     /// Returns the param id.
     const core::name_t& id() const { return id_;}
@@ -149,8 +148,8 @@ public:
     void set_track_mouse( bool b);
 
     // toolips
-    const std::string& tooltip() const		{ return tooltip_;}
-    void set_tooltip( const std::string& t) { tooltip_ = t;}
+    const core::string8_t& tooltip() const		{ return tooltip_;}
+    void set_tooltip( const core::string8_t& t) { tooltip_ = t;}
 
     // notifications
     void emit_param_changed( change_reason reason);
@@ -262,8 +261,8 @@ private:
     param_set_t *param_set_;
 
     core::name_t id_;
-    boost::flyweight<std::string> name_;
-    boost::flyweight<std::string> tooltip_;
+    boost::flyweight<core::string8_t> name_;
+    boost::flyweight<core::string8_t> tooltip_;
 
     boost::uint32_t flags_;
     poly_param_value_t value_;

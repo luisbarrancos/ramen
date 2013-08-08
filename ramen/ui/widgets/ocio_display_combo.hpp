@@ -14,31 +14,31 @@ namespace ui
 
 class ocio_display_combo_t : public ocio_combo_t
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ocio_display_combo_t( QWidget *parent = 0);
+    ocio_display_combo_t( QWidget *parent = 0);
 
-	const std::string& get_current_display() const { return current_display_;}
+    const core::string8_t& get_current_display() const { return current_display_;}
 
 public Q_SLOTS:
 
-	void set_display( const std::string& s);
+    void set_display( const core::string8_t& s);
 
 Q_SIGNALS:
 
-    void display_changed( const std::string&);
+    void display_changed( const core::string8_t&);
 
 private Q_SLOTS:
 
-	void combo_index_changed( int indx);
+    void combo_index_changed( int indx);
 
 private:
 
-	void set_default();
+    void set_default();
 
-	std::string current_display_;
+    core::string8_t current_display_;
 };
 
 } // ui

@@ -13,7 +13,7 @@
 namespace ramen
 {
 
-curve_param_t::curve_param_t( const std::string& name) : animated_param_t( name) { private_init();}
+curve_param_t::curve_param_t() : animated_param_t() { private_init();}
 
 curve_param_t::curve_param_t( const curve_param_t& other) : animated_param_t( other) {}
 

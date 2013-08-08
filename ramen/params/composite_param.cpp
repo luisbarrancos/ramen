@@ -26,7 +26,6 @@ namespace ramen
 {
 
 composite_param_t::composite_param_t() : param_t(), create_track_( true) {}
-composite_param_t::composite_param_t( const std::string& name) : param_t( name), create_track_( true) {}
 composite_param_t::composite_param_t( const composite_param_t& other) : param_t( other), params_( other.params_)
 {
     create_track_ = other.create_track_;
@@ -52,14 +51,14 @@ void composite_param_t::do_add_param( param_t *p)
         try
         {
             param_set()->find( p->id());
-            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id().c_str()));
+            throw core::runtime_error( core::make_string( "Duplicated param id found: ", p->id().c_str()));
         }
-        catch( std::runtime_error& e) {}
+        catch( core::runtime_error& e) {}
     }
     else
     {
         if( find( p->id()))
-            throw std::runtime_error( std::string( "Duplicated param id found: ").append( p->id().c_str()));
+            throw core::runtime_error( core::make_string( "Duplicated param id found: ", p->id().c_str()));
     }
 
     params().push_back( p);

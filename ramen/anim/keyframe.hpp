@@ -7,7 +7,7 @@
 
 #include<ramen/config.hpp>
 
-#include<string>
+#include<ramen/core/string8.hpp>
 
 namespace ramen
 {
@@ -31,10 +31,10 @@ public:
 
     keyframe_t();
     keyframe_t( time_type time);
-	
-	void swap( keyframe_t& other);
-	void swap_value( keyframe_t& other);
-	
+
+    void swap( keyframe_t& other);
+    void swap_value( keyframe_t& other);
+
     time_type time() const	{ return time_;}
     void set_time( time_type t) { time_ = t;}
 
@@ -47,20 +47,20 @@ public:
 
     auto_tangent_method v1_auto_tangent() const			{ return auto_v1_;}
     void set_v1_auto_tangent( auto_tangent_method m)	{ auto_v1_ = m;}
-	
+
     bool operator<( const keyframe_t& other) const { return time_ < other.time_;}
 
-	static time_type time_tolerance();
-	
+    static time_type time_tolerance();
+
 protected:
 
-    std::string auto_tangent_to_string( auto_tangent_method t) const;
-	auto_tangent_method string_to_auto_tangent( const std::string& s) const;
-	
+    core::string8_t auto_tangent_to_string( auto_tangent_method t) const;
+    auto_tangent_method string_to_auto_tangent( const core::string8_t& s) const;
+
     time_type time_;
-	
+
     auto_tangent_method auto_v0_, auto_v1_;
-	
+
     mutable bool selected_;
 };
 

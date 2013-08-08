@@ -86,18 +86,18 @@ bool node_factory_t::register_node( const node_info_t& m)
     if( it != latest_versions_end())
     {
         if( m.major_version > it->second.major_version)
-            newest_node_infos_[m.id] = m;
+            newest_node_infos_.insert( std::make_pair( m.id, m));
         else
         {
             if( m.major_version == it->second.major_version)
             {
                 if( m.minor_version > it->second.minor_version)
-                    newest_node_infos_[m.id] = m;
+                    newest_node_infos_.insert( std::make_pair( m.id, m));
             }
         }
     }
     else
-        newest_node_infos_[m.id] = m;
+        newest_node_infos_.insert( std::make_pair( m.id, m));
 
     return true;
 }

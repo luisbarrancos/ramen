@@ -7,8 +7,6 @@
 
 #include<ramen/ui/inspector/inspector_fwd.hpp>
 
-#include<boost/noncopyable.hpp>
-
 #include<ramen/nodes/node_fwd.hpp>
 
 #include<ramen/ui/inspector/panel_factory.hpp>

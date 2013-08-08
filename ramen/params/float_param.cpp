@@ -24,7 +24,7 @@
 namespace ramen
 {
 
-float_param_t::float_param_t( const std::string& name) : numeric_param_t( name) { private_init();}
+float_param_t::float_param_t() : numeric_param_t() { private_init();}
 float_param_t::float_param_t( const float_param_t& other) : numeric_param_t( other)
 {
     input_ = 0;

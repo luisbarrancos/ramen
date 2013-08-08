@@ -53,7 +53,7 @@ public:
     render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
     // misc
-    void rename_node( node_t *n, const std::string& new_name);
+    void rename_node( node_t *n, const core::string8_t& new_name);
 
     const boost::filesystem::path& composition_dir() const;
     void set_composition_dir( const boost::filesystem::path& dir);
@@ -71,6 +71,18 @@ public:
 
     bool any_selected() const;
     node_t *selected_node();
+
+    // paths
+
+    boost::filesystem::path make_absolute_path( const boost::filesystem::path& p,
+                                                const boost::filesystem::path& from) const;
+
+    boost::filesystem::path make_relative_path( const boost::filesystem::path& p,
+                                                const boost::filesystem::path& from) const;
+
+    boost::filesystem::path convert_relative_path( const boost::filesystem::path& p,
+                                                   const boost::filesystem::path& old_base,
+                                                   const boost::filesystem::path& new_base) const;
 
 protected:
 

@@ -42,7 +42,7 @@ class param_set_command_t : public undo::command_t
 {
 public:
 
-    param_set_command_t( const std::string& name) : command_t( name) {}
+    param_set_command_t( const core::string8_t& name) : command_t( name) {}
 
     virtual bool empty() const
     {

@@ -102,7 +102,7 @@ void user_interface_t::save_window_state()
 {
     QByteArray window_state = window_->saveState();
     boost::filesystem::path p = app().system().application_user_path() / "wstate.ui";
-    QFile file( filesystem::file_cstring( p));
+    QFile file( p.string().c_str());
 
     if( file.open( QIODevice::WriteOnly))
         file.write( window_state);
@@ -112,7 +112,7 @@ void user_interface_t::restore_window_state()
 {
     boost::filesystem::path p = app().system().application_user_path() / "wstate.ui";
     {
-        QFile file(filesystem::file_cstring( p));
+        QFile file( p.string().c_str());
 
         if( file.open( QIODevice::ReadOnly))
         {
@@ -228,9 +228,14 @@ bool user_interface_t::save_document()
         app().document().set_dirty( false);
         */
     }
+    catch( core::exception& e)
+    {
+        error( core::make_string( "Couldn't save file. Exception, what = ", e.what()));
+        return false;
+    }
     catch( std::exception& e)
     {
-        error( std::string( "Couldn't save file. Exception, what = ") + e.what());
+        error( core::make_string( "Couldn't save file. Exception, what = ", e.what()));
         return false;
     }
 
@@ -368,22 +373,22 @@ void user_interface_t::update_anim_editors()
         anim_editor().update();
 }
 
-void user_interface_t::fatal_error( const std::string& msg) const
+void user_interface_t::fatal_error( const core::string8_t& msg) const
 {
     QMessageBox::critical( 0, "Fatal Error", msg.c_str());
 }
 
-void user_interface_t::error( const std::string& msg) const
+void user_interface_t::error( const core::string8_t& msg) const
 {
     QMessageBox::warning( ( QWidget *) main_window(), "Error", msg.c_str());
 }
 
-void user_interface_t::inform( const std::string& msg) const
+void user_interface_t::inform( const core::string8_t& msg) const
 {
     QMessageBox::information( ( QWidget *) main_window(), "Info", msg.c_str());
 }
 
-bool user_interface_t::question( const std::string& what, bool default_answer) const
+bool user_interface_t::question( const core::string8_t& what, bool default_answer) const
 {
     QMessageBox::StandardButton result;
 
@@ -401,14 +406,19 @@ bool user_interface_t::question( const std::string& what, bool default_answer) c
     }
 }
 
-bool user_interface_t::image_sequence_file_selector( boost::filesystem::path& p, bool& sequence, bool& relative) const
+bool user_interface_t::image_sequence_file_selector( boost::filesystem::path& p,
+                                                     bool& sequence,
+                                                     bool& relative) const
 {
-    std::string types( image_types_string().toStdString());
+    core::string8_t types( image_types_string().toStdString().c_str());
     return image_sequence_file_selector( "Open Image", types, p, sequence, relative);
 }
 
-bool user_interface_t::image_sequence_file_selector( const std::string& title, const std::string& types,
-                               boost::filesystem::path& p, bool& sequence, bool& relative) const
+bool user_interface_t::image_sequence_file_selector( const core::string8_t& title,
+                                                     const core::string8_t& types,
+                                                     boost::filesystem::path& p,
+                                                     bool& sequence,
+                                                     bool& relative) const
 {
     static bool was_relative = false;
     static bool was_sequence = true;
@@ -458,7 +468,10 @@ bool user_interface_t::image_sequence_file_selector( const std::string& title, c
         if( relative_check->isChecked())
         {
             boost::filesystem::path dir = app().document().file().parent_path();
-            p = filesystem::make_relative_path( p, dir);
+            QDir qdir( QString( p.string().c_str()));
+            QString fname( QString( dir.string().c_str()));
+            QString rel_path( qdir.relativeFilePath( fname));
+            p =boost::filesystem::path( rel_path.toStdString());
         }
 
         sequence = sequence_check->isChecked();

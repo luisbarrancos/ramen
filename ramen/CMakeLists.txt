@@ -133,12 +133,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         Concepts/ParamValueConcept.hpp
 
                         container/ptr_vector_util.hpp
-                        container/unique_name_map.hpp
-
-                        filesystem/path.hpp
-                        filesystem/path.cpp
-                        filesystem/path_sequence.hpp
-                        filesystem/path_sequence.cpp
 
                         ggems/graphicsgems.h
                         ggems/ggveclib.c
@@ -328,7 +322,11 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/text_edit.cpp
                         ui/widgets/time_slider.cpp
 
+                        undo/command_fwd.hpp
+                        undo/command.hpp
                         undo/command.cpp
+                        undo/stack_fwd.hpp
+                        undo/stack.hpp
                         undo/stack.cpp
 
                         util/command_line_parser.cpp

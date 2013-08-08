@@ -18,16 +18,9 @@
 namespace ramen
 {
 
-string_param_t::string_param_t( const std::string& name) : static_param_t( name)
+string_param_t::string_param_t( bool read_only) : static_param_t()
 {
-    set_default_value( std::string());
-    read_only_ = false;
-    multiline_ = false;
-}
-
-string_param_t::string_param_t( const std::string& name, bool read_only) : static_param_t( name)
-{
-    set_default_value( std::string());
+    set_default_value( core::string8_t());
     multiline_ = false;
     read_only_ = read_only;
 
@@ -47,9 +40,9 @@ string_param_t::string_param_t( const string_param_t& other) : static_param_t( o
     multi_input_ = 0;
 }
 
-void string_param_t::set_default_value( const std::string& x) { value().assign( x);}
+void string_param_t::set_default_value( const core::string8_t& x) { value().assign( x);}
 
-void string_param_t::set_value( const std::string& x, change_reason reason)
+void string_param_t::set_value( const core::string8_t& x, change_reason reason)
 {
     if( read_only_)
     {
@@ -68,21 +61,21 @@ void string_param_t::set_value( const std::string& x, change_reason reason)
 
 void string_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
-    hash_gen << get_value<std::string>( *this);
+    hash_gen << get_value<core::string8_t>( *this);
 }
 
 /*
 void string_param_t::do_read( const serialization::yaml_node_t& node)
 {
-    std::string val;
-    node.get_value<std::string>( "value", val);
+    core::string8_t val;
+    node.get_value<core::string8_t>( "value", val);
     set_value( val);
 }
 
 void string_param_t::do_write( serialization::yaml_oarchive_t& out) const
 {
     out << YAML::Key << "value"
-        << YAML::Value << get_value<std::string>( *this);
+        << YAML::Value << get_value<core::string8_t>( *this);
 }
 */
 
@@ -100,7 +93,7 @@ QWidget *string_param_t::do_create_widgets()
     label->setText( name().c_str());
     label->setToolTip( id().c_str());
 
-    std::string str = get_value<std::string>( *this);
+    core::string8_t str = get_value<core::string8_t>( *this);
     int height;
 
     if( multiline())
@@ -137,7 +130,7 @@ void string_param_t::do_update_widgets()
     if( input_)
     {
         input_->blockSignals( true);
-        std::string str = get_value<std::string>( *this);
+        core::string8_t str = get_value<core::string8_t>( *this);
         input_->setText( str.c_str());
         input_->blockSignals( false);
     }
@@ -146,7 +139,7 @@ void string_param_t::do_update_widgets()
         if( multi_input_)
         {
             multi_input_->blockSignals( true);
-            std::string str = get_value<std::string>( *this);
+            core::string8_t str = get_value<core::string8_t>( *this);
             multi_input_->setPlainText( str.c_str());
             multi_input_->blockSignals( false);
         }
@@ -174,8 +167,8 @@ void string_param_t::text_changed()
         str = input_->text().toStdString();
 
     param_set()->begin_edit();
-    set_value( str);
+    set_value( str.c_str());
     param_set()->end_edit();
 }
 
-} // namespace
+} // ramen

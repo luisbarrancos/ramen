@@ -26,7 +26,7 @@ class RAMEN_API color_param_t : public animated_param_t
 
 public:
 
-    explicit color_param_t( const std::string& name);
+    color_param_t();
 
     void set_default_value( const color::rgba_colorf_t& x);
 

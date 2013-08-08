@@ -10,17 +10,17 @@ namespace ramen
 namespace ui
 {
 
-node_menu_t::node_menu_t( const std::string& name) : name_( name), menu_( 0)
+node_menu_t::node_menu_t( const core::string8_t& name) : name_( name), menu_( 0)
 {
     menu_ = new QMenu( name.c_str());
 }
 
-void node_menu_t::add_submenu( const std::string& name)
+void node_menu_t::add_submenu( const core::string8_t& name)
 {
     submenus_.push_back( menu_->addMenu( name.c_str()));
 }
 
-void node_menu_t::add_action( const std::string& submenu, QAction *action)
+void node_menu_t::add_action( const core::string8_t& submenu, QAction *action)
 {
     std::vector<QMenu*>::iterator menu_it = find_submenu( submenu);
 
@@ -33,12 +33,13 @@ void node_menu_t::add_action( const std::string& submenu, QAction *action)
     (*menu_it)->addAction( action);
 }
 
-std::vector<QMenu*>::iterator node_menu_t::find_submenu( const std::string& name)
+std::vector<QMenu*>::iterator node_menu_t::find_submenu( const core::string8_t& name)
 {
     for( std::vector<QMenu*>::iterator it( submenus_.begin()); it != submenus_.end(); ++it)
     {
-	if( (*it)->title().toStdString() == name)
-	    return it;
+
+        if( name == (*it)->title().toStdString().c_str())
+            return it;
     }
 
     return submenus_.end();

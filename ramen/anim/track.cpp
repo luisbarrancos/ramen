@@ -17,12 +17,12 @@ namespace anim
 
 track_t::track_t() { init();}
 
-track_t::track_t( const std::string& name) : name_( name)
+track_t::track_t( const core::string8_t& name) : name_( name)
 {
     init();
 }
 
-track_t::track_t( const std::string& name, const any_curve_ptr_t& curve) : name_( name), curve_( curve)
+track_t::track_t( const core::string8_t& name, const any_curve_ptr_t& curve) : name_( name), curve_( curve)
 {
     init();
 }
@@ -59,20 +59,20 @@ int track_t::row() const
     return 0;
 }
 
-const std::string& track_t::name() const
+const core::string8_t& track_t::name() const
 {
     RAMEN_ASSERT( !name_.empty());
     return name_;
 }
 
-void track_t::set_name( const std::string& name)
+void track_t::set_name( const core::string8_t& name)
 {
     RAMEN_ASSERT( !name.empty());
     name_ = name;
 }
 
-const std::string& track_t::full_name() const	{ return full_name_;}
-const std::string& track_t::curve_name() const	{ return curve_name_;}
+const core::string8_t& track_t::full_name() const	{ return full_name_;}
+const core::string8_t& track_t::curve_name() const	{ return curve_name_;}
 
 void track_t::make_full_names()
 {
@@ -99,10 +99,12 @@ void track_t::do_make_full_names()
 
 void track_t::make_curve_name()
 {
-    std::string::size_type pos = full_name_.find_first_of( '.');
+    // TODO: replace find_first_of
+    std::string tmp( full_name_.c_str());
+    std::string::size_type pos = tmp.find_first_of( '.');
 
     if( pos != std::string::npos)
-        curve_name_ = std::string( full_name_, pos + 1, full_name_.size() - pos + 1);
+        curve_name_ = core::string8_t( tmp.c_str(), pos + 1, full_name_.size() - pos + 1);
 }
 
 void track_t::set_color( const color::color3c_t& col)

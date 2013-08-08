@@ -25,11 +25,11 @@ public:
 
     typedef anim::float_key_t::time_type time_type;
 
-    explicit animated_param_t( const std::string& name);
+    animated_param_t();
 
     int num_curves() const;
 
-    const std::string& curve_name( int indx = 0) const;
+    const core::string8_t& curve_name( int indx = 0) const;
     const anim::float_curve_t& curve( int indx = 0) const;
     anim::float_curve_t& curve( int indx = 0);
 
@@ -60,7 +60,7 @@ protected:
     void operator=( const animated_param_t& other);
 
     bool all_curves_empty() const;
-    void add_curve( const std::string& name);
+    void add_curve( const core::string8_t& name);
     void eval_curve( int index, float frame, float& v) const;
 
     void set_component_value( int index, float comp_value, change_reason reason = user_edited);
@@ -82,9 +82,9 @@ private:
 
     virtual std::auto_ptr<undo::command_t> do_create_command();
 
-    anim::float_curve_t *find_curve( const std::string& name);
+    anim::float_curve_t *find_curve( const core::string8_t& name);
 
-    typedef boost::tuple<boost::flyweight<std::string>, anim::float_curve_t> curve_entry_type;
+    typedef boost::tuple<boost::flyweight<core::string8_t>, anim::float_curve_t> curve_entry_type;
     std::vector<curve_entry_type> curves_;
 
     float step_;

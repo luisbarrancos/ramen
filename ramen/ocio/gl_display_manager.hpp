@@ -11,6 +11,7 @@
 #include<boost/shared_ptr.hpp>
 #include<boost/function.hpp>
 
+#include<ramen/core/string8.hpp>
 #include<ramen/color/color3.hpp>
 #include<ramen/color/rgba_color.hpp>
 
@@ -27,8 +28,8 @@ class gl_display_manager_t : boost::noncopyable
 {
 public:
 
-	typedef boost::function<std::pair<std::string, std::string>( int)> get_context_callback_t;
-	
+    typedef boost::function<std::pair<core::string8_t, core::string8_t>( int)> get_context_callback_t;
+
     enum view_channels_t
     {
         view_rgb_channels = 0,
@@ -39,10 +40,10 @@ public:
     };
 
     gl_display_manager_t( int lut_size = 32, GLenum texture_num = GL_TEXTURE1);
-	gl_display_manager_t( boost::shared_ptr<gl_lut3d_t> lut);
+    gl_display_manager_t( boost::shared_ptr<gl_lut3d_t> lut);
 
-	void set_context_callback( const get_context_callback_t& f);
-	
+    void set_context_callback( const get_context_callback_t& f);
+
     void set_display_transform( OCIO::ConstConfigRcPtr config,
                                 OCIO::DisplayTransformRcPtr transform);
 
@@ -50,37 +51,37 @@ public:
     color::rgba_colorf_t transform( const color::rgba_colorf_t& c) const;
 
     const color::color3f_t& black() const { return lut_->black();}
-	
-	view_channels_t view_channels() const		{ return view_channels_;}
-	void set_view_channels( view_channels_t v)	{ view_channels_ = v;}
 
-	float exposure() const		{ return exposure_;}
-	void set_exposure( float f)	{ exposure_ = f;}
+    view_channels_t view_channels() const		{ return view_channels_;}
+    void set_view_channels( view_channels_t v)	{ view_channels_ = v;}
 
-	float gamma() const			{ return gamma_;}
-	void set_gamma( float f)	{ gamma_ = f;}
-	
-	void activate();
-	void deactivate();
+    float exposure() const		{ return exposure_;}
+    void set_exposure( float f)	{ exposure_ = f;}
+
+    float gamma() const			{ return gamma_;}
+    void set_gamma( float f)	{ gamma_ = f;}
+
+    void activate();
+    void deactivate();
 
 private:
-	
-	void init();
 
-	static std::pair<std::string, std::string> default_get_ctx( int i);
-	
-	OCIO::ConstContextRcPtr get_local_context();
-	
-	get_context_callback_t get_ctx_fun_;
-	
-	OCIO::ConstProcessorRcPtr processor_;
+    void init();
 
-	gl::program_t program_;
-	boost::shared_ptr<gl_lut3d_t> lut_;
+    static std::pair<core::string8_t, core::string8_t> default_get_ctx( int i);
 
-	float exposure_;
-	float gamma_;
-	view_channels_t view_channels_;
+    OCIO::ConstContextRcPtr get_local_context();
+
+    get_context_callback_t get_ctx_fun_;
+
+    OCIO::ConstProcessorRcPtr processor_;
+
+    gl::program_t program_;
+    boost::shared_ptr<gl_lut3d_t> lut_;
+
+    float exposure_;
+    float gamma_;
+    view_channels_t view_channels_;
 };
 
 } // ocio

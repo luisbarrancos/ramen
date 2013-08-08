@@ -10,8 +10,6 @@
 #include<memory>
 #include<map>
 
-#include<boost/noncopyable.hpp>
-
 #include<ramen/nodes/node_info.hpp>
 
 namespace ramen
@@ -21,7 +19,7 @@ namespace ramen
 \ingroup nodes
 \brief Singleton node factory.
 */
-class node_factory_t : boost::noncopyable
+class node_factory_t
 {
 public:
 
@@ -56,6 +54,10 @@ private:
 
     node_factory_t();
     ~node_factory_t();
+
+    // non-copyable
+    node_factory_t( const node_factory_t&);
+    node_factory_t& operator=( const node_factory_t&);
 
     std::vector<node_info_t> node_infos_;
     std::map<core::name_t, node_info_t> newest_node_infos_;

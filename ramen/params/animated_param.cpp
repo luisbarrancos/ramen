@@ -21,7 +21,7 @@
 namespace ramen
 {
 
-animated_param_t::animated_param_t( const std::string& name) : param_t(name), step_( 1.0f)
+animated_param_t::animated_param_t() : param_t(), step_( 1.0f)
 {
 }
 
@@ -32,7 +32,7 @@ animated_param_t::animated_param_t( const animated_param_t& other) : param_t( ot
 
 int animated_param_t::num_curves() const { return curves_.size();}
 
-const std::string& animated_param_t::curve_name( int indx) const
+const core::string8_t& animated_param_t::curve_name( int indx) const
 {
     RAMEN_ASSERT( indx >= 0 && indx < num_curves());
     return boost::get<0>( curves_[indx]);
@@ -50,9 +50,9 @@ anim::float_curve_t& animated_param_t::curve( int indx)
     return boost::get<1>( curves_[indx]);
 }
 
-void animated_param_t::add_curve( const std::string& name)
+void animated_param_t::add_curve( const core::string8_t& name)
 {
-    curves_.push_back( curve_entry_type( boost::flyweight<std::string>( name), anim::float_curve_t()));
+    curves_.push_back( curve_entry_type( boost::flyweight<core::string8_t>( name), anim::float_curve_t()));
 }
 
 void animated_param_t::eval_curve( int index, float frame, float& v) const
@@ -273,7 +273,7 @@ void animated_param_t::read_curves( const serialization::yaml_node_t& node)
     {
         for( serialization::yaml_node_t::const_iterator it( curves.get().begin()); it != curves.get().end(); ++it)
         {
-            std::string key;
+            core::string8_t key;
             it.first() >> key;
 
             if( anim::float_curve_t *c = find_curve( key))
@@ -308,7 +308,7 @@ void animated_param_t::write_curves( serialization::yaml_oarchive_t& out) const
 }
 */
 
-anim::float_curve_t *animated_param_t::find_curve( const std::string& name)
+anim::float_curve_t *animated_param_t::find_curve( const core::string8_t& name)
 {
     for( int i = 0; i < num_curves(); ++i)
     {

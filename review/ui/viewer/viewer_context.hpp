@@ -69,8 +69,8 @@ public:
     OCIO::DisplayTransformRcPtr ocio_transform();
 
     boost::shared_ptr<ocio::gl_lut3d_t>& display_lut();
-    const std::string& display_device() const;
-    const std::string& display_transform() const;
+    const core::string8_t& display_device() const;
+    const core::string8_t& display_transform() const;
     float exposure() const;
     float gamma() const;
 
