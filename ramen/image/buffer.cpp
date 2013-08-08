@@ -42,18 +42,20 @@ struct array_deleter
 
 } // namespace
 
-// by default, 16 bytes (SSE) alignment. Must be a power of two
-const unsigned int buffer_t::alignment = 16;
-
+// by default, 64 bytes alignment, cache line alignment, compatible with SSE, AVX. Must be a power of two.
+const unsigned int buffer_t::alignment = 64;
 BOOST_STATIC_ASSERT( (( buffer_t::alignment - 1) & buffer_t::alignment) == 0);
 
-buffer_t::buffer_t() { init();}
+buffer_t::buffer_t()
+{
+    clear();
+}
 
 buffer_t::buffer_t( int width, int height, int channels)
 {
     RAMEN_ASSERT(( channels == 4) && "buffer_t: only 1, 3 and 4 channels images supported");
 
-    init();
+    clear();
     channels_ = channels;
     bounds_ = math::box2i_t( math::point2i_t( 0, 0),
                              math::point2i_t( width - 1, height - 1));
@@ -68,7 +70,7 @@ buffer_t::buffer_t( const math::box2i_t& bounds, int channels)
 {
     RAMEN_ASSERT(( channels == 4) && "buffer_t: only 1, 3 and 4 channels images supported");
 
-    init();
+    clear();
     bounds_ = bounds;
     channels_ = channels;
 
@@ -78,19 +80,23 @@ buffer_t::buffer_t( const math::box2i_t& bounds, int channels)
     alloc_pixels();
 }
 
-void buffer_t::init()
-{
-    cached_pixels_ = false;
-    use_disk_cache_ = false;
-    channels_ = 0;
-    rowbytes_ = 0;
-}
-
 void buffer_t::alloc_pixels()
 {
-    std::size_t size = (( width() * height() * channels()) * sizeof( float)) + alignment;
+    rowbytes_ = width() * sizeof( float);
+
+    // round up rowbytes to an alignment multiple.
+    // TODO: find a better way to do this...
+    if( rowbytes_ % alignment != 0)
+    {
+        rowbytes_ = (( rowbytes_ / alignment) + 1) * alignment;
+
+        RAMEN_ASSERT( rowbytes_ % alignment == 0);
+        RAMEN_ASSERT( rowbytes_ >= width() * sizeof( float));
+    }
+
+    planebytes_ = rowbytes_ * height();
+    std::size_t size = ( planebytes_ * channels()) + alignment;
     pixels_.reset( app().memory_manager().image_allocator().allocate( size), array_deleter( size));
-    rowbytes_ = width() * channels() * sizeof( float);
 }
 
 unsigned char *buffer_t::aligned_ptr() const
@@ -98,13 +104,23 @@ unsigned char *buffer_t::aligned_ptr() const
     return core::aligned_ptr( pixels_.get(), alignment);
 }
 
-int buffer_t::channels() const { return channels_;}
-
 void buffer_t::clear()
 {
     cached_pixels_ = false;
+    use_disk_cache_ = false;
     bounds_ = math::box2i_t();
+    channels_ = 0;
+    rowbytes_ = 0;
+    planebytes_ = 0;
     pixels_.reset();
+}
+
+float *buffer_t::row_ptr( int ch, int y) const
+{
+    RAMEN_ASSERT( !empty());
+    RAMEN_ASSERT( ch < channels());
+
+    return reinterpret_cast<float*>( aligned_ptr() + ( planebytes() * ch) + ( rowbytes() * y));
 }
 
 const_image_view_t buffer_t::const_rgba_view() const
@@ -112,10 +128,13 @@ const_image_view_t buffer_t::const_rgba_view() const
     RAMEN_ASSERT( !empty() && "Trying to get a view from an empty image");
     RAMEN_ASSERT( channels() == 4);
 
-    return boost::gil::interleaved_view<const pixel_t*>( width(),
-                                                         height(),
-                                                         reinterpret_cast<const pixel_t*>( aligned_ptr()),
-                                                         width() * channels() * sizeof( float));
+    return boost::gil::planar_rgba_view( width(),
+                                         height(),
+                                         reinterpret_cast<const boost::gil::bits32f*>( row_ptr( 0, 0)),
+                                         reinterpret_cast<const boost::gil::bits32f*>( row_ptr( 1, 0)),
+                                         reinterpret_cast<const boost::gil::bits32f*>( row_ptr( 2, 0)),
+                                         reinterpret_cast<const boost::gil::bits32f*>( row_ptr( 3, 0)),
+                                         rowbytes());
 }
 
 const_image_view_t buffer_t::const_rgba_subimage_view( const math::box2i_t& area) const
@@ -133,11 +152,13 @@ image_view_t buffer_t::rgba_view() const
     RAMEN_ASSERT( !cached() && "Trying to get a non const view of an image cached");
     RAMEN_ASSERT( channels() == 4);
 
-    return boost::gil::interleaved_view<pixel_t*>( width(),
-                                                   height(),
-                                                   reinterpret_cast<pixel_t*>( aligned_ptr()),
-                                                   width() * channels() * sizeof( float));
-
+    return boost::gil::planar_rgba_view( width(),
+                                         height(),
+                                         reinterpret_cast<boost::gil::bits32f*>( row_ptr( 0, 0)),
+                                         reinterpret_cast<boost::gil::bits32f*>( row_ptr( 1, 0)),
+                                         reinterpret_cast<boost::gil::bits32f*>( row_ptr( 2, 0)),
+                                         reinterpret_cast<boost::gil::bits32f*>( row_ptr( 3, 0)),
+                                         rowbytes());
 }
 
 image_view_t buffer_t::rgba_subimage_view( const math::box2i_t& area) const

@@ -8,22 +8,19 @@
 # ramen lib sources
 
 IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
-                    ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include/ramen/version.hpp)
-
-    INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include)
+    SET( RAMEN_GENERATED_HEADERS_DIR ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
-                    ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include/ramen/version.hpp)
-
-    INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include)
+    SET( RAMEN_GENERATED_HEADERS_DIR ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()
     MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
-#FILE(GLOB_RECURSE RAMEN_HEADERS ./*.h*)
+CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
+                ${RAMEN_GENERATED_HEADERS_DIR}/ramen/version.hpp)
+
+INCLUDE_DIRECTORIES( ${RAMEN_GENERATED_HEADERS_DIR})
 
 SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/aspect_ratio_param.hpp
@@ -334,138 +331,49 @@ SET( RAMEN_SOURCES      assert.hpp
                         util/string.cpp
                         )
 
-IF( WITH_NODES)
-    SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} #nodes/image/input/image_channels_param.hpp
-                                                #nodes/image/input/image_seq_param.hpp
+######################################################
+# nodes
 
-                                                #nodes/image/roto/roto_shape_param.hpp
-                                                #nodes/image/roto/shape_transform_param.hpp
-                                                #nodes/image/roto/toolbar.hpp
+SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES})
 
-                                                #params/transform2_param.hpp
-                                                #params/transform3_param.hpp
-                                                )
+SET( RAMEN_SOURCES ${RAMEN_SOURCES} nodes/image/generator_node.hpp
+                                    nodes/image/generator_node.cpp
+                                    nodes/image/pointop_node.hpp
+                                    nodes/image/pointop_node.cpp
+                                    nodes/image/color/channel_mixer_node.cpp
+                                    nodes/image/generate/color_bars_node.cpp
+                                    nodes/image/generate/color_node.cpp
+                                    nodes/image/util/nop_node.cpp
+                                    )
 
-    SET( RAMEN_SOURCES ${RAMEN_SOURCES}	#imageio/import_multichannel_exr.cpp
+######################################################
+# ispc
 
-                                        #manipulators/circle_manipulator.cpp
-                                        #manipulators/point2_manipulator.cpp
-                                        #manipulators/quad_manipulator.cpp
-                                        #manipulators/transform2_manipulator.cpp
+MACRO( ISPC_COMPILE OUT_LIST SRC_LOCATION)
 
-                                        #nodes/image/areaop_node.cpp
-                                        #nodes/image/base_blur_node.cpp
-                                        #nodes/image/base_layer_node.cpp
-                                        #nodes/image/base_output_node.cpp
-                                        #nodes/image/base_warp_node.cpp
-                                        #nodes/image/distort_node.cpp
-                                        nodes/image/generator_node.hpp
-                                        nodes/image/generator_node.cpp
-                                        #nodes/image/keyer_node.cpp
-                                        nodes/image/pointop_node.hpp
-                                        nodes/image/pointop_node.cpp
-                                        #nodes/image/xform_node.cpp
-                                        #nodes/image/xform2d_node.cpp
+    GET_FILENAME_COMPONENT( ABS_ISPC_SRC ${SRC_LOCATION} ABSOLUTE)
 
-                                        #nodes/image/channel/copy_channels_node.cpp
-                                        #nodes/image/channel/invert_node.cpp
-                                        #nodes/image/channel/premult_node.cpp
-                                        #nodes/image/channel/set_channels_node.cpp
-                                        #nodes/image/channel/set_matte_node.cpp
+    GET_FILENAME_COMPONENT( ISPC_SRC_FILENAME ${SRC_LOCATION} NAME_WE)
+    SET( ISPC_OBJ_FILENAME "${ISPC_SRC_FILENAME}.obj")
+    SET( ISPC_HDR_FILENAME "${ISPC_SRC_FILENAME}_ispc.h")
 
-                                        #nodes/image/color/adjust_hsv_node.cpp
-                                        #nodes/image/color/cdl_node.cpp
-                                        nodes/image/color/channel_mixer_node.cpp
-                                        #nodes/image/color/clamp_colors_node.cpp
-                                        #nodes/image/color/color_correct_node.cpp
-                                        #nodes/image/color/color_match_node.cpp
-                                        #nodes/image/color/color_replace_node.cpp
-                                        #nodes/image/color/colorspace_node.cpp
-                                        #nodes/image/color/curves_node.cpp
-                                        #nodes/image/color/exposure_node.cpp
-                                        #nodes/image/color/gamma_node.cpp
-                                        #nodes/image/color/hsv_colorize_node.cpp
-                                        #nodes/image/color/ocio_colorspace_node.cpp
-                                        #nodes/image/color/ocio_file_transform_node.cpp
-                                        #nodes/image/color/tint_node.cpp
+    SET( ISPC_OBJ ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${ISPC_OBJ_FILENAME})
+    SET( ISPC_HDR ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image/${ISPC_HDR_FILENAME})
+    ADD_CUSTOM_COMMAND( OUTPUT ${ISPC_OBJ}
+                        COMMAND ${ISPC_EXE} ${RAMEN_ISPC_FLAGS} ${ABS_ISPC_SRC} -o ${ISPC_OBJ} -h ${ISPC_HDR}
+                        IMPLICIT_DEPENDS C ${SRC_LOCATION}
+                        DEPENDS ${SRC_LOCATION}
+                        MAIN_DEPENDENCY  ${SRC_LOCATION}  # this gives the ispc file in MSVC a 'compile' option on the source file
+                        )
+    SET_SOURCE_FILES_PROPERTIES( ${ISPC_OBJ} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
+    SET_SOURCE_FILES_PROPERTIES( ${ISPC_HDR} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
+    LIST( APPEND ${OUT_LIST} ${SRC_LOCATION} ${HDR_LOCATION})
+ENDMACRO()
 
-                                        #nodes/image/distort/displace_node.cpp
-                                        #nodes/image/distort/turbulent_displace_node.cpp
-                                        #nodes/image/distort/twirl_node.cpp
+# create generated headers directory
+FILE( MAKE_DIRECTORY ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image)
 
-                                        #nodes/image/filter/blur_channels_node.cpp
-                                        #nodes/image/filter/blur_mask_node.cpp
-                                        #nodes/image/filter/blur_node.cpp
-                                        #nodes/image/filter/chroma_blur_node.cpp
-                                        #nodes/image/filter/gauss_blur_node.cpp
-                                        #nodes/image/filter/percentile_filter_node.cpp
-                                        #nodes/image/filter/smart_blur_node.cpp
-                                        #nodes/image/filter/unsharp_mask_node.cpp
-
-                                        #nodes/image/generate/checkerboard_node.cpp
-                                        nodes/image/generate/color_bars_node.cpp
-                                        nodes/image/generate/color_node.cpp
-                                        #nodes/image/generate/fractal_noise_node.cpp
-                                        #nodes/image/generate/gradient_node.cpp
-                                        #nodes/image/generate/grid_node.cpp
-                                        #nodes/image/generate/rgradient_node.cpp
-
-                                        #nodes/image/input/image_channels_param.cpp
-                                        #nodes/image/input/image_input_command.cpp
-                                        #nodes/image/input/image_seq_param.cpp
-                                        #nodes/image/input/input_node.cpp
-                                        #nodes/image/input/input_clip.cpp
-
-                                        #nodes/image/key/color_diff_keyer_node.cpp
-                                        #nodes/image/key/lum_key_node.cpp
-                                        #nodes/image/key/spill_suppressor_node.cpp
-
-                                        #nodes/image/layer/add_mix_layer_node.cpp
-                                        #nodes/image/layer/alpha_layer_node.cpp
-                                        #nodes/image/layer/key_mix_layer_node.cpp
-                                        #nodes/image/layer/layer_node.cpp
-
-                                        #nodes/image/lighting/glow_node.cpp
-
-                                        #nodes/image/matte/alpha_levels_node.cpp
-                                        #nodes/image/matte/alpha_ops_node.cpp
-
-                                        #nodes/image/output/output_node.cpp
-
-                                        #nodes/image/roto/convert_tool.cpp
-                                        #nodes/image/roto/create_tool.cpp
-                                        #nodes/image/roto/manipulator.cpp
-                                        #nodes/image/roto/null_tool.cpp
-                                        #nodes/image/roto/roto_commands.cpp
-                                        #nodes/image/roto/roto_node.cpp
-                                        #nodes/image/roto/roto_shape_param.cpp
-                                        #nodes/image/roto/select_tool.cpp
-                                        #nodes/image/roto/shape_transform_param.cpp
-                                        #nodes/image/roto/tool.cpp
-                                        #nodes/image/roto/rect_tool.cpp
-                                        #nodes/image/roto/toolbar.cpp
-                                        #nodes/image/roto/shape.cpp
-                                        #nodes/image/roto/scene.cpp
-                                        #nodes/image/roto/scene_renderer.cpp
-                                        #nodes/image/roto/triple.cpp
-
-                                        #nodes/image/tonemap/global_tonemap_node.cpp
-
-                                        #nodes/image/transform/camera_shake_node.cpp
-                                        #nodes/image/transform/crop_node.cpp
-                                        #nodes/image/transform/expand_node.cpp
-                                        #nodes/image/transform/flip_node.cpp
-                                        #nodes/image/transform/move2d_node.cpp
-                                        #nodes/image/transform/resize_node.cpp
-                                        #nodes/image/transform/transform_blur_node.cpp
-
-                                        nodes/image/util/nop_node.cpp
-                                        #nodes/image/util/set_dod_node.cpp
-
-                                        #params/transform2_param.cpp
-                                        #params/transform3_param.cpp
-                                        )
-ENDIF()
+ISPC_COMPILE( RAMEN_ISPC_SOURCES image/simple.ispc)
 
 ######################################################
 # platform specific
@@ -502,6 +410,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR})
 # ramen lib
 
 ADD_LIBRARY( ramen SHARED   ${RAMEN_SOURCES}
+                            ${RAMEN_ISPC_SOURCES}
                             ${RAMEN_MOC_SOURCES}
                             ${RAMEN_DESIGNER_SOURCES}
                             ${RAMEN_PLATFORM_SOURCES}

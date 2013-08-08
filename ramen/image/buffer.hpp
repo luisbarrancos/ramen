@@ -31,7 +31,10 @@ public:
 
     int width() const	{ return bounds_.size().x + 1;}
     int height() const	{ return bounds_.size().y + 1;}
-    int channels() const;
+    int channels() const { return channels_;}
+
+    std::size_t rowbytes() const    { return rowbytes_;}
+    std::size_t planebytes() const  { return planebytes_;}
 
     bool empty() const  { return !pixels_;}
     bool unique() const { return pixels_.unique();}
@@ -39,6 +42,8 @@ public:
     void clear();
 
     const math::box2i_t& bounds() const { return bounds_;}
+
+    float *row_ptr( int ch, int y) const;
 
     // flags
     bool cached() const			{ return cached_pixels_;}
@@ -60,8 +65,6 @@ public:
 
 private:
 
-    void init();
-
     void alloc_pixels();
 
     // util
@@ -74,6 +77,7 @@ private:
     int channels_;
     boost::shared_array<unsigned char> pixels_;
     std::size_t rowbytes_;
+    std::size_t planebytes_;
     bool cached_pixels_;
     bool use_disk_cache_;
 };
