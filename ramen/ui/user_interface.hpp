@@ -23,7 +23,7 @@
 
     #include<boost/thread/future.hpp>
 
-    #include<ramen/filesystem/path.hpp>
+    #include<boost/filesystem/path.hpp>
     #include<boost/filesystem/fstream.hpp>
 
     #include<ramen/render/node_renderer.hpp>

@@ -12,6 +12,7 @@
 #include<memory>
 
 #include<boost/cstdint.hpp>
+#include<boost/filesystem/path.hpp>
 
 #include<tbb/task_scheduler_init.h>
 
@@ -26,8 +27,6 @@
 #include<ramen/memory/manager_fwd.hpp>
 #include<ramen/render/render_thread.hpp>
 #include<ramen/ocio/manager_fwd.hpp>
-
-#include<ramen/filesystem/path.hpp>
 
 #include<ramen/util/command_line_parser_fwd.hpp>
 
