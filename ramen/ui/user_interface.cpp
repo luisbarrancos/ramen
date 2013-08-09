@@ -40,14 +40,15 @@
 
 #include<ramen/render/node_renderer.hpp>
 
+#include<ramen/qwidgets/time_slider.hpp>
+
 #include<ramen/ui/main_window.hpp>
 #include<ramen/ui/palette.hpp>
 #include<ramen/ui/viewer.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
-#include<ramen/ui/widgets/time_slider.hpp>
 
 namespace ramen
 {
@@ -355,7 +356,7 @@ void user_interface_t::set_end_frame( int t)
                                                              app().document().composition_node().end_frame());
 }
 
-void user_interface_t::set_frame( int t)
+void user_interface_t::set_frame( double t)
 {
     app().document().composition_node().set_frame( t);
     main_window()->time_slider().update( app().document().composition_node().start_frame(),

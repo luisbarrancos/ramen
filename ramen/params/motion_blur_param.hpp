@@ -11,9 +11,8 @@
 
 #include<ramen/params/motion_blur_info.hpp>
 
-#include<ramen/ui/widgets/double_spinbox_fwd.hpp>
-
 class QComboBox;
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -54,7 +53,7 @@ private:
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
 
-    QPointer<ui::double_spinbox_t> shutter_, shutter_off_, samples_;
+    QPointer<QDoubleSpinBox> shutter_, shutter_off_, samples_;
     QPointer<QComboBox> filter_;
 };
 

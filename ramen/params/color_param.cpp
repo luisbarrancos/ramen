@@ -10,22 +10,25 @@
 #include<boost/bind.hpp>
 
 #include<QLabel>
+#include<QDoubleSpinBox>
 
 #include<ramen/app/application.hpp>
 
 #include<ramen/assert.hpp>
 #include<ramen/algorithm/clamp.hpp>
 
+#include<ramen/math/cmath.hpp>
+
 #include<ramen/nodes/composition_node.hpp>
+
 #include<ramen/app/document.hpp>
 
 #include<ramen/anim/track.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/main_window.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/widgets/param_spinbox.hpp>
 #include<ramen/ui/widgets/color_button.hpp>
 #include<ramen/ui/widgets/eyedropper_button.hpp>
 #include<ramen/ui/widgets/color_picker.hpp>
@@ -239,12 +242,12 @@ QWidget *color_param_t::do_create_widgets()
     QLabel *label = new QLabel( top);
     button_ = new ui::color_button_t( top);
 
-    input0_ = new ui::param_spinbox_t( *this, 0, top);
-    input1_ = new ui::param_spinbox_t( *this, 1, top);
-    input2_ = new ui::param_spinbox_t( *this, 2, top);
+    input0_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 0, top);
+    input1_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 1, top);
+    input2_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 2, top);
 
     if( is_rgba())
-        input3_ = new ui::param_spinbox_t(*this, 3, top);
+        input3_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 3, top);
 
     QSize s = input0_->sizeHint();
 
@@ -259,9 +262,9 @@ QWidget *color_param_t::do_create_widgets()
 
     button_->move( xpos, 0);
     button_->resize( s.height(), s.height());
-    button_->set_value( ui::color_t( std::pow( (double) col.r, 1.0 / 2.2),
-                                      std::pow( (double) col.g, 1.0 / 2.2),
-                                        std::pow( (double) col.b, 1.0 / 2.2)));
+    button_->set_value( ui::color_t( math::cmath<double>::pow( col.r, 1.0 / 2.2),
+                                     math::cmath<double>::pow( col.g, 1.0 / 2.2),
+                                     math::cmath<double>::pow( col.b, 1.0 / 2.2)));
 
     button_->setEnabled( enabled());
     connect( button_, SIGNAL( pressed()), this, SLOT( color_button_pressed()));
@@ -286,9 +289,9 @@ QWidget *color_param_t::do_create_widgets()
     input0_->setEnabled( enabled());
     connect( input0_, SIGNAL( valueChanged(double)), button_, SLOT( set_red(double)));
     connect( input0_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input0_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input0_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input0_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input0_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input0_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input0_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += s.width() + 3;
 
     input1_->move( xpos, 0);
@@ -300,9 +303,9 @@ QWidget *color_param_t::do_create_widgets()
     input1_->setEnabled( enabled());
     connect( input1_, SIGNAL( valueChanged(double)), button_, SLOT( set_green(double)));
     connect( input1_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input1_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input1_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input1_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input1_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input1_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input1_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += s.width() + 3;
 
     input2_->move( xpos, 0);
@@ -314,23 +317,24 @@ QWidget *color_param_t::do_create_widgets()
     input2_->setEnabled( enabled());
     connect( input2_, SIGNAL( valueChanged(double)), button_, SLOT( set_blue(double)));
     connect( input2_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input2_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input2_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input2_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input2_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input2_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input2_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += s.width() + 3;
 
     if( is_rgba())
     {
         input3_->move( xpos, 0);
         input3_->resize( s.width(), s.height());
+        input3_->setDecimals( 4);
         input3_->setValue( col.a);
         input3_->setRange( 0, 1);
         input3_->setSingleStep( step());
         input3_->setEnabled( enabled());
         connect( input3_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-        connect( input3_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-        connect( input3_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-        connect( input3_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+        //connect( input3_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+        //connect( input3_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+        //connect( input3_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
         xpos += s.width() + 3;
     }
 

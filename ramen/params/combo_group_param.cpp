@@ -21,7 +21,7 @@
 #include<ramen/params/static_param_command.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {

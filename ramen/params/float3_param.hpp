@@ -11,7 +11,7 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/param_spinbox_fwd.hpp>
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -57,7 +57,7 @@ private:
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
 
-    QPointer<ui::param_spinbox_t> input0_, input1_, input2_;
+    QPointer<QDoubleSpinBox> input0_, input1_, input2_;
 
 private Q_SLOTS:
 

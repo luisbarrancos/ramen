@@ -43,8 +43,10 @@
 
 #include<ramen/render/render_sequence.hpp>
 
+#include<ramen/qwidgets/time_slider.hpp>
+
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 #include<ramen/ui/add_node_command.hpp>
 #include<ramen/ui/edit_commands.hpp>
 #include<ramen/ui/time_controls.hpp>
@@ -53,7 +55,6 @@
 #include<ramen/ui/compview/composition_view.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/render_composition.hpp>
-#include<ramen/ui/widgets/time_slider.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
 #include<ramen/ui/dialogs/preferences_dialog.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
@@ -155,11 +156,11 @@ QToolBar *main_window_t::create_time_toolbar()
     toolbar->setFloatable( false);
     toolbar->setMovable( false);
 
-    time_slider_ = new time_slider_t();
+    time_slider_ = new qwidgets::time_slider_t();
     time_slider_->setSizePolicy( QSizePolicy::Expanding, time_slider_->sizePolicy().verticalPolicy());
     connect( time_slider_, SIGNAL( start_frame_changed( int)), app().ui(), SLOT( set_start_frame( int)));
     connect( time_slider_, SIGNAL( end_frame_changed( int)), app().ui(), SLOT( set_end_frame( int)));
-    connect( time_slider_, SIGNAL( time_changed( int)), app().ui(), SLOT( set_frame( int)));
+    connect( time_slider_, SIGNAL( frame_changed( double)), app().ui(), SLOT( set_frame( double)));
 
     toolbar->addWidget( time_slider_);
     toolbar->addSeparator();

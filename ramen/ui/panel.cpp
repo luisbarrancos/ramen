@@ -2,13 +2,13 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/inspector/panel.hpp>
+#include<ramen/ui/panel.hpp>
 
 #include<boost/foreach.hpp>
 
 #include<QVBoxLayout>
 
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 
 #include<ramen/nodes/node.hpp>
 #include<ramen/ui/user_interface.hpp>

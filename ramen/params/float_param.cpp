@@ -9,6 +9,7 @@
 #include<boost/bind.hpp>
 
 #include<QLabel>
+#include<QDoubleSpinBox>
 
 #include<ramen/app/application.hpp>
 
@@ -18,13 +19,16 @@
 #include<ramen/ui/viewer.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/param_spinbox.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
 
-float_param_t::float_param_t() : numeric_param_t() { private_init();}
+float_param_t::float_param_t() : numeric_param_t()
+{
+    private_init();
+}
+
 float_param_t::float_param_t( const float_param_t& other) : numeric_param_t( other)
 {
     input_ = 0;
@@ -179,7 +183,7 @@ QWidget *float_param_t::do_create_widgets()
 {
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
-    input_ = new ui::param_spinbox_t( *this, 0, top);
+    input_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 0, top);
 
     QSize s = input_->sizeHint();
 
@@ -205,9 +209,9 @@ QWidget *float_param_t::do_create_widgets()
         input_->setDecimals( 0);
 
     connect( input_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
 
     top->setMinimumSize( app().ui()->inspector().width(), s.height());
     top->setMaximumSize( app().ui()->inspector().width(), s.height());

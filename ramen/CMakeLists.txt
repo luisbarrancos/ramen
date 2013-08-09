@@ -47,15 +47,21 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/string_param.hpp
                         params/tab_group_param.hpp
 
-                        ui/anim/anim_curves_view.hpp
-                        ui/anim/anim_editor.hpp
-                        ui/anim/track_model.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/label_separator.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_scale.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.hpp
 
                         ui/image_view.hpp
+                        ui/inspector.hpp
                         ui/main_window.hpp
+                        ui/panel.hpp
                         ui/time_controls.hpp
                         ui/user_interface.hpp
                         ui/viewer.hpp
+
+                        ui/anim/anim_curves_view.hpp
+                        ui/anim/anim_editor.hpp
+                        ui/anim/track_model.hpp
                         ui/anim/anim_editor_toolbar.hpp
                         ui/compview/composition_view.hpp
                         ui/compview/composition_view_toolbar.hpp
@@ -63,29 +69,18 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/dialogs/preferences_dialog.hpp
                         ui/dialogs/render_composition_dialog.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
-                        ui/inspector/inspector.hpp
-                        ui/inspector/panel.hpp
                         ui/widgets/color_button.hpp
                         ui/widgets/color_picker.hpp
                         ui/widgets/color_swatch.hpp
                         ui/widgets/exposure_picker.hpp
                         ui/widgets/hue_picker.hpp
                         ui/widgets/saturation_value_picker.hpp
-                        ui/widgets/double_spinbox.hpp
                         ui/widgets/eyedropper_button.hpp
-                        ui/widgets/group_box.hpp
-                        ui/widgets/label_separator.hpp
-                        ui/widgets/line_edit.hpp
                         ui/widgets/image_format_widget.hpp
                         ui/widgets/ocio_colorspace_combo.hpp
                         ui/widgets/ocio_combo.hpp
                         ui/widgets/ocio_display_combo.hpp
-                        ui/widgets/ocio_display_widget.hpp
                         ui/widgets/ocio_view_combo.hpp
-                        ui/widgets/param_spinbox.hpp
-                        ui/widgets/spinbox.hpp
-                        ui/widgets/text_edit.hpp
-                        ui/widgets/time_slider.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -212,7 +207,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         params/float3_param.cpp
                         params/group_param.cpp
                         params/image_format_param.cpp
-                        #params/inspector_param.cpp
                         params/motion_blur_info.cpp
                         params/motion_blur_param.cpp
                         params/numeric_param.cpp
@@ -243,6 +237,12 @@ SET( RAMEN_SOURCES      assert.hpp
                         system/system.hpp
                         system/system.cpp
 
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/label_separator.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_scale.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider_fwd.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.cpp
+
                         ui/add_node_command.cpp
                         ui/edit_commands.cpp
                         ui/events_fwd.hpp
@@ -253,9 +253,16 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/image_view_fwd.hpp
                         ui/image_view.hpp
                         ui/image_view.cpp
+                        ui/inspector_fwd.hpp
+                        ui/inspector.hpp
+                        ui/inspector.cpp
                         ui/main_window.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
+                        ui/panel_fwd.hpp
+                        ui/panel.hpp
+                        ui/panel.cpp
+                        ui/panel_factory.cpp
                         ui/render_composition.cpp
                         ui/time_controls.cpp
                         ui/user_interface_fwd.hpp
@@ -292,10 +299,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/dialogs/smooth_anim_curves_dialog.cpp
                         ui/dialogs/splash_screen.cpp
 
-                        ui/inspector/inspector.cpp
-                        ui/inspector/panel.cpp
-                        ui/inspector/panel_factory.cpp
-
                         ui/widgets/color.cpp
                         ui/widgets/color_button.cpp
                         ui/widgets/color_picker.cpp
@@ -303,23 +306,13 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/exposure_picker.cpp
                         ui/widgets/hue_picker.cpp
                         ui/widgets/saturation_value_picker.cpp
-                        ui/widgets/double_spinbox.cpp
                         ui/widgets/eyedropper_button.cpp
                         ui/widgets/image_format_widget.cpp
-                        ui/widgets/group_box.cpp
-                        ui/widgets/label_separator.cpp
-                        ui/widgets/line_edit.cpp
 
                         ui/widgets/ocio_colorspace_combo.cpp
                         ui/widgets/ocio_combo.cpp
                         ui/widgets/ocio_display_combo.cpp
-                        ui/widgets/ocio_display_widget.cpp
                         ui/widgets/ocio_view_combo.cpp
-
-                        ui/widgets/param_spinbox.cpp
-                        ui/widgets/spinbox.cpp
-                        ui/widgets/text_edit.cpp
-                        ui/widgets/time_slider.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp

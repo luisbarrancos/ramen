@@ -6,15 +6,14 @@
 
 #include<QLabel>
 #include<QComboBox>
+#include<QDoubleSpinBox>
 
 #include<ramen/app/application.hpp>
 
 #include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/spinbox.hpp>
-#include<ramen/ui/widgets/double_spinbox.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -97,10 +96,10 @@ QWidget *image_format_param_t::do_create_widgets()
     connect( menu_, SIGNAL( currentIndexChanged( int)), this, SLOT( preset_picked(int)));
     int h = s.height() + 5;
 
-    width_input_ = new ui::double_spinbox_t( top);
+    width_input_ = new QDoubleSpinBox( top);
     width_input_->setRange( 16, app().preferences().max_image_width());
     width_input_->setDecimals( 0);
-    width_input_->setTrackMouse( false);
+    //width_input_->setTrackMouse( false);
     width_input_->setValue( value().cast<image::format_t>().width);
     width_input_->move( app().ui()->inspector().left_margin(), h);
     width_input_->setMinimum( 16);
@@ -109,20 +108,20 @@ QWidget *image_format_param_t::do_create_widgets()
     connect( width_input_, SIGNAL( valueChanged( double)), this, SLOT( set_new_format( double)));
     s = width_input_->sizeHint();
 
-    height_input_ = new ui::double_spinbox_t( top);
+    height_input_ = new QDoubleSpinBox( top);
     height_input_->setRange( 16, app().preferences().max_image_height());
     height_input_->setDecimals( 0);
     height_input_->setValue( value().cast<image::format_t>().height);
-    height_input_->setTrackMouse( false);
+    //height_input_->setTrackMouse( false);
     height_input_->setEnabled( enabled());
     height_input_->move( app().ui()->inspector().left_margin() + s.width() + 5, h);
     height_input_->setMinimum( 16);
     height_input_->setValue( format.height);
     connect( height_input_, SIGNAL( valueChanged( double)), this, SLOT( set_new_format(double)));
 
-    aspect_input_ = new ui::double_spinbox_t( top);
+    aspect_input_ = new QDoubleSpinBox( top);
     aspect_input_->setValue( 1);
-    aspect_input_->setTrackMouse( false);
+    //aspect_input_->setTrackMouse( false);
     aspect_input_->setEnabled( enabled());
     aspect_input_->setValue( format.aspect);
     aspect_input_->setDecimals( 3);

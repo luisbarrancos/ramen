@@ -11,9 +11,8 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/double_spinbox_fwd.hpp>
-
 class QComboBox;
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -47,7 +46,7 @@ private:
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
 
-    QPointer<ui::double_spinbox_t> width_input_, height_input_, aspect_input_;
+    QPointer<QDoubleSpinBox> width_input_, height_input_, aspect_input_;
     QPointer<QComboBox> menu_;
 
 private Q_SLOTS:

@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 
 #include<boost/bind.hpp>
 
@@ -15,6 +15,8 @@
 #include<QPushButton>
 #include<QMessageBox>
 #include<QStackedWidget>
+#include<QDoubleSpinBox>
+#include<QLineEdit>
 
 #include<ramen/nodes/node.hpp>
 
@@ -26,10 +28,8 @@
 #include<ramen/string_algo/valid_c_identifier.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/panel.hpp>
+#include<ramen/ui/panel.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/widgets/double_spinbox.hpp>
-#include<ramen/ui/widgets/line_edit.hpp>
 
 #include<ramen/util/string.hpp>
 
@@ -46,7 +46,7 @@ public:
 
     rename_node_command_t( node_t *n,
                            const core::string8_t& new_name,
-                           ui::line_edit_t *name_edit) : undo::command_t( "Rename Node")
+                           QLineEdit *name_edit) : undo::command_t( "Rename Node")
     {
         n_ = n;
         old_name_ = n_->name();
@@ -88,7 +88,7 @@ private:
     core::string8_t new_name_;
     core::string8_t old_name_;
 
-    ui::line_edit_t *name_edit_;
+    QLineEdit *name_edit_;
 };
 
 } // unnamed
@@ -158,7 +158,7 @@ int inspector_t::width() const
 {
     if( !width_)
     {
-        double_spinbox_t *tmp = new double_spinbox_t();
+        QDoubleSpinBox *tmp = new QDoubleSpinBox();
         QSize s = tmp->sizeHint();
         delete tmp;
 
@@ -172,7 +172,7 @@ void inspector_t::create_header()
 {
     header_ = new QWidget();
 
-    name_edit_ = new ui::line_edit_t( header_);
+    name_edit_ = new QLineEdit( header_);
 
     help_ = new QPushButton( header_);
     help_->setText( "Help");

@@ -9,7 +9,7 @@
 #include<ramen/app/application.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {

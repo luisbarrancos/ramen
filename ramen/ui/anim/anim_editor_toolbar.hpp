@@ -11,13 +11,13 @@
 #ifndef QT_MOC_RUN
     #include<ramen/ui/anim/anim_editor_toolbar_fwd.hpp>
     #include<ramen/ui/anim/anim_editor_tool.hpp>
-    #include<ramen/ui/widgets/double_spinbox_fwd.hpp>
     #include<ramen/ui/anim/drag_keys_command.hpp>
 #endif
 
 class QButtonGroup;
 class QToolButton;
 class QPushButton;
+class QDoubleSpinBox;
 class QMenu;
 class QAction;
 
@@ -69,7 +69,7 @@ private:
     QToolButton *linear_tangents_;
     QToolButton *step_tangents_;
 
-    double_spinbox_t *time_, *val_;
+    QDoubleSpinBox *time_, *val_;
 
     QPushButton *ops_button_;
     QMenu *ops_menu_;

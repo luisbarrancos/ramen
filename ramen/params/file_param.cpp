@@ -12,6 +12,7 @@
 #include<QHBoxLayout>
 #include<QCheckBox>
 #include<QLabel>
+#include<QLineEdit>
 
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
@@ -19,8 +20,7 @@
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/line_edit.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -196,7 +196,7 @@ QWidget *file_param_t::do_create_widgets()
 {
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
-    input_ = new ui::line_edit_t( top);
+    input_ = new QLineEdit( top);
     button_ = new QPushButton( top);
 
     QSize s = input_->sizeHint();

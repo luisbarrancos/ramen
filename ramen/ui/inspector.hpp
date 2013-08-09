@@ -5,17 +5,18 @@
 #ifndef RAMEN_UI_INSPECTOR_HPP
 #define	RAMEN_UI_INSPECTOR_HPP
 
-#include<ramen/ui/inspector/inspector_fwd.hpp>
+#include<ramen/ui/inspector_fwd.hpp>
+
+#include<QObject>
 
 #include<ramen/nodes/node_fwd.hpp>
 
-#include<ramen/ui/inspector/panel_factory.hpp>
-
-#include<ramen/ui/widgets/line_edit.hpp>
+#include<ramen/ui/panel_factory.hpp>
 
 class QScrollArea;
 class QPushButton;
 class QStackedWidget;
+class QLineEdit;
 
 namespace ramen
 {
@@ -70,7 +71,7 @@ private:
     QScrollArea *scroll_;
 
     QWidget *header_;
-    ui::line_edit_t *name_edit_;
+    QLineEdit *name_edit_;
     QPushButton *help_;
     QStackedWidget *view_;
     panel_factory_t factory_;

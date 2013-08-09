@@ -12,6 +12,7 @@
 #include<QFrame>
 #include<QLabel>
 #include<QPushButton>
+#include<QDoubleSpinBox>
 #include<QMenu>
 #include<QAction>
 
@@ -23,8 +24,6 @@
 #include<ramen/nodes/node_fwd.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-
-#include<ramen/ui/widgets/double_spinbox.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/anim/anim_curves_view.hpp>
@@ -113,27 +112,27 @@ anim_editor_toolbar_t::anim_editor_toolbar_t( QWidget* parent) : QWidget( parent
     QLabel *label = new QLabel( "Time");
     layout->addWidget( label);
 
-    time_ = new double_spinbox_t();
+    time_ = new QDoubleSpinBox();
     time_->setEnabled( false);
-    QSize size = time_->sizeHint();
-    time_->setMaximumSize( size);
-    time_->resize( time_->sizeHint());
+    //QSize size = time_->sizeHint();
+    //time_->setMaximumSize( size);
+    //time_->resize( time_->sizeHint());
     connect( time_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( time_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( time_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( time_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( time_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( time_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( time_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     layout->addWidget( time_);
 
     label = new QLabel( "Value");
     layout->addWidget( label);
 
-    val_ = new double_spinbox_t();
-    val_->setMaximumSize( size);
-    val_->setEnabled( false);
+    val_ = new QDoubleSpinBox();
+    //val_->setMaximumSize( size);
+    //val_->setEnabled( false);
     connect( val_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( val_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( val_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( val_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( val_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( val_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( val_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     layout->addWidget( val_);
 
     separator = new QFrame();

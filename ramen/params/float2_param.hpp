@@ -11,7 +11,7 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/param_spinbox_fwd.hpp>
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -69,7 +69,7 @@ private:
     void calc_proportional_factors();
     void set_component_value_from_slot();
 
-    QPointer<ui::param_spinbox_t> input0_, input1_;
+    QPointer<QDoubleSpinBox> input0_, input1_;
 
 private Q_SLOTS:
 

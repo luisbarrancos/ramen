@@ -20,17 +20,17 @@
 #include<ramen/core/memory.hpp>
 #include<ramen/core/name.hpp>
 
+#include<ramen/qwidgets/time_slider_fwd.hpp>
+
 #include<ramen/ui/node_menu.hpp>
 #include<ramen/ui/compview/composition_view_fwd.hpp>
 #include<ramen/ui/time_controls_fwd.hpp>
-#include<ramen/ui/widgets/time_slider_fwd.hpp>
 
 class QAction;
 class QMenu;
 class QMenuBar;
 class QDockWidget;
 class QToolBar;
-class QrTimeSlider;
 
 namespace ramen
 {
@@ -55,8 +55,8 @@ public:
     const composition_view_t& composition_view() const  { return *comp_view_;}
     composition_view_t& composition_view()              { return *comp_view_;}
 
-    const time_slider_t& time_slider() const    { return *time_slider_;}
-    time_slider_t& time_slider()                { return *time_slider_;}
+    const qwidgets::time_slider_t& time_slider() const    { return *time_slider_;}
+    qwidgets::time_slider_t& time_slider()                { return *time_slider_;}
 
     const time_controls_t& time_controls() const    { return *time_controls_;}
     time_controls_t& time_controls()                { return *time_controls_;}
@@ -128,7 +128,7 @@ private:
     static const char *document_extension();
     static const char *file_dialog_extension();
 
-    time_slider_t *time_slider_;
+    qwidgets::time_slider_t *time_slider_;
     composition_view_t *comp_view_;
     core::auto_ptr_t<time_controls_t> time_controls_;
 

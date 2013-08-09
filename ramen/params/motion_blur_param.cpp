@@ -6,14 +6,14 @@
 
 #include<QComboBox>
 #include<QLabel>
+#include<QDoubleSpinBox>
 
 #include<ramen/app/application.hpp>
 
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/double_spinbox.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -81,7 +81,7 @@ QWidget *motion_blur_param_t::do_create_widgets()
 
     QWidget *top = new QWidget();
 
-    shutter_ = new ui::double_spinbox_t( top);
+    shutter_ = new QDoubleSpinBox( top);
     shutter_->setRange( 0, 1);
     shutter_->setSingleStep( 0.05);
 
@@ -95,9 +95,9 @@ QWidget *motion_blur_param_t::do_create_widgets()
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
     label->setText( "Motion Blur Samples");
 
-    samples_ = new ui::double_spinbox_t( top);
+    samples_ = new QDoubleSpinBox( top);
     samples_->setDecimals( 0);
-    samples_->setTrackMouse( false);
+    //samples_->setTrackMouse( false);
     samples_->setRange( 1, 64);
     samples_->setValue( info.samples);
     samples_->move( app().ui()->inspector().left_margin(), h);
@@ -112,7 +112,7 @@ QWidget *motion_blur_param_t::do_create_widgets()
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
     label->setText( "Shutter");
 
-    shutter_->setTrackMouse( false);
+    //shutter_->setTrackMouse( false);
     shutter_->setValue( info.shutter);
     shutter_->move( app().ui()->inspector().left_margin(), h);
     shutter_->resize( s.width(), s.height());
@@ -126,8 +126,8 @@ QWidget *motion_blur_param_t::do_create_widgets()
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
     label->setText( "Shutter Offset");
 
-    shutter_off_ = new ui::double_spinbox_t( top);
-    shutter_off_->setTrackMouse( false);
+    shutter_off_ = new QDoubleSpinBox( top);
+    //shutter_off_->setTrackMouse( false);
     shutter_off_->setRange( -1, 1);
     shutter_off_->setValue( info.shutter_offset);
     shutter_off_->setSingleStep( 0.05);

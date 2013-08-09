@@ -31,7 +31,7 @@
     #include<ramen/ui/viewer_fwd.hpp>
 
     #include<ramen/ui/main_window_fwd.hpp>
-    #include<ramen/ui/inspector/inspector_fwd.hpp>
+    #include<ramen/ui/inspector_fwd.hpp>
     #include<ramen/ui/anim/anim_editor_fwd.hpp>
 #endif
 
@@ -138,7 +138,7 @@ public Q_SLOTS:
 
     void set_start_frame( int t);
     void set_end_frame( int t);
-    void set_frame( int t);
+    void set_frame( double t);
 
 private:
 

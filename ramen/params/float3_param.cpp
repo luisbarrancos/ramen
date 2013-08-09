@@ -9,6 +9,7 @@
 #include<boost/bind.hpp>
 
 #include<QLabel>
+#include<QDoubleSpinBox>
 
 #include<ramen/algorithm/clamp.hpp>
 
@@ -21,13 +22,15 @@
 #include<ramen/ui/viewer.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/param_spinbox.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
 
-float3_param_t::float3_param_t() : proportional_param_t() { private_init();}
+float3_param_t::float3_param_t() : proportional_param_t()
+{
+    private_init();
+}
 
 float3_param_t::float3_param_t( const float3_param_t& other) : proportional_param_t( other)
 {
@@ -225,9 +228,9 @@ QWidget *float3_param_t::do_create_widgets()
 {
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
-    input0_ = new ui::param_spinbox_t( *this, 0, top);
-    input1_ = new ui::param_spinbox_t( *this, 1, top);
-    input2_ = new ui::param_spinbox_t( *this, 2, top);
+    input0_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 0, top);
+    input1_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 1, top);
+    input2_ = new QDoubleSpinBox( top); // ui::param_spinbox_t( *this, 2, top);
 
     QSize s = input0_->sizeHint();
 
@@ -239,7 +242,7 @@ QWidget *float3_param_t::do_create_widgets()
     math::vector3f_t triple = get_value<math::vector3f_t>( *this);
 
     // make inputs bigger
-    s.setWidth( s.width() + ( s.width() / 4));
+    //s.setWidth( s.width() + ( s.width() / 4));
 
     int xpos = app().ui()->inspector().left_margin();
 
@@ -249,11 +252,12 @@ QWidget *float3_param_t::do_create_widgets()
     input0_->setSingleStep( step());
     input0_->setValue( triple.x);
     input0_->setEnabled( enabled());
-    if( round_to_int()) input0_->setDecimals( 0);
+    if( round_to_int())
+      input0_->setDecimals( 0);
     connect( input0_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input0_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input0_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input0_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input0_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input0_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input0_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += ( s.width() + 5);
 
     input1_->move( xpos, 0);
@@ -262,11 +266,12 @@ QWidget *float3_param_t::do_create_widgets()
     input1_->setSingleStep( step());
     input1_->setValue( triple.y);
     input1_->setEnabled( enabled());
-    if( round_to_int())	input1_->setDecimals( 0);
+    if( round_to_int())
+      input1_->setDecimals( 0);
     connect( input1_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input1_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input1_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input1_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input1_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input1_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input1_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += ( s.width() + 5);
 
     input2_->move( xpos, 0);
@@ -275,11 +280,12 @@ QWidget *float3_param_t::do_create_widgets()
     input2_->setSingleStep( step());
     input2_->setValue( triple.z);
     input2_->setEnabled( enabled());
-    if( round_to_int()) input2_->setDecimals( 0);
+    if( round_to_int())
+      input2_->setDecimals( 0);
     connect( input2_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
-    connect( input2_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
-    connect( input2_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
-    connect( input2_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
+    //connect( input2_, SIGNAL( spinBoxPressed()), this, SLOT( spinbox_pressed()));
+    //connect( input2_, SIGNAL( spinBoxDragged( double)), this, SLOT( spinbox_dragged( double)));
+    //connect( input2_, SIGNAL( spinBoxReleased()), this, SLOT( spinbox_released()));
     xpos += ( s.width() + 2);
 
     if( proportional())

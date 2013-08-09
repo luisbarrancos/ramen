@@ -5,6 +5,7 @@
 #include<ramen/params/aspect_ratio_param.hpp>
 
 #include<QComboBox>
+#include<QDoubleSpinBox>
 #include<QLabel>
 
 #include<ramen/app/application.hpp>
@@ -12,9 +13,7 @@
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/double_spinbox.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -135,7 +134,7 @@ QWidget *aspect_ratio_param_t::do_create_widgets()
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
     menu_ = new QComboBox( top);
-    input_ = new ui::double_spinbox_t( top);
+    input_ = new QDoubleSpinBox( top);
 
     QSize s = input_->sizeHint();
 
@@ -149,9 +148,9 @@ QWidget *aspect_ratio_param_t::do_create_widgets()
     float val = get_value<float>( *this);
     input_->setValue( val);
     input_->setEnabled( enabled());
-    input_->setDecimals( 3);
     input_->setMinimum( 0.1);
-    input_->setTrackMouse( false);
+    input_->setDecimals( 3);
+    //input_->setTrackMouse( false);
     connect( input_, SIGNAL( valueChanged( double)), this, SLOT( value_changed( double)));
 
     menu_->setFocusPolicy( Qt::NoFocus);

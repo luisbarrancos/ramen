@@ -9,8 +9,8 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/line_edit_fwd.hpp>
-#include<ramen/ui/widgets/text_edit_fwd.hpp>
+class QLineEdit;
+class QPlainTextEdit;
 
 namespace ramen
 {
@@ -50,8 +50,8 @@ private:
     virtual void do_update_widgets();
     virtual void do_enable_widgets( bool e);
 
-    QPointer<ui::line_edit_t> input_;
-    QPointer<ui::text_edit_t> multi_input_;
+    QPointer<QLineEdit> input_;
+    QPointer<QPlainTextEdit> multi_input_;
     bool read_only_;
     bool multiline_;
 
@@ -60,6 +60,6 @@ private Q_SLOTS:
     void text_changed();
 };
 
-} // namespace
+} // ramen
 
 #endif

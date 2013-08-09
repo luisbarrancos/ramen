@@ -39,8 +39,6 @@
 
 #include<ramen/hash/generator.hpp>
 
-#include<ramen/ui/widgets/param_spinbox_fwd.hpp>
-
 class QWidget;
 
 namespace ramen

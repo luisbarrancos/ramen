@@ -5,7 +5,7 @@
 #ifndef RAMEN_UI_PANEL_HPP
 #define	RAMEN_UI_PANEL_HPP
 
-#include<ramen/ui/inspector/panel_fwd.hpp>
+#include<ramen/ui/panel_fwd.hpp>
 
 #include<boost/signals2/connection.hpp>
 

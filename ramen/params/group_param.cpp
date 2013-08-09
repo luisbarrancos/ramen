@@ -10,8 +10,7 @@
 #include<ramen/app/application.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/group_box.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -22,15 +21,10 @@ group_param_t::group_param_t( const group_param_t& other) : composite_param_t( o
 
 QWidget *group_param_t::do_create_widgets()
 {
-    if( can_collapse_)
-        group_ = new ui::group_box_t();
-    else
-        group_ = new QGroupBox();
-
+    group_ = new QGroupBox();
     group_->setTitle( name().c_str());
     group_->setAlignment( Qt::AlignLeft);
     create_widgets_inside_widget( group_);
-
     group_->setMinimumSize( app().ui()->inspector().width(), 20);
     return group_;
 }

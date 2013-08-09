@@ -9,9 +9,8 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/line_edit_fwd.hpp>
-
 class QPushButton;
+class QLineEdit;
 
 namespace ramen
 {
@@ -68,7 +67,7 @@ private:
 
     bool is_input_;
 
-    QPointer<ui::line_edit_t> input_;
+    QPointer<QLineEdit> input_;
     QPointer<QPushButton> button_;
 
     core::string8_t ext_list_string_;
@@ -79,6 +78,6 @@ private Q_SLOTS:
     void text_changed();
 };
 
-} // namespace
+} // ramen
 
 #endif

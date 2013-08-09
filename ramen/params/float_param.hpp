@@ -9,7 +9,7 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/param_spinbox_fwd.hpp>
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -60,7 +60,7 @@ private:
 
     virtual QWidget *do_create_widgets();
 
-    QPointer<ui::param_spinbox_t> input_;
+    QPointer<QDoubleSpinBox> input_;
 
 private Q_SLOTS:
 
@@ -70,6 +70,6 @@ private Q_SLOTS:
     void spinbox_released();
 };
 
-} // namespace
+} // ramen
 
 #endif

@@ -12,9 +12,8 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/double_spinbox_fwd.hpp>
-
 class QComboBox;
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -61,7 +60,7 @@ private:
     virtual QWidget *do_create_widgets();
 
     QPointer<QComboBox> menu_;
-    QPointer<ui::double_spinbox_t> input_;
+    QPointer<QDoubleSpinBox> input_;
 
 private Q_SLOTS:
 
@@ -69,6 +68,6 @@ private Q_SLOTS:
     void value_changed( double value);
 };
 
-} // namespace
+} // ramen
 
 #endif

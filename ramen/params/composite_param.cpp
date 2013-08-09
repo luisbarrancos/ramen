@@ -20,7 +20,7 @@
 
 #include<ramen/anim/track.hpp>
 
-#include<ramen/ui/inspector/inspector.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {

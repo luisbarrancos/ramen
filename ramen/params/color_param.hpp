@@ -13,9 +13,10 @@
 #include<QToolButton>
 
 #include<ramen/ui/widgets/color.hpp>
-#include<ramen/ui/widgets/param_spinbox_fwd.hpp>
 #include<ramen/ui/widgets/color_button_fwd.hpp>
 #include<ramen/ui/widgets/eyedropper_button_fwd.hpp>
+
+class QDoubleSpinBox;
 
 namespace ramen
 {
@@ -67,7 +68,7 @@ private:
 
     void set_component_value_from_slot();
 
-   QPointer<ui::param_spinbox_t> input0_, input1_, input2_, input3_;
+   QPointer<QDoubleSpinBox> input0_, input1_, input2_, input3_;
    QPointer<ui::color_button_t> button_;
    QPointer<ui::eyedropper_button_t> eyedropper_;
 
@@ -81,6 +82,6 @@ private Q_SLOTS:
     void color_button_pressed();
 };
 
-} // namespace
+} // ramen
 
 #endif

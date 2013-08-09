@@ -7,13 +7,13 @@
 #include<ramen/nodes/node.hpp>
 
 #include<QLabel>
+#include<QLineEdit>
+#include<QPlainTextEdit>
 
 #include<ramen/app/application.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/widgets/line_edit.hpp>
-#include<ramen/ui/widgets/text_edit.hpp>
+#include<ramen/ui/inspector.hpp>
 
 namespace ramen
 {
@@ -83,7 +83,7 @@ QWidget *string_param_t::do_create_widgets()
 {
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
-    ui::line_edit_t *tmp = new ui::line_edit_t();
+    QLineEdit *tmp = new QLineEdit();
     QSize s = tmp->sizeHint();
     delete tmp;
 
@@ -98,7 +98,7 @@ QWidget *string_param_t::do_create_widgets()
 
     if( multiline())
     {
-        multi_input_ = new ui::text_edit_t( top);
+        multi_input_ = new QPlainTextEdit( top);
         multi_input_->setReadOnly( read_only_);
         multi_input_->move( app().ui()->inspector().left_margin(), 0);
         multi_input_->resize( app().ui()->inspector().width() - app().ui()->inspector().left_margin() - 10, s.height() * 7);
@@ -109,7 +109,7 @@ QWidget *string_param_t::do_create_widgets()
     }
     else
     {
-        input_ = new ui::line_edit_t( top);
+        input_ = new QLineEdit( top);
         input_->setReadOnly( read_only_);
         input_->move( app().ui()->inspector().left_margin(), 0);
         input_->resize( app().ui()->inspector().width() - app().ui()->inspector().left_margin() - 10, s.height());
