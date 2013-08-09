@@ -51,9 +51,11 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/anim/anim_editor.hpp
                         ui/anim/track_model.hpp
 
+                        ui/image_view.hpp
                         ui/main_window.hpp
                         ui/time_controls.hpp
                         ui/user_interface.hpp
+                        ui/viewer.hpp
                         ui/anim/anim_editor_toolbar.hpp
                         ui/compview/composition_view.hpp
                         ui/compview/composition_view_toolbar.hpp
@@ -63,14 +65,12 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
                         ui/inspector/inspector.hpp
                         ui/inspector/panel.hpp
-                        ui/viewer/viewer.hpp
                         ui/widgets/color_button.hpp
                         ui/widgets/color_picker.hpp
                         ui/widgets/color_swatch.hpp
                         ui/widgets/exposure_picker.hpp
                         ui/widgets/hue_picker.hpp
                         ui/widgets/saturation_value_picker.hpp
-                        ui/widgets/container_widget.hpp
                         ui/widgets/double_spinbox.hpp
                         ui/widgets/eyedropper_button.hpp
                         ui/widgets/group_box.hpp
@@ -250,8 +250,9 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/events.cpp
                         ui/events_util.hpp
                         ui/events_util.cpp
-                        ui/image2.hpp
-                        ui/image2.cpp
+                        ui/image_view_fwd.hpp
+                        ui/image_view.hpp
+                        ui/image_view.cpp
                         ui/main_window.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
@@ -260,6 +261,10 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/user_interface_fwd.hpp
                         ui/user_interface.hpp
                         ui/user_interface.cpp
+
+                        ui/viewer_fwd.hpp
+                        ui/viewer.hpp
+                        ui/viewer.cpp
 
                         ui/anim/anim_curves_view.cpp
                         ui/anim/anim_editor.cpp
@@ -291,8 +296,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/inspector/panel.cpp
                         ui/inspector/panel_factory.cpp
 
-                        ui/viewer/viewer.cpp
-
                         ui/widgets/color.cpp
                         ui/widgets/color_button.cpp
                         ui/widgets/color_picker.cpp
@@ -300,7 +303,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/exposure_picker.cpp
                         ui/widgets/hue_picker.cpp
                         ui/widgets/saturation_value_picker.cpp
-                        ui/widgets/container_widget.cpp
                         ui/widgets/double_spinbox.cpp
                         ui/widgets/eyedropper_button.cpp
                         ui/widgets/image_format_widget.cpp

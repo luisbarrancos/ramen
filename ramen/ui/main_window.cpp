@@ -48,8 +48,9 @@
 #include<ramen/ui/add_node_command.hpp>
 #include<ramen/ui/edit_commands.hpp>
 #include<ramen/ui/time_controls.hpp>
+#include<ramen/ui/viewer.hpp>
+
 #include<ramen/ui/compview/composition_view.hpp>
-#include<ramen/ui/viewer/viewer.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/render_composition.hpp>
 #include<ramen/ui/widgets/time_slider.hpp>
@@ -125,7 +126,7 @@ main_window_t::main_window_t() : QMainWindow()
     }
 
     // image view
-    setCentralWidget( app().ui()->viewer().widget() );
+    setCentralWidget( &( app().ui()->viewer()));
 
     // time toolbar
     addToolBar( Qt::BottomToolBarArea, create_time_toolbar());
@@ -163,6 +164,8 @@ QToolBar *main_window_t::create_time_toolbar()
     toolbar->addWidget( time_slider_);
     toolbar->addSeparator();
 
+    time_controls_->widget()->setSizePolicy( QSizePolicy::Fixed,
+                                             time_controls_->widget()->sizePolicy().verticalPolicy());
     toolbar->addWidget( time_controls_->widget());
     return toolbar;
 }

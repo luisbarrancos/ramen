@@ -11,11 +11,11 @@
 
 #include<ramen/ui/inspector/panel_factory.hpp>
 
-#include<ramen/ui/widgets/container_widget.hpp>
 #include<ramen/ui/widgets/line_edit.hpp>
 
 class QScrollArea;
 class QPushButton;
+class QStackedWidget;
 
 namespace ramen
 {
@@ -59,6 +59,9 @@ private:
 
     void update_header_widgets();
 
+    void clear_panel();
+    void set_panel( QWidget *panel);
+
     // metrics
     mutable int left_margin_;
     mutable int width_;
@@ -69,9 +72,7 @@ private:
     QWidget *header_;
     ui::line_edit_t *name_edit_;
     QPushButton *help_;
-
-    container_widget_t *view_;
-
+    QStackedWidget *view_;
     panel_factory_t factory_;
     panel_factory_t::iterator current_;
 };

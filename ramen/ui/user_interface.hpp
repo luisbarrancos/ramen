@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_HPP
-#define RAMEN_UI_HPP
+#ifndef RAMEN_UI_UI_HPP
+#define RAMEN_UI_UI_HPP
 
 #include<ramen/config.hpp>
 
@@ -28,8 +28,9 @@
 
     #include<ramen/render/node_renderer.hpp>
 
+    #include<ramen/ui/viewer_fwd.hpp>
+
     #include<ramen/ui/main_window_fwd.hpp>
-    #include<ramen/ui/viewer/viewer_fwd.hpp>
     #include<ramen/ui/inspector/inspector_fwd.hpp>
     #include<ramen/ui/anim/anim_editor_fwd.hpp>
 #endif

@@ -14,6 +14,7 @@
 #include<QFrame>
 #include<QPushButton>
 #include<QMessageBox>
+#include<QStackedWidget>
 
 #include<ramen/nodes/node.hpp>
 
@@ -122,14 +123,13 @@ inspector_t::inspector_t() : window_(0), left_margin_( 0), width_( 0)
     separator->setLineWidth( 1);
     layout2->addWidget( separator);
 
-    view_ = new container_widget_t();
+    view_ = new QStackedWidget();
     layout2->addWidget( view_);
     top->setLayout( layout2);
     scroll_->setWidget( top);
 
     layout->addWidget( scroll_);
     window_->setLayout( layout);
-
     current_ = factory_.end();
 }
 
@@ -209,17 +209,34 @@ void inspector_t::edit_node( node_t *n)
 
     if( current_ != factory_.end())
     {
-        view_->clear_contents();
+        clear_panel();
         current_ = factory_.end();
     }
 
     if( n != 0)
     {
         current_ = factory_.create_panel( n);
-        view_->set_contents( current_->second->widget());
+        set_panel( current_->second->widget());
     }
 
     update_header_widgets();
+}
+
+void inspector_t::clear_panel()
+{
+    if( view_->count())
+        view_->removeWidget( view_->currentWidget());
+}
+
+void inspector_t::set_panel( QWidget *panel)
+{
+    clear_panel();
+
+    if( panel)
+    {
+        view_->addWidget( panel);
+        view_->setCurrentIndex( 0);
+    }
 }
 
 void inspector_t::update()

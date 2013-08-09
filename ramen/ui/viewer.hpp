@@ -5,34 +5,20 @@
 #ifndef RAMEN_UI_VIEWER_HPP
 #define	RAMEN_UI_VIEWER_HPP
 
-#include<ramen/ui/viewer/viewer_fwd.hpp>
+#include<ramen/ui/viewer_fwd.hpp>
 
-#include<string>
-#include<vector>
-#include<map>
-
-#include<QObject>
-
-#include<map>
-
-#include<boost/function.hpp>
+#include<QWidget>
 
 #include<ramen/nodes/node_fwd.hpp>
 
-class QWidget;
-class QFrame;
-class QPushButton;
-class QComboBox;
-class QDoubleSpinBox;
-class QToolButton;
-class QLabel;
+#include<ramen/ui/image_view_fwd.hpp>
 
 namespace ramen
 {
 namespace ui
 {
 
-class viewer_t : public QObject
+class viewer_t : public QWidget
 {
     Q_OBJECT
 
@@ -40,8 +26,6 @@ public:
 
     viewer_t();
     ~viewer_t();
-
-    QWidget *widget() { return window_;}
 
     void set_active_node( node_t *n);
     void set_context_node( node_t *n);
@@ -55,7 +39,7 @@ private:
 
     void node_released( node_t *n);
 
-    QWidget *window_;
+    image_view_t *img_view_;
 };
 
 } // ui

@@ -8,9 +8,9 @@
 #include<cmath>
 
 #include<QHBoxLayout>
+#include<QDoubleSpinBox>
 #include<QSlider>
 #include<QPainter>
-
 #include<QMouseEvent>
 #include<QPaintEvent>
 
@@ -44,7 +44,7 @@ time_scale_t::time_scale_t( QWidget *parent) : QWidget( parent)
     min_value_ = 1;
     max_value_ = 100;
     value_ = 1;
-	drag_ = false;
+    drag_ = false;
 }
 
 void time_scale_t::setRange( int lo, int hi)
@@ -72,48 +72,48 @@ void time_scale_t::setValue( int v)
 
     if( value_ != new_val)
     {
-		value_ = new_val;
-		valueChanged( v);
-		update();
+        value_ = new_val;
+        valueChanged( v);
+        update();
     }
 }
 
 int time_scale_t::round_halfup( float x) const
 {
-	int result = std::floor( std::fabs( x) + 0.5);
-	return ( x < 0.0) ? -result : result;
+    int result = std::floor( std::fabs( x) + 0.5);
+    return ( x < 0.0) ? -result : result;
 }
 
 int time_scale_t::frame_from_mouse_pos( int x) const
 {
-	float f = ( float) x / width();
-	f = f * ( max_value_ - min_value_) + min_value_;
+    float f = ( float) x / width();
+    f = f * ( max_value_ - min_value_) + min_value_;
     return clamp( round_halfup( f), min_value_, max_value_);
 }
 
 void time_scale_t::mousePressEvent( QMouseEvent *event)
 {
-	if( event->button() == Qt::LeftButton)
-	{
-		drag_ = true;
-	    last_x_ = event->x();
-	    setValue( frame_from_mouse_pos( last_x_));
-	}
+    if( event->button() == Qt::LeftButton)
+    {
+        drag_ = true;
+        last_x_ = event->x();
+        setValue( frame_from_mouse_pos( last_x_));
+    }
 
-	event->accept();
+    event->accept();
 }
 
 void time_scale_t::mouseMoveEvent( QMouseEvent *event)
 {
-	if( drag_)
-	{
-	    if( last_x_ != event->x())
-			setValue( frame_from_mouse_pos( event->x()));			
+    if( drag_)
+    {
+        if( last_x_ != event->x())
+            setValue( frame_from_mouse_pos( event->x()));
 
-	    last_x_ = event->x();
-	}
+        last_x_ = event->x();
+    }
 
-	event->accept();
+    event->accept();
 }
 
 void time_scale_t::mouseReleaseEvent( QMouseEvent *event) { event->accept();}
@@ -134,9 +134,9 @@ void time_scale_t::paintEvent ( QPaintEvent *event)
     int nticks = std::floor( (double) width() / spacing);
     for( iterators::nice_numbers_t it( min_value_, max_value_, nticks), e; it != e; ++it)
     {
-		float x = *it;
-		float sx = ( x - min_value_) / ( max_value_ - min_value_) * width();
-		painter.drawLine( QPointF( sx, 2), QPointF( sx, 12));
+        float x = *it;
+        float sx = ( x - min_value_) / ( max_value_ - min_value_) * width();
+        painter.drawLine( QPointF( sx, 2), QPointF( sx, 12));
         painter.drawText( QPoint( sx, height()), QString::number( x));
     }
 
@@ -152,21 +152,20 @@ void time_scale_t::paintEvent ( QPaintEvent *event)
 
 time_slider_t::time_slider_t( QWidget *parent) : QWidget( parent)
 {
-
-    start_ = new double_spinbox_t();
-	start_->setTrackMouse( false);
+    start_ = new QDoubleSpinBox();
+    //start_->setTrackMouse( false);
     start_->setRange( -32768, 32768);
     start_->setValue( 1);
     start_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    end_ = new double_spinbox_t();
-	end_->setTrackMouse( false);
+    end_ = new QDoubleSpinBox();
+    //end_->setTrackMouse( false);
     end_->setRange( -32768, 32768);
     end_->setValue( 100);
     end_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    current_ = new double_spinbox_t();
-	current_->setTrackMouse( false);
+    current_ = new QDoubleSpinBox();
+    //current_->setTrackMouse( false);
     current_->setRange(1, 100);
     current_->setValue( 1);
     current_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -212,7 +211,7 @@ void time_slider_t::set_start_frame( double t)
 {
     block_all_signals( true);
 
-	int cur_frame = current_->value();
+    int cur_frame = current_->value();
     int new_start = std::min( t, end_->value());
     start_->setValue( new_start);
 
@@ -229,7 +228,7 @@ void time_slider_t::set_end_frame( double t)
 {
     block_all_signals( true);
 
-	int cur_frame = current_->value();
+    int cur_frame = current_->value();
     int new_end = std::max( t, start_->value());
     end_->setValue( new_end);
 
@@ -265,13 +264,13 @@ void time_slider_t::adjust_frame( int frame)
 
     if( new_value != frame)
     {
-		block_all_signals( true);
+        block_all_signals( true);
         current_->setValue( new_value);
-		scale_->setValue( new_value);
-		block_all_signals( false);
-		time_changed( new_value);
+        scale_->setValue( new_value);
+        block_all_signals( false);
+        time_changed( new_value);
     }
 }
 
-} // namespace
-} // namespace
+} // ui
+} // ramen

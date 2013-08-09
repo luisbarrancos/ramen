@@ -9,8 +9,7 @@
 
 #include<QWidget>
 
-#include<ramen/ui/widgets/double_spinbox_fwd.hpp>
-
+class QDoubleSpinBox;
 class QSlider;
 
 namespace ramen
@@ -21,7 +20,7 @@ namespace ui
 class time_scale_t : public QWidget
 {
     Q_OBJECT
-    
+
 public:
 
     time_scale_t( QWidget *parent = 0);
@@ -45,15 +44,15 @@ Q_SIGNALS:
 
 private:
 
-	int round_halfup( float x) const;	
-	int frame_from_mouse_pos( int x) const;
-	
+    int round_halfup( float x) const;
+    int frame_from_mouse_pos( int x) const;
+
     int min_value_;
     int max_value_;
     int value_;
 
     int last_x_;
-	bool drag_;
+    bool drag_;
 };
 
 class time_slider_t : public QWidget
@@ -82,8 +81,8 @@ private:
 
     void block_all_signals( bool b);
     void adjust_frame( int frame);
-	
-    double_spinbox_t *start_, *end_, *current_;
+
+    QDoubleSpinBox *start_, *end_, *current_;
     QSlider *slider_;
     time_scale_t *scale_;
 };

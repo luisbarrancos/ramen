@@ -42,8 +42,8 @@
 
 #include<ramen/ui/main_window.hpp>
 #include<ramen/ui/palette.hpp>
+#include<ramen/ui/viewer.hpp>
 #include<ramen/ui/inspector/inspector.hpp>
-#include<ramen/ui/viewer/viewer.hpp>
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>

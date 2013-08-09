@@ -12,7 +12,7 @@ namespace ui
 
 class time_slider_t;
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif
