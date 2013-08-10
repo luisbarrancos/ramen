@@ -14,6 +14,9 @@
 
 #include<ramen/nodes/composition_node.hpp>
 
+#include<ramen/qwidgets/ocio_display_combo.hpp>
+#include<ramen/qwidgets/ocio_view_combo.hpp>
+
 #include<ramen/ui/image_view.hpp>
 
 namespace ramen
@@ -89,23 +92,22 @@ viewer_t::viewer_t() : QWidget()
     separator->setLineWidth( 1);
     horizontalLayout->addWidget( separator);
 
-    QComboBox *ocio_device_combo_ = new QComboBox();
-    ocio_device_combo_->setFocusPolicy( Qt::NoFocus);
-    ocio_device_combo_->setToolTip( "Display Device");
+    qwidgets::ocio_display_combo_t *ocio_display_combo_ = new qwidgets::ocio_display_combo_t();
+    ocio_display_combo_->setFocusPolicy( Qt::NoFocus);
+    ocio_display_combo_->setToolTip( "OpenColorIO Display");
     //connect( ocio_device_combo_, SIGNAL( activated( int)), this, SLOT( change_display_device( int)));
-    horizontalLayout->addWidget( ocio_device_combo_);
+    horizontalLayout->addWidget( ocio_display_combo_);
 
-    QComboBox *ocio_transform_combo_ = new QComboBox();
-    ocio_transform_combo_->setFocusPolicy( Qt::NoFocus);
-    ocio_transform_combo_->setToolTip( "Display Transform");
+    QComboBox *ocio_view_combo_ = new qwidgets::ocio_view_combo_t();
+    ocio_view_combo_->setFocusPolicy( Qt::NoFocus);
+    ocio_view_combo_->setToolTip( "OpenColorIO View");
     //connect( ocio_transform_combo_, SIGNAL( activated( int)), this, SLOT( change_display_transform( int)));
-    horizontalLayout->addWidget( ocio_transform_combo_);
+    horizontalLayout->addWidget( ocio_view_combo_);
+
+    connect( ocio_display_combo_, SIGNAL( display_changed( QString)),
+             ocio_view_combo_, SLOT( update_views( QString)));
 
     QDoubleSpinBox *exposure_input_ = new QDoubleSpinBox();
-    /*
-    s = exposure_input_->sizeHint();
-    exposure_input_->setMinimumSize( s);
-    exposure_input_->setMaximumSize( s);
     exposure_input_->setMinimum(-30.0);
     exposure_input_->setMaximum( 30.0);
     exposure_input_->setSingleStep( 0.1);
@@ -113,22 +115,17 @@ viewer_t::viewer_t() : QWidget()
     exposure_input_->setToolTip( "Viewer Exposure");
     //connect( exposure_input_, SIGNAL( valueChanged( double)), this, SLOT( change_exposure( double)));
     //connect( exposure_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_exposure( double)));
-    */
     horizontalLayout->addWidget( exposure_input_);
 
     QDoubleSpinBox *gamma_input_ = new QDoubleSpinBox();
-    /*
-    gamma_input_->setMinimumSize( s);
-    gamma_input_->setMaximumSize( s);
     gamma_input_->setMinimum( 0);
     gamma_input_->setMaximum( 4);
     gamma_input_->setValue( 1);
     gamma_input_->setSingleStep( 0.1);
     gamma_input_->setDecimals( 3);
     gamma_input_->setToolTip( "Viewer Gamma");
-    connect( gamma_input_, SIGNAL( valueChanged( double)), this, SLOT( change_gamma( double)));
-    connect( gamma_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_gamma( double)));
-    */
+    //connect( gamma_input_, SIGNAL( valueChanged( double)), this, SLOT( change_gamma( double)));
+    //connect( gamma_input_, SIGNAL( spinBoxDragged( double)), this, SLOT( change_gamma( double)));
     horizontalLayout->addWidget( gamma_input_);
 
     separator = new QFrame();

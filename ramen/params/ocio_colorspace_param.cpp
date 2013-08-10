@@ -16,7 +16,6 @@
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/inspector.hpp>
-#include<ramen/ui/widgets/ocio_colorspace_combo.hpp>
 
 namespace ramen
 {
@@ -26,9 +25,14 @@ ocio_colorspace_param_t::ocio_colorspace_param_t() : static_param_t()
     set_default_value( default_colorspace());
 }
 
-ocio_colorspace_param_t::ocio_colorspace_param_t( const ocio_colorspace_param_t& other) : static_param_t( other), menu_( 0) {}
+ocio_colorspace_param_t::ocio_colorspace_param_t( const ocio_colorspace_param_t& other) : static_param_t( other), menu_( 0)
+{
+}
 
-void ocio_colorspace_param_t::set_default_value( const core::string8_t& cs) { value().assign( cs);}
+void ocio_colorspace_param_t::set_default_value( const core::string8_t& cs)
+{
+    value().assign( cs);
+}
 
 void ocio_colorspace_param_t::set_value( const core::string8_t& cs, change_reason reason)
 {
@@ -43,7 +47,7 @@ QWidget *ocio_colorspace_param_t::do_create_widgets()
 {
     QWidget *top = new QWidget();
     QLabel *label = new QLabel( top);
-    menu_ = new ui::ocio_colorspace_combo_t( top);
+    menu_ = new qwidgets::ocio_colorspace_combo_t( top);
     menu_->setFocusPolicy( Qt::NoFocus);
 
     QSize s = menu_->sizeHint();
@@ -57,9 +61,10 @@ QWidget *ocio_colorspace_param_t::do_create_widgets()
     menu_->resize( s.width(), s.height());
 
     core::string8_t current_colorspace = get_value<core::string8_t>( *this);
-    menu_->set_colorspace_or_default( current_colorspace);
+    menu_->set_colorspace_or_default( QString( current_colorspace.c_str()));
     menu_->setEnabled( enabled());
-    connect( menu_, SIGNAL( colorspace_changed( const core::string8_t&)), this, SLOT( colorspace_picked( const core::string8_t&)));
+    connect( menu_, SIGNAL( colorspace_changed( const QString&)),
+             this, SLOT( colorspace_picked( const QString&)));
 
     top->setMinimumSize( app().ui()->inspector().width(), s.height());
     top->setMaximumSize( app().ui()->inspector().width(), s.height());
@@ -72,9 +77,8 @@ void ocio_colorspace_param_t::do_update_widgets()
     if( menu_)
     {
         menu_->blockSignals( true);
-
         core::string8_t csname = get_value<core::string8_t>( *this);
-        menu_->set_colorspace( csname);
+        menu_->set_colorspace( QString( csname.c_str()));
         menu_->blockSignals( false);
     }
 }
@@ -85,10 +89,10 @@ void ocio_colorspace_param_t::do_enable_widgets( bool e)
         menu_->setEnabled( e);
 }
 
-void ocio_colorspace_param_t::colorspace_picked( const core::string8_t& cs)
+void ocio_colorspace_param_t::colorspace_picked( const QString& cs)
 {
     param_set()->begin_edit();
-    set_value( menu_->get_current_colorspace());
+    set_value( menu_->get_current_colorspace().toAscii().data());
     param_set()->end_edit();
 }
 

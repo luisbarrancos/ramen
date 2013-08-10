@@ -9,7 +9,7 @@
 
 #include<QPointer>
 
-#include<ramen/ui/widgets/ocio_colorspace_combo_fwd.hpp>
+#include<ramen/qwidgets/ocio_colorspace_combo.hpp>
 
 namespace ramen
 {
@@ -45,11 +45,11 @@ private:
 
     core::string8_t default_colorspace() const;
 
-    QPointer<ui::ocio_colorspace_combo_t> menu_;
+    QPointer<qwidgets::ocio_colorspace_combo_t> menu_;
 
 private Q_SLOTS:
 
-    void colorspace_picked( const core::string8_t& cs);
+    void colorspace_picked( const QString& cs);
 };
 
 } // ramen

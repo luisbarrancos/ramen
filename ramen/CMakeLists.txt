@@ -50,6 +50,10 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/label_separator.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_scale.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_colorspace_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_display_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.hpp
 
                         ui/image_view.hpp
                         ui/inspector.hpp
@@ -77,10 +81,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/widgets/saturation_value_picker.hpp
                         ui/widgets/eyedropper_button.hpp
                         ui/widgets/image_format_widget.hpp
-                        ui/widgets/ocio_colorspace_combo.hpp
-                        ui/widgets/ocio_combo.hpp
-                        ui/widgets/ocio_display_combo.hpp
-                        ui/widgets/ocio_view_combo.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -242,6 +242,14 @@ SET( RAMEN_SOURCES      assert.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider_fwd.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_combo.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_colorspace_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_colorspace_combo.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_display_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_display_combo.cpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.hpp
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.cpp
 
                         ui/add_node_command.cpp
                         ui/edit_commands.cpp
@@ -308,11 +316,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/saturation_value_picker.cpp
                         ui/widgets/eyedropper_button.cpp
                         ui/widgets/image_format_widget.cpp
-
-                        ui/widgets/ocio_colorspace_combo.cpp
-                        ui/widgets/ocio_combo.cpp
-                        ui/widgets/ocio_display_combo.cpp
-                        ui/widgets/ocio_view_combo.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp
