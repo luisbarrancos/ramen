@@ -8,11 +8,48 @@
 #include<ramen/config.hpp>
 
 #include<QTabWidget>
+#include<QTabBar>
+
+class QEvent;
+class QMouseEvent;
 
 namespace ramen
 {
 namespace ui
 {
+
+class viewer_tabs_bar_t : public QTabBar
+{
+    Q_OBJECT
+
+public:
+
+    explicit viewer_tabs_bar_t( QWidget *parent = 0);
+
+protected:
+
+    virtual void mousePressEvent( QMouseEvent *e);
+    virtual void mouseMoveEvent( QMouseEvent *e);
+    virtual void mouseReleaseEvent( QMouseEvent *e);
+    virtual void leaveEvent( QEvent* e);
+
+private:
+
+    int selected_tab_;
+};
+
+class viewer_detached_tab_t : public QTabWidget
+{
+    Q_OBJECT
+
+public:
+
+    viewer_detached_tab_t();
+
+private Q_SLOTS:
+
+    void delete_tab( int index);
+};
 
 class viewer_tabs_container_t : public QTabWidget
 {
@@ -20,7 +57,14 @@ class viewer_tabs_container_t : public QTabWidget
 
 public:
 
-    viewer_tabs_container_t( QWidget *parent = 0);
+    explicit viewer_tabs_container_t( QWidget *parent = 0);
+
+    void add_tab( const QString& name);
+    void detach_tab( int index, const QPoint& pos);
+
+private Q_SLOTS:
+
+    void delete_tab( int index);
 };
 
 } // ui
