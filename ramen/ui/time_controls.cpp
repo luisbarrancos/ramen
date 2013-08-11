@@ -17,24 +17,20 @@
 #include<ramen/nodes/node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
 
 namespace ramen
 {
 namespace ui
 {
 
-time_controls_t::time_controls_t() : window_(0), stop_playing_( true)
+time_controls_t::time_controls_t() : QWidget(), stop_playing_( true)
 {
-    window_ = new QWidget();
-    //window_->resize( width(), height());
-    //window_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    //window_->setMinimumSize( width(), height());
-    //window_->setMaximumSize( width(), height());
-    window_->setWindowTitle( "Time Controls");
-    window_->setContentsMargins( 0, 0, 0, 0);
+    setWindowTitle( "Time Controls");
+    setContentsMargins( 0, 0, 0, 0);
 
-    QHBoxLayout *layout = new QHBoxLayout( window_);
+    QHBoxLayout *layout = new QHBoxLayout( this);
     layout->setSpacing( 0);
 
     start_ = new QToolButton();

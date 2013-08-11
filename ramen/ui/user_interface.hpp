@@ -28,11 +28,11 @@
 
     #include<ramen/render/node_renderer.hpp>
 
-    #include<ramen/ui/viewer_fwd.hpp>
-
     #include<ramen/ui/main_window_fwd.hpp>
-    #include<ramen/ui/inspector_fwd.hpp>
+
     #include<ramen/ui/anim/anim_editor_fwd.hpp>
+
+    #include<ramen/ui/inspector/inspector_fwd.hpp>
 #endif
 
 namespace ramen
@@ -63,14 +63,11 @@ public:
     const main_window_t *main_window() const    { return window_;}
     main_window_t *main_window()                { return window_;}
 
-    const inspector_t& inspector() const    { return *inspector_;}
-    inspector_t& inspector()                { return *inspector_;}
+    const inspector_t& inspector() const;
+    inspector_t& inspector();
 
-    const anim_editor_t& anim_editor() const { return *anim_editor_;}
-    anim_editor_t& anim_editor()             { return *anim_editor_;}
-
-    const viewer_t& viewer() const  { return *viewer_;}
-    viewer_t& viewer()              { return *viewer_;}
+    const anim_editor_t& anim_editor() const;
+    anim_editor_t& anim_editor();
 
     // document handling
     void create_new_document();
@@ -149,9 +146,6 @@ private:
     void init_image_types_string();
 
     main_window_t *window_;
-    inspector_t *inspector_;
-    anim_editor_t *anim_editor_;
-    viewer_t *viewer_;
 
     node_t *active_, *context_;
 

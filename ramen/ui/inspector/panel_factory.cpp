@@ -2,13 +2,13 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/panel_factory.hpp>
+#include<ramen/ui/inspector/panel_factory.hpp>
 
 #include<boost/bind.hpp>
 
 #include<ramen/nodes/composition_node.hpp>
 
-#include<ramen/ui/panel.hpp>
+#include<ramen/ui/inspector/panel.hpp>
 
 namespace ramen
 {

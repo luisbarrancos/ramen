@@ -57,11 +57,9 @@ struct track_model_deleter
 
 } // unnamed
 
-anim_editor_t::anim_editor_t() : window_( 0)
+anim_editor_t::anim_editor_t() : QWidget()
 {
-    window_ = new QWidget();
-    window_->setWindowTitle( "Curve editor");
-
+    setWindowTitle( "Curve editor");
     QVBoxLayout *vlayout = new QVBoxLayout();
 
     vlayout->setContentsMargins( 0, 0, 0, 0);
@@ -88,31 +86,31 @@ anim_editor_t::anim_editor_t() : window_( 0)
     default_model_.reset( new track_model_t(), track_model_deleter());
     tree_->setModel( default_model_.get());
 
-    window_->setLayout( vlayout);
+    setLayout( vlayout);
 
     // actions
-    copy_keys_ = new QAction( "Copy Keyframes", window_);
+    copy_keys_ = new QAction( "Copy Keyframes", this);
     copy_keys_->setShortcut( QKeySequence( "Ctrl+C"));
     copy_keys_->setShortcutContext( Qt::WidgetWithChildrenShortcut);
-    window_->addAction( copy_keys_);
+    addAction( copy_keys_);
     connect( copy_keys_, SIGNAL( triggered()), this, SLOT( copy_keyframes()));
 
-    copy_curves_ = new QAction( "Copy Curves", window_);
+    copy_curves_ = new QAction( "Copy Curves", this);
     copy_curves_->setShortcut( QKeySequence( "Ctrl+Shift+C"));
     copy_curves_->setShortcutContext( Qt::WidgetWithChildrenShortcut);
-    window_->addAction( copy_curves_);
+    addAction( copy_curves_);
     connect( copy_curves_, SIGNAL( triggered()), this, SLOT( copy_curves()));
 
     paste_ = new QAction( "Paste", this);
     paste_->setShortcut( QKeySequence( "Ctrl+V"));
     paste_->setShortcutContext( Qt::WidgetWithChildrenShortcut);
-    window_->addAction( paste_);
+    addAction( paste_);
     connect( paste_, SIGNAL( triggered()), this, SLOT( paste()));
 
-    select_all_ = new QAction( "Select all", window_);
+    select_all_ = new QAction( "Select all", this);
     select_all_->setShortcut( QKeySequence( "Ctrl+A"));
     select_all_->setShortcutContext( Qt::WidgetWithChildrenShortcut);
-    window_->addAction( select_all_);
+    addAction( select_all_);
     connect( select_all_, SIGNAL( triggered()), this, SLOT( select_all()));
 
     const_extrap_ = new QAction( "Constant", this);

@@ -44,11 +44,13 @@
 
 #include<ramen/ui/main_window.hpp>
 #include<ramen/ui/palette.hpp>
-#include<ramen/ui/viewer.hpp>
-#include<ramen/ui/inspector.hpp>
+
 #include<ramen/ui/anim/anim_editor.hpp>
+
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
 
 namespace ramen
 {
@@ -63,29 +65,18 @@ user_interface_t::user_interface_t() : QObject()
     cancelled_ = false;
     interacting_ = false;
     event_filter_installed_ = false;
-    viewer_ = 0;
-    inspector_ = 0;
-    anim_editor_ = 0;
     window_ = 0;
     init_image_types_string();
 }
 
 user_interface_t::~user_interface_t()
 {
-    viewer_->deleteLater();
-    inspector_->deleteLater();
-    anim_editor_->deleteLater();
 }
 
 void user_interface_t::init()
 {
     init_ui_style();
-
     create_new_document();
-
-    viewer_ = new viewer_t();
-    inspector_ = new inspector_t();
-    anim_editor_ = new anim_editor_t();
     window_ = new main_window_t();
     restore_window_state();
 }
@@ -141,12 +132,40 @@ void user_interface_t::quit()
     qApp->quit();
 }
 
+const inspector_t& user_interface_t::inspector() const
+{
+    RAMEN_ASSERT( main_window());
+
+    return main_window()->inspector();
+}
+
+inspector_t& user_interface_t::inspector()
+{
+    RAMEN_ASSERT( main_window());
+
+    return main_window()->inspector();
+}
+
+const anim_editor_t& user_interface_t::anim_editor() const
+{
+    RAMEN_ASSERT( main_window());
+
+    return main_window()->anim_editor();
+}
+
+anim_editor_t& user_interface_t::anim_editor()
+{
+    RAMEN_ASSERT( main_window());
+
+    return main_window()->anim_editor();
+}
+
 void user_interface_t::create_new_document()
 {
     set_active_node( 0);
     set_context_node( 0);
 
-    if( anim_editor_ )
+    if( main_window())
         anim_editor().clear_all();
 
     app().create_new_document();
@@ -256,7 +275,7 @@ void user_interface_t::set_active_node( node_t *n)
             active_->begin_active();
 
         inspector().edit_node( n);
-        viewer().set_active_node( n);
+        //viewer().set_active_node( n);
         anim_editor().set_active_node( n);
     }
 }
@@ -273,7 +292,7 @@ void user_interface_t::set_context_node( node_t *n)
         if( context_)
             context_->begin_context();
 
-        viewer().set_context_node( n);
+        //viewer().set_context_node( n);
     }
 }
 
@@ -306,7 +325,7 @@ void user_interface_t::update()
 void user_interface_t::begin_interaction()
 {
     app().document().composition_node().begin_interaction();
-    viewer().begin_interaction();
+    //viewer().begin_interaction();
     interacting_ = true;
     app().memory_manager().begin_interaction();
 }
@@ -315,7 +334,7 @@ void user_interface_t::end_interaction()
 {
     interacting_ = false;
     app().memory_manager().end_interaction();
-    viewer().end_interaction();
+    //viewer().end_interaction();
     app().document().composition_node().end_interaction();
 }
 
@@ -365,12 +384,12 @@ void user_interface_t::set_frame( double t)
 
     inspector().update();
     update_anim_editors();
-    viewer().frame_changed();
+    //viewer().frame_changed();
 }
 
 void user_interface_t::update_anim_editors()
 {
-    if( anim_editor_)
+    if( main_window())
         anim_editor().update();
 }
 

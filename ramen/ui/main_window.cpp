@@ -46,18 +46,22 @@
 #include<ramen/qwidgets/time_slider.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector.hpp>
 #include<ramen/ui/add_node_command.hpp>
 #include<ramen/ui/edit_commands.hpp>
 #include<ramen/ui/time_controls.hpp>
-#include<ramen/ui/viewer.hpp>
+#include<ramen/ui/render_composition.hpp>
 
 #include<ramen/ui/compview/composition_view.hpp>
+
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/render_composition.hpp>
+
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
 #include<ramen/ui/dialogs/preferences_dialog.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
+
+#include<ramen/ui/viewer/viewer_tabs_container.hpp>
 
 namespace ramen
 {
@@ -66,16 +70,28 @@ namespace ui
 
 const int main_window_t::max_recently_opened_files = 5;
 
-const char *main_window_t::document_extension()		{ return ".rmn";}
-const char *main_window_t::file_dialog_extension()	{ return "Ramen Composition (*.rmn)";}
+const char *main_window_t::document_extension()
+{
+    return ".rmn";
+}
+
+const char *main_window_t::file_dialog_extension()
+{
+    return "Ramen Composition (*.rmn)";
+}
 
 main_window_t::main_window_t() : QMainWindow()
 {
+    time_slider_ = 0;
+    comp_view_ = 0;
+    inspector_ = 0;
+    time_controls_ = 0;
+
     menubar_ = menuBar();
 
     recently_opened_.assign( max_recently_opened_files, (QAction *) 0);
 
-    time_controls_.reset( new time_controls_t());
+    time_controls_ = new time_controls_t();
 
     create_actions();
     create_menus();
@@ -85,18 +101,20 @@ main_window_t::main_window_t() : QMainWindow()
     setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
     // Inspector
+    inspector_ = new inspector_t();
     inspector_dock_ = new QDockWidget( "Inspector", this);
     inspector_dock_->setObjectName( "inspector_dock");
     inspector_dock_->setAllowedAreas( Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea | Qt::BottomDockWidgetArea);
-    inspector_dock_->setWidget( app().ui()->inspector().widget());
+    inspector_dock_->setWidget( inspector_);
     add_dock_widget( Qt::RightDockWidgetArea, inspector_dock_);
 
     // anim editor dock
+    anim_editor_ = new anim_editor_t();
     anim_editor_dock_ = new QDockWidget( "Curve Editor", this);
     anim_editor_dock_->setObjectName( "anim_editor_dock");
     anim_editor_dock_->setAllowedAreas( Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea |
                                         Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    anim_editor_dock_->setWidget( app().ui()->anim_editor().widget());
+    anim_editor_dock_->setWidget( anim_editor_);
     add_dock_widget( Qt::BottomDockWidgetArea, anim_editor_dock_);
 
     // Composition view
@@ -127,7 +145,8 @@ main_window_t::main_window_t() : QMainWindow()
     }
 
     // image view
-    setCentralWidget( &( app().ui()->viewer()));
+    setCentralWidget( new viewer_tabs_container_t());
+    //setCentralWidget( &( app().ui()->viewer()));
 
     // time toolbar
     addToolBar( Qt::BottomToolBarArea, create_time_toolbar());
@@ -165,9 +184,8 @@ QToolBar *main_window_t::create_time_toolbar()
     toolbar->addWidget( time_slider_);
     toolbar->addSeparator();
 
-    time_controls_->widget()->setSizePolicy( QSizePolicy::Fixed,
-                                             time_controls_->widget()->sizePolicy().verticalPolicy());
-    toolbar->addWidget( time_controls_->widget());
+    time_controls_->setSizePolicy( QSizePolicy::Fixed, time_controls_->sizePolicy().verticalPolicy());
+    toolbar->addWidget( time_controls_);
     return toolbar;
 }
 

@@ -23,8 +23,13 @@
 #include<ramen/qwidgets/time_slider_fwd.hpp>
 
 #include<ramen/ui/node_menu.hpp>
-#include<ramen/ui/compview/composition_view_fwd.hpp>
 #include<ramen/ui/time_controls_fwd.hpp>
+
+#include<ramen/ui/anim/anim_editor_fwd.hpp>
+
+#include<ramen/ui/compview/composition_view_fwd.hpp>
+
+#include<ramen/ui/inspector/inspector_fwd.hpp>
 
 class QAction;
 class QMenu;
@@ -54,6 +59,12 @@ public:
 
     const composition_view_t& composition_view() const  { return *comp_view_;}
     composition_view_t& composition_view()              { return *comp_view_;}
+
+    const inspector_t& inspector() const    { return *inspector_;}
+    inspector_t& inspector()                { return *inspector_;}
+
+    const anim_editor_t& anim_editor() const { return *anim_editor_;}
+    anim_editor_t& anim_editor()             { return *anim_editor_;}
 
     const qwidgets::time_slider_t& time_slider() const    { return *time_slider_;}
     qwidgets::time_slider_t& time_slider()                { return *time_slider_;}
@@ -130,12 +141,13 @@ private:
 
     qwidgets::time_slider_t *time_slider_;
     composition_view_t *comp_view_;
-    core::auto_ptr_t<time_controls_t> time_controls_;
-
+    time_controls_t *time_controls_;
     QDockWidget *inspector_dock_;
+    inspector_t *inspector_;
     QDockWidget *composition_dock_;
     QDockWidget *viewer_dock_;
     QDockWidget *anim_editor_dock_;
+    anim_editor_t *anim_editor_;
 
     QMenuBar *menubar_;
 

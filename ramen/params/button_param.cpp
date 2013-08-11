@@ -11,7 +11,8 @@
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/inspector.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
 
 namespace ramen
 {

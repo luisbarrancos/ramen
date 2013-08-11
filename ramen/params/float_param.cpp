@@ -16,10 +16,10 @@
 #include<ramen/nodes/composition_node.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/viewer.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
-#include<ramen/ui/inspector.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
 
 namespace ramen
 {

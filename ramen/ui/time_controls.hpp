@@ -17,15 +17,13 @@ namespace ramen
 namespace ui
 {
 
-class time_controls_t : public QObject
+class time_controls_t : public QWidget
 {
     Q_OBJECT
 
 public:
 
     time_controls_t();
-
-    QWidget *widget() { return window_;}
 
     bool eventFilter( QObject *watched, QEvent *event);
 
@@ -49,8 +47,6 @@ public Q_SLOTS:
 private:
 
     void stop_playing();
-
-    QWidget *window_;
 
     QToolButton *start_, *prev_key_, *prev_frame_, *play_back_;
     QToolButton *stop_, *play_fwd_, *next_frame_, *next_key_, *end_;

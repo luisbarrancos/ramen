@@ -9,7 +9,7 @@
 
 #include<ramen/nodes/node_fwd.hpp>
 
-#include<ramen/ui/panel_fwd.hpp>
+#include<ramen/ui/inspector/panel_fwd.hpp>
 
 namespace ramen
 {

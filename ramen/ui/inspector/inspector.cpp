@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/inspector.hpp>
+#include<ramen/ui/inspector/inspector.hpp>
 
 #include<boost/bind.hpp>
 
@@ -28,8 +28,10 @@
 #include<ramen/string_algo/valid_c_identifier.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/panel.hpp>
+
 #include<ramen/ui/anim/anim_editor.hpp>
+
+#include<ramen/ui/inspector/panel.hpp>
 
 #include<ramen/util/string.hpp>
 
@@ -93,18 +95,16 @@ private:
 
 } // unnamed
 
-inspector_t::inspector_t() : window_(0), left_margin_( 0), width_( 0)
+inspector_t::inspector_t() : QWidget(), left_margin_( 0), width_( 0)
 {
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins( 0, 0, 0, 0);
 
-    window_ = new QWidget();
-    window_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Preferred);
-    window_->setMinimumSize( width()+16, 0);
-    window_->setMaximumSize( width()+16, QWIDGETSIZE_MAX);
-    window_->setWindowTitle( "Inspector");
-    window_->setContentsMargins( 0, 0, 0, 0);
-
+    setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Preferred);
+    setMinimumSize( width()+16, 0);
+    setMaximumSize( width()+16, QWIDGETSIZE_MAX);
+    setWindowTitle( "Inspector");
+    setContentsMargins( 0, 0, 0, 0);
     scroll_ = new QScrollArea();
     scroll_->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded);
     scroll_->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff);
@@ -129,13 +129,12 @@ inspector_t::inspector_t() : window_(0), left_margin_( 0), width_( 0)
     scroll_->setWidget( top);
 
     layout->addWidget( scroll_);
-    window_->setLayout( layout);
+    setLayout( layout);
     current_ = factory_.end();
 }
 
 inspector_t::~inspector_t()
 {
-    name_edit_->deleteLater();
 }
 
 int inspector_t::left_margin() const

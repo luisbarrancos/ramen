@@ -27,8 +27,11 @@
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/main_window.hpp>
-#include<ramen/ui/inspector.hpp>
+
 #include<ramen/ui/anim/anim_editor.hpp>
+
+#include<ramen/ui/inspector/inspector.hpp>
+
 #include<ramen/ui/widgets/color_button.hpp>
 #include<ramen/ui/widgets/eyedropper_button.hpp>
 #include<ramen/ui/widgets/color_picker.hpp>

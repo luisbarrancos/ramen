@@ -55,24 +55,28 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_display_combo.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.hpp
 
-                        ui/image_view.hpp
-                        ui/inspector.hpp
                         ui/main_window.hpp
-                        ui/panel.hpp
                         ui/time_controls.hpp
                         ui/user_interface.hpp
-                        ui/viewer.hpp
 
                         ui/anim/anim_curves_view.hpp
                         ui/anim/anim_editor.hpp
                         ui/anim/track_model.hpp
                         ui/anim/anim_editor_toolbar.hpp
+
                         ui/compview/composition_view.hpp
                         ui/compview/composition_view_toolbar.hpp
+
                         ui/dialogs/multiline_alert.hpp
                         ui/dialogs/preferences_dialog.hpp
                         ui/dialogs/render_composition_dialog.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
+
+                        ui/inspector/inspector.hpp
+                        ui/inspector/panel.hpp
+
+                        ui/viewer/viewer_tabs_container.hpp
+
                         ui/widgets/color_button.hpp
                         ui/widgets/color_picker.hpp
                         ui/widgets/color_swatch.hpp
@@ -258,28 +262,18 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/events.cpp
                         ui/events_util.hpp
                         ui/events_util.cpp
-                        ui/image_view_fwd.hpp
-                        ui/image_view.hpp
-                        ui/image_view.cpp
-                        ui/inspector_fwd.hpp
-                        ui/inspector.hpp
-                        ui/inspector.cpp
                         ui/main_window.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
-                        ui/panel_fwd.hpp
-                        ui/panel.hpp
-                        ui/panel.cpp
-                        ui/panel_factory.cpp
                         ui/render_composition.cpp
                         ui/time_controls.cpp
                         ui/user_interface_fwd.hpp
                         ui/user_interface.hpp
                         ui/user_interface.cpp
 
-                        ui/viewer_fwd.hpp
-                        ui/viewer.hpp
-                        ui/viewer.cpp
+                        #ui/viewer_fwd.hpp
+                        #ui/viewer.hpp
+                        #ui/viewer.cpp
 
                         ui/anim/anim_curves_view.cpp
                         ui/anim/anim_editor.cpp
@@ -306,6 +300,17 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/dialogs/render_composition_dialog.cpp
                         ui/dialogs/smooth_anim_curves_dialog.cpp
                         ui/dialogs/splash_screen.cpp
+
+                        ui/inspector/inspector_fwd.hpp
+                        ui/inspector/inspector.hpp
+                        ui/inspector/inspector.cpp
+                        ui/inspector/panel_fwd.hpp
+                        ui/inspector/panel.hpp
+                        ui/inspector/panel.cpp
+                        ui/inspector/panel_factory.cpp
+
+                        ui/viewer/viewer_tabs_container.hpp
+                        ui/viewer/viewer_tabs_container.cpp
 
                         ui/widgets/color.cpp
                         ui/widgets/color_button.cpp
