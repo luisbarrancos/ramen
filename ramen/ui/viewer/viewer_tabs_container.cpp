@@ -4,7 +4,10 @@
 
 #include<ramen/ui/viewer/viewer_tabs_container.hpp>
 
+#include<QApplication>
 #include<QMouseEvent>
+#include<QDrag>
+#include<QMimeData>
 
 #include<iostream>
 
@@ -28,13 +31,6 @@ void viewer_tabs_bar_t::mousePressEvent( QMouseEvent *e)
 
 void viewer_tabs_bar_t::mouseMoveEvent( QMouseEvent *e)
 {
-    if( e->button() == Qt::LeftButton)
-    {
-        if( selected_tab_ != -1 && !rect().contains( e->pos()))
-        {
-        }
-    }
-
     QTabBar::mouseMoveEvent( e);
 }
 
@@ -44,33 +40,35 @@ void viewer_tabs_bar_t::mouseReleaseEvent( QMouseEvent *e)
     {
         if( selected_tab_ != -1 && !rect().contains( e->pos()))
         {
-            if( viewer_tabs_container_t *c = dynamic_cast<viewer_tabs_container_t*>( parent()))
-                c->detach_tab( selected_tab_, e->globalPos());
-        }
+            viewer_tabs_container_t *src_tabs = dynamic_cast<viewer_tabs_container_t*>( parent());
 
-        selected_tab_ = -1;
+            if( QWidget *target = qApp->topLevelAt( e->globalPos()))
+            {
+                QPoint p = target->mapFromGlobal( e->globalPos());
+                QWidget *w = target->childAt( p);
+                while( w)
+                {
+                    if( w == src_tabs)
+                        break;
+
+                    if( viewer_tabs_container_t *dst_tabs = dynamic_cast<viewer_tabs_container_t*>( w))
+                    {
+                        src_tabs->transfer_tab( selected_tab_, dst_tabs);
+                        selected_tab_ = -1;
+                        return;
+                    }
+
+                    w = w->parentWidget();
+                }
+            }
+
+            src_tabs->detach_tab( selected_tab_, e->globalPos());
+            selected_tab_ = -1;
+            return;
+        }
     }
 
     QTabBar::mouseReleaseEvent( e);
-}
-
-void viewer_tabs_bar_t::leaveEvent( QEvent* e)
-{
-    QTabBar::leaveEvent( e);
-}
-
-/*************************************************************/
-
-viewer_detached_tab_t::viewer_detached_tab_t()
-{
-    setMovable( true);
-    setTabsClosable( true);
-    connect( this, SIGNAL( tabCloseRequested( int)), this, SLOT( delete_tab( int)));
-}
-
-void viewer_detached_tab_t::delete_tab( int index)
-{
-    close();
 }
 
 /*************************************************************/
@@ -82,10 +80,6 @@ viewer_tabs_container_t::viewer_tabs_container_t( QWidget *parent) : QTabWidget(
     setMovable( true);
     setTabsClosable( true);
     connect( this, SIGNAL( tabCloseRequested( int)), this, SLOT( delete_tab( int)));
-
-    add_tab( "Viewer 1");
-    add_tab( "Viewer 2");
-    add_tab( "Viewer 3");
 }
 
 void viewer_tabs_container_t::add_tab( const QString& name)
@@ -93,18 +87,42 @@ void viewer_tabs_container_t::add_tab( const QString& name)
     addTab( new QWidget(), name);
 }
 
+void viewer_tabs_container_t::add_tab( const QString& name, QWidget *tab)
+{
+    addTab( tab, name);
+}
+
 void viewer_tabs_container_t::detach_tab( int index, const QPoint& pos)
+{
+    QWidget *tab = widget( index);
+    int w = tab->width();
+    int h = tab->height();
+
+    QString name = tabText( index);
+    removeTab( index);
+
+    viewer_tabs_container_t *window = new viewer_tabs_container_t();
+    window->setWindowFlags( Qt::Window);
+    window->setWindowTitle( name);
+    window->addTab( tab, name);
+    window->move( pos);
+    window->resize( w, h);
+    window->show();
+
+    if( !parent() && !count())
+        close();
+}
+
+void viewer_tabs_container_t::transfer_tab( int index, viewer_tabs_container_t *other_tabs)
 {
     QWidget *tab = widget( index);
     QString name = tabText( index);
     removeTab( index);
 
-    viewer_detached_tab_t *window = new viewer_detached_tab_t();
-    window->setWindowFlags( Qt::Window);
-    window->setWindowTitle( name);
-    window->addTab( tab, name);
-    window->move( pos);
-    window->show();
+    other_tabs->add_tab( name, tab);
+
+    if( !parent() && !count())
+        close();
 }
 
 void viewer_tabs_container_t::delete_tab( int index)
@@ -112,6 +130,9 @@ void viewer_tabs_container_t::delete_tab( int index)
     QWidget *tab = widget( index);
     removeTab( index);
     delete tab;
+
+    if( !parent())
+        close();
 }
 
 } // ui

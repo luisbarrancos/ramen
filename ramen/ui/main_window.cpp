@@ -145,8 +145,11 @@ main_window_t::main_window_t() : QMainWindow()
     }
 
     // image view
-    setCentralWidget( new viewer_tabs_container_t());
-    //setCentralWidget( &( app().ui()->viewer()));
+    viewer_tabs_container_t *viewer = new viewer_tabs_container_t();
+    viewer->add_tab( "Viewer");
+    viewer->add_tab( "Viewer 2");
+    viewer->add_tab( "Viewer 3");
+    setCentralWidget( viewer);
 
     // time toolbar
     addToolBar( Qt::BottomToolBarArea, create_time_toolbar());
