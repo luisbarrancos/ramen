@@ -19,6 +19,7 @@ namespace render
 namespace
 {
 
+/*
 struct count_outputs
 {
     count_outputs() : num_outputs( 0) {}
@@ -33,6 +34,7 @@ struct compare_outputs
         return a->priority() > b->priority();
     }
 };
+*/
 
 } // unnamed
 

@@ -34,10 +34,10 @@
 
 #include<ramen/memory/manager.hpp>
 
+#include<ramen/nodes/node.hpp>
 #include<ramen/nodes/graph_algorithm.hpp>
 #include<ramen/nodes/node_factory.hpp>
-#include<ramen/nodes/node_output_interface.hpp>
-#include<ramen/nodes/node.hpp>
+#include<ramen/nodes/node_graph_modifier.hpp>
 
 #include<ramen/undo/stack.hpp>
 
@@ -146,9 +146,6 @@ main_window_t::main_window_t() : QMainWindow()
 
     // image view
     viewer_tabs_container_t *viewer = new viewer_tabs_container_t();
-    viewer->add_tab( "Viewer");
-    viewer->add_tab( "Viewer 2");
-    viewer->add_tab( "Viewer 3");
     setCentralWidget( viewer);
 
     // time toolbar
@@ -920,7 +917,7 @@ void main_window_t::create_node()
 
     if( !p.get())
     {
-        //app().ui()->error( std::string( "Couldn't create node ") + id);
+        app().ui()->error( core::make_string( "Couldn't create node ", id.c_str()));
         return;
     }
 
@@ -951,6 +948,8 @@ void main_window_t::create_node()
         composition_view().place_node_near_node( p.get(), src);
     else
         composition_view().place_node( p.get());
+
+    //node_graph_modifier_t modifier( &app().document().composition_node(), "Add Node");
 
     node_t *n = p.get(); // save for later use
     std::auto_ptr<undo::command_t> c( new undo::add_node_command_t( p, src));

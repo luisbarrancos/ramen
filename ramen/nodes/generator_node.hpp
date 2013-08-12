@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERATOR_NODE_HPP
-#define RAMEN_IMAGE_GENERATOR_NODE_HPP
+#ifndef RAMEN_NODES_GENERATOR_NODE_HPP
+#define RAMEN_NODES_GENERATOR_NODE_HPP
 
 #include<ramen/nodes/node.hpp>
 

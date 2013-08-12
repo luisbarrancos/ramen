@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/image/generator_node.hpp>
+#include<ramen/nodes/generator_node.hpp>
 
 #include<ramen/params/color_param.hpp>
 

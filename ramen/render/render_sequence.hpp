@@ -2,14 +2,10 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_RENDER_SEQUENCE_HPP
-#define	RAMEN_RENDER_SEQUENCE_HPP
+#ifndef RAMEN_RENDER_RENDER_SEQUENCE_HPP
+#define	RAMEN_RENDER_RENDER_SEQUENCE_HPP
 
-#include<vector>
-
-#include<boost/foreach.hpp>
-
-#include<ramen/nodes/node_output_interface.hpp>
+#include<ramen/config.hpp>
 
 namespace ramen
 {

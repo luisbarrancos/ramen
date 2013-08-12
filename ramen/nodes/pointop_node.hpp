@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_POINTOP_NODE_HPP
-#define RAMEN_IMAGE_POINTOP_NODE_HPP
+#ifndef RAMEN_NODES_POINTOP_NODE_HPP
+#define RAMEN_NODES_POINTOP_NODE_HPP
 
 #include<ramen/nodes/node.hpp>
 
@@ -28,6 +28,7 @@ protected:
 private:
 
     virtual void do_process( const render::context_t& context);
+
     virtual void do_process( const image::const_image_view_t& src,
                              const image::image_view_t& dst,
                              const render::context_t& context) = 0;

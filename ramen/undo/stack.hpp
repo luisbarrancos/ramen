@@ -25,7 +25,7 @@ namespace undo
 \ingroup undo
 \brief An undo stack.
 */
-class stack_t
+class RAMEN_API stack_t
 {
 public:
 

@@ -184,13 +184,16 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/node.hpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
+                        nodes/node_graph_modifier.hpp
+                        nodes/node_graph_modifier.cpp
                         nodes/node_info.hpp
                         nodes/node_info.cpp
                         nodes/node_plug.cpp
-                        nodes/node_output_interface.cpp
                         nodes/node_visitor.cpp
                         nodes/composition_node.hpp
                         nodes/composition_node.cpp
+                        nodes/viewer_node.hpp
+                        nodes/viewer_node.cpp
 
                         ocio/manager.cpp
                         ocio/gl_display_manager.cpp
@@ -339,14 +342,14 @@ SET( RAMEN_SOURCES      assert.hpp
 
 SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES})
 
-SET( RAMEN_SOURCES ${RAMEN_SOURCES} nodes/image/generator_node.hpp
-                                    nodes/image/generator_node.cpp
-                                    nodes/image/pointop_node.hpp
-                                    nodes/image/pointop_node.cpp
-                                    nodes/image/color/channel_mixer_node.cpp
-                                    nodes/image/generate/color_bars_node.cpp
-                                    nodes/image/generate/color_node.cpp
-                                    nodes/image/util/nop_node.cpp
+SET( RAMEN_SOURCES ${RAMEN_SOURCES} nodes/generator_node.hpp
+                                    nodes/generator_node.cpp
+                                    nodes/pointop_node.hpp
+                                    nodes/pointop_node.cpp
+                                    nodes/color/channel_mixer_node.cpp
+                                    nodes/generate/color_bars_node.cpp
+                                    nodes/generate/color_node.cpp
+                                    nodes/util/null_node.cpp
                                     )
 
 ######################################################

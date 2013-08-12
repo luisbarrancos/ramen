@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/image/pointop_node.hpp>
+#include<ramen/nodes/pointop_node.hpp>
 
 namespace ramen
 {

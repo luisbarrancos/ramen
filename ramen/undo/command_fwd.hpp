@@ -13,6 +13,7 @@ namespace undo
 {
 
 class command_t;
+class composite_command_t;
 
 } // undo
 } // ramen

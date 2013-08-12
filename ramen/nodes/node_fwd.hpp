@@ -13,6 +13,7 @@ namespace ramen
 class node_t;
 class composite_node_t;
 class composition_node_t;
+class viewer_node_t;
 
 } // ramen
 
