@@ -58,7 +58,7 @@ node_t *composition_node_t::do_clone() const
 
 void composition_node_t::do_create_params()
 {
-    std::auto_ptr<float_param_t> p( new float_param_t());
+    core::auto_ptr_t<float_param_t> p( new float_param_t());
     start_frame_ = p.get();
     p->set_name( "Start Frame");
     p->set_id( g_start_frame);
@@ -66,7 +66,7 @@ void composition_node_t::do_create_params()
     p->set_static( true);
     p->set_round_to_int( true);
     //p->set_secret( true);
-    add_param( p);
+    add_param( boost::move( p));
 
     p.reset( new float_param_t());
     end_frame_ = p.get();
@@ -76,7 +76,7 @@ void composition_node_t::do_create_params()
     p->set_static( true);
     p->set_round_to_int( true);
     //p->set_secret( true);
-    add_param( p);
+    add_param( boost::move( p));
 
     p.reset( new float_param_t());
     frame_ = p.get();
@@ -86,14 +86,14 @@ void composition_node_t::do_create_params()
     p->set_static( true);
     //p->set_secret( true);
     p->set_can_undo( false);
-    add_param( p);
+    add_param( boost::move( p));
 
-    std::auto_ptr<image_format_param_t> f( new image_format_param_t());
+    core::auto_ptr_t<image_format_param_t> f( new image_format_param_t());
     default_format_ = f.get();
     f->set_name( "Default Format");
     f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
-    add_param( f);
+    add_param( boost::move( f));
 
     p.reset( new float_param_t());
     frame_rate_ = p.get();
@@ -105,13 +105,13 @@ void composition_node_t::do_create_params()
     p->set_static( true);
     //p->set_secret( true);
     p->set_can_undo( false);
-    add_param( p);
+    add_param( boost::move( p));
 
-    std::auto_ptr<bool_param_t> b( new bool_param_t());
+    core::auto_ptr_t<bool_param_t> b( new bool_param_t());
     autokey_ = b.get();
     b->set_name( "Autokey");
     b->set_id( g_autokey);
-    add_param( b);
+    add_param( boost::move( b));
 }
 
 void composition_node_t::do_notify() {}
@@ -128,7 +128,7 @@ void composition_node_t::do_end_interaction()
     notify_all_dirty();
 }
 
-void composition_node_t::add_node( std::auto_ptr<node_t> n)
+void composition_node_t::add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
 {
     n->set_parent( this);
     n->set_frame( frame());
@@ -138,7 +138,7 @@ void composition_node_t::add_node( std::auto_ptr<node_t> n)
     composite_node_t::add_node( n);
 }
 
-std::auto_ptr<node_t> composition_node_t::release_node( node_t *n)
+core::auto_ptr_t<node_t> composition_node_t::release_node( node_t *n)
 {
     return composite_node_t::release_node( n);
 }

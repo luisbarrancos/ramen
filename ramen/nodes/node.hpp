@@ -21,6 +21,8 @@
 
 #include<ramen/core/string8.hpp>
 
+#include<ramen/containers/ptr_vector.hpp>
+
 #include<ramen/math/point2.hpp>
 #include<ramen/math/box2.hpp>
 
@@ -201,7 +203,10 @@ public:
 
     /// Adds a param to this node.
     template<class T>
-    void add_param( std::auto_ptr<T> p) { param_set().add_param( p);}
+    void add_param( BOOST_RV_REF( core::auto_ptr_t<T>) p)
+    {
+        param_set().add_param( p);
+    }
 
     /// Calls a function f for each param.
     virtual void for_each_param( const boost::function<void ( param_t*)>& f);
@@ -280,7 +285,10 @@ public:
     // user interface
     virtual const char *help_string() const;
 
-    virtual std::auto_ptr<QWidget> create_toolbar() { return std::auto_ptr<QWidget>();}
+    virtual core::auto_ptr_t<QWidget> create_toolbar()
+    {
+        return core::auto_ptr_t<QWidget>();
+    }
 
     /// Updates widgets associated with this node's params.
     void update_widgets();
@@ -463,7 +471,7 @@ private:
     core::string8_t name_;
 
     std::vector<node_input_plug_t> inputs_;
-    boost::ptr_vector<node_output_plug_t> outputs_;
+    containers::ptr_vector_t<node_output_plug_t> outputs_;
 
     param_set_t params_;
 

@@ -40,7 +40,7 @@ track_t *track_t::child( int i)
     return &children_[i];
 }
 
-void track_t::add_child( std::auto_ptr<track_t> t)
+void track_t::add_child( BOOST_RV_REF( core::auto_ptr_t<track_t>) t)
 {
     t->set_parent( this);
     children_.push_back( t);

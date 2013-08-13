@@ -20,10 +20,10 @@ generator_node_t::generator_node_t( const generator_node_t& other) : node_t( oth
 
 void generator_node_t::do_create_params()
 {
-    std::auto_ptr<image_format_param_t> p( new image_format_param_t());
+    core::auto_ptr_t<image_format_param_t> p( new image_format_param_t());
     p->set_name( "Format");
     p->set_id( g_format);
-    add_param( p);
+    add_param( boost::move( p));
 }
 
 void generator_node_t::do_calc_format( const render::context_t& context)

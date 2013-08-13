@@ -24,7 +24,7 @@ void set_outputs_color( node_t& n, graph_color_t c)
 {
     n.set_graph_color( c);
 
-    for( unsigned int i=0;i<n.num_outputs();++i)
+    for( unsigned int i = 0; i < n.num_outputs(); ++i)
         set_outputs_color( *n.output(i), c);
 }
 

@@ -29,8 +29,8 @@ public:
     /// Emitted when a node is deleted.
     static boost::signals2::signal<void ( node_t*)> node_deleted;
 
-    void add_node( std::auto_ptr<node_t> n);
-    std::auto_ptr<node_t> release_node( node_t *n);
+    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
+    core::auto_ptr_t<node_t> release_node( node_t *n);
 
     int start_frame() const;
     void set_start_frame( int f);

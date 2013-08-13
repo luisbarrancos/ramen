@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_PARAM_HPP
-#define RAMEN_PARAM_HPP
+#ifndef RAMEN_PARAMS_PARAM_HPP
+#define RAMEN_PARAMS_PARAM_HPP
 
 #include<ramen/params/param_fwd.hpp>
 
@@ -166,7 +166,7 @@ public:
     void add_to_hash( hash::generator_t& hash_gen) const;
 
     // undo
-    std::auto_ptr<undo::command_t> create_command();
+    core::auto_ptr_t<undo::command_t> create_command();
 
     // paths
     void convert_relative_paths( const boost::filesystem::path& old_base,
@@ -225,7 +225,7 @@ private:
     virtual void do_evaluate( float frame);
 
     // undo
-    virtual std::auto_ptr<undo::command_t> do_create_command();
+    virtual core::auto_ptr_t<undo::command_t> do_create_command();
 
     // hash
     virtual void do_add_to_hash( hash::generator_t& hash_gen) const;

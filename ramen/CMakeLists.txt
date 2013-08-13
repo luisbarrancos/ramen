@@ -128,8 +128,6 @@ SET( RAMEN_SOURCES      assert.hpp
 
                         Concepts/ParamValueConcept.hpp
 
-                        container/ptr_vector_util.hpp
-
                         ggems/graphicsgems.h
                         ggems/ggveclib.c
                         ggems/nearestpoint.h

@@ -218,6 +218,7 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/algorithm
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/color
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/config
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/containers
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/core
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/gl
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/iterators

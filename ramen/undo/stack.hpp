@@ -43,7 +43,7 @@ public:
 
     /// Pushes an undo command.
     template<class T>
-    void push_back( std::auto_ptr<T> c)
+    void push_back( BOOST_RV_REF( core::auto_ptr_t<T>) c)
     {
         RAMEN_ASSERT( dynamic_cast<command_t*>( c.get()) != 0); // I think this is not needed...
         undo_stack_.push_back( c.release());

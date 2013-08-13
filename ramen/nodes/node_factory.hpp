@@ -7,8 +7,9 @@
 
 #include<utility>
 #include<vector>
-#include<memory>
 #include<map>
+
+#include<ramen/core/memory.hpp>
 
 #include<ramen/nodes/node_info.hpp>
 
@@ -46,9 +47,9 @@ public:
     bool is_latest_version( const core::name_t& id) const;
 
     // creation
-    std::auto_ptr<node_t> create_by_id( const core::name_t& id, bool ui = false);
-    std::auto_ptr<node_t> create_by_id_with_version( const core::name_t& id,
-                                                     const std::pair<int, int>& version);
+    core::auto_ptr_t<node_t> create_by_id( const core::name_t& id, bool ui = false);
+    core::auto_ptr_t<node_t> create_by_id_with_version( const core::name_t& id,
+                                                        const std::pair<int, int>& version);
 
 private:
 

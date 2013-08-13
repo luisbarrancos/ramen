@@ -84,7 +84,7 @@ void delete_command_t::undo()
 
     while( !node_storage_.empty())
     {
-        std::auto_ptr<node_t> ptr( node_storage_.pop_back().release());
+        core::auto_ptr_t<node_t> ptr( node_storage_.pop_back().release());
         app().document().composition_node().add_node( ptr);
     }
 
@@ -97,9 +97,9 @@ void delete_command_t::redo()
 {
     for( std::vector<node_t*>::const_iterator it( nodes_.begin()); it != nodes_.end(); ++it)
     {
-        std::auto_ptr<node_t> ptr( app().document().composition_node().release_node( *it));
+        core::auto_ptr_t<node_t> ptr( app().document().composition_node().release_node( *it));
         app().ui()->node_released( ptr.get());
-        node_storage_.push_back( ptr);
+        node_storage_.push_back( ptr.release());
     }
 
     composition_node_t *comp = &app().document().composition_node();
@@ -112,7 +112,7 @@ void delete_command_t::redo()
 
 duplicate_command_t::duplicate_command_t() : command_t( "Duplicate") {}
 
-void duplicate_command_t::add_node( std::auto_ptr<node_t> n)
+void duplicate_command_t::add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
 {
     nodes_.push_back( n.get());
     node_storage_.push_back( n);
@@ -124,9 +124,9 @@ void duplicate_command_t::undo()
 {
     for( std::vector<node_t*>::const_iterator it( nodes_.begin()); it != nodes_.end(); ++it)
     {
-        std::auto_ptr<node_t> ptr( app().document().composition_node().release_node( *it));
+        core::auto_ptr_t<node_t> ptr( app().document().composition_node().release_node( *it));
         app().ui()->node_released( ptr.get());
-        node_storage_.push_back( ptr);
+        node_storage_.push_back( ptr.release());
     }
 
     composition_node_t *comp = &app().document().composition_node();
@@ -138,8 +138,8 @@ void duplicate_command_t::redo()
 {
     while( !node_storage_.empty())
     {
-        std::auto_ptr<node_t> ptr( node_storage_.pop_back().release());
-        app().document().composition_node().add_node( ptr);
+        core::auto_ptr_t<node_t> ptr( node_storage_.pop_back().release());
+        app().document().composition_node().add_node( boost::move( ptr));
     }
 
     composition_node_t *comp = &app().document().composition_node();

@@ -65,13 +65,13 @@ private:
 
     virtual void do_create_params()
     {
-        std::auto_ptr<float_param_t> p( new float_param_t());
+        core::auto_ptr_t<float_param_t> p( new float_param_t());
         p->set_name( "Red");
         p->set_id( g_red);
         p->set_default_value( 0.212671f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
-        add_param( p);
+        add_param( boost::move( p));
 
         p.reset( new float_param_t());
         p->set_name( "Green");
@@ -79,7 +79,7 @@ private:
         p->set_default_value( 0.715160f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
-        add_param( p);
+        add_param( boost::move( p));
 
         p.reset( new float_param_t());
         p->set_name( "Blue");
@@ -87,7 +87,7 @@ private:
         p->set_default_value( 0.072169f);
         p->set_range( 0, 1);
         p->set_step( 0.05);
-        add_param( p);
+        add_param( boost::move( p));
     }
 
     virtual void do_process( const image::const_image_view_t& src,

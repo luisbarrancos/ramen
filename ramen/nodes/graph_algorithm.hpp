@@ -5,6 +5,8 @@
 #ifndef RAMEN_NODES_GRAPH_ALGORITHM_HPP
 #define RAMEN_NODES_GRAPH_ALGORITHM_HPP
 
+#include<ramen/config.hpp>
+
 #include<boost/range.hpp>
 #include<boost/bind.hpp>
 #include<boost/ref.hpp>
@@ -43,7 +45,7 @@ void set_multiple_outputs_color( Range& r, graph_color_t c)
 template<class Visitor>
 void depth_first_inputs_recursive_search( node_t& n, Visitor f)
 {
-    for( unsigned int i=0;i<n.num_inputs();++i)
+    for( unsigned int i = 0; i < n.num_inputs(); ++i)
     {
         if( n.input(i) != 0)
             depth_first_inputs_recursive_search( *n.input(i), f);
@@ -65,7 +67,7 @@ void breadth_first_inputs_recursive_search( node_t& n, Visitor f)
         n.set_graph_color( white);
     }
 
-    for( unsigned int i=0;i<n.num_inputs();++i)
+    for( unsigned int i = 0; i < n.num_inputs(); ++i)
     {
         if( n.input(i) != 0)
             breadth_first_inputs_recursive_search( *n.input(i), f);
@@ -75,7 +77,7 @@ void breadth_first_inputs_recursive_search( node_t& n, Visitor f)
 template<class Visitor>
 void depth_first_outputs_recursive_search( node_t& n, Visitor f)
 {
-    for( unsigned int i=0;i<n.num_outputs();++i)
+    for( unsigned int i = 0; i < n.num_outputs(); ++i)
         depth_first_outputs_recursive_search( *n.output(i), f);
 
     if( n.graph_color() == black)
@@ -94,7 +96,7 @@ void breadth_first_outputs_recursive_search( node_t& n, Visitor f)
         n.set_graph_color( white);
     }
 
-    for( unsigned int i=0;i<n.num_outputs();++i)
+    for( unsigned int i = 0; i < n.num_outputs(); ++i)
         breadth_first_outputs_recursive_search( *n.output(i), f);
 }
 

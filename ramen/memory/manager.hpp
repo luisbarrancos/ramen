@@ -7,7 +7,7 @@
 
 #include<ramen/memory/manager_fwd.hpp>
 
-#include<memory>
+#include<ramen/core/memory.hpp>
 
 #include<ramen/app/application_fwd.hpp>
 
@@ -55,8 +55,8 @@ private:
 
     image_cache_t& image_cache() { return *img_cache_;}
 
-    std::auto_ptr<image_allocator_type> img_alloc_;
-    std::auto_ptr<image_cache_t> img_cache_;
+    core::auto_ptr_t<image_allocator_type> img_alloc_;
+    core::auto_ptr_t<image_cache_t> img_cache_;
 };
 
 } // memory

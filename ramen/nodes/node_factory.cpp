@@ -107,10 +107,10 @@ void node_factory_t::sort_by_menu_item()
     std::sort( node_infos_.begin(), node_infos_.end(), compare_menu_items());
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id( const core::name_t& id, bool ui)
+core::auto_ptr_t<node_t> node_factory_t::create_by_id( const core::name_t& id, bool ui)
 {
     std::map<core::name_t, node_info_t>::iterator it( newest_node_infos_.find( id));
-    std::auto_ptr<node_t> n;
+    core::auto_ptr_t<node_t> n;
 
     if( it != newest_node_infos_.end())
     {
@@ -134,11 +134,11 @@ std::auto_ptr<node_t> node_factory_t::create_by_id( const core::name_t& id, bool
         }
     }
 
-    return n;
+    return core::auto_ptr_t<node_t>( n.release());
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const core::name_t& id,
-                                                                 const std::pair<int, int>& version)
+core::auto_ptr_t<node_t> node_factory_t::create_by_id_with_version( const core::name_t& id,
+                                                                    const std::pair<int, int>& version)
 {
     std::vector<node_info_t>::iterator best( node_infos_.end());
     std::vector<node_info_t>::iterator it( node_infos_.begin());
@@ -159,11 +159,10 @@ std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const core::nam
         }
     }
 
-    std::auto_ptr<node_t> n;
-
     if( best_minor < version.second)
-        return n;
+        return core::auto_ptr_t<node_t>();
 
+    core::auto_ptr_t<node_t> n;
     if( best != node_infos_.end())
     {
         try
@@ -183,7 +182,7 @@ std::auto_ptr<node_t> node_factory_t::create_by_id_with_version( const core::nam
         }
     }
 
-    return n;
+    return core::auto_ptr_t<node_t>( n.release());
 }
 
 bool node_factory_t::is_latest_version( const core::name_t& id) const

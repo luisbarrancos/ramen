@@ -612,7 +612,7 @@ bool node_t::is_frame_varying() const { return false;}
 
 void node_t::create_tracks( anim::track_t *root)
 {
-    std::auto_ptr<anim::track_t> top( new anim::track_t( name()));
+    core::auto_ptr_t<anim::track_t> top( new anim::track_t( name()));
 
     BOOST_FOREACH( param_t& p, param_set())
     {
@@ -620,7 +620,7 @@ void node_t::create_tracks( anim::track_t *root)
     }
 
     do_create_tracks( top.get());
-    root->add_child( top);
+    root->add_child( boost::move( top));
 }
 
 void node_t::set_frame( float f)

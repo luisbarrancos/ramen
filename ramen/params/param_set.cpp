@@ -14,10 +14,11 @@
 #include<boost/bind.hpp>
 #include<boost/foreach.hpp>
 
-#include<boost/ptr_container/ptr_vector.hpp>
 #include<boost/ptr_container/ptr_map.hpp>
 
 #include<boost/range/algorithm/for_each.hpp>
+
+#include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
@@ -48,7 +49,7 @@ public:
         if( !commands_.empty())
             return false;
 
-        for( boost::ptr_vector<undo::command_t>::const_iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
+        for( containers::ptr_vector_t<undo::command_t>::const_iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
         {
             if( !it->empty())
                 return false;
@@ -59,8 +60,15 @@ public:
 
     bool has_command_for_param( param_t *p) { return commands_.find( p) != commands_.end();}
 
-    void add_command( param_t *p, std::auto_ptr<undo::command_t> c) { commands_.insert( p, c);}
-    void add_command( std::auto_ptr<undo::command_t> c) { more_commands_.push_back( c);}
+    void add_command( param_t *p, BOOST_RV_REF( core::auto_ptr_t<undo::command_t>) c)
+    {
+        commands_.insert( p, c.release());
+    }
+
+    void add_command( BOOST_RV_REF( core::auto_ptr_t<undo::command_t>) c)
+    {
+        more_commands_.push_back( c);
+    }
 
     virtual void undo()
     {
@@ -69,7 +77,7 @@ public:
         for( boost::ptr_map<param_t*, undo::command_t>::iterator it( commands_.begin()); it != commands_.end(); ++it)
             it->second->undo();
 
-        for( boost::ptr_vector<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
+        for( containers::ptr_vector_t<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
             it->undo();
 
         pset->notify_node();
@@ -83,7 +91,7 @@ public:
         for( boost::ptr_map<param_t*, undo::command_t>::iterator it( commands_.begin()); it != commands_.end(); ++it)
             it->second->redo();
 
-        for( boost::ptr_vector<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
+        for( containers::ptr_vector_t<undo::command_t>::iterator it( more_commands_.begin()); it != more_commands_.end(); ++it)
             it->redo();
 
         pset->notify_node();
@@ -93,7 +101,7 @@ public:
 private:
 
     boost::ptr_map<param_t*, undo::command_t> commands_;
-    boost::ptr_vector<undo::command_t> more_commands_;
+    containers::ptr_vector_t<undo::command_t> more_commands_;
 };
 
 param_set_t::param_set_t( node_t *n) : node_( n) {}
@@ -163,7 +171,7 @@ void param_set_t::begin_edit()
 void param_set_t::end_edit( bool notify)
 {
     if( command_.get() && !is_command_empty())
-        app().document().undo_stack().push_back( command_);
+        app().document().undo_stack().push_back( boost::move( command_));
     else
         command_.reset();
 
@@ -193,10 +201,10 @@ void param_set_t::add_command( param_t *p)
     {
         if( !command_->has_command_for_param( p))
         {
-            std::auto_ptr<undo::command_t> c( p->create_command());
+            core::auto_ptr_t<undo::command_t> c( p->create_command());
 
             if( c.get())
-                command_->add_command( p, c);
+                command_->add_command( p, boost::move( c));
         }
    }
 }

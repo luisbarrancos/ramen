@@ -16,6 +16,8 @@
 #ifndef QT_MOC_RUN
     #include<boost/shared_ptr.hpp>
 
+    #include<ramen/core/memory.hpp>
+
     #include<ramen/nodes/node_fwd.hpp>
 
     #include<ramen/anim/track_fwd.hpp>
@@ -125,7 +127,7 @@ private:
 
     std::set<anim::track_t*> active_tracks_;
 
-    std::auto_ptr<undo::anim_editor_command_t> command_;
+    core::auto_ptr_t<undo::anim_editor_command_t> command_;
 
     anim_editor_toolbar_t *toolbar_;
     QSplitter *split_;

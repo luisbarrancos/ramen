@@ -10,10 +10,11 @@
 #include<memory>
 
 #include<boost/optional.hpp>
-#include<boost/ptr_container/ptr_vector.hpp>
 #include<boost/signals2/signal.hpp>
 
 #include<ramen/core/string8.hpp>
+
+#include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/color/color3.hpp>
 
@@ -41,15 +42,15 @@ public:
 
     track_t *child( int i);
 
-    void add_child( std::auto_ptr<track_t> t);
+    void add_child( BOOST_RV_REF( core::auto_ptr_t<track_t>) t);
 
     void clear_children();
 
     int row() const;
 
     // ranges
-    const boost::ptr_vector<track_t>& children() const	{ return children_;}
-    boost::ptr_vector<track_t>& children()              { return children_;}
+    const containers::ptr_vector_t<track_t>& children() const	{ return children_;}
+    containers::ptr_vector_t<track_t>& children()              { return children_;}
 
     const core::string8_t& name() const;
     void set_name( const core::string8_t& name);
@@ -82,7 +83,7 @@ private:
 
     core::string8_t name_, full_name_, curve_name_;
     track_t *parent_;
-    boost::ptr_vector<track_t> children_;
+    containers::ptr_vector_t<track_t> children_;
     boost::optional<any_curve_ptr_t> curve_;
     color::color3c_t color_;
 };

@@ -9,6 +9,8 @@
 
 #include<boost/ptr_container/ptr_vector.hpp>
 
+#include<ramen/core/memory.hpp>
+
 #include<ramen/core/string8.hpp>
 
 namespace ramen
@@ -81,7 +83,7 @@ public:
     virtual bool empty() const { return commands_.empty();}
 
     /// Adds a child command to this command.
-    void push_back( std::auto_ptr<command_t> c);
+    void push_back( BOOST_RV_REF( core::auto_ptr_t<command_t>) c);
 
 protected:
 

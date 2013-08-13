@@ -151,9 +151,9 @@ void animated_param_t::do_anim_curve_changed( anim::any_curve_ptr_t& c)
     emit_param_changed( user_edited);
 }
 
-std::auto_ptr<undo::command_t> animated_param_t::do_create_command()
+core::auto_ptr_t<undo::command_t> animated_param_t::do_create_command()
 {
-    return std::auto_ptr<undo::command_t>( new animated_param_command_t( *this->param_set(), id()));
+    return core::auto_ptr_t<undo::command_t>( new animated_param_command_t( *this->param_set(), id()));
 }
 
 // spinboxes
@@ -241,7 +241,7 @@ bool animated_param_t::all_curves_empty() const
 
 void animated_param_t::do_create_tracks( anim::track_t *parent)
 {
-    std::auto_ptr<anim::track_t> t;
+    core::auto_ptr_t<anim::track_t> t;
 
     if( num_curves() == 1)
     {
@@ -254,13 +254,13 @@ void animated_param_t::do_create_tracks( anim::track_t *parent)
 
         for( int i = 0; i < num_curves(); ++i)
         {
-            std::auto_ptr<anim::track_t> tx( new anim::track_t( curve_name( i), &curve( i)));
+            core::auto_ptr_t<anim::track_t> tx( new anim::track_t( curve_name( i), &curve( i)));
             tx->changed.connect( boost::bind( &animated_param_t::anim_curve_changed, this, _1));
-            t->add_child( tx);
+            t->add_child( boost::move( tx));
         }
     }
 
-    parent->add_child( t);
+    parent->add_child( boost::move( t));
 }
 
 // serialization

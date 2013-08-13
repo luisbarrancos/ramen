@@ -10,14 +10,15 @@
 #include<ramen/nodes/node.hpp>
 
 #include<algorithm>
-#include<memory>
 #include<vector>
 #include<map>
 
 #include<boost/bind.hpp>
-#include<boost/ptr_container/ptr_vector.hpp>
 
 #include<ramen/core/name.hpp>
+#include<ramen/core/memory.hpp>
+
+#include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/nodes/edge.hpp>
 
@@ -32,7 +33,7 @@ class composite_node_t : public node_t
 {
 public:
 
-    typedef boost::ptr_vector<node_t> node_container_type;
+    typedef ramen::containers::ptr_vector_t<node_t> node_container_type;
 
     typedef node_container_type::iterator       node_iterator;
     typedef node_container_type::const_iterator	const_node_iterator;
@@ -55,8 +56,8 @@ public:
     composite_node_t();
     ~composite_node_t();
 
-    void add_node( std::auto_ptr<node_t> n);
-    std::auto_ptr<node_t> release_node( node_t *n);
+    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
+    core::auto_ptr_t<node_t> release_node( node_t *n);
 
     void add_edge( const edge_t& e);
     void remove_edge( const edge_t& e);
@@ -87,13 +88,13 @@ public:
 
     // will be protected later...
 
-    std::auto_ptr<node_t> create_node( const core::name_t& id, bool ui);
+    core::auto_ptr_t<node_t> create_node( const core::name_t& id, bool ui);
 
-    std::auto_ptr<node_t> create_node( const core::name_t& id,
-                                       const std::pair<int,int>& version);
+    core::auto_ptr_t<node_t> create_node( const core::name_t& id,
+                                          const std::pair<int,int>& version);
 
-    std::auto_ptr<node_t> create_unknown_node( const core::name_t& id,
-                                               const std::pair<int, int>& version);
+    core::auto_ptr_t<node_t> create_unknown_node( const core::name_t& id,
+                                                  const std::pair<int, int>& version);
 
 protected:
 

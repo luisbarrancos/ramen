@@ -284,9 +284,9 @@ void inspector_t::rename_node()
 
         if( string_algo::is_valid_c_identifier( new_name))
         {
-            std::auto_ptr<rename_node_command_t> c( new rename_node_command_t( n, new_name, name_edit_));
+            core::auto_ptr_t<rename_node_command_t> c( new rename_node_command_t( n, new_name, name_edit_));
             c->redo();
-            app().document().undo_stack().push_back( c);
+            app().document().undo_stack().push_back( boost::move( c));
             app().ui()->update();
         }
         else

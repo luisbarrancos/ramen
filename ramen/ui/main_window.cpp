@@ -643,7 +643,7 @@ void main_window_t::redo()
 
 void main_window_t::ignore_nodes()
 {
-    std::auto_ptr<undo::ignore_nodes_command_t> c( new undo::ignore_nodes_command_t());
+    core::auto_ptr_t<undo::ignore_nodes_command_t> c( new undo::ignore_nodes_command_t());
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
@@ -652,7 +652,7 @@ void main_window_t::ignore_nodes()
     }
 
     c->redo();
-    app().document().undo_stack().push_back( c);
+    app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
 }
 
@@ -663,7 +663,7 @@ void main_window_t::delete_nodes()
     if( !app().document().composition_node().any_selected())
         return;
 
-    std::auto_ptr<undo::delete_command_t> c( new undo::delete_command_t());
+    core::auto_ptr_t<undo::delete_command_t> c( new undo::delete_command_t());
 
     BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
@@ -727,23 +727,23 @@ void main_window_t::delete_nodes()
     }
 
     c->redo();
-    app().document().undo_stack().push_back( c);
+    app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
 }
 
 void main_window_t::duplicate_nodes()
 {
     std::map<node_t*, node_t*> relation;
-    std::auto_ptr<undo::duplicate_command_t> c( new undo::duplicate_command_t());
+    core::auto_ptr_t<undo::duplicate_command_t> c( new undo::duplicate_command_t());
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
         {
-            std::auto_ptr<node_t> nclone( new_clone( n));
+            core::auto_ptr_t<node_t> nclone( new_clone( n));
             nclone->offset_location( math::vector2f_t( 20, 20));
             relation[ &n] = nclone.get();
-            c->add_node( nclone);
+            c->add_node( boost::move( nclone));
         }
     }
 
@@ -755,7 +755,7 @@ void main_window_t::duplicate_nodes()
 
     app().document().composition_node().deselect_all();
     c->redo();
-    app().document().undo_stack().push_back( c);
+    app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
 }
 
@@ -766,7 +766,7 @@ void main_window_t::extract_nodes()
     if( !app().document().composition_node().any_selected())
         return;
 
-    std::auto_ptr<undo::extract_command_t> c( new undo::extract_command_t());
+    core::auto_ptr_t<undo::extract_command_t> c( new undo::extract_command_t());
 
     BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
@@ -823,7 +823,7 @@ void main_window_t::extract_nodes()
     }
 
     c->redo();
-    app().document().undo_stack().push_back( c);
+    app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
 }
 
@@ -913,7 +913,7 @@ void main_window_t::create_node()
     QAction *action = dynamic_cast<QAction*>( sender());
 
     core::name_t id( create_node_actions_[action]);
-    std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id( id, true));
+    core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id( id, true));
 
     if( !p.get())
     {
@@ -952,11 +952,11 @@ void main_window_t::create_node()
     //node_graph_modifier_t modifier( &app().document().composition_node(), "Add Node");
 
     node_t *n = p.get(); // save for later use
-    std::auto_ptr<undo::command_t> c( new undo::add_node_command_t( p, src));
+    core::auto_ptr_t<undo::command_t> c( new undo::add_node_command_t( boost::move( p), src));
     app().document().composition_node().deselect_all();
     n->select( true);
     c->redo();
-    app().document().undo_stack().push_back( c);
+    app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
 }
 

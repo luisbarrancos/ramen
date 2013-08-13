@@ -258,9 +258,9 @@ void composition_view_t::mousePressEvent( QMouseEvent *event)
         if( pick_edge( wpos, src, dst, port))
         {
             // TODO: if either src or dest are groups, resolve the real nodes.
-            std::auto_ptr<undo::command_t> c( new undo::disconnect_command_t( src, dst, port));
+            core::auto_ptr_t<undo::command_t> c( new undo::disconnect_command_t( src, dst, port));
             c->redo();
-            app().document().undo_stack().push_back( c);
+            app().document().undo_stack().push_back( boost::move( c));
             app().ui()->update();
             return;
         }
@@ -419,9 +419,9 @@ void composition_view_t::connect_release_handler( QMouseEvent *event)
     // TODO: if either source or dest are groups, resolve the real nodes here.
     if( app().document().composition_node().can_connect( src, dst, port))
     {
-        std::auto_ptr<undo::command_t> c( new undo::connect_command_t( src, dst, port));
+        core::auto_ptr_t<undo::command_t> c( new undo::connect_command_t( src, dst, port));
         c->redo();
-        app().document().undo_stack().push_back( c);
+        app().document().undo_stack().push_back( boost::move( c));
         app().ui()->update();
     }
     else

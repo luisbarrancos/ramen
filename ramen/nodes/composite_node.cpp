@@ -9,8 +9,6 @@
 
 #include<ramen/assert.hpp>
 
-#include<ramen/container/ptr_vector_util.hpp>
-
 #include<ramen/nodes/node_factory.hpp>
 #include<ramen/nodes/graph_algorithm.hpp>
 
@@ -28,25 +26,22 @@ composite_node_t::composite_node_t( const composite_node_t& other) : node_t( oth
 
 composite_node_t::~composite_node_t() {}
 
-void composite_node_t::add_node( std::auto_ptr<node_t> n)
+void composite_node_t::add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
 {
-    //RAMEN_ASSERT( n->parent() == 0);
-
     n->set_parent( this);
-    node_t *nn = n.get();
-    nodes_.push_back( n);
+    nodes_.push_back( n.release());
 }
 
-std::auto_ptr<node_t> composite_node_t::release_node( node_t *n)
+core::auto_ptr_t<node_t> composite_node_t::release_node( node_t *n)
 {
     RAMEN_ASSERT( n->parent() == this);
 
-    std::auto_ptr<node_t> nn( container::release_ptr( n, nodes_));
+    core::auto_ptr_t<node_t> nn( nodes_.release_ptr( n));
 
     if( nn.get())
         nn->set_parent( 0);
 
-    return nn;
+    return core::auto_ptr_t<node_t>( nn.release());
 }
 
 void composite_node_t::add_edge( const edge_t& e)
@@ -112,9 +107,9 @@ void composite_node_t::do_set_frame( float f)
     boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));
 }
 
-std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id, bool ui)
+core::auto_ptr_t<node_t> composite_node_t::create_node( const core::name_t& id, bool ui)
 {
-    std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id( id, ui));
+    core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id( id, ui));
 
     RAMEN_ASSERT( p.get());
 
@@ -126,19 +121,19 @@ std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id, boo
     }
     catch( ...)
     {
-        return std::auto_ptr<node_t>();
+        return core::auto_ptr_t<node_t>();
     }
 
-    return p;
+    return core::auto_ptr_t<node_t>( p.release());
 }
 
-std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id,
-                                                     const std::pair<int,int>& version)
+core::auto_ptr_t<node_t> composite_node_t::create_node( const core::name_t& id,
+                                                        const std::pair<int,int>& version)
 {
     RAMEN_ASSERT( !id.empty());
     RAMEN_ASSERT( version.first >= 0 && version.second >= 0);
 
-    std::auto_ptr<node_t> p( node_factory_t::instance().create_by_id_with_version( id, version));
+    core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id_with_version( id, version));
 
     // as a last resort, return an unknown node
     if( !p.get())
@@ -155,16 +150,16 @@ std::auto_ptr<node_t> composite_node_t::create_node( const core::name_t& id,
         return create_unknown_node( id, version);
     }
 
-    return p;
+    return core::auto_ptr_t<node_t>( p.release());
 }
 
-std::auto_ptr<node_t> composite_node_t::create_unknown_node( const core::name_t& id,
-                                                             const std::pair<int, int>& version)
+core::auto_ptr_t<node_t> composite_node_t::create_unknown_node( const core::name_t& id,
+                                                                const std::pair<int, int>& version)
 {
     // TODO: implement this.
     throw core::not_implemented();
 
-    return std::auto_ptr<node_t>();
+    return core::auto_ptr_t<node_t>();
 }
 
 void composite_node_t::do_begin_interaction()

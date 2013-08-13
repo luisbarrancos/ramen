@@ -5,11 +5,12 @@
 #ifndef RAMEN_MANIPULABLE_HPP
 #define RAMEN_MANIPULABLE_HPP
 
-#include<memory>
-
 #include<boost/noncopyable.hpp>
-#include<boost/ptr_container/ptr_vector.hpp>
 #include<boost/signals2/signal.hpp>
+
+#include<ramen/core/memory.hpp>
+
+#include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/manipulators/manipulator.hpp>
 
@@ -32,18 +33,18 @@ public:
     void create_manipulators();
 
     template<class T>
-    void add_manipulator( std::auto_ptr<T> p)
+    void add_manipulator( BOOST_RV_REF( core::auto_ptr_t<T>) p)
     {
         p->set_parent( this);
         manipulators_.push_back( p.release());
         active_ = manipulators_.end();
     }
 
-    const boost::ptr_vector<manipulator_t>& manipulators() const    { return manipulators_;}
-    boost::ptr_vector<manipulator_t>& manipulators()                { return manipulators_;}
+    const containers::ptr_vector_t<manipulator_t>& manipulators() const    { return manipulators_;}
+    containers::ptr_vector_t<manipulator_t>& manipulators()                { return manipulators_;}
 
-    typedef boost::ptr_vector<manipulator_t>::const_iterator const_iterator;
-    typedef boost::ptr_vector<manipulator_t>::iterator iterator;
+    typedef containers::ptr_vector_t<manipulator_t>::const_iterator const_iterator;
+    typedef containers::ptr_vector_t<manipulator_t>::iterator iterator;
 
     const_iterator begin() const    { return manipulators_.begin();}
     const_iterator end() const	    { return manipulators_.end();}
@@ -145,15 +146,15 @@ protected:
 private:
 
     /*!
-    	\brief Customization hook for manipulable_t::create_manipulators.
-    	Implement in subclasses add manipulators to this object.
-	*/
+        \brief Customization hook for manipulable_t::create_manipulators.
+        Implement in subclasses add manipulators to this object.
+    */
     virtual void do_create_manipulators();
 
-    boost::ptr_vector<manipulator_t> manipulators_;
+    containers::ptr_vector_t<manipulator_t> manipulators_;
     iterator active_;
 };
 
-} // namespace
+} // ramen
 
 #endif

@@ -59,9 +59,9 @@ void composite_command_t::redo()
     command_t::redo();
 }
 
-void composite_command_t::push_back( std::auto_ptr<command_t> c)
+void composite_command_t::push_back( BOOST_RV_REF( core::auto_ptr_t<command_t>) c)
 {
-    commands_.push_back( c);
+    commands_.push_back( c.release());
 }
 
 } // undo

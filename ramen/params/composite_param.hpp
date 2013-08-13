@@ -9,9 +9,7 @@
 
 #include<ramen/params/param.hpp>
 
-#include<memory>
-
-#include<boost/ptr_container/ptr_vector.hpp>
+#include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/undo/command.hpp>
 
@@ -28,11 +26,14 @@ public:
 
     void set_create_track( bool b) { create_track_ = b;}
 
-    const boost::ptr_vector<param_t>& params() const	{ return params_;}
-    boost::ptr_vector<param_t>& params()				{ return params_;}
+    const containers::ptr_vector_t<param_t>& params() const	{ return params_;}
+    containers::ptr_vector_t<param_t>& params()				{ return params_;}
 
     template<class T>
-    void add_param( std::auto_ptr<T> p) { do_add_param( p.release());}
+    void add_param( BOOST_RV_REF( core::auto_ptr_t<T>) p)
+    {
+        do_add_param( p.release());
+    }
 
     const param_t *find( const core::name_t& id) const;
     param_t *find( const core::name_t& id);
@@ -83,10 +84,10 @@ private:
 
     virtual QWidget *do_create_widgets();
 
-    boost::ptr_vector<param_t> params_;
+    containers::ptr_vector_t<param_t> params_;
     bool create_track_;
 };
 
-} // namespace
+} // ramen
 
 #endif

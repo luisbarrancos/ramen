@@ -10,7 +10,7 @@
 namespace ramen
 {
 
-class viewer_node_t : public node_t
+class RAMEN_API viewer_node_t : public node_t
 {
 public:
 
