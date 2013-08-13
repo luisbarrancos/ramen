@@ -6,6 +6,7 @@
 
 #include<boost/bind.hpp>
 #include<boost/range/algorithm/for_each.hpp>
+#include<boost/range/adaptor/reversed.hpp>
 
 #include<ramen/app/application.hpp>
 #include<ramen/app/document.hpp>
@@ -14,6 +15,8 @@ namespace ramen
 {
 namespace undo
 {
+
+command_t::command_t() {}
 
 command_t::command_t( const core::string8_t& name) : name_(name), was_dirty_( app().document().dirty())
 {
@@ -49,7 +52,7 @@ composite_command_t::composite_command_t( const core::string8_t& name) : command
 
 void composite_command_t::undo()
 {
-    boost::range::for_each( commands_, boost::bind( &command_t::undo, _1));
+    boost::range::for_each( commands_ | boost::adaptors::reversed, boost::bind( &command_t::undo, _1));
     command_t::undo();
 }
 
@@ -61,7 +64,7 @@ void composite_command_t::redo()
 
 void composite_command_t::push_back( BOOST_RV_REF( core::auto_ptr_t<command_t>) c)
 {
-    commands_.push_back( c.release());
+    commands_.push_back( c);
 }
 
 } // undo

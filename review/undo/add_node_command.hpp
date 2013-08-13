@@ -9,8 +9,6 @@
 
 #include<set>
 
-#include<ramen/containers/ptr_vector.hpp>
-
 #include<ramen/nodes/node.hpp>
 
 namespace ramen

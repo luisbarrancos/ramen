@@ -23,9 +23,6 @@ public:
 
     // signals
 
-    /// Emitted when a node is created.
-    static boost::signals2::signal<void ( node_t*)> node_created;
-
     /// Emitted when a node is deleted.
     static boost::signals2::signal<void ( node_t*)> node_deleted;
 

@@ -16,7 +16,10 @@ public:
     static const node_info_t& color_bars_node_info();
     virtual const node_info_t *node_info() const;
 
-    color_bars_node_t();
+    color_bars_node_t() : generator_node_t()
+    {
+        set_name( "color_bars");
+    }
 
 protected:
 
@@ -27,15 +30,11 @@ private:
 
     virtual node_t *do_clone() const { return new color_bars_node_t( *this);}
 
-    virtual void do_process( const render::context_t& context);
+    virtual void do_process( const render::context_t& context)
+    {
+        image::make_color_bars( image_view(), format(), defined());
+    }
 };
-
-color_bars_node_t::color_bars_node_t() : generator_node_t() { set_name( "color bars");}
-
-void color_bars_node_t::do_process( const render::context_t& context)
-{
-    image::make_color_bars( image_view(), format(), defined());
-}
 
 // factory
 node_t *create_color_bars_node() { return new color_bars_node_t();}

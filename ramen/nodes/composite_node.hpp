@@ -59,6 +59,9 @@ public:
     void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
     core::auto_ptr_t<node_t> release_node( node_t *n);
 
+    boost::signals2::signal<void( node_t*)> node_added;
+    boost::signals2::signal<void( node_t*)> node_released;
+
     void add_edge( const edge_t& e);
     void remove_edge( const edge_t& e);
 
@@ -108,6 +111,9 @@ private:
     void operator=( const composite_node_t& other);
 
     virtual void do_set_frame( float f);
+
+    void emit_node_added_signal( node_t *n);
+    void emit_node_released_signal( node_t *n);
 
     node_container_type nodes_;
     std::vector<edge_t> edges_;

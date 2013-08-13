@@ -146,10 +146,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         GL/program.hpp
                         GL/program.cpp
 
-                        half/half_lut.hpp
-                        half/halfExpLog.h
-                        half/halfExpLogTable.cpp
-
                         hash/generator.hpp
                         hash/generator.cpp
                         hash/MurmurHash3.h
@@ -256,7 +252,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.cpp
 
-                        ui/add_node_command.cpp
                         ui/edit_commands.cpp
                         ui/events_fwd.hpp
                         ui/events.hpp
@@ -272,10 +267,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/user_interface.hpp
                         ui/user_interface.cpp
 
-                        #ui/viewer_fwd.hpp
-                        #ui/viewer.hpp
-                        #ui/viewer.cpp
-
                         ui/anim/anim_curves_view.cpp
                         ui/anim/anim_editor.cpp
                         ui/anim/anim_editor_command.cpp
@@ -290,7 +281,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/anim/track_model.cpp
 
                         ui/compview/composition_view.cpp
-                        ui/compview/composition_view_commands.cpp
                         ui/compview/composition_view_layout.cpp
                         ui/compview/composition_view_toolbar.cpp
                         ui/compview/draw_pick_visitors.cpp
@@ -331,7 +321,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         undo/stack.cpp
 
                         util/command_line_parser.cpp
-                        util/error_log.cpp
                         util/string.cpp
                         )
 

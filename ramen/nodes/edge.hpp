@@ -18,7 +18,12 @@ struct edge_t
     edge_t( node_t *s=0, node_t *d=0, int p=-1);
 
     bool operator==( const edge_t& other) const;
-    bool operator!=( const edge_t& other) const { return !(*this == other);}
+    bool operator!=( const edge_t& other) const
+    {
+        return !( *this == other);
+    }
+
+    bool operator<( const edge_t& other) const;
 
     node_t *src;
     node_t *dst;

@@ -6,6 +6,8 @@
 
 #include<ramen/assert.hpp>
 
+#include<utility>
+
 namespace ramen
 {
 
@@ -20,6 +22,23 @@ edge_t::edge_t( node_t *s, node_t *d, int p) : src( s), dst( d), port( p)
 bool edge_t::operator==( const edge_t& other) const
 {
     return src == other.src && dst == other.dst && port == other.port;
+}
+
+bool edge_t::operator<( const edge_t& other) const
+{
+    if( src < other.src)
+        return true;
+
+    if( src == other.src)
+    {
+        if( dst < other.dst)
+            return true;
+
+        if( dst == other.dst)
+            return port < other.port;
+    }
+
+    return false;
 }
 
 } // ramen

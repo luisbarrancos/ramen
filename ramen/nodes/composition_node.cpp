@@ -25,6 +25,10 @@
 #include<ramen/params/bool_param.hpp>
 #include<ramen/params/file_param.hpp>
 
+#ifndef NDEBUG
+    #include<iostream>
+#endif
+
 namespace ramen
 {
 namespace
@@ -37,13 +41,37 @@ core::name_t g_format( "format");
 core::name_t g_frame_rate( "frame_rate");
 core::name_t g_autokey( "autokey");
 
+// debug stuff
+#ifndef NDEBUG
+
+void log_node_added_signal( node_t *n)
+{
+    std::cout << "node added " << n->name() << std::endl;
+}
+
+void log_node_released_signal( node_t *n)
+{
+    std::cout << "node released " << n->name() << std::endl;
+}
+
+void log_node_deleted_signal( node_t *n)
+{
+    std::cout << "node deleted " << std::endl;
+}
+
+#endif
+
 } // unnamed
 
-boost::signals2::signal<void ( node_t*)> composition_node_t::node_created;
 boost::signals2::signal<void ( node_t*)> composition_node_t::node_deleted;
 
 composition_node_t::composition_node_t() : composite_node_t()
 {
+    #ifndef NDEBUG
+        node_added.connect( log_node_added_signal);
+        node_released.connect( log_node_released_signal);
+        node_deleted.connect( log_node_deleted_signal);
+    #endif
 }
 
 composition_node_t::composition_node_t( const composition_node_t& other) : composite_node_t( other)

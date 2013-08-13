@@ -30,12 +30,12 @@
 #include<ramen/bezier/algorithm.hpp>
 
 #include<ramen/nodes/composition_node.hpp>
+#include<ramen/nodes/node_graph_modifier.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/palette.hpp>
 #include<ramen/ui/main_window.hpp>
 
-#include<ramen/ui/compview/composition_view_commands.hpp>
 #include<ramen/ui/compview/draw_pick_visitors.hpp>
 
 namespace ramen
@@ -257,10 +257,9 @@ void composition_view_t::mousePressEvent( QMouseEvent *event)
 
         if( pick_edge( wpos, src, dst, port))
         {
-            // TODO: if either src or dest are groups, resolve the real nodes.
-            core::auto_ptr_t<undo::command_t> c( new undo::disconnect_command_t( src, dst, port));
-            c->redo();
-            app().document().undo_stack().push_back( boost::move( c));
+            node_graph_modifier_t m( &app().document().composition_node(), "Disconnect nodes");
+            m.disconnect( src, dst, port);
+            m.execute( true);
             app().ui()->update();
             return;
         }
@@ -419,9 +418,9 @@ void composition_view_t::connect_release_handler( QMouseEvent *event)
     // TODO: if either source or dest are groups, resolve the real nodes here.
     if( app().document().composition_node().can_connect( src, dst, port))
     {
-        core::auto_ptr_t<undo::command_t> c( new undo::connect_command_t( src, dst, port));
-        c->redo();
-        app().document().undo_stack().push_back( boost::move( c));
+        node_graph_modifier_t m( &app().document().composition_node(), "Connect nodes");
+        m.connect( src, dst, port);
+        m.execute( true);
         app().ui()->update();
     }
     else

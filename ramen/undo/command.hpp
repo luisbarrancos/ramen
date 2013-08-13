@@ -7,11 +7,10 @@
 
 #include<ramen/undo/command_fwd.hpp>
 
-#include<boost/ptr_container/ptr_vector.hpp>
-
 #include<ramen/core/memory.hpp>
-
 #include<ramen/core/string8.hpp>
+
+#include<ramen/containers/ptr_vector.hpp>
 
 namespace ramen
 {
@@ -87,7 +86,7 @@ public:
 
 protected:
 
-    boost::ptr_vector<command_t> commands_;
+    containers::ptr_vector_t<command_t> commands_;
 };
 
 } // undo

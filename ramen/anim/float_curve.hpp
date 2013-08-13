@@ -6,6 +6,7 @@
 #define	RAMEN_ANIM_FLOAT_CURVE_HPP
 
 #include<ramen/anim/curve_fwd.hpp>
+
 #include<ramen/anim/curve.hpp>
 
 #include<ramen/assert.hpp>

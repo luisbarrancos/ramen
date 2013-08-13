@@ -13,8 +13,6 @@
 
 #include<ramen/nodes/node_fwd.hpp>
 
-#include<ramen/util/error_log.hpp>
-
 namespace ramen
 {
 namespace render
@@ -55,7 +53,6 @@ public:
     float motion_blur_shutter_factor;
 
     boost::function<bool ()> cancel;
-    util::error_log_t *error_log;
 
 private:
 

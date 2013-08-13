@@ -46,7 +46,6 @@
 #include<ramen/qwidgets/time_slider.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/add_node_command.hpp>
 #include<ramen/ui/edit_commands.hpp>
 #include<ramen/ui/time_controls.hpp>
 #include<ramen/ui/render_composition.hpp>
@@ -949,14 +948,16 @@ void main_window_t::create_node()
     else
         composition_view().place_node( p.get());
 
-    //node_graph_modifier_t modifier( &app().document().composition_node(), "Add Node");
-
+    node_graph_modifier_t m( &app().document().composition_node(), "Add Node");
     node_t *n = p.get(); // save for later use
-    core::auto_ptr_t<undo::command_t> c( new undo::add_node_command_t( boost::move( p), src));
+    m.add_node( boost::move( p));
+
+    if( src)
+        m.connect( src, n, 0);
+
     app().document().composition_node().deselect_all();
     n->select( true);
-    c->redo();
-    app().document().undo_stack().push_back( boost::move( c));
+    m.execute( true);
     app().ui()->update();
 }
 

@@ -8,10 +8,9 @@
 #include<ramen/config.hpp>
 
 #include<ramen/core/string8.hpp>
+#include<ramen/core/memory.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
-
-#include<ramen/undo/command_fwd.hpp>
 
 namespace ramen
 {
@@ -23,8 +22,31 @@ public:
     node_graph_modifier_t( composite_node_t *graph, const core::string8_t& undo_name);
     ~node_graph_modifier_t();
 
+    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
+    {
+        // we need this workaround, because of a gcc? bug.
+        do_add_node( n.release());
+    }
+
+    void remove_node( node_t *n);
+
+    void connect( node_t *src, node_t *dst, int port);
+    void disconnect( node_t *src, node_t *dst, int port);
+
+    void execute( bool undoable);
+
 private:
 
+    void do_add_node( node_t *n);
+
+    // non-copyable
+    node_graph_modifier_t( const node_graph_modifier_t&);
+    node_graph_modifier_t& operator=( const node_graph_modifier_t&);
+
+    composite_node_t *graph_;
+
+    struct impl;
+    impl *pimpl_;
 };
 
 } // ramen

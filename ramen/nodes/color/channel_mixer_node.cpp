@@ -48,12 +48,15 @@ public:
 
     channel_mixer_node_t() : pointop_node_t()
     {
-        set_name("ch mix");
+        set_name( "ch_mix");
     }
 
 protected:
 
-    channel_mixer_node_t( const channel_mixer_node_t& other) : pointop_node_t( other) {}
+    channel_mixer_node_t( const channel_mixer_node_t& other) : pointop_node_t( other)
+    {
+    }
+
     void operator=( const channel_mixer_node_t&);
 
 private:
