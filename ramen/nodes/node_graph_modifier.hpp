@@ -5,7 +5,7 @@
 #ifndef RAMEN_NODES_GRAPH_MODIFIER_HPP
 #define RAMEN_NODES_GRAPH_MODIFIER_HPP
 
-#include<ramen/config.hpp>
+#include<ramen/nodes/node_graph_modifier_fwd.hpp>
 
 #include<ramen/core/string8.hpp>
 #include<ramen/core/memory.hpp>
@@ -29,6 +29,8 @@ public:
     }
 
     void remove_node( node_t *n);
+
+    bool can_connect( node_t *src, node_t *dst, int port) const;
 
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);

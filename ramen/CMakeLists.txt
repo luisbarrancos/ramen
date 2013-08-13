@@ -178,6 +178,7 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/node.hpp
                         nodes/node.cpp
                         nodes/node_factory.cpp
+                        nodes/node_graph_modifier_fwd.hpp
                         nodes/node_graph_modifier.hpp
                         nodes/node_graph_modifier.cpp
                         nodes/node_info.hpp

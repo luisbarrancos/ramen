@@ -932,12 +932,14 @@ void main_window_t::create_node()
         return;
     }
 
+    node_graph_modifier_t modifier( &app().document().composition_node(), "Add Node");
+
     // test to see if we can autoconnect
     node_t *src = app().document().composition_node().selected_node();
 
     if( src && src->has_output_plug() && p->num_inputs() != 0)
     {
-        if( !app().document().composition_node().can_connect( src, p.get(), 0))
+        if( !modifier.can_connect( src, p.get(), 0))
             src = 0;
     }
     else
@@ -948,16 +950,15 @@ void main_window_t::create_node()
     else
         composition_view().place_node( p.get());
 
-    node_graph_modifier_t m( &app().document().composition_node(), "Add Node");
     node_t *n = p.get(); // save for later use
-    m.add_node( boost::move( p));
+    modifier.add_node( boost::move( p));
 
     if( src)
-        m.connect( src, n, 0);
+        modifier.connect( src, n, 0);
 
     app().document().composition_node().deselect_all();
     n->select( true);
-    m.execute( true);
+    modifier.execute( true);
     app().ui()->update();
 }
 

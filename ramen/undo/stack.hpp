@@ -41,12 +41,12 @@ public:
     /// Clears all commands.
     void clear_all();
 
-    /// Pushes an undo command.
+    /// Pushes a command.
     template<class T>
     void push_back( BOOST_RV_REF( core::auto_ptr_t<T>) c)
     {
-        RAMEN_ASSERT( dynamic_cast<command_t*>( c.get()) != 0); // I think this is not needed...
         undo_stack_.push_back( c.release());
+        clear_redo();
 
         if( undo_stack_.size() > 50)
             undo_stack_.pop_front();

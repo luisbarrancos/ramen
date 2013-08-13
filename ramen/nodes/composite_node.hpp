@@ -21,9 +21,21 @@
 #include<ramen/containers/ptr_vector.hpp>
 
 #include<ramen/nodes/edge.hpp>
+#include<ramen/nodes/node_graph_modifier_fwd.hpp>
 
 namespace ramen
 {
+
+// remove me later
+namespace undo
+{
+
+class extract_command_t;
+class delete_command_t;
+class duplicate_command_t;
+class ignore_nodes_command_t;
+
+} // undo
 
 /**
 \ingroup nodes
@@ -56,14 +68,8 @@ public:
     composite_node_t();
     ~composite_node_t();
 
-    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
-    core::auto_ptr_t<node_t> release_node( node_t *n);
-
     boost::signals2::signal<void( node_t*)> node_added;
     boost::signals2::signal<void( node_t*)> node_released;
-
-    void add_edge( const edge_t& e);
-    void remove_edge( const edge_t& e);
 
     // iterators & ranges
     node_iterator nodes_begin() { return nodes_.begin();}
@@ -84,10 +90,9 @@ public:
     const_edge_range_type& edges() const    { return edges_;}
     edge_range_type& edges()                { return edges_;}
 
-    // connections
-    bool can_connect( node_t *src, node_t *dst, int port);
-    void connect( node_t *src, node_t *dst, int port);
-    void disconnect( node_t *src, node_t *dst, int port);
+protected:
+
+    composite_node_t( const composite_node_t& other);
 
     // will be protected later...
 
@@ -99,15 +104,35 @@ public:
     core::auto_ptr_t<node_t> create_unknown_node( const core::name_t& id,
                                                   const std::pair<int, int>& version);
 
-protected:
+    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
+    core::auto_ptr_t<node_t> release_node( node_t *n);
 
-    composite_node_t( const composite_node_t& other);
+    // connections
+    bool can_connect( node_t *src, node_t *dst, int port);
+    void connect( node_t *src, node_t *dst, int port);
+    void disconnect( node_t *src, node_t *dst, int port);
+
+    void add_edge( const edge_t& e);
+    void remove_edge( const edge_t& e);
 
     virtual void do_begin_interaction();
     virtual void do_end_interaction();
 
 private:
 
+    friend class node_graph_modifier_t;
+    friend class undo::add_node_command_t;
+    friend class undo::remove_node_command_t;
+    friend class undo::connect_command_t;
+    friend class undo::disconnect_command_t;
+
+    // remove later
+    friend class undo::extract_command_t;
+    friend class undo::delete_command_t;
+    friend class undo::duplicate_command_t;
+    friend class undo::ignore_nodes_command_t;
+
+    // non-assignable
     void operator=( const composite_node_t& other);
 
     virtual void do_set_frame( float f);

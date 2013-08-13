@@ -18,7 +18,7 @@
 
 namespace ramen
 {
-namespace
+namespace undo
 {
 
 class add_node_command_t : public undo::command_t
@@ -171,14 +171,14 @@ public:
     std::set<edge_t> edges_to_remove;
 };
 
-} // unnamed
+} // undo
 
 struct node_graph_modifier_t::impl
 {
     explicit impl( const core::string8_t& undo_name)
     {
         command.reset( new undo::composite_command_t( undo_name));
-        notify_command.reset( new notify_all_command_t());
+        notify_command.reset( new undo::notify_all_command_t());
     }
 
     void execute()
@@ -189,7 +189,7 @@ struct node_graph_modifier_t::impl
     }
 
     core::auto_ptr_t<undo::composite_command_t> command;
-    core::auto_ptr_t<notify_all_command_t> notify_command;
+    core::auto_ptr_t<undo::notify_all_command_t> notify_command;
 };
 
 node_graph_modifier_t::node_graph_modifier_t( composite_node_t *graph,
@@ -210,7 +210,7 @@ node_graph_modifier_t::~node_graph_modifier_t()
 void node_graph_modifier_t::do_add_node( node_t *n)
 {
     pimpl_->notify_command->nodes_to_add.insert( n);
-    core::auto_ptr_t<undo::command_t> c( new add_node_command_t( graph_, n));
+    core::auto_ptr_t<undo::command_t> c( new undo::add_node_command_t( graph_, n));
     pimpl_->command->push_back( boost::move( c));
 }
 
@@ -220,6 +220,11 @@ void node_graph_modifier_t::remove_node( node_t *n)
 
     throw core::not_implemented();
     //pimpl_->notify_command->nodes_to_remove.insert( n);
+}
+
+bool node_graph_modifier_t::can_connect( node_t *src, node_t *dst, int port) const
+{
+    return graph_->can_connect( src, dst, port);
 }
 
 void node_graph_modifier_t::connect( node_t *src, node_t *dst, int port)
@@ -237,7 +242,7 @@ void node_graph_modifier_t::connect( node_t *src, node_t *dst, int port)
             disconnect( prev_src, dst, port);
     }
 
-    core::auto_ptr_t<undo::command_t> c( new connect_command_t( graph_, src, dst, port));
+    core::auto_ptr_t<undo::command_t> c( new undo::connect_command_t( graph_, src, dst, port));
     pimpl_->command->push_back( boost::move( c));
 }
 
@@ -249,7 +254,7 @@ void node_graph_modifier_t::disconnect( node_t *src, node_t *dst, int port)
     RAMEN_ASSERT( src->parent() == graph_);
     RAMEN_ASSERT( dst->parent() == graph_);
 
-    core::auto_ptr_t<undo::command_t> c( new disconnect_command_t( graph_, src, dst, port));
+    core::auto_ptr_t<undo::command_t> c( new undo::disconnect_command_t( graph_, src, dst, port));
     pimpl_->command->push_back( boost::move( c));
     pimpl_->notify_command->edges_to_add.insert( edge_t( src, dst, port));
 }

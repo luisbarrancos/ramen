@@ -87,6 +87,13 @@ protected:
 
 private:
 
+    friend class node_graph_modifier_t;
+    friend class undo::add_node_command_t;
+    friend class undo::remove_node_command_t;
+    friend class undo::connect_command_t;
+    friend class undo::disconnect_command_t;
+
+    // non-assignable
     void operator=( const composition_node_t& other);
 
     virtual node_t *do_clone() const;

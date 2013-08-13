@@ -415,12 +415,11 @@ void composition_view_t::connect_release_handler( QMouseEvent *event)
         port = last_pick_.plug_num;
     }
 
-    // TODO: if either source or dest are groups, resolve the real nodes here.
-    if( app().document().composition_node().can_connect( src, dst, port))
+    node_graph_modifier_t modifier( &app().document().composition_node(), "Connect nodes");
+    if( modifier.can_connect( src, dst, port))
     {
-        node_graph_modifier_t m( &app().document().composition_node(), "Connect nodes");
-        m.connect( src, dst, port);
-        m.execute( true);
+        modifier.connect( src, dst, port);
+        modifier.execute( true);
         app().ui()->update();
     }
     else
