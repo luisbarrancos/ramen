@@ -250,7 +250,7 @@ void animated_param_t::do_create_tracks( anim::track_t *parent)
     }
     else
     {
-        t.reset( new anim::track_t( name()));
+        t.reset( new anim::track_t( ui_label()));
 
         for( int i = 0; i < num_curves(); ++i)
         {

@@ -98,7 +98,7 @@ void composite_param_t::do_create_tracks( anim::track_t *parent)
 {
     if( create_track_)
     {
-        core::auto_ptr_t<anim::track_t> t( new anim::track_t( name()));
+        core::auto_ptr_t<anim::track_t> t( new anim::track_t( ui_label()));
         boost::range::for_each( params(), boost::bind( &param_t::create_tracks, _1, t.get()));
 
         if( t->num_children() != 0)

@@ -21,7 +21,7 @@ param_t::param_t() : QObject(), param_set_(0)
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
 
-param_t::param_t( const param_t& other) : QObject(), param_set_(0), id_( other.id_), name_( other.name_),
+param_t::param_t( const param_t& other) : QObject(), param_set_(0), id_( other.id_), ui_label_( other.ui_label_),
                                             value_( other.value_), flags_( other.flags_)
 {
 }
@@ -75,6 +75,11 @@ composition_node_t *param_t::composition_node()
     return 0;
 }
 
+void param_t::set_ui_label( core::string8_t name)
+{
+    ui_label_ = name;
+}
+
 void param_t::set_id( const core::name_t& identifier)
 {
     if( !string_algo::is_valid_c_identifier( identifier.c_str()))
@@ -83,7 +88,10 @@ void param_t::set_id( const core::name_t& identifier)
     id_ = identifier;
 }
 
-bool param_t::enabled() const { return util::test_flag( flags_, enabled_bit);}
+bool param_t::enabled() const
+{
+    return util::test_flag( flags_, enabled_bit);
+}
 
 void param_t::set_enabled( bool e)
 {

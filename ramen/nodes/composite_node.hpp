@@ -31,9 +31,7 @@ namespace undo
 {
 
 class extract_command_t;
-class delete_command_t;
 class duplicate_command_t;
-class ignore_nodes_command_t;
 
 } // undo
 
@@ -125,12 +123,11 @@ private:
     friend class undo::remove_node_command_t;
     friend class undo::connect_command_t;
     friend class undo::disconnect_command_t;
+    friend class undo::ignore_node_command_t;
 
     // remove later
     friend class undo::extract_command_t;
-    friend class undo::delete_command_t;
     friend class undo::duplicate_command_t;
-    friend class undo::ignore_nodes_command_t;
 
     // non-assignable
     void operator=( const composite_node_t& other);

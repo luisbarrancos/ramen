@@ -11,12 +11,13 @@
 #include<vector>
 #include<algorithm>
 
-#include<boost/noncopyable.hpp>
+#include<boost/flyweight.hpp>
 #include<boost/tuple/tuple.hpp>
 
 #include<ramen/assert.hpp>
 
 #include<ramen/core/name.hpp>
+#include<ramen/core/string8.hpp>
 
 #include<ramen/color/color3.hpp>
 
@@ -33,44 +34,28 @@ class RAMEN_API node_plug_t
 {
 public:
 
-    /// Constructor.
-    node_plug_t( const std::string& id,
-                 const color::color3c_t& color,
-                 const std::string& tooltip)
-    {
-        id_ = core::name_t( id.c_str());
-        color_ = color;
-        tooltip_ = core::name_t( tooltip.c_str());
-    }
-
-    /// Copy constructor.
-    node_plug_t( const node_plug_t& other) : tooltip_( other.tooltip_),
-                                            color_( other.color_),
-                                            id_( other.id_)
-    {
-    }
-
-    /// Returns this plug id.
-    const core::name_t& id() const { return id_;}
-
     /// Returns this plug color. Used in the UI.
     const color::color3c_t& color() const	{ return color_;}
 
-    /// Returns this plug tooltip. Used in the UI.
-    const core::name_t& tooltip() const	{ return tooltip_;}
+    /// Returns this plug label. Used in the UI.
+    const core::string8_t& ui_label() const	{ return ui_label_;}
 
-    /// Operator less, for assoc. containers (future).
-    bool operator<( const node_plug_t& other) const
-    {
-        // compare pointers directly.
-        return id().c_str() < other.id().c_str();
-    }
+protected:
+
+    /// Constructor.
+    node_plug_t( const core::string8_t& ui_label,
+                 const color::color3c_t& color);
+
+    /// Copy constructor.
+    node_plug_t( const node_plug_t& other);
+
+    /// Assignment
+    node_plug_t& operator=( const node_plug_t& other);
 
 private:
 
-    core::name_t id_;
     color::color3c_t color_;
-    core::name_t tooltip_;
+    boost::flyweight<core::string8_t> ui_label_;
 };
 
 /*!
@@ -83,57 +68,43 @@ public:
 
     typedef std::pair<node_t*,core::name_t> connection_t;
 
-    node_input_plug_t( const std::string& id,
-                       bool optional,
+    node_input_plug_t( const core::string8_t& ui_label,
                        const color::color3c_t& color,
-                       const std::string& tooltip) : node_plug_t( id, color, tooltip)
-    {
-        input_.first = 0;
-        optional_ = optional;
-    }
+                       bool optional);
 
     /// Copy constructor.
-    node_input_plug_t( const node_input_plug_t& other) : node_plug_t( other)
-    {
-        input_.first = 0;
-        optional_ = other.optional();
-    }
+    node_input_plug_t( const node_input_plug_t& other);
+
+    /// Assignment
+    node_input_plug_t& operator=( const node_input_plug_t& other);
 
     /// Returns if this plug is optional.
     bool optional() const { return optional_;}
 
     /// Returns true if there's a node connected to this plug.
-    bool connected() const	{ return input_.first != 0;}
+    bool connected() const	{ return input_ != 0;}
 
     /// Returns the node connected to this plug, or null.
-    const node_t *input_node() const { return input_.first;}
+    const node_t *input_node() const { return input_;}
 
     /// Returns the node connected to this plug, or null.
-    node_t *input_node() { return input_.first;}
-
-    /// Returns the output plug id of the input node this plug is connected to.
-    const core::name_t& input_node_out_plug() const { return input_.second;}
+    node_t *input_node() { return input_;}
 
     /// Sets the node and plug this plug is connected to.
     void set_input( node_t *n)
     {
-        input_.first = n;
-        input_.second = core::name_t( "unused");
-    }
-
-    /// Sets the node and plug this plug is connected to.
-    void set_input( node_t *n, const core::name_t& plug)
-    {
-        input_.first = n;
-        input_.second = plug;
+        input_ = n;
     }
 
     /// Clear this plug connection.
-    void clear_input() { input_.first = 0;}
+    void clear_input()
+    {
+        input_ = 0;
+    }
 
 private:
 
-    connection_t input_;
+    node_t *input_;
     bool optional_;
 };
 
@@ -145,17 +116,15 @@ class RAMEN_API node_output_plug_t : public node_plug_t
 {
 public:
 
-    typedef boost::tuples::tuple<node_t*,core::name_t, int> connection_t;
+    typedef boost::tuples::tuple<node_t*,int> connection_t;
 
     /// Constructor.
     node_output_plug_t( node_t *parent,
-                        const std::string& id,
-                        const color::color3c_t& color,
-                        const std::string& tooltip);
+                        const core::string8_t& ui_label,
+                        const color::color3c_t& color);
 
-    virtual ~node_output_plug_t();
-
-    node_output_plug_t *clone() const { return do_clone();}
+    /// Copy constructor.
+    node_output_plug_t( const node_output_plug_t& other);
 
     const node_t *parent_node() const { return parent_;}
     node_t *parent_node()             { return parent_;}
@@ -168,39 +137,25 @@ public:
     }
 
     /// Adds a connection to this plug.
-    void add_output( node_t *n, const core::name_t& plug);
-
-    /// Adds a connection to this plug.
     void add_output( node_t *n, int port);
-
-    /// Removes a connection to this plug.
-    void remove_output( node_t *n, const core::name_t& plug);
 
     /// Removes a connection to this plug.
     void remove_output( node_t *n, int port);
 
-    typedef std::vector<connection_t >::const_iterator  const_iterator;
-    typedef std::vector<connection_t >::iterator        iterator;
+    typedef std::vector<connection_t>::const_iterator  const_iterator;
+    typedef std::vector<connection_t>::iterator        iterator;
 
     /// Returns a vector of connections from this plug.
-    const std::vector<connection_t >& connections() const { return connections_;}
+    const std::vector<connection_t>& connections() const { return connections_;}
 
     /// Returns a vector of connections from this plug.
-    std::vector<connection_t >& connections() { return connections_;}
-
-protected:
-
-    node_output_plug_t( const node_output_plug_t& other);
+    std::vector<connection_t>& connections() { return connections_;}
 
 private:
 
-    node_output_plug_t *do_clone() const;
-
     node_t *parent_;
-    std::vector<connection_t > connections_;
+    std::vector<connection_t> connections_;
 };
-
-RAMEN_API node_output_plug_t *new_clone( const node_output_plug_t& other);
 
 } // ramen
 

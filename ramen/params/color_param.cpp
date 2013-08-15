@@ -128,7 +128,7 @@ void color_param_t::set_value_at_frame( const color::rgba_colorf_t& x, float fra
 
 void color_param_t::do_create_tracks( anim::track_t *parent)
 {
-    core::auto_ptr_t<anim::track_t> t( new anim::track_t( name()));
+    core::auto_ptr_t<anim::track_t> t( new anim::track_t( ui_label()));
 
     core::auto_ptr_t<anim::track_t> tr( new anim::track_t( "R", &( curve( 0))));
     tr->changed.connect( boost::bind( &animated_param_t::anim_curve_changed, this, _1));
@@ -257,7 +257,7 @@ QWidget *color_param_t::do_create_widgets()
     label->move( 0, 0);
     label->resize( app().ui()->inspector().left_margin() - 5, s.height());
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
-    label->setText( name().c_str());
+    label->setText( ui_label().c_str());
     label->setToolTip( id().c_str());
     color::rgba_colorf_t col = get_value<color::rgba_colorf_t>( *this);
 

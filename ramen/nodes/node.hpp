@@ -71,6 +71,16 @@ public:
     node_t();
     virtual ~node_t();
 
+    // signals
+
+    /// Emitted when a node is deleted.
+    static boost::signals2::signal<void ( node_t*)> node_deleted;
+
+    /// Emitted when a node is renamed.
+    static boost::signals2::signal<void ( node_t*,
+                                          const core::string8_t& old_name,
+                                          const core::string8_t& new_name)> node_renamed;
+
     /// Makes a copy of the node.
     node_t *clone() const;
 
@@ -81,7 +91,7 @@ public:
     const core::string8_t& name() const { return name_;}
 
     /// Sets the node name.
-    void set_name( const core::string8_t& n);
+    void set_name( core::string8_t n);
 
     /// Returns composite node this node belongs to.
     const composite_node_t *parent() const;
@@ -104,8 +114,6 @@ public:
     const std::vector<node_input_plug_t>& input_plugs() const { return inputs_;}
     std::vector<node_input_plug_t>& input_plugs()             { return inputs_;}
 
-    int find_input( const core::name_t& id) const;
-
     const node_t *input( std::size_t i = 0) const;
     node_t *input( std::size_t i = 0);
 
@@ -121,10 +129,9 @@ public:
         return dynamic_cast<T*>( input( i));
     }
 
-    void add_input_plug( const std::string& id,
-                         bool optional,
+    void add_input_plug( const core::string8_t& ui_label,
                          const color::color3c_t& color,
-                         const std::string& tooltip);
+                         bool optional);
 
     virtual void add_new_input_plug();
 
@@ -137,12 +144,8 @@ public:
     const node_output_plug_t& output_plug() const;
     node_output_plug_t& output_plug();
 
-    const node_t *output( std::size_t i) const;
-    node_t *output( std::size_t i);
-
-    void add_output_plug( const std::string& id,
-                          const color::color3c_t& color,
-                          const std::string& tooltip);
+    void add_output_plug( const core::string8_t& ui_label,
+                          const color::color3c_t& color);
 
     void add_output_plug();
 

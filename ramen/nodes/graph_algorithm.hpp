@@ -78,7 +78,7 @@ template<class Visitor>
 void depth_first_outputs_recursive_search( node_t& n, Visitor f)
 {
     for( unsigned int i = 0; i < n.num_outputs(); ++i)
-        depth_first_outputs_recursive_search( *n.output(i), f);
+        depth_first_outputs_recursive_search( *boost::get<0>( n.output_plug().connections()[i]), f);
 
     if( n.graph_color() == black)
     {
@@ -97,7 +97,7 @@ void breadth_first_outputs_recursive_search( node_t& n, Visitor f)
     }
 
     for( unsigned int i = 0; i < n.num_outputs(); ++i)
-        breadth_first_outputs_recursive_search( *n.output(i), f);
+        breadth_first_outputs_recursive_search( *boost::get<0>( n.output_plug().connections()[i]), f);
 }
 
 } // detail
@@ -184,7 +184,7 @@ void breadth_first_out_edges_apply( node_t& n, Visitor f)
     for( unsigned int i = 0; i < n.num_outputs(); ++i)
     {
         node_t *dst = boost::get<0>( n.output_plug().connections()[i]);
-        int port  = boost::get<2>( n.output_plug().connections()[i]);
+        int port    = boost::get<1>( n.output_plug().connections()[i]);
         edge_t e( &n, dst, port);
         f( e);
 

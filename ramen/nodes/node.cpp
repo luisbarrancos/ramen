@@ -52,6 +52,11 @@ struct frames_needed_less
 
 } // unnamed
 
+boost::signals2::signal<void ( node_t*)> node_t::node_deleted;
+boost::signals2::signal<void ( node_t*,
+                               const core::string8_t& old_name,
+                               const core::string8_t& new_name)> node_t::node_renamed;
+
 node_t::node_t() : manipulable_t(), parent_( 0), flags_( 0), dont_persist_params_( false)
 {
     params_.set_node( this);
@@ -73,7 +78,7 @@ node_t::node_t( const node_t& other) :  manipulable_t( other),
 
 node_t::~node_t()
 {
-    composition_node_t::node_deleted( this);
+    node_deleted( this);
 }
 
 node_t *node_t::clone() const
@@ -90,12 +95,13 @@ void node_t::cloned()
     format_changed();
 }
 
-void node_t::set_name( const core::string8_t& n)
+void node_t::set_name( core::string8_t n)
 {
     if( !string_algo::is_valid_c_identifier( n))
         throw core::runtime_error( "Invalid name for node");
 
-    name_ = n;
+    name_.swap( n);
+    node_renamed( this, n, name_);
 }
 
 const composite_node_t *node_t::parent() const
@@ -199,20 +205,6 @@ bool node_t::track_mouse() const { return true;}
 
 // inputs
 
-int node_t::find_input( const core::name_t& id) const
-{
-    int index = 0;
-    BOOST_FOREACH( const node_input_plug_t& i, input_plugs())
-    {
-        if( i.id() == id)
-            return index;
-
-        ++index;
-    }
-
-    return -1;
-}
-
 const node_t *node_t::input( std::size_t i) const
 {
     RAMEN_ASSERT( i < inputs_.size());
@@ -225,12 +217,11 @@ node_t *node_t::input( std::size_t i)
     return inputs_[i].input_node();
 }
 
-void node_t::add_input_plug( const std::string &id,
-                             bool optional,
-                             const color::color3c_t &color,
-                             const std::string &tooltip)
+void node_t::add_input_plug( const core::string8_t& ui_label,
+                             const color::color3c_t& color,
+                             bool optional)
 {
-    inputs_.push_back( node_input_plug_t( id, optional, color, tooltip));
+    inputs_.push_back( node_input_plug_t( ui_label, color, optional));
 }
 
 std::size_t node_t::num_outputs() const
@@ -253,31 +244,16 @@ node_output_plug_t& node_t::output_plug()
     return outputs_[0];
 }
 
-const node_t *node_t::output( std::size_t i) const
-{
-    RAMEN_ASSERT( has_output_plug());
-    RAMEN_ASSERT( i < num_outputs());
-    return boost::get<0>( outputs_[0].connections()[i]);
-}
-
-node_t *node_t::output( std::size_t i)
-{
-    RAMEN_ASSERT( has_output_plug());
-    RAMEN_ASSERT( i < num_outputs());
-    return boost::get<0>( outputs_[0].connections()[i]);
-}
-
-void node_t::add_output_plug( const std::string &id,
-                              const color::color3c_t& color,
-                              const std::string& tooltip)
+void node_t::add_output_plug( const core::string8_t& ui_label,
+                              const color::color3c_t& color)
 {
     RAMEN_ASSERT( !has_output_plug());
-    outputs_.push_back( new node_output_plug_t( this, id, color, tooltip));
+    outputs_.push_back( new node_output_plug_t( this, ui_label, color));
 }
 
 void node_t::add_output_plug()
 {
-    add_output_plug( "output", ui::palette_t::instance().color( "out plug"), "output" );
+    add_output_plug( "output", ui::palette_t::instance().color( "out plug"));
 }
 
 bool node_t::accept_connection( node_t *src, int port) const { return true;}
@@ -310,7 +286,7 @@ void node_t::reconnect_node()
         BOOST_FOREACH( edge_t& e, comp->edges())
         {
             if( e.dst == this)
-                input_plugs()[ e.port].set_input( e.src, core::name_t( "unused"));
+                input_plugs()[ e.port].set_input( e.src);
         }
     }
 }

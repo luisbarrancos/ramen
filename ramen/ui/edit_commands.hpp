@@ -44,21 +44,6 @@ protected:
     std::set<node_t*> dependents_;
 };
 
-struct delete_command_t : public extract_command_t
-{
-    delete_command_t();
-
-    void add_node( node_t *n);
-
-    virtual void undo();
-    virtual void redo();
-
-private:
-
-    std::vector<node_t*> nodes_;
-    containers::ptr_vector_t<node_t> node_storage_;
-};
-
 struct duplicate_command_t : public command_t
 {
     duplicate_command_t();
@@ -74,20 +59,6 @@ private:
     std::vector<node_t*> nodes_;
     std::vector<edge_t> edges_;
     containers::ptr_vector_t<node_t> node_storage_;
-};
-
-struct ignore_nodes_command_t : public command_t
-{
-    ignore_nodes_command_t();
-
-    void add_node( node_t *n);
-
-    virtual void undo();
-    virtual void redo();
-
-private:
-
-    std::vector<node_t*> nodes_;
 };
 
 } // undo

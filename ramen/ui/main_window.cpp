@@ -642,91 +642,37 @@ void main_window_t::redo()
 
 void main_window_t::ignore_nodes()
 {
-    core::auto_ptr_t<undo::ignore_nodes_command_t> c( new undo::ignore_nodes_command_t());
-
+    node_graph_modifier_t modifier( &app().document().composition_node(), "Ignore nodes");
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
-            c->add_node( &n);
+            modifier.ignore_node( &n);
     }
 
-    c->redo();
-    app().document().undo_stack().push_back( boost::move( c));
+    modifier.execute( true);
     app().ui()->update();
 }
 
 void main_window_t::delete_nodes()
 {
-    bool autoconnect = true;
-
     if( !app().document().composition_node().any_selected())
         return;
 
-    core::auto_ptr_t<undo::delete_command_t> c( new undo::delete_command_t());
+    node_graph_modifier_t modifier( &app().document().composition_node(), "Delete nodes");
 
     BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
     {
-        if( e.src->selected() && !(e.dst->selected()))
-            c->add_dependent_node( e.dst);
+        if( e.src->selected() || e.dst->selected())
+            modifier.disconnect( e.src, e.dst, e.port);
     }
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
     {
         if( n.selected())
-            c->add_node( &n);
+            modifier.remove_node( &n);
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
-    {
-        if( e.src->selected() || e.dst->selected())
-            c->add_edge_to_remove( e);
-    }
-
-    if( autoconnect)
-    {
-        std::vector<edge_t> edges_to_add;
-
-        BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
-        {
-            if( n.selected())
-            {
-                if( n.num_outputs() == 0)
-                    continue;
-
-                node_t *src = 0;
-
-                // find first input
-                for( int i = 0; i < n.num_inputs(); ++i)
-                {
-                    if( n.input( i) && !n.input( i)->selected())
-                    {
-                        src = n.input( i);
-                        break;
-                    }
-                }
-
-                if( src)
-                {
-                    breadth_first_out_edges_apply( n,
-                                                   boost::bind( &undo::delete_command_t::add_candidate_edge,
-                                                   _1,
-                                                   src,
-                                                   boost::ref( edges_to_add)));
-                }
-            }
-        }
-
-        std::stable_sort( edges_to_add.begin(), edges_to_add.end(),
-                          &undo::delete_command_t::edge_less);
-        std::unique( edges_to_add.begin(), edges_to_add.end(),
-                     &undo::delete_command_t::edge_compare);
-
-        for( int i = 0; i < edges_to_add.size(); ++i)
-            c->add_edge_to_add( edges_to_add[i]);
-    }
-
-    c->redo();
-    app().document().undo_stack().push_back( boost::move( c));
+    modifier.execute( true);
     app().ui()->update();
 }
 
@@ -951,6 +897,7 @@ void main_window_t::create_node()
         composition_view().place_node( p.get());
 
     node_t *n = p.get(); // save for later use
+    app().document().composition_node().make_name_unique( n);
     modifier.add_node( boost::move( p));
 
     if( src)

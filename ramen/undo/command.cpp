@@ -18,13 +18,22 @@ namespace undo
 
 command_t::command_t() {}
 
-command_t::command_t( const core::string8_t& name) : name_(name), was_dirty_( app().document().dirty())
+command_t::command_t( core::string8_t name) : was_dirty_( app().document().dirty())
 {
+    set_name( name);
 }
 
 command_t::~command_t() {}
 
-const core::string8_t& command_t::name() const { return name_;}
+const core::string8_t& command_t::name() const
+{
+    return name_;
+}
+
+void command_t::set_name( core::string8_t name)
+{
+    name_.swap( name);
+}
 
 void command_t::set_done( bool b)
 {
@@ -46,7 +55,7 @@ void command_t::redo()
     done_ = true;
 }
 
-composite_command_t::composite_command_t( const core::string8_t& name) : command_t( name)
+composite_command_t::composite_command_t( core::string8_t name) : command_t( name)
 {
 }
 

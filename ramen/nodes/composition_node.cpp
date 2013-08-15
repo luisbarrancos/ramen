@@ -15,6 +15,8 @@
 
 #include<ramen/core/exceptions.hpp>
 
+#include<ramen/string_algo/increment_end_digits.hpp>
+
 #include<ramen/app/application.hpp>
 #include<ramen/app/preferences.hpp>
 
@@ -43,35 +45,25 @@ core::name_t g_autokey( "autokey");
 
 // debug stuff
 #ifndef NDEBUG
-
-void log_node_added_signal( node_t *n)
-{
-    std::cout << "node added " << n->name() << std::endl;
-}
-
-void log_node_released_signal( node_t *n)
-{
-    std::cout << "node released " << n->name() << std::endl;
-}
-
-void log_node_deleted_signal( node_t *n)
-{
-    std::cout << "node deleted " << std::endl;
-}
-
+    void log_node_released_signal( node_t *n)
+    {
+        std::cout << "node released " << n->name() << std::endl;
+    }
 #endif
 
 } // unnamed
 
-boost::signals2::signal<void ( node_t*)> composition_node_t::node_deleted;
-
 composition_node_t::composition_node_t() : composite_node_t()
 {
+    set_name( "composition");
+
     #ifndef NDEBUG
-        node_added.connect( log_node_added_signal);
         node_released.connect( log_node_released_signal);
-        node_deleted.connect( log_node_deleted_signal);
     #endif
+
+    node_added.connect( boost::bind( &composition_node_t::node_was_added, this, _1));
+    node_deleted.connect( boost::bind( &composition_node_t::node_was_deleted, this, _1));
+    node_renamed.connect( boost::bind( &composition_node_t::node_was_renamed, this, _1, _2, _3));
 }
 
 composition_node_t::composition_node_t( const composition_node_t& other) : composite_node_t( other)
@@ -88,7 +80,7 @@ void composition_node_t::do_create_params()
 {
     core::auto_ptr_t<float_param_t> p( new float_param_t());
     start_frame_ = p.get();
-    p->set_name( "Start Frame");
+    p->set_ui_label( "Start Frame");
     p->set_id( g_start_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -98,7 +90,7 @@ void composition_node_t::do_create_params()
 
     p.reset( new float_param_t());
     end_frame_ = p.get();
-    p->set_name( "End Frame");
+    p->set_ui_label( "End Frame");
     p->set_id( g_end_frame);
     p->set_default_value( 100);
     p->set_static( true);
@@ -108,7 +100,7 @@ void composition_node_t::do_create_params()
 
     p.reset( new float_param_t());
     frame_ = p.get();
-    p->set_name( "Frame");
+    p->set_ui_label( "Frame");
     p->set_id( g_frame);
     p->set_default_value( 1);
     p->set_static( true);
@@ -118,14 +110,14 @@ void composition_node_t::do_create_params()
 
     core::auto_ptr_t<image_format_param_t> f( new image_format_param_t());
     default_format_ = f.get();
-    f->set_name( "Default Format");
+    f->set_ui_label( "Default Format");
     f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
     add_param( boost::move( f));
 
     p.reset( new float_param_t());
     frame_rate_ = p.get();
-    p->set_name( "Frame Rate");
+    p->set_ui_label( "Frame Rate");
     p->set_id( g_frame_rate);
     p->set_range( 1, 60);
     p->set_default_value( app().preferences().frame_rate());
@@ -137,7 +129,7 @@ void composition_node_t::do_create_params()
 
     core::auto_ptr_t<bool_param_t> b( new bool_param_t());
     autokey_ = b.get();
-    b->set_name( "Autokey");
+    b->set_ui_label( "Autokey");
     b->set_id( g_autokey);
     add_param( boost::move( b));
 }
@@ -244,11 +236,6 @@ render::context_t composition_node_t::current_context( render::render_mode mode)
     c.frame = frame();
     c.default_format = default_format();
     return c;
-}
-
-void composition_node_t::rename_node( node_t *n, const core::string8_t& new_name)
-{
-    n->set_name( new_name);
 }
 
 const boost::filesystem::path& composition_node_t::composition_dir() const
@@ -378,6 +365,69 @@ void composition_node_t::notify_all_dirty()
 void composition_node_t::clear_all_notify_dirty_flags()
 {
     boost::range::for_each( nodes(), boost::bind( &node_t::set_notify_dirty, _1, false));
+}
+
+const node_t *composition_node_t::find_node( const core::string8_t& name) const
+{
+    nodes_names_map_type::right_const_iterator it = nodes_names_map_.right.find( name);
+
+    if( it != nodes_names_map_.right.end())
+        return it->second;
+
+    return 0;
+}
+
+node_t *composition_node_t::find_node( const core::string8_t& name)
+{
+    nodes_names_map_type::right_iterator it = nodes_names_map_.right.find( name);
+
+    if( it != nodes_names_map_.right.end())
+        return it->second;
+
+    return 0;
+}
+
+void composition_node_t::make_name_unique( node_t *n)
+{
+    core::string8_t new_name( n->name());
+
+    while( node_t *nn = find_node( new_name))
+        new_name = string_algo::increment_end_digits( new_name);
+
+    if( new_name != n->name())
+        n->set_name( new_name);
+}
+
+void composition_node_t::node_was_added( node_t *n)
+{
+    RAMEN_ASSERT( n != this);
+
+    nodes_names_map_.insert( nodes_names_map_type::value_type( n, n->name()));
+}
+
+void composition_node_t::node_was_deleted( node_t *n)
+{
+    #ifndef NDEBUG
+        std::cout << "node deleted " << n->name() << std::endl;
+    #endif
+
+    if( nodes_names_map_.left.find( n) != nodes_names_map_.left.end())
+        nodes_names_map_.left.erase( n);
+}
+
+void composition_node_t::node_was_renamed( node_t* n,
+                                           const core::string8_t& old_name,
+                                           const core::string8_t& new_name)
+{
+    #ifndef NDEBUG
+        std::cout << "node renamed " << old_name << "->" << new_name << std::endl;
+    #endif
+
+    if( nodes_names_map_.left.find( n) != nodes_names_map_.left.end())
+    {
+        nodes_names_map_.left.erase( n);
+        nodes_names_map_.insert( nodes_names_map_type::value_type( n, new_name));
+    }
 }
 
 } // ramen

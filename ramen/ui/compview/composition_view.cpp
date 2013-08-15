@@ -103,28 +103,30 @@ bool composition_view_t::event( QEvent *event)
 
         switch( picked.component)
         {
-        case pick_result_t::no_pick:
-            QToolTip::hideText();
-        break;
+            case pick_result_t::no_pick:
+                QToolTip::hideText();
+            break;
 
-        case pick_result_t::body_picked:
-        {
-            node_t *node = picked.node;
+            case pick_result_t::body_picked:
+            {
+                node_t *node = picked.node;
 
-            std::stringstream s;
-            s << node->name();
-            s << " [ " << node->full_format().size().x + 1 << ", " << node->full_format().size().y + 1 << "]";
-            QToolTip::showText( help_event->globalPos(), QString::fromStdString( s.str()));
-        }
-        break;
+                std::stringstream s;
+                s << node->name();
+                s << " [ " << node->full_format().size().x + 1 << ", " <<
+                     node->full_format().size().y + 1 << "]";
+                QToolTip::showText( help_event->globalPos(), QString::fromStdString( s.str()));
+            }
+            break;
 
-        case pick_result_t::output_picked:
-            // TODO: use the output plug's tooltip here.
-            QToolTip::showText( help_event->globalPos(), "Output");
-        break;
+            case pick_result_t::output_picked:
+                // TODO: use the output plug's tooltip here.
+                QToolTip::showText( help_event->globalPos(), "Output");
+            break;
 
-        default:
-            QToolTip::showText( help_event->globalPos(), picked.node->input_plugs()[ picked.plug_num].tooltip().c_str());
+            default:
+                QToolTip::showText( help_event->globalPos(),
+                                    picked.node->input_plugs()[ picked.plug_num].ui_label().c_str());
         }
 
         return true;

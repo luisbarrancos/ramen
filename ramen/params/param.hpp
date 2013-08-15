@@ -91,10 +91,10 @@ public:
     param_t *clone() const { return do_clone();}
 
     /// Returns the param name.
-    const core::string8_t& name() const         { return name_;}
+    const core::string8_t& ui_label() const { return ui_label_;}
 
     /// Sets the param name.
-    void set_name( const core::string8_t& name) { name_ = name;}
+    void set_ui_label( core::string8_t ui_label);
 
     /// Returns the param id.
     const core::name_t& id() const { return id_;}
@@ -259,7 +259,7 @@ private:
     param_set_t *param_set_;
 
     core::name_t id_;
-    boost::flyweight<core::string8_t> name_;
+    boost::flyweight<core::string8_t> ui_label_;
     boost::flyweight<core::string8_t> tooltip_;
 
     boost::uint32_t flags_;

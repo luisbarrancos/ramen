@@ -19,7 +19,7 @@ public:
     null_node_t()
     {
         set_name( "null");
-        add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
+        add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
         add_output_plug();
     }
 

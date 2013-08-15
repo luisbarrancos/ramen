@@ -77,7 +77,7 @@ QWidget *bool_param_t::do_create_widgets()
 
     button_ = new QCheckBox( w);
     button_->setFocusPolicy( Qt::NoFocus);
-    button_->setText( name().c_str());
+    button_->setText( ui_label().c_str());
     QSize s = button_->sizeHint();
 
     w->setMinimumSize( app().ui()->inspector().width(), s.height());

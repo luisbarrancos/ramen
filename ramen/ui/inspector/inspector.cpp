@@ -73,7 +73,7 @@ private:
     void rename( const core::string8_t& name)
     {
         name_edit_->blockSignals( true);
-        app().document().composition_node().rename_node( n_, name.c_str());
+        n_->set_name( name.c_str());
 
         if( n_->is_active())
         {

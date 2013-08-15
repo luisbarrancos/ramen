@@ -5,6 +5,8 @@
 #ifndef RAMEN_UI_NODE_MENU_HPP
 #define	RAMEN_UI_NODE_MENU_HPP
 
+#include<ramen/core/string8.hpp>
+
 #include<vector>
 
 #include<ramen/core/string8.hpp>
@@ -21,7 +23,7 @@ class node_menu_t
 {
 public:
 
-    node_menu_t( const core::string8_t& name);
+    explicit node_menu_t( core::string8_t name);
 
     const core::string8_t& name() const { return name_;}
     QMenu *menu() { return menu_;}
@@ -41,7 +43,7 @@ private:
     std::vector<QMenu*> submenus_;
 };
 
-} // namespace
-} // namespace
+} // ui
+} // ramen
 
 #endif

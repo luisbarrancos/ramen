@@ -34,7 +34,7 @@ QWidget *button_param_t::do_create_widgets()
     QWidget *top = new QWidget();
 
     button_ = new QPushButton( top);
-    button_->setText( name().c_str());
+    button_->setText( ui_label().c_str());
     connect( button_, SIGNAL( pressed()), this, SLOT( button_pressed()));
 
     QSize s = button_->sizeHint();

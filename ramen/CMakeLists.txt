@@ -172,11 +172,14 @@ SET( RAMEN_SOURCES      assert.hpp
 
                         nodes/composite_node.hpp
                         nodes/composite_node.cpp
+                        nodes/edge.hpp
                         nodes/edge.cpp
+                        nodes/graph_algorithm.hpp
                         nodes/graph_algorithm.cpp
                         nodes/node_fwd.hpp
                         nodes/node.hpp
                         nodes/node.cpp
+                        nodes/node_factory.hpp
                         nodes/node_factory.cpp
                         nodes/node_graph_modifier_fwd.hpp
                         nodes/node_graph_modifier.hpp

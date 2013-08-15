@@ -17,13 +17,15 @@ namespace anim
 
 track_t::track_t() { init();}
 
-track_t::track_t( const core::string8_t& name) : name_( name)
+track_t::track_t( core::string8_t name)
 {
+    set_name( name);
     init();
 }
 
-track_t::track_t( const core::string8_t& name, const any_curve_ptr_t& curve) : name_( name), curve_( curve)
+track_t::track_t( core::string8_t name, const any_curve_ptr_t& curve) : curve_( curve)
 {
+    set_name( name);
     init();
 }
 
@@ -65,10 +67,11 @@ const core::string8_t& track_t::name() const
     return name_;
 }
 
-void track_t::set_name( const core::string8_t& name)
+void track_t::set_name( core::string8_t name)
 {
     RAMEN_ASSERT( !name.empty());
-    name_ = name;
+
+    name_.swap( name);
 }
 
 const core::string8_t& track_t::full_name() const	{ return full_name_;}

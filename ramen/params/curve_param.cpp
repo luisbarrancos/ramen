@@ -19,13 +19,13 @@ curve_param_t::curve_param_t( const curve_param_t& other) : animated_param_t( ot
 
 void curve_param_t::private_init()
 {
-    add_curve( name());
+    add_curve( ui_label());
     color_ = color::color3c_t( 255, 255, 255);
 }
 
 void curve_param_t::do_create_tracks( anim::track_t *parent)
 {
-    core::auto_ptr_t<anim::track_t> t( new anim::track_t( name(), &( curve( 0))));
+    core::auto_ptr_t<anim::track_t> t( new anim::track_t( ui_label(), &( curve( 0))));
     t->set_color( color_);
     t->changed.connect( boost::bind( &animated_param_t::anim_curve_changed, this, _1));
     parent->add_child( boost::move( t));

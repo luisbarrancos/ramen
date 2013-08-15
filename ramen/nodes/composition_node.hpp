@@ -9,6 +9,8 @@
 
 #include<ramen/nodes/composite_node.hpp>
 
+#include<boost/bimap.hpp>
+
 #include<ramen/render/context.hpp>
 
 namespace ramen
@@ -20,11 +22,6 @@ public:
 
     /// Constructor
     composition_node_t();
-
-    // signals
-
-    /// Emitted when a node is deleted.
-    static boost::signals2::signal<void ( node_t*)> node_deleted;
 
     void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
     core::auto_ptr_t<node_t> release_node( node_t *n);
@@ -49,9 +46,6 @@ public:
 
     render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
-    // misc
-    void rename_node( node_t *n, const core::string8_t& new_name);
-
     const boost::filesystem::path& composition_dir() const;
     void set_composition_dir( const boost::filesystem::path& dir);
 
@@ -61,6 +55,12 @@ public:
 
     boost::filesystem::path relative_to_absolute( const boost::filesystem::path& p) const;
     boost::filesystem::path absolute_to_relative( const boost::filesystem::path& p) const;
+
+    // node names
+    const node_t *find_node( const core::string8_t& name) const;
+    node_t *find_node( const core::string8_t& name);
+
+    void make_name_unique( node_t *n);
 
     // selections
     void select_all();
@@ -109,6 +109,13 @@ private:
     void notify_all_dirty();
     void clear_all_notify_dirty_flags();
 
+    // signal handlers
+    void node_was_added( node_t *n);
+    void node_was_deleted( node_t *n);
+    void node_was_renamed( node_t* n,
+                           const core::string8_t& old_name,
+                           const core::string8_t& new_name);
+
     boost::filesystem::path composition_dir_;
 
     float_param_t *start_frame_;
@@ -117,6 +124,9 @@ private:
     image_format_param_t *default_format_;
     float_param_t *frame_rate_;
     bool_param_t *autokey_;
+
+    typedef boost::bimap<node_t*, core::string8_t> nodes_names_map_type;
+    nodes_names_map_type nodes_names_map_;
 };
 
 } // ramen

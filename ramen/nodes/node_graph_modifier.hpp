@@ -19,7 +19,7 @@ class node_graph_modifier_t
 {
 public:
 
-    node_graph_modifier_t( composite_node_t *graph, const core::string8_t& undo_name);
+    node_graph_modifier_t( composite_node_t *graph, core::string8_t undo_name);
     ~node_graph_modifier_t();
 
     void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
@@ -34,6 +34,8 @@ public:
 
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
+
+    void ignore_node( node_t *n);
 
     void execute( bool undoable);
 

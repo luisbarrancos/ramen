@@ -28,7 +28,7 @@ QWidget *tab_group_param_t::do_create_widgets()
         QWidget *w = p.create_widgets();
 
         if( w)
-            tab_->addTab( w, p.name().c_str());
+            tab_->addTab( w, p.ui_label().c_str());
     }
 
     tab_->setCurrentIndex( 0);

@@ -41,9 +41,12 @@ string_param_t::string_param_t( const string_param_t& other) : static_param_t( o
     multi_input_ = 0;
 }
 
-void string_param_t::set_default_value( const core::string8_t& x) { value().assign( x);}
+void string_param_t::set_default_value( core::string8_t x)
+{
+    value().assign( x);
+}
 
-void string_param_t::set_value( const core::string8_t& x, change_reason reason)
+void string_param_t::set_value( core::string8_t x, change_reason reason)
 {
     if( read_only_)
     {
@@ -91,7 +94,7 @@ QWidget *string_param_t::do_create_widgets()
     label->move( 0, 0);
     label->resize( app().ui()->inspector().left_margin() - 5, s.height());
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
-    label->setText( name().c_str());
+    label->setText( ui_label().c_str());
     label->setToolTip( id().c_str());
 
     core::string8_t str = get_value<core::string8_t>( *this);

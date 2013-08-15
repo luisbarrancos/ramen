@@ -205,7 +205,7 @@ QWidget *file_param_t::do_create_widgets()
     label->move( 0, 0);
     label->resize( app().ui()->inspector().left_margin() - 5, s.height());
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
-    label->setText( name().c_str());
+    label->setText( ui_label().c_str());
     label->setToolTip( id().c_str());
 
     button_->move( app().ui()->inspector().width() - s.height() - 10, 0);

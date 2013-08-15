@@ -69,7 +69,7 @@ private:
     virtual void do_create_params()
     {
         core::auto_ptr_t<float_param_t> p( new float_param_t());
-        p->set_name( "Red");
+        p->set_ui_label( "Red");
         p->set_id( g_red);
         p->set_default_value( 0.212671f);
         p->set_range( 0, 1);
@@ -77,7 +77,7 @@ private:
         add_param( boost::move( p));
 
         p.reset( new float_param_t());
-        p->set_name( "Green");
+        p->set_ui_label( "Green");
         p->set_id( g_green);
         p->set_default_value( 0.715160f);
         p->set_range( 0, 1);
@@ -85,7 +85,7 @@ private:
         add_param( boost::move( p));
 
         p.reset( new float_param_t());
-        p->set_name( "Blue");
+        p->set_ui_label( "Blue");
         p->set_id( g_blue);
         p->set_default_value( 0.072169f);
         p->set_range( 0, 1);

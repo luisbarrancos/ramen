@@ -16,6 +16,7 @@ class add_node_command_t;
 class remove_node_command_t;
 class connect_command_t;
 class disconnect_command_t;
+class ignore_node_command_t;
 
 } // undo
 

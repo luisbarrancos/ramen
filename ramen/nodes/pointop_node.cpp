@@ -9,7 +9,7 @@ namespace ramen
 
 pointop_node_t::pointop_node_t() : node_t()
 {
-    add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
     add_output_plug();
 }
 

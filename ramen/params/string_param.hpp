@@ -28,9 +28,9 @@ public:
     bool multiline() const		{ return multiline_;}
     void set_multiline( bool b)	{ multiline_ = b;}
 
-    void set_default_value( const core::string8_t& x);
+    void set_default_value( core::string8_t x);
 
-    void set_value( const core::string8_t& x, change_reason reason = user_edited);
+    void set_value( core::string8_t x, change_reason reason = user_edited);
 
 protected:
 

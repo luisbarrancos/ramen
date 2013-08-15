@@ -10,9 +10,10 @@ namespace ramen
 namespace ui
 {
 
-node_menu_t::node_menu_t( const core::string8_t& name) : name_( name), menu_( 0)
+node_menu_t::node_menu_t( core::string8_t name) : menu_( 0)
 {
-    menu_ = new QMenu( name.c_str());
+    name_.swap( name);
+    menu_ = new QMenu( name_.c_str());
 }
 
 void node_menu_t::add_submenu( const core::string8_t& name)

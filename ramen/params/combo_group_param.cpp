@@ -60,7 +60,7 @@ core::auto_ptr_t<undo::command_t> combo_group_param_t::do_create_command()
 void combo_group_param_t::do_add_to_hash( hash::generator_t& hash_gen) const
 {
     int val = get_value<int>( *this);
-    hash_gen << params()[val].name();
+    hash_gen << params()[val].id();
     params()[val].add_to_hash( hash_gen);
 }
 
@@ -138,7 +138,7 @@ QWidget *combo_group_param_t::do_create_widgets()
         if( w)
         {
             stack_->addWidget( w);
-            menu_->addItem( p.name().c_str());
+            menu_->addItem( p.ui_label().c_str());
         }
     }
 
@@ -147,7 +147,7 @@ QWidget *combo_group_param_t::do_create_widgets()
     label->move( 0, 0);
     label->resize( app().ui()->inspector().left_margin() - 5, s.height());
     label->setAlignment( Qt::AlignRight | Qt::AlignVCenter);
-    label->setText( name().c_str());
+    label->setText( ui_label().c_str());
     label->setToolTip( id().c_str());
 
     menu_->move( app().ui()->inspector().left_margin(), 0);

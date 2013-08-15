@@ -60,7 +60,7 @@ protected:
     void operator=( const animated_param_t& other);
 
     bool all_curves_empty() const;
-    void add_curve( const core::string8_t& name);
+    void add_curve( const core::string8_t& ui_label);
     void eval_curve( int index, float frame, float& v) const;
 
     void set_component_value( int index, float comp_value, change_reason reason = user_edited);
@@ -82,7 +82,7 @@ private:
 
     virtual core::auto_ptr_t<undo::command_t> do_create_command();
 
-    anim::float_curve_t *find_curve( const core::string8_t& name);
+    anim::float_curve_t *find_curve( const core::string8_t& ui_label);
 
     typedef boost::tuple<boost::flyweight<core::string8_t>, anim::float_curve_t> curve_entry_type;
     std::vector<curve_entry_type> curves_;

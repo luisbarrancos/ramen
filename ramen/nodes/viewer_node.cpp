@@ -10,7 +10,7 @@ namespace ramen
 viewer_node_t::viewer_node_t()
 {
     set_name( "viewer");
-    add_input_plug( "front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug( "Input", ui::palette_t::instance().color("front plug"), true);
     add_output_plug();
 }
 

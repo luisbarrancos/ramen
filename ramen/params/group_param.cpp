@@ -23,7 +23,7 @@ group_param_t::group_param_t( const group_param_t& other) : composite_param_t( o
 QWidget *group_param_t::do_create_widgets()
 {
     group_ = new QGroupBox();
-    group_->setTitle( name().c_str());
+    group_->setTitle( ui_label().c_str());
     group_->setAlignment( Qt::AlignLeft);
     create_widgets_inside_widget( group_);
     group_->setMinimumSize( app().ui()->inspector().width(), 20);

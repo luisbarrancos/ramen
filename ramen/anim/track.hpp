@@ -32,8 +32,8 @@ class track_t
 public:
 
     track_t();
-    explicit track_t( const core::string8_t& name);
-    track_t( const core::string8_t& name, const any_curve_ptr_t& curve);
+    explicit track_t( core::string8_t name);
+    track_t( core::string8_t name, const any_curve_ptr_t& curve);
 
     track_t *parent() const         { return parent_;}
     void set_parent( track_t *p)    { parent_ = p;}
@@ -53,7 +53,7 @@ public:
     containers::ptr_vector_t<track_t>& children()              { return children_;}
 
     const core::string8_t& name() const;
-    void set_name( const core::string8_t& name);
+    void set_name( core::string8_t name);
 
     const core::string8_t& full_name() const;
     void make_full_names();

@@ -32,7 +32,7 @@ public:
      Constructor.
      \param name Command name.
      */
-    explicit command_t( const core::string8_t& name);
+    explicit command_t( core::string8_t name);
 
     /// Destructor.
     virtual ~command_t();
@@ -41,7 +41,7 @@ public:
     const core::string8_t& name() const;
 
     /// Sets this command name.
-    void set_name( const core::string8_t& name) { name_ = name;}
+    void set_name( core::string8_t name);
 
     /// Returns true if this command is already executed.
     bool done() const { return done_;}
@@ -70,7 +70,7 @@ class composite_command_t : public command_t
 public:
 
     /// Constructor.
-    explicit composite_command_t( const core::string8_t& name);
+    explicit composite_command_t( core::string8_t name);
 
     /// Undoes this command.
     virtual void undo();
