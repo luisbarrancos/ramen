@@ -706,8 +706,6 @@ void main_window_t::duplicate_nodes()
 
 void main_window_t::extract_nodes()
 {
-    bool autoconnect = true;
-
     if( !app().document().composition_node().any_selected())
         return;
 
@@ -725,7 +723,7 @@ void main_window_t::extract_nodes()
             c->add_edge_to_remove( e);
     }
 
-    if( autoconnect)
+    if( true)
     {
         std::vector<edge_t> edges_to_add;
 
@@ -750,7 +748,7 @@ void main_window_t::extract_nodes()
 
                 if( src)
                     breadth_first_out_edges_apply( n,
-                                                   boost::bind( &undo::delete_command_t::add_candidate_edge,
+                                                   boost::bind( &undo::extract_command_t::add_candidate_edge,
                                                                 _1,
                                                                 src,
                                                                 boost::ref( edges_to_add)));
@@ -758,10 +756,10 @@ void main_window_t::extract_nodes()
         }
 
         std::stable_sort( edges_to_add.begin(), edges_to_add.end(),
-                          &undo::delete_command_t::edge_less);
+                          &undo::extract_command_t::edge_less);
 
         std::unique( edges_to_add.begin(), edges_to_add.end(),
-                     &undo::delete_command_t::edge_compare);
+                     &undo::extract_command_t::edge_compare);
 
         for( int i = 0; i < edges_to_add.size(); ++i)
             c->add_edge_to_add( edges_to_add[i]);
