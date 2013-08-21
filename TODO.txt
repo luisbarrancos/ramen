@@ -1,23 +1,33 @@
+    
     TODO (v1.5)
     -----------
 
-        - reduce compile times.
-
-        - hierarchical nodes.
-        - switch file format to json.
-        - rewrite imageio using OpenImageIO.
-        - use doubles for params and anim curves.
-        - switch to core types ( string_t, name_t, ...).
-        - switch Imath types by ramen::math types.
+        - refactor useful code to ramenlibs repo. [in progress]
         - remove more unused / half done code.
+
+        - hierarchical nodes. [in progress]
+        - review node related classes. [in progress]
+        - review node graph ideas.
+        - add a dependency graph.
+        
+        - review param classes.
+        - remove ui code from param classes.
+        - use doubles for params and anim curves.
+        - expressions, using SeExpr.
+
+        - review color management code, there are some bugs.
+        
+        - switch to planar image representation.
+        - image processing code needs a rewrite. evaluate Intel ispc and Halide as replacements.
+        - rewrite imageio using OpenImageIO.
+
+        - viewer code is a mess. Rewrite. [started]
+        - switch to more modern OpenGL code. [moving code to ramenlibs, gl library]
+
+        - switch file format to json.
+
+        - windows port.
+        - reintroduce old features, like OFX plugins, python support, tracker or flipbook.
+
         - more unit tests.
         - more doxygen docs.
-        - review base node classes.
-        - review color management code.
-        - switch to planar image representation.
-        - image processing code needs a rewrite. Evaluate Intel ispc and Halide as replacements.
-        - viewer code is a mess. Rewrite.
-        - switch to more modern OpenGL code.
-        - windows port.
-        - plugs as params.
-        - reintroduce old features, like OFX plugins or the tracker.
