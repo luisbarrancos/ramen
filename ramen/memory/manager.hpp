@@ -7,14 +7,11 @@
 
 #include<ramen/memory/manager_fwd.hpp>
 
+#include<boost/integer.hpp>
+
 #include<ramen/core/memory.hpp>
 
 #include<ramen/app/application_fwd.hpp>
-
-#include<ramen/memory/pool.hpp>
-#include<ramen/memory/pool_allocator.hpp>
-
-#include<ramen/memory/image_cache.hpp>
 
 namespace ramen
 {
@@ -25,23 +22,7 @@ class manager_t
 {
 public:
 
-    typedef pool_allocator_t<pool_t>	image_allocator_type;
-    typedef image_cache_t::digest_type	digest_type;
-
     ~manager_t();
-
-    // caches
-    void begin_interaction();
-    void end_interaction();
-
-    void clear_caches();
-
-    void insert_in_cache( node_t *n, const digest_type& key, image::buffer_t& img);
-
-    boost::optional<image::buffer_t> find_in_cache( const digest_type& key,
-                                                    const math::box2i_t& area);
-
-    image_allocator_type& image_allocator() { return *img_alloc_;}
 
 private:
 
@@ -52,11 +33,6 @@ private:
     // non-copyable
     manager_t( const manager_t&);
     manager_t& operator=( const manager_t&);
-
-    image_cache_t& image_cache() { return *img_cache_;}
-
-    core::auto_ptr_t<image_allocator_type> img_alloc_;
-    core::auto_ptr_t<image_cache_t> img_cache_;
 };
 
 } // memory

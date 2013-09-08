@@ -41,21 +41,16 @@
 
 #include<ramen/undo/stack.hpp>
 
-#include<ramen/render/render_sequence.hpp>
-
 #include<ramen/qwidgets/time_slider.hpp>
 
 #include<ramen/ui/user_interface.hpp>
-#include<ramen/ui/edit_commands.hpp>
 #include<ramen/ui/time_controls.hpp>
-#include<ramen/ui/render_composition.hpp>
 
 #include<ramen/ui/compview/composition_view.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
 
 #include<ramen/ui/dialogs/render_composition_dialog.hpp>
-#include<ramen/ui/dialogs/preferences_dialog.hpp>
 #include<ramen/ui/dialogs/multiline_alert.hpp>
 
 #include<ramen/ui/inspector/inspector.hpp>
@@ -145,6 +140,8 @@ main_window_t::main_window_t() : QMainWindow()
 
     // image view
     viewer_tabs_container_t *viewer = new viewer_tabs_container_t();
+    //viewer->add_tab( "Viewer1");
+    //viewer->add_tab( "Viewer2");
     setCentralWidget( viewer);
 
     // time toolbar
@@ -678,6 +675,7 @@ void main_window_t::delete_nodes()
 
 void main_window_t::duplicate_nodes()
 {
+    /*
     std::map<node_t*, node_t*> relation;
     core::auto_ptr_t<undo::duplicate_command_t> c( new undo::duplicate_command_t());
 
@@ -702,10 +700,12 @@ void main_window_t::duplicate_nodes()
     c->redo();
     app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
+    */
 }
 
 void main_window_t::extract_nodes()
 {
+    /*
     if( !app().document().composition_node().any_selected())
         return;
 
@@ -768,11 +768,12 @@ void main_window_t::extract_nodes()
     c->redo();
     app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
+    */
 }
 
 void main_window_t::clear_cache()
 {
-    app().memory_manager().clear_caches();
+    //app().memory_manager().clear_caches();
 }
 
 void main_window_t::show_composition_settings()
@@ -848,7 +849,7 @@ void main_window_t::render_flipbook()
 
 void main_window_t::show_preferences_dialog()
 {
-    preferences_dialog_t::instance().exec_dialog();
+    //preferences_dialog_t::instance().exec_dialog();
 }
 
 void main_window_t::create_node()

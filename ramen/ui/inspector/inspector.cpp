@@ -33,8 +33,6 @@
 
 #include<ramen/ui/inspector/panel.hpp>
 
-#include<ramen/util/string.hpp>
-
 namespace ramen
 {
 namespace ui

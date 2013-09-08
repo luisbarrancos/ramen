@@ -17,8 +17,6 @@
 #include<boost/flyweight.hpp>
 #include<boost/filesystem/fstream.hpp>
 
-#include<QObject>
-
 #include<ramen/assert.hpp>
 
 #include<ramen/core/name.hpp>
@@ -28,45 +26,21 @@
 
 #include<ramen/nodes/node_fwd.hpp>
 
-#include<ramen/params/poly_param_value.hpp>
-#include<ramen/params/param_set_fwd.hpp>
-#include<ramen/params/static_param_command_fwd.hpp>
-#include<ramen/params/animated_param_command_fwd.hpp>
-
 #include<ramen/anim/track_fwd.hpp>
 
 #include<ramen/undo/command.hpp>
 
-#include<ramen/hash/generator.hpp>
-
-class QWidget;
-
 namespace ramen
+{
+namespace params
 {
 
 /**
 \ingroup params
 \brief param class
 */
-class RAMEN_API param_t : public QObject
+class RAMEN_API param_t
 {
-    Q_OBJECT
-
-protected:
-
-    enum flag_bits
-    {
-        static_bit				= 1 << 0,   // param does not animate.
-        secret_bit				= 1 << 1,   // param does not show on the inspector.
-        persist_bit				= 1 << 2,   // param value is not saved to file.
-        can_undo_bit			= 1 << 3,   // param uses undo.
-        enabled_bit				= 1 << 4,   // param widgets are enabled in the inspector.
-        dont_track_mouse_bit	= 1 << 5,   // notify is called on mouse up only.
-        round_to_int_bit		= 1 << 6,   // for float params, round to value to integer. Emulates an integer_param.
-        proportional_bit		= 1 << 7,   // param is a float2 or float3 and the values can be modified proportionally.
-        include_in_hash_bit		= 1 << 8	// param is included in hash
-    };
-
 public:
 
     enum change_reason
@@ -102,14 +76,20 @@ public:
     /// Sets the param id.
     void set_id( const core::name_t& identifier);
 
-    /// Returns a const pointer to the param set this param belongs to.
-    const param_set_t *param_set() const    { return param_set_;}
+    /// Returns a const pointer to the param this param belongs to.
+    const param_t *parent() const  { return parent_;}
 
-    /// Returns a pointer to the param set this param belongs to.
-    param_set_t *param_set()				{ return param_set_;}
+    /// Returns a pointer to the param this param belongs to.
+    param_t *parent() { return parent_;}
 
     /// Sets the param set this param belongs to.
-    void set_param_set( param_set_t *parent);
+    void set_parent( param_t *parent);
+
+    /// Returns a const pointer to the param set this param belongs to.
+    const param_set_t *param_set() const;
+
+    /// Returns a pointer to the param set this param belongs to.
+    param_set_t *param_set();
 
     /// Returns a const pointer to the node this param belongs to.
     const node_t *node() const;
@@ -124,26 +104,7 @@ public:
     composition_node_t *composition_node();
 
     // flags
-    bool enabled() const;
-    void set_enabled( bool e);
-
-    bool is_static() const;
-    void set_static( bool b);
-
-    bool secret() const;
-    void set_secret( bool b);
-
-    bool persist() const;
-    void set_persist( bool b);
-
-    bool can_undo() const;
-    void set_can_undo( bool b);
-
-    bool include_in_hash() const;
-    void set_include_in_hash( bool b);
-
-    bool track_mouse() const;
-    void set_track_mouse( bool b);
+    // ...
 
     // toolips
     const core::string8_t& tooltip() const		{ return tooltip_;}
@@ -152,18 +113,13 @@ public:
     // notifications
     void emit_param_changed( change_reason reason);
 
-    // format
-    void format_changed( const math::box2i_t& new_format,
-                         float aspect,
-                         const math::vector2f_t& proxy_scale);
-
     // animation
     void create_tracks( anim::track_t *parent);
     void set_frame( float frame);
     void evaluate( float frame);
 
     // hash
-    void add_to_hash( hash::generator_t& hash_gen) const;
+    // ...
 
     // undo
     core::auto_ptr_t<undo::command_t> create_command();
@@ -174,50 +130,21 @@ public:
     void make_paths_absolute();
     void make_paths_relative();
 
-    // serialization
-    /*
-    void read( const serialization::yaml_node_t& in);
-    void write( serialization::yaml_oarchive_t& out) const;
-    */
-
     // util
     void apply_function( const boost::function<void ( param_t*)>& f);
-
-    // widgets
-    QWidget *create_widgets();
-    void update_widgets();
-    void enable_widgets( bool e);
 
 protected:
 
     param_t( const param_t& other);
     void operator=( const param_t& other);
 
-    int flags() const			{ return flags_;}
-    void set_flags( int flags)	{ flags_ = flags;}
-
-    const poly_param_value_t& value() const	{ return value_;}
-    poly_param_value_t& value()             { return value_;}
-
-    virtual poly_param_value_t value_at_frame( float frame) const { return value();}
-
 private:
 
     friend class param_set_t;
-    friend class static_param_command_t;
-    friend class static_param_reset_command_t;
-    friend class animated_param_command_t;
-    friend class animated_param_reset_command_t;
 
     virtual param_t *do_clone() const = 0;
 
     virtual void do_init();
-
-    virtual void do_format_changed( const math::box2i_t& new_format,
-                                    float aspect,
-                                    const math::vector2f_t& proxy_scale);
-
-    virtual void do_set_param_set( param_set_t *parent);
 
     // time and anim
     virtual void do_create_tracks( anim::track_t *parent);
@@ -228,7 +155,7 @@ private:
     virtual core::auto_ptr_t<undo::command_t> do_create_command();
 
     // hash
-    virtual void do_add_to_hash( hash::generator_t& hash_gen) const;
+    // ...
 
     // paths
     virtual void do_convert_relative_paths( const boost::filesystem::path& old_base,
@@ -236,76 +163,21 @@ private:
     virtual void do_make_paths_absolute();
     virtual void do_make_paths_relative();
 
-    // serialization
-    /*
-    virtual void do_read( const serialization::yaml_node_t& in);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
-    */
-
     // util
     virtual void do_apply_function( const boost::function<void ( param_t*)>& f);
 
-    // widgets
-    virtual QWidget *do_create_widgets();
-    virtual void do_update_widgets();
-    virtual void do_enable_widgets( bool e);
-
-    template<class S> friend S get_value( const param_t& p);
-    template<class S> friend S get_value_at_frame( const param_t& p, float frame);
-
-    template<class S> friend S get_absolute_value( const param_t& p);
-    template<class S> friend S get_absolute_value_at_frame( const param_t& p, float frame);
-
-    param_set_t *param_set_;
+    param_t *parent_;
 
     core::name_t id_;
     boost::flyweight<core::string8_t> ui_label_;
     boost::flyweight<core::string8_t> tooltip_;
 
     boost::uint32_t flags_;
-    poly_param_value_t value_;
 };
-
-template<class S>
-S get_value( const param_t& p)
-{
-    const poly_param_value_t& any( p.value());
-
-    #ifdef NDEBUG
-        return any.cast<S>();
-    #else
-        try
-        {
-            return any.cast<S>();
-        }
-        catch( core::bad_cast& e)
-        {
-            RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
-        }
-    #endif
-}
-
-template<class S>
-S get_value_at_frame( const param_t& p, float frame)
-{
-    poly_param_value_t any( p.value_at_frame( frame));
-
-    #ifdef NDEBUG
-        return any.cast<S>();
-    #else
-        try
-        {
-            return any.cast<S>();
-        }
-        catch( core::bad_cast& e)
-        {
-            RAMEN_ASSERT( 0 && "Bad cast exception in get_value");
-        }
-    #endif
-}
 
 RAMEN_API param_t *new_clone( const param_t& other);
 
-} // namespace
+} // params
+} // ramen
 
 #endif

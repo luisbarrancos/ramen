@@ -9,8 +9,6 @@
 
 IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
     SET( RAMEN_GENERATED_HEADERS_DIR ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    SET( RAMEN_GENERATED_HEADERS_DIR ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()
@@ -22,32 +20,7 @@ CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
 
 INCLUDE_DIRECTORIES( ${RAMEN_GENERATED_HEADERS_DIR})
 
-SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
-                        params/aspect_ratio_param.hpp
-                        params/bool_param.hpp
-                        params/button_param.hpp
-                        params/color_param.hpp
-                        params/combo_group_param.hpp
-                        params/composite_param.hpp
-                        params/curve_param.hpp
-                        params/file_param.hpp
-                        params/float_param.hpp
-                        params/float2_param.hpp
-                        params/float3_param.hpp
-                        params/group_param.hpp
-                        params/image_format_param.hpp
-                        params/motion_blur_param.hpp
-                        params/numeric_param.hpp
-                        params/ocio_colorspace_param.hpp
-                        params/param.hpp
-                        params/popup_param.hpp
-                        params/proportional_param.hpp
-                        params/separator_param.hpp
-                        params/static_param.hpp
-                        params/string_param.hpp
-                        params/tab_group_param.hpp
-
-                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/label_separator.hpp
+SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/label_separator.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_scale.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/time_slider.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_combo.hpp
@@ -68,7 +41,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/compview/composition_view_toolbar.hpp
 
                         ui/dialogs/multiline_alert.hpp
-                        ui/dialogs/preferences_dialog.hpp
                         ui/dialogs/render_composition_dialog.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
 
@@ -84,7 +56,6 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/widgets/hue_picker.hpp
                         ui/widgets/saturation_value_picker.hpp
                         ui/widgets/eyedropper_button.hpp
-                        ui/widgets/image_format_widget.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -118,46 +89,14 @@ SET( RAMEN_SOURCES      assert.hpp
                         app/application_fwd.hpp
                         app/application.hpp
                         app/application.cpp
+                        app/command_line_parser_fwd.hpp
+                        app/command_line_parser.hpp
+                        app/command_line_parser.cpp
                         app/document_fwd.hpp
                         app/document.hpp
                         app/document.cpp
                         app/preferences.hpp
                         app/preferences.cpp
-
-                        bezier/algorithm.cpp
-
-                        Concepts/ParamValueConcept.hpp
-
-                        ggems/graphicsgems.h
-                        ggems/ggveclib.c
-                        ggems/nearestpoint.h
-                        ggems/nearestpoint.c
-                        ggems/convex_opt.h
-                        ggems/convex_opt.c
-
-                        GL/gl.hpp
-                        GL/gl.cpp
-                        GL/glew.hpp
-                        GL/glu.hpp
-                        GL/glu.cpp
-                        GL/image_view_shaders.hpp
-                        GL/lut3d.hpp
-                        GL/lut3d.cpp
-                        GL/program.hpp
-                        GL/program.cpp
-
-                        hash/generator.hpp
-                        hash/generator.cpp
-                        hash/MurmurHash3.h
-                        hash/MurmurHash3.cpp
-
-                        image/buffer.hpp
-                        image/buffer.cpp
-                        image/color_bars.hpp
-                        image/color_bars.cpp
-                        image/format.hpp
-                        image/format.cpp
-                        image/typedefs.hpp
 
                         manipulators/manipulable_fwd.hpp
                         manipulators/manipulable.hpp
@@ -166,9 +105,7 @@ SET( RAMEN_SOURCES      assert.hpp
                         manipulators/manipulator.hpp
                         manipulators/manipulator.cpp
 
-                        memory/image_cache.cpp
                         memory/manager.cpp
-                        memory/pool.cpp
 
                         nodes/composite_node.hpp
                         nodes/composite_node.cpp
@@ -186,57 +123,26 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/node_graph_modifier.cpp
                         nodes/node_info.hpp
                         nodes/node_info.cpp
+                        nodes/node_plug.hpp
                         nodes/node_plug.cpp
+                        nodes/node_visitor.hpp
                         nodes/node_visitor.cpp
+                        nodes/null_node.hpp
+                        nodes/null_node.cpp
                         nodes/composition_node.hpp
                         nodes/composition_node.cpp
                         nodes/viewer_node.hpp
                         nodes/viewer_node.cpp
 
                         ocio/manager.cpp
-                        ocio/gl_display_manager.cpp
-                        ocio/gl_lut3d.cpp
 
-                        params/animated_param.cpp
-                        params/animated_param_command.cpp
-                        params/aspect_ratio_param.cpp
-                        params/bool_param.cpp
-                        params/button_param.cpp
-                        params/color_param.cpp
-                        params/combo_group_param.cpp
+                        params/composite_param.hpp
                         params/composite_param.cpp
-                        params/curve_param.cpp
-                        params/file_param.cpp
-                        params/float_param.cpp
-                        params/float2_param.cpp
-                        params/float3_param.cpp
-                        params/group_param.cpp
-                        params/image_format_param.cpp
-                        params/motion_blur_info.cpp
-                        params/motion_blur_param.cpp
-                        params/numeric_param.cpp
-                        params/ocio_colorspace_param.cpp
                         params/param_fwd.hpp
                         params/param.hpp
                         params/param.cpp
-                        params/param_set_fwd.hpp
                         params/param_set.hpp
                         params/param_set.cpp
-                        params/popup_param.cpp
-                        params/proportional_param.cpp
-                        params/separator_param.cpp
-                        params/static_param.cpp
-                        params/static_param_command.cpp
-                        params/string_param.cpp
-                        params/tab_group_param.cpp
-
-                        render/context_fwd.hpp
-                        render/context.hpp
-                        render/context.cpp
-                        render/context_guard.cpp
-                        render/node_renderer.cpp
-                        render/render_sequence.cpp
-                        render/render_thread.cpp
 
                         system/system_fwd.hpp
                         system/system.hpp
@@ -256,7 +162,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.hpp
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwidgets/ocio_view_combo.cpp
 
-                        ui/edit_commands.cpp
                         ui/events_fwd.hpp
                         ui/events.hpp
                         ui/events.cpp
@@ -265,7 +170,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/main_window.cpp
                         ui/node_menu.cpp
                         ui/palette.cpp
-                        ui/render_composition.cpp
                         ui/time_controls.cpp
                         ui/user_interface_fwd.hpp
                         ui/user_interface.hpp
@@ -284,14 +188,12 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/anim/pick_curves_visitors.cpp
                         ui/anim/track_model.cpp
 
+                        ui/compview/composition_view.hpp
                         ui/compview/composition_view.cpp
-                        ui/compview/composition_view_layout.cpp
+                        ui/compview/composition_view_toolbar.hpp
                         ui/compview/composition_view_toolbar.cpp
-                        ui/compview/draw_pick_visitors.cpp
-                        ui/compview/draw_pick_generic_node.cpp
 
                         ui/dialogs/multiline_alert.cpp
-                        ui/dialogs/preferences_dialog.cpp
                         ui/dialogs/render_composition_dialog.cpp
                         ui/dialogs/smooth_anim_curves_dialog.cpp
                         ui/dialogs/splash_screen.cpp
@@ -315,7 +217,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/hue_picker.cpp
                         ui/widgets/saturation_value_picker.cpp
                         ui/widgets/eyedropper_button.cpp
-                        ui/widgets/image_format_widget.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp
@@ -323,9 +224,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         undo/stack_fwd.hpp
                         undo/stack.hpp
                         undo/stack.cpp
-
-                        util/command_line_parser.cpp
-                        util/string.cpp
                         )
 
 ######################################################
@@ -333,44 +231,42 @@ SET( RAMEN_SOURCES      assert.hpp
 
 SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES})
 
-SET( RAMEN_SOURCES ${RAMEN_SOURCES} nodes/generator_node.hpp
-                                    nodes/generator_node.cpp
-                                    nodes/pointop_node.hpp
-                                    nodes/pointop_node.cpp
-                                    nodes/color/channel_mixer_node.cpp
-                                    nodes/generate/color_bars_node.cpp
-                                    nodes/generate/color_node.cpp
-                                    nodes/util/null_node.cpp
-                                    )
+#SET( RAMEN_SOURCES ${RAMEN_SOURCES} nodes/generator_node.hpp
+#                                    nodes/generator_node.cpp
+#                                    nodes/pointop_node.hpp
+#                                    nodes/pointop_node.cpp
+#                                    nodes/color/channel_mixer_node.cpp
+#                                    nodes/generate/color_bars_node.cpp
+#                                    nodes/generate/color_node.cpp
+#                                    )
 
 ######################################################
 # ispc
 
-MACRO( ISPC_COMPILE OUT_LIST SRC_LOCATION)
-
-    GET_FILENAME_COMPONENT( ABS_ISPC_SRC ${SRC_LOCATION} ABSOLUTE)
-
-    GET_FILENAME_COMPONENT( ISPC_SRC_FILENAME ${SRC_LOCATION} NAME_WE)
-    SET( ISPC_OBJ_FILENAME "${ISPC_SRC_FILENAME}.obj")
-    SET( ISPC_HDR_FILENAME "${ISPC_SRC_FILENAME}_ispc.h")
-
-    SET( ISPC_OBJ ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${ISPC_OBJ_FILENAME})
-    SET( ISPC_HDR ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image/${ISPC_HDR_FILENAME})
-    ADD_CUSTOM_COMMAND( OUTPUT ${ISPC_OBJ}
-                        COMMAND ${ISPC_EXE} ${RAMEN_ISPC_FLAGS} ${ABS_ISPC_SRC} -o ${ISPC_OBJ} -h ${ISPC_HDR}
-                        IMPLICIT_DEPENDS C ${SRC_LOCATION}
-                        DEPENDS ${SRC_LOCATION}
-                        MAIN_DEPENDENCY  ${SRC_LOCATION}  # this gives the ispc file in MSVC a 'compile' option on the source file
-                        )
-    SET_SOURCE_FILES_PROPERTIES( ${ISPC_OBJ} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
-    SET_SOURCE_FILES_PROPERTIES( ${ISPC_HDR} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
-    LIST( APPEND ${OUT_LIST} ${SRC_LOCATION} ${HDR_LOCATION})
-ENDMACRO()
+#MACRO( ISPC_COMPILE OUT_LIST SRC_LOCATION)
+#
+#    GET_FILENAME_COMPONENT( ABS_ISPC_SRC ${SRC_LOCATION} ABSOLUTE)
+#
+#    GET_FILENAME_COMPONENT( ISPC_SRC_FILENAME ${SRC_LOCATION} NAME_WE)
+#    SET( ISPC_OBJ_FILENAME "${ISPC_SRC_FILENAME}.obj")
+#    SET( ISPC_HDR_FILENAME "${ISPC_SRC_FILENAME}_ispc.h")
+#
+#    SET( ISPC_OBJ ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${ISPC_OBJ_FILENAME})
+#    SET( ISPC_HDR ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image/${ISPC_HDR_FILENAME})
+#    ADD_CUSTOM_COMMAND( OUTPUT ${ISPC_OBJ}
+#                        COMMAND ${ISPC_EXE} ${RAMEN_ISPC_FLAGS} ${ABS_ISPC_SRC} -o ${ISPC_OBJ} -h ${ISPC_HDR}
+#                        IMPLICIT_DEPENDS C ${SRC_LOCATION}
+#                        DEPENDS ${SRC_LOCATION}
+#                        MAIN_DEPENDENCY  ${SRC_LOCATION}  # this gives the ispc file in MSVC a 'compile' option on the source file
+#                        )
+#    SET_SOURCE_FILES_PROPERTIES( ${ISPC_OBJ} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
+#    SET_SOURCE_FILES_PROPERTIES( ${ISPC_HDR} PROPERTIES GENERATED TRUE EXTERNAL_OBJECT TRUE)
+#    LIST( APPEND ${OUT_LIST} ${SRC_LOCATION} ${HDR_LOCATION})
+#ENDMACRO()
 
 # create generated headers directory
-FILE( MAKE_DIRECTORY ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image)
-
-ISPC_COMPILE( RAMEN_ISPC_SOURCES image/simple.ispc)
+#FILE( MAKE_DIRECTORY ${RAMEN_GENERATED_HEADERS_DIR}/ramen/image)
+#ISPC_COMPILE( RAMEN_ISPC_SOURCES image/simple.ispc)
 
 ######################################################
 # platform specific
@@ -378,8 +274,6 @@ ISPC_COMPILE( RAMEN_ISPC_SOURCES image/simple.ispc)
 # platform sources
 IF( ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     # Linux
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    # OSX
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     # Windows
 ELSE()
@@ -389,8 +283,7 @@ ENDIF()
 ######################################################
 # ui files
 
-SET( RAMEN_DESIGNER_FILES   ../designer/preferences.ui
-                            ../designer/render_composition.ui
+SET( RAMEN_DESIGNER_FILES   ../designer/render_composition.ui
                             ../designer/smooth_anim_curves.ui
                             )
 
@@ -434,14 +327,6 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
 
     SET_TARGET_PROPERTIES( ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/bin/)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    SET_TARGET_PROPERTIES( ramen PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/MacOS/)
-
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES OUTPUT_NAME Ramen)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()

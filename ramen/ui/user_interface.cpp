@@ -28,6 +28,8 @@
 
 #include<ramen/assert.hpp>
 
+#include<ramen/core/exceptions.hpp>
+
 #include<ramen/system/system.hpp>
 
 #include<ramen/app/application.hpp>
@@ -37,8 +39,6 @@
 #include<ramen/undo/stack.hpp>
 
 #include<ramen/memory/manager.hpp>
-
-#include<ramen/render/node_renderer.hpp>
 
 #include<ramen/qwidgets/time_slider.hpp>
 
@@ -324,18 +324,22 @@ void user_interface_t::update()
 
 void user_interface_t::begin_interaction()
 {
+    /*
     app().document().composition_node().begin_interaction();
     //viewer().begin_interaction();
     interacting_ = true;
     app().memory_manager().begin_interaction();
+    */
 }
 
 void user_interface_t::end_interaction()
 {
+    /*
     interacting_ = false;
     app().memory_manager().end_interaction();
     //viewer().end_interaction();
     app().document().composition_node().end_interaction();
+    */
 }
 
 int user_interface_t::start_frame() const
@@ -554,37 +558,6 @@ bool user_interface_t::eventFilter( QObject *watched, QEvent *event)
     default:
         return false; // pass all other events
     }
-}
-
-boost::unique_future<bool>& user_interface_t::render_image( render::context_t context, render::node_renderer_t& renderer)
-{
-    RAMEN_ASSERT( !rendering_);
-
-    cancelled_ = false;
-    context.mode = render::interface_render;
-    context.cancel = boost::bind( &user_interface_t::process_cancelled, this);
-    renderer.set_context( context);
-    rendering_ = true;
-    boost::unique_future<bool>& future( app().render_thread().render_image( renderer));
-
-    if( future.is_ready())
-    {
-        rendering_ = false;
-        return future;
-    }
-
-    /*
-    start_long_process();
-
-    while( !future.timed_wait( boost::posix_time::milliseconds( 30)))
-        process_events();
-
-    end_long_process();
-    */
-
-    future.wait();
-    rendering_ = false;
-    return future;
 }
 
 QFont user_interface_t::get_fixed_width_code_font()

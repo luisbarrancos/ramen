@@ -26,15 +26,6 @@
 namespace ramen
 {
 
-// remove me later
-namespace undo
-{
-
-class extract_command_t;
-class duplicate_command_t;
-
-} // undo
-
 /**
 \ingroup nodes
 \brief A node that contains other nodes.
@@ -113,9 +104,6 @@ protected:
     void add_edge( const edge_t& e);
     void remove_edge( const edge_t& e);
 
-    virtual void do_begin_interaction();
-    virtual void do_end_interaction();
-
 private:
 
     friend class node_graph_modifier_t;
@@ -124,10 +112,6 @@ private:
     friend class undo::connect_command_t;
     friend class undo::disconnect_command_t;
     friend class undo::ignore_node_command_t;
-
-    // remove later
-    friend class undo::extract_command_t;
-    friend class undo::duplicate_command_t;
 
     // non-assignable
     void operator=( const composite_node_t& other);

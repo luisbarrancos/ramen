@@ -10,11 +10,7 @@
 
 #include<boost/noncopyable.hpp>
 
-#include<OpenEXR/ImfChromaticities.h>
-
 #include<ramen/app/application_fwd.hpp>
-
-#include<ramen/image/format.hpp>
 
 namespace ramen
 {
@@ -30,10 +26,6 @@ public:
     // memory
     int max_image_memory() const        { return max_image_memory_;}
     void set_max_image_memory( int m)   { max_image_memory_ = m;}
-
-    // format
-    void set_default_format( const image::format_t& format);
-    image::format_t default_format() const { return default_format_;}
 
     int frame_rate() const      { return frame_rate_;}
     void set_frame_rate( int f) { frame_rate_ = f;}
@@ -57,21 +49,6 @@ private:
 
     void load();
 
-    /*
-    template<class T>
-    bool get_value( const YAML::Node& doc, const std::string& key, T& value)
-    {
-        if( const YAML::Node *n = doc.FindValue( key))
-        {
-            *n >> value;
-            return true;
-        }
-
-        return false;
-    }
-    */
-
-    image::format_t default_format_;
     int frame_rate_;
     int max_image_memory_;
     int pick_distance_;

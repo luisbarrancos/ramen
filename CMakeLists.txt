@@ -44,9 +44,7 @@ SET( RAMEN_ISPC_EXTRA_FLAGS "" CACHE STRING "ispc extra flags")
 ######################################################
 # platform specific
 
-IF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    # OSX
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+IF( ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     ADD_DEFINITIONS( -pthread)
     FIND_PACKAGE( Threads REQUIRED)
     SET( RAMEN_ALL_LIBS ${CMAKE_THREAD_LIBS_INIT})
@@ -72,8 +70,6 @@ IF( CMAKE_COMPILER_IS_GNUCXX)
     ELSEIF( RAMEN_SIMD_TARGET STREQUAL "AVX2")
         SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
     ENDIF()
-ELSEIF( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")
 ELSE()
     MESSAGE( FATAL_ERROR "unknown compiler is not supported yet")
 ENDIF()
@@ -157,7 +153,7 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
     SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
-    SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+    SET_TARGET_PROPERTIES( ramen_hash PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
     SET_TARGET_PROPERTIES( ramen_iterators PROPERTIES LIBRARY_OUTPUT_DIRECTORY
@@ -166,26 +162,11 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
     SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
+    SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
     SET_TARGET_PROPERTIES( ramen_os PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    SET_TARGET_PROPERTIES( ramen_arrays PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_iterators PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_os PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     MESSAGE( FATAL_ERROR "Windows not supported yet")
 ELSE()
@@ -222,6 +203,7 @@ INCLUDE_DIRECTORIES(    ${PROJECT_SOURCE_DIR}
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/core
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/gl
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/iterators
+                        ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/hash
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/math
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/os
                         ${PROJECT_SOURCE_DIR}/ramenlibs/ramen/string_algo

@@ -7,6 +7,8 @@
 #include<boost/foreach.hpp>
 #include<boost/algorithm/string/predicate.hpp>
 
+#include<ramen/core/exceptions.hpp>
+
 #include<ramen/nodes/node.hpp>
 
 #ifndef NDEBUG

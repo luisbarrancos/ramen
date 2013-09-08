@@ -41,7 +41,7 @@ const node_info_t& viewer_node_t::viewer_node_info()
 
     if( !inited)
     {
-        info.id = core::name_t( "image.builtin.viewer");
+        info.id = core::name_t( "builtin.viewer");
         info.major_version = 1;
         info.minor_version = 0;
         info.menu = "Image";

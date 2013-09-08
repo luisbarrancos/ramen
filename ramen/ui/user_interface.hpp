@@ -21,12 +21,10 @@
 
     #include<memory>
 
-    #include<boost/thread/future.hpp>
-
     #include<boost/filesystem/path.hpp>
     #include<boost/filesystem/fstream.hpp>
 
-    #include<ramen/render/node_renderer.hpp>
+    #include<ramen/nodes/node_fwd.hpp>
 
     #include<ramen/ui/main_window_fwd.hpp>
 
@@ -121,9 +119,6 @@ public:
     bool process_cancelled() const;
 
     virtual bool eventFilter( QObject *watched, QEvent *event);
-
-    // render
-    boost::unique_future<bool>& render_image( render::context_t context, render::node_renderer_t& renderer);
 
     bool rendering() const { return rendering_;}
 

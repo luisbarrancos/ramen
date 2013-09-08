@@ -10,6 +10,8 @@
 
 #include<ramen/assert.hpp>
 
+#include<ramen/core/exceptions.hpp>
+
 #include<ramen/nodes/node_factory.hpp>
 #include<ramen/nodes/graph_algorithm.hpp>
 
@@ -209,16 +211,6 @@ core::auto_ptr_t<node_t> composite_node_t::create_unknown_node( const core::name
     throw core::not_implemented();
 
     return core::auto_ptr_t<node_t>();
-}
-
-void composite_node_t::do_begin_interaction()
-{
-    boost::range::for_each( nodes(), boost::bind( &node_t::begin_interaction, _1));
-}
-
-void composite_node_t::do_end_interaction()
-{
-    boost::range::for_each( nodes(), boost::bind( &node_t::end_interaction, _1));
 }
 
 } // ramen

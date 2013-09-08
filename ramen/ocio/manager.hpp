@@ -48,6 +48,7 @@ public:
     void get_views( const core::string8_t& display,
                     std::vector<core::string8_t>& views,
                     int& default_index) const;
+
     core::string8_t default_view( const core::string8_t& display) const;
 
 private:

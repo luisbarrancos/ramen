@@ -2,14 +2,12 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UTIL_COMMAND_LINE_PARSER_HPP
-#define RAMEN_UTIL_COMMAND_LINE_PARSER_HPP
+#ifndef RAMEN_APP_COMMAND_LINE_PARSER_HPP
+#define RAMEN_APP_COMMAND_LINE_PARSER_HPP
 
-#include<ramen/util/command_line_parser_fwd.hpp>
+#include<ramen/app/command_line_parser_fwd.hpp>
 
 namespace ramen
-{
-namespace util
 {
 
 class command_line_parser_t
@@ -21,12 +19,8 @@ public:
 
     int argc;
     char **argv;
-
-private:
-
 };
 
-} // util
 } // ramen
 
 #endif

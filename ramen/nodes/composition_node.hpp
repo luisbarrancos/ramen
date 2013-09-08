@@ -11,8 +11,6 @@
 
 #include<boost/bimap.hpp>
 
-#include<ramen/render/context.hpp>
-
 namespace ramen
 {
 
@@ -38,13 +36,8 @@ public:
     bool autokey() const;
     void set_autokey( bool b);
 
-    image::format_t default_format() const;
-    void set_default_format( const image::format_t& f);
-
     int frame_rate() const;
     void set_frame_rate( int f);
-
-    render::context_t current_context( render::render_mode mode = render::interface_render) const;
 
     const boost::filesystem::path& composition_dir() const;
     void set_composition_dir( const boost::filesystem::path& dir);
@@ -92,6 +85,7 @@ private:
     friend class undo::remove_node_command_t;
     friend class undo::connect_command_t;
     friend class undo::disconnect_command_t;
+    friend class undo::ignore_node_command_t;
 
     // non-assignable
     void operator=( const composition_node_t& other);
@@ -99,15 +93,6 @@ private:
     virtual node_t *do_clone() const;
 
     virtual void do_create_params();
-
-    virtual void do_notify();
-
-    virtual void do_begin_interaction();
-    virtual void do_end_interaction();
-
-    // notifications
-    void notify_all_dirty();
-    void clear_all_notify_dirty_flags();
 
     // signal handlers
     void node_was_added( node_t *n);
@@ -117,13 +102,6 @@ private:
                            const core::string8_t& new_name);
 
     boost::filesystem::path composition_dir_;
-
-    float_param_t *start_frame_;
-    float_param_t *end_frame_;
-    float_param_t *frame_;
-    image_format_param_t *default_format_;
-    float_param_t *frame_rate_;
-    bool_param_t *autokey_;
 
     typedef boost::bimap<node_t*, core::string8_t> nodes_names_map_type;
     nodes_names_map_type nodes_names_map_;

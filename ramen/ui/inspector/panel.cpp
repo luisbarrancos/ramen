@@ -26,6 +26,7 @@ panel_t::panel_t( node_t *n) : n_( n), panel_( 0)
     layout->setContentsMargins( 0, 0, 0, 0);
     layout->setSizeConstraint( QLayout::SetFixedSize);
 
+    /*
     BOOST_FOREACH( param_t& param, n_->param_set())
     {
         QWidget *w = param.create_widgets();
@@ -33,6 +34,7 @@ panel_t::panel_t( node_t *n) : n_( n), panel_( 0)
         if( w)
             layout->addWidget( w);
     }
+    */
 
     layout->addStretch();
     panel_->setLayout( layout);
@@ -45,7 +47,7 @@ panel_t::~panel_t()
 
 void panel_t::update()
 {
-    n_->update_widgets();
+    //n_->update_widgets();
 }
 
 } // ui

@@ -12,6 +12,7 @@
 #include<memory>
 
 #include<boost/cstdint.hpp>
+#include<boost/optional.hpp>
 #include<boost/filesystem/path.hpp>
 
 #include<tbb/task_scheduler_init.h>
@@ -21,14 +22,12 @@
 
 #include<ramen/system/system_fwd.hpp>
 
+#include<ramen/app/command_line_parser_fwd.hpp>
 #include<ramen/app/preferences.hpp>
 #include<ramen/app/document_fwd.hpp>
 
 #include<ramen/memory/manager_fwd.hpp>
-#include<ramen/render/render_thread.hpp>
 #include<ramen/ocio/manager_fwd.hpp>
-
-#include<ramen/util/command_line_parser_fwd.hpp>
 
 #include<ramen/ui/user_interface_fwd.hpp>
 #include<ramen/ui/dialogs/splash_screen_fwd.hpp>
@@ -66,8 +65,6 @@ public:
 
     const memory::manager_t& memory_manager() const { return *mem_manager_;}
     memory::manager_t& memory_manager()             { return *mem_manager_;}
-
-    render::render_thread_t& render_thread() { return render_thread_;}
 
     // opencolorio
     const ocio::manager_t& ocio_manager() const { return *ocio_manager_;}
@@ -114,7 +111,7 @@ private:
     bool init_ocio_config_from_file( const boost::filesystem::path& p);
 
     // data
-    core::auto_ptr_t<util::command_line_parser_t> cmd_parser_;
+    core::auto_ptr_t<command_line_parser_t> cmd_parser_;
     boost::uint64_t img_cache_size_;
     int max_threads_;
     bool command_line_;
@@ -125,7 +122,6 @@ private:
     core::auto_ptr_t<system::system_t> system_;
     core::auto_ptr_t<preferences_t> preferences_;
     core::auto_ptr_t<memory::manager_t> mem_manager_;
-    render::render_thread_t render_thread_;
     core::auto_ptr_t<ocio::manager_t> ocio_manager_;
     core::auto_ptr_t<ui::user_interface_t> ui_;
 

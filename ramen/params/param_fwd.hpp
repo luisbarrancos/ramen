@@ -7,23 +7,14 @@
 
 namespace ramen
 {
+namespace params
+{
 
 class param_t;
+class composite_param_t;
+class param_set_t;
 
-class aspect_ratio_param_t;
-class bool_param_t;
-class curve_param_t;
-class file_param_t;
-class string_param_t;
-class ocio_colorspace_param_t;
-class popup_param_t;
-class image_format_param_t;
-class float_param_t;
-class float2_param_t;
-class float3_param_t;
-class color_param_t;
-class combo_group_param_t;
-
+} // params
 } // ramen
 
 #endif

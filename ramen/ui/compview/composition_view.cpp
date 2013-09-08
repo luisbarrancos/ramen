@@ -27,16 +27,12 @@
 
 #include<ramen/undo/stack.hpp>
 
-#include<ramen/bezier/algorithm.hpp>
-
 #include<ramen/nodes/composition_node.hpp>
 #include<ramen/nodes/node_graph_modifier.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/palette.hpp>
 #include<ramen/ui/main_window.hpp>
-
-#include<ramen/ui/compview/draw_pick_visitors.hpp>
 
 namespace ramen
 {
@@ -85,11 +81,12 @@ math::point2i_t composition_view_t::world_to_screen( const math::point2f_t& p) c
     return viewport().world_to_screen( p);
 }
 
-void composition_view_t::place_node( node_t *n) const { layout_.place_node( n);}
+void composition_view_t::place_node( node_t *n) const
+{
+}
 
 void composition_view_t::place_node_near_node( node_t *n, node_t *other) const
 {
-    layout_.place_node_near_node( n, other);
 }
 
 bool composition_view_t::event( QEvent *event)
@@ -109,6 +106,7 @@ bool composition_view_t::event( QEvent *event)
 
             case pick_result_t::body_picked:
             {
+                /*
                 node_t *node = picked.node;
 
                 std::stringstream s;
@@ -116,6 +114,7 @@ bool composition_view_t::event( QEvent *event)
                 s << " [ " << node->full_format().size().x + 1 << ", " <<
                      node->full_format().size().y + 1 << "]";
                 QToolTip::showText( help_event->globalPos(), QString::fromStdString( s.str()));
+                */
             }
             break;
 
@@ -146,7 +145,6 @@ void composition_view_t::keyPressEvent( QKeyEvent *event)
 
         case Qt::Key_Home:
             viewport().reset();
-            layout_.set_world( viewport().world());
             update();
             event->accept();
         break;
@@ -155,7 +153,6 @@ void composition_view_t::keyPressEvent( QKeyEvent *event)
         {
             math::point2f_t p( screen_to_world( viewport().device().center()));
             viewport().zoom( p, 1.33f);
-            layout_.set_world( viewport().world());
             update();
             event->accept();
         }
@@ -165,7 +162,6 @@ void composition_view_t::keyPressEvent( QKeyEvent *event)
         {
             math::point2f_t p( screen_to_world( viewport().device().center()));
             viewport().zoom( p, 0.66f);
-            layout_.set_world( viewport().world());
             update();
             event->accept();
         }
@@ -196,7 +192,6 @@ void composition_view_t::keyReleaseEvent( QKeyEvent *event)
 void composition_view_t::mouseDoubleClickEvent( QMouseEvent *event)
 {
     math::point2f_t wpos = screen_to_world( math::point2i_t( event->x(), event->y()));
-    layout_.set_interest_point( wpos);
 
     if( last_pick_.component == pick_result_t::body_picked)
     {
@@ -326,7 +321,6 @@ void composition_view_t::mouseMoveEvent( QMouseEvent *event)
 void composition_view_t::mouseReleaseEvent( QMouseEvent *event)
 {
     math::point2f_t wpos = screen_to_world( math::point2i_t( event->x(), event->y()));
-    layout_.set_interest_point( wpos);
 
     if( release_handler_)
         release_handler_( event);
@@ -352,7 +346,6 @@ void composition_view_t::zoom_drag_handler( QMouseEvent *event)
 
 void composition_view_t::scroll_zoom_release_handler( QMouseEvent *event)
 {
-    layout_.set_world( viewport().world());
 }
 
 void composition_view_t::move_nodes_drag_handler( QMouseEvent *event)
@@ -462,7 +455,6 @@ void composition_view_t::resizeEvent( QResizeEvent *event)
         viewport().resize( event->size().width(), event->size().height());
 
     event->accept();
-    layout_.set_world( viewport().world());
 }
 
 void composition_view_t::paintEvent ( QPaintEvent *event)
@@ -500,7 +492,7 @@ void composition_view_t::paintEvent ( QPaintEvent *event)
         p.setPen( pen);
         math::point2f_t q0( screen_to_world( math::point2i_t( push_x_, push_y_)));
         math::point2f_t q1( screen_to_world( math::point2i_t( last_x_, last_y_)));
-        draw_bezier_edge( p, q0, q1);
+        //draw_bezier_edge( p, q0, q1);
     }
     else
     {
@@ -521,20 +513,25 @@ void composition_view_t::paintEvent ( QPaintEvent *event)
 
 void composition_view_t::draw_edges( QPainter& p)
 {
+    /*
     draw_edges_visitor visitor( *this, p);
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
         n.accept( visitor);
+    */
 }
 
 void composition_view_t::draw_nodes( QPainter& p)
 {
+    /*
     draw_node_visitor visitor( p);
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
         n.accept( visitor);
+    */
 }
 
+/*
 void composition_view_t::draw_bezier_edge( QPainter& painter,
                                            const math::point2f_t& p0,
                                            const math::point2f_t& p1) const
@@ -547,6 +544,7 @@ void composition_view_t::draw_bezier_edge( QPainter& painter,
     path.cubicTo( c[1].x, c[1].y, c[2].x, c[2].y, c[3].x, c[3].y);
     painter.drawPath( path);
 }
+*/
 
 // pick
 void composition_view_t::pick_node( const math::point2f_t& p, pick_result_t& result) const
@@ -555,6 +553,7 @@ void composition_view_t::pick_node( const math::point2f_t& p, pick_result_t& res
     result.component = pick_result_t::no_pick;
     result.plug_num = -1;
 
+    /*
     pick_node_visitor visitor( *this, p, result);
 
     composition_node_t::reverse_node_iterator it( app().document().composition_node().nodes().rbegin());
@@ -567,17 +566,21 @@ void composition_view_t::pick_node( const math::point2f_t& p, pick_result_t& res
         if( result.component != pick_result_t::no_pick)
             break;
     }
+    */
 }
 
 bool composition_view_t::box_pick_node( node_t *n, const math::box2f_t& b) const
 {
+    /*
     box_pick_node_visitor visitor( b);
     n->accept( visitor);
     return visitor.result;
+    */
 }
 
 bool composition_view_t::pick_edge( const math::point2f_t& p, node_t *&src, node_t *&dst, int& port) const
 {
+    /*
     pick_edge_visitor visitor( *this, p);
 
     BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
@@ -592,10 +595,11 @@ bool composition_view_t::pick_edge( const math::point2f_t& p, node_t *&src, node
             return true;
         }
     }
-
+    */
     return false;
 }
 
+/*
 bool composition_view_t::pick_bezier_edge( const math::point2f_t& p0,
                                            const math::point2f_t& p1,
                                            const math::point2f_t& q) const
@@ -638,8 +642,12 @@ void composition_view_t::bezier_edge( const math::point2f_t& p0,
     c[2] = p1;
     c[2].y -= tangent_offset;
 }
+*/
 
-void composition_view_t::contextMenuEvent( QContextMenuEvent *event) { event->accept();}
+void composition_view_t::contextMenuEvent( QContextMenuEvent *event)
+{
+    event->accept();
+}
 
 void composition_view_t::delete_selected_nodes()
 {

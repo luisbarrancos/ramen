@@ -25,6 +25,7 @@
 
 #include<ramen/system/system.hpp>
 
+#include<ramen/app/command_line_parser.hpp>
 #include<ramen/app/preferences.hpp>
 #include<ramen/app/document.hpp>
 
@@ -32,14 +33,9 @@
 
 #include<ramen/nodes/node_factory.hpp>
 
-#include<ramen/render/render_thread.hpp>
-#include<ramen/render/render_sequence.hpp>
-
 #include<ramen/ocio/manager.hpp>
 
 #include<ramen/undo/stack.hpp>
-
-#include<ramen/util/command_line_parser.hpp>
 
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/main_window.hpp>
@@ -66,7 +62,7 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     command_line_ = false;
     render_mode_ = false;
     quitting_ = false;
-    cmd_parser_.reset( new util::command_line_parser_t( argc, argv));
+    cmd_parser_.reset( new command_line_parser_t( argc, argv));
 
     // Create QApplication
     QApplication *q_app = new QApplication( cmd_parser_->argc, cmd_parser_->argv);
@@ -121,10 +117,6 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     if( !command_line_)
         splash_->show_message( "Initializing OpenColorIO");
     ocio_manager_.reset( new ocio::manager_t());
-
-    if( !command_line_)
-        splash_->show_message( "Initializing render thread");
-    render_thread_.init();
 
     if( !command_line_)
     {
@@ -384,7 +376,7 @@ void application_t::print_app_info()
     std::cout << "App user dir = " << system().application_user_path().c_str() << std::endl;
     std::cout << "Using " << max_threads_ << " threads" << std::endl;
     std::cout << "Ram Size = " << system().ram_size() / 1024 / 1024 << " Mb" << std::endl;
-    std::cout << "Image Cache Memory = " << mem_manager_->image_allocator().max_size() / 1024 / 1024 << " Mb" << std::endl;
+    //std::cout << "Image Cache Memory = " << mem_manager_->image_allocator().max_size() / 1024 / 1024 << " Mb" << std::endl;
 }
 
 // document handling
@@ -425,7 +417,7 @@ void application_t::open_document( const boost::filesystem::path& p)
 void application_t::delete_document()
 {
     document_.reset( 0);
-    memory_manager().clear_caches();
+    //memory_manager().clear_caches();
 }
 
 // messages

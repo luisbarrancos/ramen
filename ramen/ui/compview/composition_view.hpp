@@ -12,13 +12,10 @@
 #include<QWidget>
 #include<QFont>
 
-#include<ramen/bezier/curve.hpp>
-
 #include<ramen/nodes/node_fwd.hpp>
 
 #include<ramen/math/viewport.hpp>
 
-#include<ramen/ui/compview/composition_view_layout.hpp>
 #include<ramen/ui/compview/composition_view_toolbar.hpp>
 #include<ramen/ui/compview/pick_result.hpp>
 
@@ -48,15 +45,6 @@ public:
 
     void place_node( node_t *n) const;
     void place_node_near_node( node_t *n, node_t *other) const;
-
-    // bezier edges
-    bool pick_bezier_edge( const math::point2f_t& p0,
-                           const math::point2f_t& p1,
-                           const math::point2f_t& q) const;
-
-    void draw_bezier_edge( QPainter& painter,
-                           const math::point2f_t& p0,
-                           const math::point2f_t& p1) const;
 
 protected:
 
@@ -95,9 +83,6 @@ private:
     bool pick_edge( const math::point2f_t& p, node_t *&src, node_t *&dst, int& port) const;
 
     // util
-    void bezier_edge( const math::point2f_t& p0,
-                      const math::point2f_t& p1,
-                      bezier::curve_t<math::point2f_t>& c) const;
 
     void delete_selected_nodes();
 
@@ -119,8 +104,6 @@ private:
 
     pick_result_t last_pick_;
     boost::function<void ( QMouseEvent *)> drag_handler_, release_handler_;
-
-    composition_view_layout_t layout_;
 };
 
 } // ui

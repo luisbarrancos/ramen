@@ -2,42 +2,23 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/node.hpp>
-
-#include<ramen/params/float_param.hpp>
+#include<ramen/nodes/null_node.hpp>
 
 namespace ramen
 {
 
-class null_node_t : public node_t
+null_node_t::null_node_t()
 {
-public:
+    set_name( "null");
+    add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
+    add_output_plug();
+}
 
-    static const node_info_t& null_node_info();
-    virtual const node_info_t *node_info() const;
+null_node_t::null_node_t( const null_node_t& other) : node_t(other) {}
 
-    null_node_t()
-    {
-        set_name( "null");
-        add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
-        add_output_plug();
-    }
+node_t *null_node_t::do_clone() const { return new null_node_t(*this);}
 
-    virtual bool use_cache( const render::context_t& context) const { return false;}
-
-protected:
-
-    null_node_t( const null_node_t& other) : node_t(other) {}
-
-private:
-
-    void operator=( const null_node_t&);
-
-    node_t *do_clone() const { return new null_node_t(*this);}
-
-    virtual bool do_is_identity() const { return true;}
-};
-
+bool null_node_t::do_is_identity() const { return true;}
 
 // factory
 node_t *create_null_node() { return new null_node_t();}
@@ -51,7 +32,7 @@ const node_info_t& null_node_t::null_node_info()
 
     if( !inited)
     {
-        info.id = core::name_t( "image.builtin.null");
+        info.id = core::name_t( "builtin.null");
         info.major_version = 1;
         info.minor_version = 0;
         info.menu = "Image";
