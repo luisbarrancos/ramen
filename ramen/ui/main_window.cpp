@@ -35,7 +35,6 @@
 #include<ramen/memory/manager.hpp>
 
 #include<ramen/nodes/node.hpp>
-#include<ramen/nodes/graph_algorithm.hpp>
 #include<ramen/nodes/node_factory.hpp>
 #include<ramen/nodes/node_graph_modifier.hpp>
 
@@ -46,7 +45,7 @@
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/time_controls.hpp>
 
-#include<ramen/ui/compview/composition_view.hpp>
+#include<ramen/ui/world_view/world_view.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
 
@@ -77,7 +76,7 @@ const char *main_window_t::file_dialog_extension()
 main_window_t::main_window_t() : QMainWindow()
 {
     time_slider_ = 0;
-    comp_view_ = 0;
+    world_view_ = 0;
     inspector_ = 0;
     time_controls_ = 0;
 
@@ -123,15 +122,15 @@ main_window_t::main_window_t() : QMainWindow()
         QVBoxLayout *layout = new QVBoxLayout();
         layout->setContentsMargins( 5, 5, 5, 5);
 
-        comp_view_ = new composition_view_t();
-        layout->addWidget( comp_view_);
+        world_view_ = new world_view_t();
+        layout->addWidget( world_view_);
 
         QFrame *separator = new QFrame();
         separator->setFrameStyle( QFrame::HLine | QFrame::Raised);
         separator->setLineWidth( 1);
         layout->addWidget( separator);
 
-        layout->addWidget( composition_view().create_toolbar());
+        layout->addWidget( world_view().create_toolbar());
         all_comp_view->setLayout( layout);
 
         composition_dock_->setWidget( all_comp_view);
@@ -639,8 +638,9 @@ void main_window_t::redo()
 
 void main_window_t::ignore_nodes()
 {
-    node_graph_modifier_t modifier( &app().document().composition_node(), "Ignore nodes");
-    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
+    /*
+    node_graph_modifier_t modifier( &app().document().world_node(), "Ignore nodes");
+    BOOST_FOREACH( node_t& n, app().document().world_node().nodes())
     {
         if( n.selected())
             modifier.ignore_node( &n);
@@ -648,22 +648,24 @@ void main_window_t::ignore_nodes()
 
     modifier.execute( true);
     app().ui()->update();
+    */
 }
 
 void main_window_t::delete_nodes()
 {
-    if( !app().document().composition_node().any_selected())
+    /*
+    if( !app().document().world_node().any_selected())
         return;
 
-    node_graph_modifier_t modifier( &app().document().composition_node(), "Delete nodes");
+    node_graph_modifier_t modifier( &app().document().world_node(), "Delete nodes");
 
-    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
+    BOOST_FOREACH( edge_t& e, app().document().world_node().edges())
     {
         if( e.src->selected() || e.dst->selected())
             modifier.disconnect( e.src, e.dst, e.port);
     }
 
-    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
+    BOOST_FOREACH( node_t& n, app().document().world_node().nodes())
     {
         if( n.selected())
             modifier.remove_node( &n);
@@ -671,6 +673,7 @@ void main_window_t::delete_nodes()
 
     modifier.execute( true);
     app().ui()->update();
+    */
 }
 
 void main_window_t::duplicate_nodes()
@@ -679,7 +682,7 @@ void main_window_t::duplicate_nodes()
     std::map<node_t*, node_t*> relation;
     core::auto_ptr_t<undo::duplicate_command_t> c( new undo::duplicate_command_t());
 
-    BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
+    BOOST_FOREACH( node_t& n, app().document().world_node().nodes())
     {
         if( n.selected())
         {
@@ -690,13 +693,13 @@ void main_window_t::duplicate_nodes()
         }
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
+    BOOST_FOREACH( edge_t& e, app().document().world_node().edges())
     {
         if( e.src->selected() && e.dst->selected())
             c->add_edge( edge_t( relation[e.src], relation[e.dst], e.port));
     }
 
-    app().document().composition_node().deselect_all();
+    app().document().world_node().deselect_all();
     c->redo();
     app().document().undo_stack().push_back( boost::move( c));
     app().ui()->update();
@@ -706,18 +709,18 @@ void main_window_t::duplicate_nodes()
 void main_window_t::extract_nodes()
 {
     /*
-    if( !app().document().composition_node().any_selected())
+    if( !app().document().world_node().any_selected())
         return;
 
     core::auto_ptr_t<undo::extract_command_t> c( new undo::extract_command_t());
 
-    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
+    BOOST_FOREACH( edge_t& e, app().document().world_node().edges())
     {
         if( e.src->selected() && !(e.dst->selected()))
             c->add_dependent_node( e.dst);
     }
 
-    BOOST_FOREACH( edge_t& e, app().document().composition_node().edges())
+    BOOST_FOREACH( edge_t& e, app().document().world_node().edges())
     {
         if( e.src->selected() || e.dst->selected())
             c->add_edge_to_remove( e);
@@ -727,7 +730,7 @@ void main_window_t::extract_nodes()
     {
         std::vector<edge_t> edges_to_add;
 
-        BOOST_FOREACH( node_t& n, app().document().composition_node().nodes())
+        BOOST_FOREACH( node_t& n, app().document().world_node().nodes())
         {
             if( n.selected())
             {
@@ -778,7 +781,7 @@ void main_window_t::clear_cache()
 
 void main_window_t::show_composition_settings()
 {
-    app().ui()->inspector().edit_node( &app().document().composition_node());
+    app().ui()->inspector().edit_node( &app().document().world_node());
 }
 
 void main_window_t::render_composition()
@@ -854,6 +857,7 @@ void main_window_t::show_preferences_dialog()
 
 void main_window_t::create_node()
 {
+    /*
     QAction *action = dynamic_cast<QAction*>( sender());
 
     core::name_t id( create_node_actions_[action]);
@@ -867,7 +871,7 @@ void main_window_t::create_node()
 
     try
     {
-        p->set_parent( &( app().document().composition_node()));
+        p->set_parent( &( app().document().world_node()));
         p->create_params();
         p->create_manipulators();
     }
@@ -877,10 +881,10 @@ void main_window_t::create_node()
         return;
     }
 
-    node_graph_modifier_t modifier( &app().document().composition_node(), "Add Node");
+    node_graph_modifier_t modifier( &app().document().world_node(), "Add Node");
 
     // test to see if we can autoconnect
-    node_t *src = app().document().composition_node().selected_node();
+    node_t *src = app().document().world_node().selected_node();
 
     if( src && src->has_output_plug() && p->num_inputs() != 0)
     {
@@ -891,21 +895,22 @@ void main_window_t::create_node()
         src = 0;
 
     if( src)
-        composition_view().place_node_near_node( p.get(), src);
+        world_view().place_node_near_node( p.get(), src);
     else
-        composition_view().place_node( p.get());
+        world_view().place_node( p.get());
 
     node_t *n = p.get(); // save for later use
-    app().document().composition_node().make_name_unique( n);
+    app().document().world_node().make_name_unique( n);
     modifier.add_node( boost::move( p));
 
     if( src)
         modifier.connect( src, n, 0);
 
-    app().document().composition_node().deselect_all();
+    app().document().world_node().deselect_all();
     n->select( true);
     modifier.execute( true);
     app().ui()->update();
+    */
 }
 
 void main_window_t::show_about_box() {}
@@ -920,11 +925,11 @@ void main_window_t::update()
         setWindowTitle( "Ramen");
 
     update_menus();
-    time_slider_->update( app().document().composition_node().start_frame(),
-                          app().document().composition_node().frame(),
-                          app().document().composition_node().end_frame());
+    time_slider_->update( app().document().world_node().start_frame(),
+                          app().document().world_node().frame(),
+                          app().document().world_node().end_frame());
 
-    composition_view().update();
+    world_view().update();
     time_controls_->update();
 }
 
@@ -979,11 +984,12 @@ void main_window_t::init_recent_files_menu()
 
 void main_window_t::update_menus()
 {
-    bool any_selected = app().document().composition_node().any_selected();
-    node_t *n = app().document().composition_node().selected_node();
+    /*
+    bool any_selected = app().document().world_node().any_selected();
+    node_t *n = app().document().world_node().selected_node();
+    */
 
     save_->setEnabled( app().document().dirty());
-    export_sel_->setEnabled( any_selected);
 
     if( app().document().undo_stack().undo_empty())
     {
@@ -1007,6 +1013,8 @@ void main_window_t::update_menus()
         redo_->setEnabled( true);
     }
 
+    /*
+    export_sel_->setEnabled( any_selected);
     ignore_->setEnabled( any_selected);
     delete_->setEnabled( any_selected);
     duplicate_->setEnabled( any_selected);
@@ -1019,6 +1027,7 @@ void main_window_t::update_menus()
         comp_flipbook_->setEnabled( true);
     else
         comp_flipbook_->setEnabled( false);
+    */
 }
 
 } // ui

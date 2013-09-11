@@ -74,26 +74,26 @@ node_t *param_t::node()
     return param_set()->node();
 }
 
-const composition_node_t *param_t::composition_node() const
+const world_node_t *param_t::world_node() const
 {
     RAMEN_ASSERT( param_set());
 
     const node_t *n = node();
 
     if( n)
-        return n->composition_node();
+        return n->world_node();
 
     return 0;
 }
 
-composition_node_t *param_t::composition_node()
+world_node_t *param_t::world_node()
 {
     RAMEN_ASSERT( param_set());
 
     node_t *n = node();
 
     if( n)
-        return n->composition_node();
+        return n->world_node();
 
     return 0;
 }

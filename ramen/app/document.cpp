@@ -16,8 +16,8 @@ namespace ramen
 
 document_t::document_t() : dirty_( false)
 {
-    comp_node_.create_params();
-    comp_node_.create_manipulators();
+    world_node_.create_params();
+    world_node_.create_manipulators();
 
     undo_.reset( new undo::stack_t());
 }
@@ -27,33 +27,17 @@ void document_t::set_file( const boost::filesystem::path& p)
     RAMEN_ASSERT( p.empty() || p.is_absolute());
 
     file_ = p;
-    composition_node().set_composition_dir( file_.parent_path());
+    world_node().set_composition_dir( file_.parent_path());
 }
 
-const composition_node_t& document_t::composition_node() const
+const world_node_t& document_t::world_node() const
 {
-    return comp_node_;
+    return world_node_;
 }
 
-composition_node_t& document_t::composition_node()
+world_node_t& document_t::world_node()
 {
-    return comp_node_;
+    return world_node_;
 }
-
-/*
-void document_t::load( serialization::yaml_iarchive_t& in)
-{
-    RAMEN_ASSERT( has_file());
-    composition().read( in);
-}
-
-void document_t::save( serialization::yaml_oarchive_t& out) const
-{
-    RAMEN_ASSERT( out.header_written());
-    RAMEN_ASSERT( out.map_level() == 1);
-
-    composition().write( out);
-}
-*/
 
 } // ramen

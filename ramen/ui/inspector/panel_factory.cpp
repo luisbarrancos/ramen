@@ -6,7 +6,7 @@
 
 #include<boost/bind.hpp>
 
-#include<ramen/nodes/composition_node.hpp>
+#include<ramen/nodes/world_node.hpp>
 
 #include<ramen/ui/inspector/panel.hpp>
 
@@ -17,7 +17,7 @@ namespace ui
 
 panel_factory_t::panel_factory_t()
 {
-    composition_node_t::node_deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
+    world_node_t::node_deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
 }
 
 panel_factory_t::~panel_factory_t()

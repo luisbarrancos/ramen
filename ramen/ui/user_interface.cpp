@@ -170,8 +170,8 @@ void user_interface_t::create_new_document()
 
     app().create_new_document();
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
-                                                             app().document().composition_node().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+                                                             app().document().world_node().end_frame());
 
     render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
     update();
@@ -219,8 +219,8 @@ void user_interface_t::open_document( const boost::filesystem::path& p)
     // read here ui info
 
     // update the dialogs
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
-                                                             app().document().composition_node().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+                                                             app().document().world_node().end_frame());
 
     render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
 
@@ -266,13 +266,13 @@ void user_interface_t::set_active_node( node_t *n)
 {
     if( active_ != n)
     {
-        if( active_)
-            active_->end_active();
+        //if( active_)
+        //    active_->end_active();
 
         active_ = n;
 
-        if( active_)
-            active_->begin_active();
+        //if( active_)
+        //    active_->begin_active();
 
         inspector().edit_node( n);
         //viewer().set_active_node( n);
@@ -284,13 +284,13 @@ void user_interface_t::set_context_node( node_t *n)
 {
     if( context_ != n)
     {
-        if( context_)
-            context_->end_context();
+        //if( context_)
+        //    context_->end_context();
 
         context_ = n;
 
-        if( context_)
-            context_->begin_context();
+        //if( context_)
+        //    context_->begin_context();
 
         //viewer().set_context_node( n);
     }
@@ -325,7 +325,7 @@ void user_interface_t::update()
 void user_interface_t::begin_interaction()
 {
     /*
-    app().document().composition_node().begin_interaction();
+    app().document().world_node().begin_interaction();
     //viewer().begin_interaction();
     interacting_ = true;
     app().memory_manager().begin_interaction();
@@ -338,53 +338,53 @@ void user_interface_t::end_interaction()
     interacting_ = false;
     app().memory_manager().end_interaction();
     //viewer().end_interaction();
-    app().document().composition_node().end_interaction();
+    app().document().world_node().end_interaction();
     */
 }
 
 int user_interface_t::start_frame() const
 {
-    return app().document().composition_node().start_frame();
+    return app().document().world_node().start_frame();
 }
 
 int user_interface_t::end_frame() const
 {
-    return app().document().composition_node().end_frame();
+    return app().document().world_node().end_frame();
 }
 
 float user_interface_t::frame() const
 {
-    return app().document().composition_node().frame();
+    return app().document().world_node().frame();
 }
 
 void user_interface_t::set_start_frame( int t)
 {
-    app().document().composition_node().set_start_frame( t);
-    main_window()->time_slider().update( app().document().composition_node().start_frame(),
-                                         app().document().composition_node().frame(),
-                                         app().document().composition_node().end_frame());
+    app().document().world_node().set_start_frame( t);
+    main_window()->time_slider().update( app().document().world_node().start_frame(),
+                                         app().document().world_node().frame(),
+                                         app().document().world_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
-                                                             app().document().composition_node().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+                                                             app().document().world_node().end_frame());
 }
 
 void user_interface_t::set_end_frame( int t)
 {
-    app().document().composition_node().set_end_frame( t);
-    main_window()->time_slider().update( app().document().composition_node().start_frame(),
-                                         app().document().composition_node().frame(),
-                                         app().document().composition_node().end_frame());
+    app().document().world_node().set_end_frame( t);
+    main_window()->time_slider().update( app().document().world_node().start_frame(),
+                                         app().document().world_node().frame(),
+                                         app().document().world_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().composition_node().start_frame(),
-                                                             app().document().composition_node().end_frame());
+    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+                                                             app().document().world_node().end_frame());
 }
 
 void user_interface_t::set_frame( double t)
 {
-    app().document().composition_node().set_frame( t);
-    main_window()->time_slider().update( app().document().composition_node().start_frame(),
-                                         app().document().composition_node().frame(),
-                                         app().document().composition_node().end_frame());
+    app().document().world_node().set_frame( t);
+    main_window()->time_slider().update( app().document().world_node().start_frame(),
+                                         app().document().world_node().frame(),
+                                         app().document().world_node().end_frame());
 
     inspector().update();
     update_anim_editors();
@@ -458,7 +458,7 @@ bool user_interface_t::image_sequence_file_selector( const core::string8_t& titl
 
     if( app().document().has_file())
     {
-        RAMEN_ASSERT( !app().document().composition_node().composition_dir().empty());
+        RAMEN_ASSERT( !app().document().world_node().composition_dir().empty());
         relative_check->setChecked( was_relative);
     }
     else

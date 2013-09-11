@@ -2,8 +2,8 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODES_COMPOSITION_NODE_HPP
-#define RAMEN_NODES_COMPOSITION_NODE_HPP
+#ifndef RAMEN_NODES_WORLD_NODE_HPP
+#define RAMEN_NODES_WORLD_NODE_HPP
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -14,15 +14,12 @@
 namespace ramen
 {
 
-class composition_node_t : public composite_node_t
+class world_node_t : public composite_node_t
 {
 public:
 
     /// Constructor
-    composition_node_t();
-
-    void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
-    core::auto_ptr_t<node_t> release_node( node_t *n);
+    world_node_t();
 
     int start_frame() const;
     void set_start_frame( int f);
@@ -55,13 +52,6 @@ public:
 
     void make_name_unique( node_t *n);
 
-    // selections
-    void select_all();
-    void deselect_all();
-
-    bool any_selected() const;
-    node_t *selected_node();
-
     // paths
 
     boost::filesystem::path make_absolute_path( const boost::filesystem::path& p,
@@ -76,7 +66,7 @@ public:
 
 protected:
 
-    composition_node_t( const composition_node_t& other);
+    world_node_t( const world_node_t& other);
 
 private:
 
@@ -88,7 +78,7 @@ private:
     friend class undo::ignore_node_command_t;
 
     // non-assignable
-    void operator=( const composition_node_t& other);
+    void operator=( const world_node_t& other);
 
     virtual node_t *do_clone() const;
 

@@ -98,10 +98,10 @@ public:
     node_t *node();
 
     /// Returns a const pointer to the composition node this param belongs to.
-    const composition_node_t *composition_node() const;
+    const world_node_t *world_node() const;
 
     /// Returns a pointer to the composition node this param belongs to.
-    composition_node_t *composition_node();
+    world_node_t *world_node();
 
     // flags
     // ...

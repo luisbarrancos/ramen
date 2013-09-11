@@ -73,11 +73,11 @@ private:
         name_edit_->blockSignals( true);
         n_->set_name( name.c_str());
 
-        if( n_->is_active())
-        {
-            name_edit_->setText( n_->name().c_str());
-            app().ui()->anim_editor().node_renamed( n_);
-        }
+        //if( n_->is_active())
+        //{
+        //    name_edit_->setText( n_->name().c_str());
+        //    app().ui()->anim_editor().node_renamed( n_);
+        //}
 
         app().ui()->update();
         name_edit_->setModified( false);

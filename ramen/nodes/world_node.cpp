@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/nodes/composition_node.hpp>
+#include<ramen/nodes/world_node.hpp>
 
 #include<boost/foreach.hpp>
 #include<boost/bind.hpp>
@@ -19,8 +19,6 @@
 
 #include<ramen/app/application.hpp>
 #include<ramen/app/preferences.hpp>
-
-#include<ramen/nodes/graph_algorithm.hpp>
 
 #ifndef NDEBUG
     #include<iostream>
@@ -50,7 +48,7 @@ core::name_t g_autokey( "autokey");
 
 } // unnamed
 
-composition_node_t::composition_node_t() : composite_node_t()
+world_node_t::world_node_t() : composite_node_t()
 {
     set_name( "composition");
 
@@ -58,22 +56,22 @@ composition_node_t::composition_node_t() : composite_node_t()
         node_released.connect( log_node_released_signal);
     #endif
 
-    node_added.connect( boost::bind( &composition_node_t::node_was_added, this, _1));
-    node_deleted.connect( boost::bind( &composition_node_t::node_was_deleted, this, _1));
-    node_renamed.connect( boost::bind( &composition_node_t::node_was_renamed, this, _1, _2, _3));
+    node_added.connect( boost::bind( &world_node_t::node_was_added, this, _1));
+    node_deleted.connect( boost::bind( &world_node_t::node_was_deleted, this, _1));
+    node_renamed.connect( boost::bind( &world_node_t::node_was_renamed, this, _1, _2, _3));
 }
 
-composition_node_t::composition_node_t( const composition_node_t& other) : composite_node_t( other)
+world_node_t::world_node_t( const world_node_t& other) : composite_node_t( other)
 {
     throw core::not_implemented();
 }
 
-node_t *composition_node_t::do_clone() const
+node_t *world_node_t::do_clone() const
 {
-    return new composition_node_t( *this);
+    return new world_node_t( *this);
 }
 
-void composition_node_t::do_create_params()
+void world_node_t::do_create_params()
 {
     /*
     core::auto_ptr_t<float_param_t> p( new float_param_t());
@@ -133,46 +131,34 @@ void composition_node_t::do_create_params()
     */
 }
 
-void composition_node_t::add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
-{
-    n->set_parent( this);
-    n->set_frame( frame());
-    composite_node_t::add_node( n);
-}
-
-core::auto_ptr_t<node_t> composition_node_t::release_node( node_t *n)
-{
-    return composite_node_t::release_node( n);
-}
-
-int composition_node_t::start_frame() const
+int world_node_t::start_frame() const
 {
     //return get_value<float>( *start_frame_);
     return 0;
 }
 
-void composition_node_t::set_start_frame( int f)
+void world_node_t::set_start_frame( int f)
 {
    //start_frame_->set_value( f);
 }
 
-int composition_node_t::end_frame() const
+int world_node_t::end_frame() const
 {
     //return get_value<float>( *end_frame_);
 }
 
-void composition_node_t::set_end_frame( int f)
+void world_node_t::set_end_frame( int f)
 {
     //end_frame_->set_value( f);
 }
 
-float composition_node_t::frame() const
+float world_node_t::frame() const
 {
     //return get_value<float>( *frame_);
     return 0.0f;
 }
 
-void composition_node_t::set_frame( float f)
+void world_node_t::set_frame( float f)
 {
     /*
     if( f != frame())
@@ -183,34 +169,34 @@ void composition_node_t::set_frame( float f)
     */
 }
 
-bool composition_node_t::autokey() const
+bool world_node_t::autokey() const
 {
     //return get_value<bool>( *autokey_);
     return false;
 }
 
-void composition_node_t::set_autokey( bool b)
+void world_node_t::set_autokey( bool b)
 {
     //autokey_->set_value( b);
 }
 
-int composition_node_t::frame_rate() const
+int world_node_t::frame_rate() const
 {
     //return get_value<float>( *frame_rate_);
     return 0;
 }
 
-void composition_node_t::set_frame_rate( int f)
+void world_node_t::set_frame_rate( int f)
 {
     //frame_rate_->set_value( f);
 }
 
-const boost::filesystem::path& composition_node_t::composition_dir() const
+const boost::filesystem::path& world_node_t::composition_dir() const
 {
     return composition_dir_;
 }
 
-void composition_node_t::set_composition_dir( const boost::filesystem::path& dir)
+void world_node_t::set_composition_dir( const boost::filesystem::path& dir)
 {
     RAMEN_ASSERT( !dir.empty() && dir.is_absolute());
 
@@ -223,34 +209,34 @@ void composition_node_t::set_composition_dir( const boost::filesystem::path& dir
     composition_dir_ = dir;
 }
 
-void composition_node_t::convert_all_relative_paths( const boost::filesystem::path& new_base)
+void world_node_t::convert_all_relative_paths( const boost::filesystem::path& new_base)
 {
     boost::range::for_each( nodes(), boost::bind( &node_t::convert_relative_paths, _1, composition_dir_, new_base));
 }
 
-void composition_node_t::make_all_paths_absolute()
+void world_node_t::make_all_paths_absolute()
 {
     boost::range::for_each( nodes(), boost::bind( &node_t::make_paths_absolute, _1));
 }
 
-void composition_node_t::make_all_paths_relative()
+void world_node_t::make_all_paths_relative()
 {
     boost::range::for_each( nodes(), boost::bind( &node_t::make_paths_relative, _1));
 }
 
-boost::filesystem::path composition_node_t::relative_to_absolute( const boost::filesystem::path& p) const
+boost::filesystem::path world_node_t::relative_to_absolute( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
     return make_absolute_path( p, composition_dir());
 }
 
-boost::filesystem::path composition_node_t::absolute_to_relative( const boost::filesystem::path& p) const
+boost::filesystem::path world_node_t::absolute_to_relative( const boost::filesystem::path& p) const
 {
     RAMEN_ASSERT( !composition_dir_.empty());
     return make_relative_path( p, composition_dir());
 }
 
-boost::filesystem::path composition_node_t::make_absolute_path( const boost::filesystem::path& p,
+boost::filesystem::path world_node_t::make_absolute_path( const boost::filesystem::path& p,
                                                                 const boost::filesystem::path& from) const
 {
     RAMEN_ASSERT( p.is_relative());
@@ -262,7 +248,7 @@ boost::filesystem::path composition_node_t::make_absolute_path( const boost::fil
     return boost::filesystem::path( abs_path.toStdString());
 }
 
-boost::filesystem::path composition_node_t::make_relative_path( const boost::filesystem::path& p,
+boost::filesystem::path world_node_t::make_relative_path( const boost::filesystem::path& p,
                                                                 const boost::filesystem::path& from) const
 {
     RAMEN_ASSERT( p.is_absolute());
@@ -274,7 +260,7 @@ boost::filesystem::path composition_node_t::make_relative_path( const boost::fil
     return boost::filesystem::path( rel_path.toStdString());
 }
 
-boost::filesystem::path composition_node_t::convert_relative_path( const boost::filesystem::path& p,
+boost::filesystem::path world_node_t::convert_relative_path( const boost::filesystem::path& p,
                                                                    const boost::filesystem::path& old_base,
                                                                    const boost::filesystem::path& new_base) const
 {
@@ -282,39 +268,7 @@ boost::filesystem::path composition_node_t::convert_relative_path( const boost::
     return make_relative_path( p0, new_base);
 }
 
-// selections
-void composition_node_t::select_all()
-{
-    boost::range::for_each( nodes(), boost::bind( &node_t::select, _1, true));
-}
-
-void composition_node_t::deselect_all()
-{
-    boost::range::for_each( nodes(), boost::bind( &node_t::select, _1, false));
-}
-
-bool composition_node_t::any_selected() const
-{
-    return boost::range::find_if( nodes(), boost::bind( &node_t::selected, _1)) != nodes().end();
-}
-
-node_t *composition_node_t::selected_node()
-{
-    if( boost::range::count_if( nodes(), boost::bind( &node_t::selected, _1)) == 1)
-    {
-        node_iterator it( nodes().begin());
-
-        for( ; it != nodes().end(); ++it)
-        {
-            if( it->selected())
-                return &(*it);
-        }
-    }
-
-    return 0;
-}
-
-const node_t *composition_node_t::find_node( const core::string8_t& name) const
+const node_t *world_node_t::find_node( const core::string8_t& name) const
 {
     nodes_names_map_type::right_const_iterator it = nodes_names_map_.right.find( name);
 
@@ -324,7 +278,7 @@ const node_t *composition_node_t::find_node( const core::string8_t& name) const
     return 0;
 }
 
-node_t *composition_node_t::find_node( const core::string8_t& name)
+node_t *world_node_t::find_node( const core::string8_t& name)
 {
     nodes_names_map_type::right_iterator it = nodes_names_map_.right.find( name);
 
@@ -334,7 +288,7 @@ node_t *composition_node_t::find_node( const core::string8_t& name)
     return 0;
 }
 
-void composition_node_t::make_name_unique( node_t *n)
+void world_node_t::make_name_unique( node_t *n)
 {
     core::string8_t new_name( n->name());
 
@@ -345,14 +299,14 @@ void composition_node_t::make_name_unique( node_t *n)
         n->set_name( new_name);
 }
 
-void composition_node_t::node_was_added( node_t *n)
+void world_node_t::node_was_added( node_t *n)
 {
     RAMEN_ASSERT( n != this);
 
     nodes_names_map_.insert( nodes_names_map_type::value_type( n, n->name()));
 }
 
-void composition_node_t::node_was_deleted( node_t *n)
+void world_node_t::node_was_deleted( node_t *n)
 {
     #ifndef NDEBUG
         std::cout << "node deleted " << n->name() << std::endl;
@@ -362,7 +316,7 @@ void composition_node_t::node_was_deleted( node_t *n)
         nodes_names_map_.left.erase( n);
 }
 
-void composition_node_t::node_was_renamed( node_t* n,
+void world_node_t::node_was_renamed( node_t* n,
                                            const core::string8_t& old_name,
                                            const core::string8_t& new_name)
 {

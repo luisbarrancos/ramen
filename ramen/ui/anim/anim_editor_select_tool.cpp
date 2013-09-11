@@ -155,7 +155,7 @@ void anim_editor_select_tool_t::mouse_press_event( anim_curves_view_t& view, QMo
                 track_->notify();
 
                 app().ui()->anim_editor().push_command();
-                app().ui()->active_node()->notify();
+                //app().ui()->active_node()->notify();
                 view.update();
                 break;
             }
@@ -228,7 +228,7 @@ void anim_editor_select_tool_t::mouse_drag_event( anim_curves_view_t& view, QMou
                                  break_tangents_);
         boost::apply_visitor( v, track_->curve().get());
         track_->notify();
-        app().ui()->active_node()->notify();
+        //app().ui()->active_node()->notify();
     }
     else
     {

@@ -37,9 +37,6 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/anim/track_model.hpp
                         ui/anim/anim_editor_toolbar.hpp
 
-                        ui/compview/composition_view.hpp
-                        ui/compview/composition_view_toolbar.hpp
-
                         ui/dialogs/multiline_alert.hpp
                         ui/dialogs/render_composition_dialog.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
@@ -56,6 +53,8 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/widgets/hue_picker.hpp
                         ui/widgets/saturation_value_picker.hpp
                         ui/widgets/eyedropper_button.hpp
+
+                        ui/world_view/world_view.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -111,8 +110,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/composite_node.cpp
                         nodes/edge.hpp
                         nodes/edge.cpp
-                        nodes/graph_algorithm.hpp
-                        nodes/graph_algorithm.cpp
                         nodes/node_fwd.hpp
                         nodes/node.hpp
                         nodes/node.cpp
@@ -123,16 +120,12 @@ SET( RAMEN_SOURCES      assert.hpp
                         nodes/node_graph_modifier.cpp
                         nodes/node_info.hpp
                         nodes/node_info.cpp
-                        nodes/node_plug.hpp
-                        nodes/node_plug.cpp
-                        nodes/node_visitor.hpp
-                        nodes/node_visitor.cpp
                         nodes/null_node.hpp
                         nodes/null_node.cpp
-                        nodes/composition_node.hpp
-                        nodes/composition_node.cpp
                         nodes/viewer_node.hpp
                         nodes/viewer_node.cpp
+                        nodes/world_node.hpp
+                        nodes/world_node.cpp
 
                         ocio/manager.cpp
 
@@ -188,11 +181,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/anim/pick_curves_visitors.cpp
                         ui/anim/track_model.cpp
 
-                        ui/compview/composition_view.hpp
-                        ui/compview/composition_view.cpp
-                        ui/compview/composition_view_toolbar.hpp
-                        ui/compview/composition_view_toolbar.cpp
-
                         ui/dialogs/multiline_alert.cpp
                         ui/dialogs/render_composition_dialog.cpp
                         ui/dialogs/smooth_anim_curves_dialog.cpp
@@ -217,6 +205,13 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/hue_picker.cpp
                         ui/widgets/saturation_value_picker.cpp
                         ui/widgets/eyedropper_button.cpp
+
+                        ui/world_view/world_view_fwd.hpp
+                        ui/world_view/world_view.hpp
+                        ui/world_view/world_view.cpp
+                        ui/world_view/world_view_hook_fwd.hpp
+                        ui/world_view/world_view_hook.hpp
+                        ui/world_view/world_view_hook.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp

@@ -10,8 +10,8 @@ namespace ramen
 null_node_t::null_node_t()
 {
     set_name( "null");
-    add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
-    add_output_plug();
+    //add_input_plug( "Front", ui::palette_t::instance().color("front plug"), false);
+    //add_output_plug();
 }
 
 null_node_t::null_node_t( const null_node_t& other) : node_t(other) {}

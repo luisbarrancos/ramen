@@ -27,7 +27,7 @@
 
 #include<ramen/ui/anim/anim_editor_fwd.hpp>
 
-#include<ramen/ui/compview/composition_view_fwd.hpp>
+#include<ramen/ui/world_view/world_view_fwd.hpp>
 
 #include<ramen/ui/inspector/inspector_fwd.hpp>
 
@@ -57,8 +57,8 @@ public:
 
     void add_dock_widget( Qt::DockWidgetArea area, QDockWidget *dock);
 
-    const composition_view_t& composition_view() const  { return *comp_view_;}
-    composition_view_t& composition_view()              { return *comp_view_;}
+    const world_view_t& world_view() const  { return *world_view_;}
+    world_view_t& world_view()              { return *world_view_;}
 
     const inspector_t& inspector() const    { return *inspector_;}
     inspector_t& inspector()                { return *inspector_;}
@@ -140,7 +140,7 @@ private:
     static const char *file_dialog_extension();
 
     qwidgets::time_slider_t *time_slider_;
-    composition_view_t *comp_view_;
+    world_view_t *world_view_;
     time_controls_t *time_controls_;
     QDockWidget *inspector_dock_;
     inspector_t *inspector_;

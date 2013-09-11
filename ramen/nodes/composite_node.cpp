@@ -13,7 +13,6 @@
 #include<ramen/core/exceptions.hpp>
 
 #include<ramen/nodes/node_factory.hpp>
-#include<ramen/nodes/graph_algorithm.hpp>
 
 namespace ramen
 {
@@ -93,6 +92,7 @@ void composite_node_t::emit_node_released_signal( node_t *n)
 
 void composite_node_t::add_edge( const edge_t& e)
 {
+    /*
     RAMEN_ASSERT( e.src->parent() == this);
     RAMEN_ASSERT( e.dst->parent() == this);
 
@@ -105,10 +105,12 @@ void composite_node_t::add_edge( const edge_t& e)
     e.src->output_plug().add_output( e.dst, e.port);
     edges_.push_back( e);
     e.dst->connected( e.src, e.port);
+    */
 }
 
 void composite_node_t::remove_edge( const edge_t& e)
 {
+    /*
     edge_iterator it( std::find( edges_.begin(), edges_.end(), e));
     RAMEN_ASSERT( it != edges_.end());
 
@@ -116,19 +118,23 @@ void composite_node_t::remove_edge( const edge_t& e)
     e.dst->input_plugs()[e.port].clear_input();
     edges_.erase( it);
     e.dst->connected( 0, e.port);
+    */
 }
 
 // connections
 bool composite_node_t::can_connect( node_t *src, node_t *dst, int port)
 {
+    /*
     if( !src->has_output_plug() || dst->num_inputs() == 0)
         return false;
 
     if( port >= dst->num_inputs())
         return false;
-
+    */
+    /*
     if( node_depends_on_node( *src, *dst))
         return false;
+    */
 
     return dst->accept_connection( src, port);
 }

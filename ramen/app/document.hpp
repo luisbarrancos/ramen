@@ -11,7 +11,7 @@
 
 #include<ramen/core/memory.hpp>
 
-#include<ramen/nodes/composition_node.hpp>
+#include<ramen/nodes/world_node.hpp>
 
 #include<ramen/undo/stack_fwd.hpp>
 
@@ -42,8 +42,8 @@ public:
     //void load( serialization::yaml_iarchive_t& in);
     //void save( serialization::yaml_oarchive_t& out) const;
 
-    const composition_node_t& composition_node() const;
-    composition_node_t& composition_node();
+    const world_node_t& world_node() const;
+    world_node_t& world_node();
 
 private:
 
@@ -55,7 +55,7 @@ private:
     core::auto_ptr_t<undo::stack_t> undo_;
     boost::filesystem::path file_;
 
-    composition_node_t comp_node_;
+    world_node_t world_node_;
 };
 
 } // ramen

@@ -28,10 +28,7 @@
 
 #include<ramen/params/param_set.hpp>
 
-#include<ramen/nodes/graph_color.hpp>
-#include<ramen/nodes/node_plug.hpp>
 #include<ramen/nodes/node_factory.hpp>
-#include<ramen/nodes/node_visitor.hpp>
 
 #include<ramen/undo/command.hpp>
 
@@ -48,26 +45,14 @@ class RAMEN_API node_t : public manipulable_t
 {
 public:
 
-    enum flag_bits
-    {
-        selected_bit			= 1 << 0,
-        ignored_bit				= 1 << 1,
-        plugin_error_bit		= 1 << 2,
-        active_bit				= 1 << 3,
-        context_bit				= 1 << 4,
-        cacheable_bit			= 1 << 5,
-        autolayout_bit			= 1 << 6,
-        notify_dirty_bit		= 1 << 7,
-        ui_invisible_bit		= 1 << 8,
-        interacting_bit			= 1 << 9
-    };
+    //enum flag_bits
+    //{
+    //};
 
     virtual const node_info_t *node_info() const { return 0;}
 
     node_t();
     virtual ~node_t();
-
-    // signals
 
     /// Emitted when a node is deleted.
     static boost::signals2::signal<void ( node_t*)> node_deleted;
@@ -76,6 +61,9 @@ public:
     static boost::signals2::signal<void ( node_t*,
                                           const core::string8_t& old_name,
                                           const core::string8_t& new_name)> node_renamed;
+
+    /// Emitted when a node has changed.
+    boost::signals2::signal<void ( node_t*)> changed;
 
     /// Makes a copy of the node.
     node_t *clone() const;
@@ -95,96 +83,21 @@ public:
     /// Returns composite node this node belongs to.
     composite_node_t *parent();
 
-    /// Sets the composition this node belongs to.
+    /// Sets the composite node this node belongs to.
     void set_parent( composite_node_t *comp);
 
-    /// Returns the composition node this node belongs to.
-    const composition_node_t *composition_node() const;
+    /// Returns the world node this node belongs to.
+    const world_node_t *world_node() const;
 
-    /// Returns the composition node this node belongs to.
-    composition_node_t *composition_node();
-
-    // inputs
-    std::size_t num_inputs() const { return inputs_.size();}
-
-    const std::vector<node_input_plug_t>& input_plugs() const { return inputs_;}
-    std::vector<node_input_plug_t>& input_plugs()             { return inputs_;}
-
-    const node_t *input( std::size_t i = 0) const;
-    node_t *input( std::size_t i = 0);
-
-    template<class T>
-    const T *input_as( std::size_t i = 0) const
-    {
-        return dynamic_cast<const T*>( input( i));
-    }
-
-    template<class T>
-    T *input_as( std::size_t i = 0)
-    {
-        return dynamic_cast<T*>( input( i));
-    }
-
-    void add_input_plug( const core::string8_t& ui_label,
-                         const color::color3c_t& color,
-                         bool optional);
-
-    virtual void add_new_input_plug();
-
-    // outputs
-
-    bool has_output_plug() const { return !outputs_.empty();}
-
-    std::size_t num_outputs() const;
-
-    const node_output_plug_t& output_plug() const;
-    node_output_plug_t& output_plug();
-
-    void add_output_plug( const core::string8_t& ui_label,
-                          const color::color3c_t& color);
-
-    void add_output_plug();
-
-    graph_color_t graph_color() const            { return graph_color_;}
-    void set_graph_color( graph_color_t c) const { graph_color_ = c;}
-
-    // visitor
-    virtual void accept( node_visitor& v);
+    /// Returns the world node this node belongs to.
+    world_node_t *world_node();
 
     // ui
     const math::point2f_t& location() const          { return loc_;}
     void set_location( const math::point2f_t& p)     { loc_ = p;}
     void offset_location( const math::vector2f_t& v) { loc_ += v;}
 
-    // selection & flags
-    bool selected() const;
-    void select( bool state);
-    void toggle_selection();
-
-    bool plugin_error() const;
-    void set_plugin_error( bool b);
-
-    bool autolayout() const;
-    void set_autolayout( bool b);
-
-    bool cacheable() const;
-    void set_cacheable( bool b);
-
-    bool notify_dirty() const;
-    void set_notify_dirty( bool b);
-
-    bool ui_invisible() const;
-    void set_ui_invisible( bool b);
-
-    bool is_active() const;
-    bool is_context() const;
-
-    bool dont_persist_params() const        { return dont_persist_params_;}
-    void set_dont_persist_params( bool b)   { dont_persist_params_ = b;}
-
-    virtual bool autokey() const;
-    virtual bool track_mouse() const;
-
+    // params
     /// Creates the params for this node.
     void create_params();
 
@@ -212,42 +125,9 @@ public:
 
     virtual void param_edit_finished();
 
-    // signals
-    boost::signals2::signal<void ( node_t*)> changed;
-
-    void notify();
-
-    // Some parts of Ramen needs access to this, so it's public.
-    virtual void do_notify();
-
     // connections
-    virtual bool variable_num_inputs() const { return false;}
-
     virtual bool accept_connection( node_t *src, int port) const;
     void connected( node_t *src, int port);
-
-    // ignore
-    bool ignored() const;
-    void set_ignored( bool b);
-
-    // edit
-    void begin_active();
-    void end_active();
-
-    void begin_context();
-    void end_context();
-
-    bool interacting() const;
-    void begin_interaction();
-    void end_interaction();
-
-    // valid & identity
-    bool is_valid() const;
-    bool is_identity() const;
-
-    // hash
-
-    virtual bool is_frame_varying() const;
 
     /// Creates anim tracks for this node and adds them to root.
     void create_tracks( anim::track_t *root);
@@ -262,9 +142,6 @@ public:
     {
         return core::auto_ptr_t<QWidget>();
     }
-
-    /// Updates widgets associated with this node's params.
-    void update_widgets();
 
     // paths
     virtual void convert_relative_paths( const boost::filesystem::path& old_base,
@@ -302,18 +179,6 @@ private:
 
     void reconnect_node();
 
-    virtual void do_begin_active() {}
-    virtual void do_end_active() {}
-
-    virtual void do_begin_context() {}
-    virtual void do_end_context() {}
-
-    virtual void do_begin_interaction() {}
-    virtual void do_end_interaction()	{}
-
-    virtual bool do_is_valid() const;
-    virtual bool do_is_identity() const;
-
     /*!
         \brief Customization hook for node_t::create_tracks.
         For subclasses to implement.
@@ -329,12 +194,7 @@ private:
     // data
     core::string8_t name_;
 
-    std::vector<node_input_plug_t> inputs_;
-    containers::ptr_vector_t<node_output_plug_t> outputs_;
-
     params::param_set_t params_;
-
-    mutable graph_color_t graph_color_;
 
     boost::uint32_t flags_;
     bool dont_persist_params_;
