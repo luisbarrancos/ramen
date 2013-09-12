@@ -90,37 +90,6 @@ void composite_node_t::emit_node_released_signal( node_t *n)
     node_released( n);
 }
 
-void composite_node_t::add_edge( const edge_t& e)
-{
-    /*
-    RAMEN_ASSERT( e.src->parent() == this);
-    RAMEN_ASSERT( e.dst->parent() == this);
-
-    node_t *src = e.dst->input_plugs()[e.port].input_node();
-
-    if( src)
-        remove_edge( edge_t( src, e.dst, e.port));
-
-    e.dst->input_plugs()[e.port].set_input( e.src);
-    e.src->output_plug().add_output( e.dst, e.port);
-    edges_.push_back( e);
-    e.dst->connected( e.src, e.port);
-    */
-}
-
-void composite_node_t::remove_edge( const edge_t& e)
-{
-    /*
-    edge_iterator it( std::find( edges_.begin(), edges_.end(), e));
-    RAMEN_ASSERT( it != edges_.end());
-
-    e.src->output_plug().remove_output( e.dst, e.port);
-    e.dst->input_plugs()[e.port].clear_input();
-    edges_.erase( it);
-    e.dst->connected( 0, e.port);
-    */
-}
-
 // connections
 bool composite_node_t::can_connect( node_t *src, node_t *dst, int port)
 {
@@ -141,22 +110,26 @@ bool composite_node_t::can_connect( node_t *src, node_t *dst, int port)
 
 void composite_node_t::connect( node_t *src, node_t *dst, int port)
 {
+    /*
     RAMEN_ASSERT( src->parent() == this);
     RAMEN_ASSERT( dst->parent() == this);
     RAMEN_ASSERT( nodes().contains_ptr( src));
     RAMEN_ASSERT( nodes().contains_ptr( dst));
 
     add_edge( edge_t( src, dst, port));
+    */
 }
 
 void composite_node_t::disconnect( node_t *src, node_t *dst, int port)
 {
+    /*
     RAMEN_ASSERT( src->parent() == this);
     RAMEN_ASSERT( dst->parent() == this);
     RAMEN_ASSERT( nodes().contains_ptr( src));
     RAMEN_ASSERT( nodes().contains_ptr( dst));
 
     remove_edge( edge_t( src, dst, port));
+    */
 }
 
 void composite_node_t::do_set_frame( float f)

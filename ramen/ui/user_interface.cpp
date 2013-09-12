@@ -47,9 +47,6 @@
 
 #include<ramen/ui/anim/anim_editor.hpp>
 
-#include<ramen/ui/dialogs/multiline_alert.hpp>
-#include<ramen/ui/dialogs/render_composition_dialog.hpp>
-
 #include<ramen/ui/inspector/inspector.hpp>
 
 namespace ramen
@@ -170,10 +167,10 @@ void user_interface_t::create_new_document()
 
     app().create_new_document();
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
-                                                             app().document().world_node().end_frame());
+    //render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+    //                                                         app().document().world_node().end_frame());
 
-    render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
+    //render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
     update();
 }
 
@@ -364,8 +361,8 @@ void user_interface_t::set_start_frame( int t)
                                          app().document().world_node().frame(),
                                          app().document().world_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
-                                                             app().document().world_node().end_frame());
+    //render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+    //                                                         app().document().world_node().end_frame());
 }
 
 void user_interface_t::set_end_frame( int t)
@@ -375,8 +372,8 @@ void user_interface_t::set_end_frame( int t)
                                          app().document().world_node().frame(),
                                          app().document().world_node().end_frame());
 
-    render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
-                                                             app().document().world_node().end_frame());
+    //render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
+    //                                                         app().document().world_node().end_frame());
 }
 
 void user_interface_t::set_frame( double t)

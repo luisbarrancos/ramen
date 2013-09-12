@@ -31,7 +31,6 @@ public:
     void remove_node( node_t *n);
 
     bool can_connect( node_t *src, node_t *dst, int port) const;
-
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
 

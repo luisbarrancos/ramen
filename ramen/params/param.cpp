@@ -17,11 +17,12 @@ namespace ramen
 namespace params
 {
 
-param_t::param_t() : parent_( 0), flags_( 0)
+param_t::param_t() : depgraph::dnode_t(), parent_( 0), flags_( 0)
 {
 }
 
-param_t::param_t( const param_t& other) :   parent_( 0),
+param_t::param_t( const param_t& other) :   depgraph::dnode_t( other),
+                                            parent_( 0),
                                             id_( other.id_),
                                             ui_label_( other.ui_label_),
                                             flags_( other.flags_)

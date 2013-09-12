@@ -35,6 +35,8 @@
 
 #include<ramen/ocio/manager.hpp>
 
+#include<ramen/depgraph/dgraph.hpp>
+
 #include<ramen/undo/stack.hpp>
 
 #include<ramen/ui/user_interface.hpp>
@@ -52,7 +54,7 @@ application_t *g_app = 0;
 
 application_t::application_t( int argc, char **argv) : system_(), preferences_()
 {
-    RAMEN_ASSERT( g_app == 0 );
+    RAMEN_ASSERT( g_app == 0);
     g_app = this;
 
     system_.reset( new system::system_t());
@@ -106,17 +108,13 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
         splash_->show_message( "Initializing builtin nodes");
     node_factory_t::instance();
 
-    //if( !command_line_)
-    //    splash_->show_message( "Initializing image processing");
-    //image::init_image_processing();
-
-    //if( !command_line_)
-    //    splash_->show_message( "Initializing movieio");
-    //movieio::factory_t::instance();
-
     if( !command_line_)
         splash_->show_message( "Initializing OpenColorIO");
     ocio_manager_.reset( new ocio::manager_t());
+
+    if( !command_line_)
+        splash_->show_message( "Initializing dependency graph");
+    dependency_graph_.reset( new depgraph::dgraph_t());
 
     if( !command_line_)
     {
@@ -142,6 +140,8 @@ int application_t::run()
     {
         if( render_mode_)
         {
+            RAMEN_ASSERT( false);
+
             try
             {
                 open_document( infile_);

@@ -7,6 +7,8 @@
 
 #include<ramen/params/param_fwd.hpp>
 
+#include<ramen/depgraph/dnode.hpp>
+
 #include<memory>
 #include<sstream>
 #include<string>
@@ -39,7 +41,7 @@ namespace params
 \ingroup params
 \brief param class
 */
-class RAMEN_API param_t
+class RAMEN_API param_t : public depgraph::dnode_t
 {
 public:
 

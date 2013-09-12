@@ -20,7 +20,6 @@
 
 #include<ramen/containers/ptr_vector.hpp>
 
-#include<ramen/nodes/edge.hpp>
 #include<ramen/nodes/node_graph_modifier_fwd.hpp>
 
 namespace ramen
@@ -45,15 +44,6 @@ public:
     typedef node_container_type         node_range_type;
     typedef const node_container_type	const_node_range_type;
 
-    typedef std::vector<edge_t>::iterator       edge_iterator;
-    typedef std::vector<edge_t>::const_iterator const_edge_iterator;
-
-    typedef std::vector<edge_t>::reverse_iterator       reverse_edge_iterator;
-    typedef std::vector<edge_t>::const_reverse_iterator const_reverse_edge_iterator;
-
-    typedef std::vector<edge_t>			edge_range_type;
-    typedef const std::vector<edge_t>	const_edge_range_type;
-
     composite_node_t();
     ~composite_node_t();
 
@@ -69,15 +59,6 @@ public:
 
     node_range_type& nodes()                { return nodes_;}
     const_node_range_type& nodes() const    { return nodes_;}
-
-    edge_iterator edges_begin() { return edges_.begin();}
-    edge_iterator edges_end()   { return edges_.end();}
-
-    const_edge_iterator edges_begin() const { return edges_.begin();}
-    const_edge_iterator edges_end() const   { return edges_.end();}
-
-    const_edge_range_type& edges() const    { return edges_;}
-    edge_range_type& edges()                { return edges_;}
 
 protected:
 
@@ -101,9 +82,6 @@ protected:
     void connect( node_t *src, node_t *dst, int port);
     void disconnect( node_t *src, node_t *dst, int port);
 
-    void add_edge( const edge_t& e);
-    void remove_edge( const edge_t& e);
-
 private:
 
     friend class node_graph_modifier_t;
@@ -122,7 +100,6 @@ private:
     void emit_node_released_signal( node_t *n);
 
     node_container_type nodes_;
-    std::vector<edge_t> edges_;
 };
 
 } // ramen

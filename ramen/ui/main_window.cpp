@@ -26,6 +26,7 @@
 #include<QStringList>
 #include<QFileInfo>
 #include<QToolBar>
+#include<QFrame>
 
 #include<ramen/version.hpp>
 
@@ -48,9 +49,6 @@
 #include<ramen/ui/world_view/world_view.hpp>
 
 #include<ramen/ui/anim/anim_editor.hpp>
-
-#include<ramen/ui/dialogs/render_composition_dialog.hpp>
-#include<ramen/ui/dialogs/multiline_alert.hpp>
 
 #include<ramen/ui/inspector/inspector.hpp>
 
@@ -110,15 +108,15 @@ main_window_t::main_window_t() : QMainWindow()
     anim_editor_dock_->setWidget( anim_editor_);
     add_dock_widget( Qt::BottomDockWidgetArea, anim_editor_dock_);
 
-    // Composition view
+    // node graph view
     {
-        composition_dock_ = new QDockWidget( "Composition", this);
-        composition_dock_->setObjectName( "composition_dock");
-        composition_dock_->setAllowedAreas( Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea |
-                                            Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+        node_graph_dock_ = new QDockWidget( "Node Graph", this);
+        node_graph_dock_->setObjectName( "node_graph_dock");
+        node_graph_dock_->setAllowedAreas( Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea |
+                                           Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
 
-        QWidget *all_comp_view = new QWidget();
+        QWidget *all_world_view = new QWidget();
         QVBoxLayout *layout = new QVBoxLayout();
         layout->setContentsMargins( 5, 5, 5, 5);
 
@@ -131,10 +129,10 @@ main_window_t::main_window_t() : QMainWindow()
         layout->addWidget( separator);
 
         layout->addWidget( world_view().create_toolbar());
-        all_comp_view->setLayout( layout);
+        all_world_view->setLayout( layout);
 
-        composition_dock_->setWidget( all_comp_view);
-        add_dock_widget( Qt::LeftDockWidgetArea, composition_dock_);
+        node_graph_dock_->setWidget( all_world_view);
+        add_dock_widget( Qt::LeftDockWidgetArea, node_graph_dock_);
     }
 
     // image view
@@ -232,13 +230,6 @@ void main_window_t::create_actions()
     quit_->setShortcutContext( Qt::ApplicationShortcut);
     connect( quit_, SIGNAL( triggered()), this, SLOT( quit()));
 
-    import_comp_ = new QAction( "Import Composition...", this);
-    connect( import_comp_, SIGNAL( triggered()), this, SLOT( import_composition()));
-
-    export_sel_ = new QAction( "Export Selection...", this);
-    export_sel_->setEnabled( false);
-    connect( export_sel_, SIGNAL( triggered()), this, SLOT( export_selection()));
-
     undo_ = new QAction( "Undo", this);
     undo_->setShortcut( QString( "Ctrl+Z"));
     undo_->setShortcutContext( Qt::ApplicationShortcut);
@@ -274,6 +265,7 @@ void main_window_t::create_actions()
     preferences_ = new QAction( "Preferences...", this);
     connect( preferences_, SIGNAL( triggered()), this, SLOT( show_preferences_dialog()));
 
+    /*
     comp_settings_ = new QAction( "Composition Settings", this);
     comp_settings_->setShortcut( QString( "Ctrl+K"));
     comp_settings_->setShortcutContext( Qt::ApplicationShortcut);
@@ -286,6 +278,7 @@ void main_window_t::create_actions()
     comp_render_->setShortcut( QString( "Ctrl+R"));
     comp_render_->setShortcutContext( Qt::ApplicationShortcut);
     connect( comp_render_, SIGNAL( triggered()), this, SLOT( render_composition()));
+    */
 
     about_ = new QAction( "About Ramen...", this);
     connect( about_, SIGNAL( triggered()), this, SLOT( show_about_box()));
@@ -325,7 +318,6 @@ void main_window_t::create_menus()
 
     import_ = file_->addMenu( "Import");
     export_ = file_->addMenu( "Export");
-    create_import_export_menus();
 
     file_->addSeparator();
     file_->addAction( quit_);
@@ -339,18 +331,17 @@ void main_window_t::create_menus()
     edit_->addAction( duplicate_);
     edit_->addAction( extract_);
     edit_->addSeparator();
-    //edit_->addAction( group_);
-    //edit_->addAction( ungroup_);
-    //edit_->addSeparator();
     edit_->addAction( clear_cache_);
     edit_->addSeparator();
     edit_->addAction( preferences_);
 
+    /*
     composition_ = menubar_->addMenu( "Composition");
     composition_->addAction( comp_settings_);
     composition_->addSeparator();
     composition_->addAction( comp_flipbook_);
     composition_->addAction( comp_render_);
+    */
 
     create_node_actions();
 
@@ -365,12 +356,6 @@ void main_window_t::create_menus()
     help_ = menubar_->addMenu( "Help");
     help_->addAction( about_);
     help_->addAction( project_web_);
-}
-
-void main_window_t::create_import_export_menus()
-{
-    //import_->addAction( import_comp_);
-    //export_->addAction( export_sel_);
 }
 
 node_menu_t *main_window_t::find_node_menu( const core::string8_t& s)
@@ -538,62 +523,13 @@ void main_window_t::save_document_as()
     }
 }
 
-void main_window_t::import_composition()
-{
-    QString fname = QFileDialog::getOpenFileName( 0, "Open Composition", QString::null, file_dialog_extension(),
-                                                  0, QFileDialog::DontUseNativeDialog);
-
-    if( !( fname.isEmpty()))
-    {
-        try
-        {
-            /*
-            boost::filesystem::path p( fname.toStdString());
-            std::auto_ptr<serialization::yaml_iarchive_t> in( ramen::import_composition( p));
-            app().document().set_dirty( true);
-            app().document().undo_stack().clear_all();
-
-            // report errors to the user
-            std::string err = in->errors();
-
-            if( !err.empty())
-                multiline_alert_t::instance().show_alert( "Errors during file open", err);
-            */
-        }
-        catch( std::exception& e)
-        {
-            QMessageBox::warning( this, "Error opening document", "Old version or corrupted composition");
-        }
-
-        app().ui()->update();
-    }
-}
-
-void main_window_t::export_selection()
-{
-    /*
-    QString fname = QFileDialog::getSaveFileName( 0, "Save Composition As", QString::null, file_dialog_extension(),
-                                                  0, QFileDialog::DontUseNativeDialog);
-
-    if( !(fname.isEmpty()))
-    {
-        boost::filesystem::path p( fname.toStdString());
-
-        if( p.extension() == std::string())
-            p.replace_extension( document_extension());
-
-        export_selected_nodes( p);
-    }
-    */
-}
-
 void main_window_t::quit()
 {
     if( app().document().dirty())
     {
         int r = QMessageBox::warning( this,
                                       "Ramen",
-                                      "The composition has been modified.\n"
+                                      "The document has been modified.\n"
                                       "Do you want to save your changes before quitting?",
                                       QMessageBox::Yes | QMessageBox::Default,
                                       QMessageBox::No,
@@ -777,77 +713,6 @@ void main_window_t::extract_nodes()
 void main_window_t::clear_cache()
 {
     //app().memory_manager().clear_caches();
-}
-
-void main_window_t::show_composition_settings()
-{
-    app().ui()->inspector().edit_node( &app().document().world_node());
-}
-
-void main_window_t::render_composition()
-{
-    /*
-    bool any_output = ( render::count_output_nodes( app().document().composition()) != 0);
-
-    if( !any_output)
-    {
-        QMessageBox::warning( this, "Ramen", "No output nodes in composition");
-        return;
-    }
-
-    bool any_output_selected = ( render::count_output_nodes( app().document().composition(), true) != 0);
-
-    render_composition_dialog_t::instance().set_any_output_selected( any_output_selected);
-
-    int result = render_composition_dialog_t::instance().exec();
-    if( result == QDialog::Accepted)
-    {
-        int start = render_composition_dialog_t::instance().start_frame();
-        int end = render_composition_dialog_t::instance().end_frame();
-
-        if( end < start)
-            return;
-
-        ui::render_composition( app().document().composition(),
-                                start, end, render_composition_dialog_t::instance().proxy_level(),
-                                render_composition_dialog_t::instance().resolution(),
-                                render_composition_dialog_t::instance().mblur_extra_samples(),
-                                render_composition_dialog_t::instance().mblur_shutter_factor(),
-                                render_composition_dialog_t::instance().selected_only());
-    }
-    */
-}
-
-void main_window_t::render_flipbook()
-{
-    /*
-    int result = render_flipbook_dialog_t::instance().exec();
-
-    if( result == QDialog::Accepted)
-    {
-        if( node_t *n = dynamic_cast<node_t*>( app().document().composition().selected_node()))
-        {
-            int frame_rate = app().document().composition().frame_rate();
-            std::string display_device = render_flipbook_dialog_t::instance().display_device();
-            std::string display_transform = render_flipbook_dialog_t::instance().display_transform();
-            int start	= render_flipbook_dialog_t::instance().start_frame();
-            int end	= render_flipbook_dialog_t::instance().end_frame();
-            int subsample =  render_flipbook_dialog_t::instance().resolution();
-            int proxy_level = render_flipbook_dialog_t::instance().proxy_level();
-            int mb_extra_samples = render_flipbook_dialog_t::instance().mblur_extra_samples();
-            float mb_shutter_factor = render_flipbook_dialog_t::instance().mblur_shutter_factor();
-
-            flipbook::flipbook_t *flip = flipbook::factory_t::instance().create( render_flipbook_dialog_t::instance().flipbook(),
-                                                                                   frame_rate, display_device, display_transform);
-
-            if( flip)
-            {
-                if( flipbook::render_flipbook( flip, n, start, end, proxy_level, subsample, mb_extra_samples, mb_shutter_factor))
-                    flip->play();
-            }
-        }
-    }
-    */
 }
 
 void main_window_t::show_preferences_dialog()

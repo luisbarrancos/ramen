@@ -93,10 +93,6 @@ public Q_SLOTS:
     void save_document();
     void save_document_as();
 
-    void import_composition();
-
-    void export_selection();
-
     void quit();
 
     void undo();
@@ -111,11 +107,6 @@ public Q_SLOTS:
 
     void show_preferences_dialog();
 
-    void show_composition_settings();
-
-    void render_flipbook();
-    void render_composition();
-
     void show_about_box();
     void go_to_project_website();
 
@@ -127,7 +118,6 @@ private:
 
     void create_actions();
     void create_menus();
-    void create_import_export_menus();
 
     void create_node_actions();
 
@@ -144,7 +134,7 @@ private:
     time_controls_t *time_controls_;
     QDockWidget *inspector_dock_;
     inspector_t *inspector_;
-    QDockWidget *composition_dock_;
+    QDockWidget *node_graph_dock_;
     QDockWidget *viewer_dock_;
     QDockWidget *anim_editor_dock_;
     anim_editor_t *anim_editor_;
@@ -161,11 +151,6 @@ private:
 
     // file
     QAction *new_, *open_, *save_, *save_as_;
-
-    QAction *import_comp_;
-
-    QAction *export_sel_;
-
     QAction *quit_;
 
     // edit
@@ -174,7 +159,7 @@ private:
     QAction *clear_cache_, *preferences_;
 
     // comp
-    QAction *comp_settings_, *comp_flipbook_, *comp_render_;
+    //QAction *comp_settings_, *comp_flipbook_, *comp_render_;
 
     // more
     QAction *about_, *project_web_;

@@ -29,6 +29,8 @@
 #include<ramen/memory/manager_fwd.hpp>
 #include<ramen/ocio/manager_fwd.hpp>
 
+#include<ramen/depgraph/dgraph_fwd.hpp>
+
 #include<ramen/ui/user_interface_fwd.hpp>
 #include<ramen/ui/dialogs/splash_screen_fwd.hpp>
 
@@ -48,9 +50,8 @@ public:
 
     int run();
 
-    bool command_line() const { return command_line_;}
-
-    int max_threads() const { return max_threads_;}
+    bool command_line() const   { return command_line_;}
+    int max_threads() const     { return max_threads_;}
 
     // messages
     void fatal_error( const core::string8_t& message, bool no_gui = false) const;
@@ -58,17 +59,24 @@ public:
     void inform( const core::string8_t& message, bool no_gui = false) const;
     bool question( const core::string8_t& what, bool default_answer = true) const;
 
+    // system info
     const system::system_t& system() const;
 
+    // preferences
     const preferences_t& preferences() const    { return *preferences_;}
     preferences_t& preferences()                { return *preferences_;}
 
+    // memmory manager
     const memory::manager_t& memory_manager() const { return *mem_manager_;}
     memory::manager_t& memory_manager()             { return *mem_manager_;}
 
     // opencolorio
     const ocio::manager_t& ocio_manager() const { return *ocio_manager_;}
     ocio::manager_t& ocio_manager()             { return *ocio_manager_;}
+
+    // dependency graph
+    const depgraph::dgraph_t& dependency_graph() const  { return *dependency_graph_;}
+    depgraph::dgraph_t& dependency_graph()              { return *dependency_graph_;}
 
     // user interface
     const ui::user_interface_t *ui() const  { return ui_.get();}
@@ -123,6 +131,7 @@ private:
     core::auto_ptr_t<preferences_t> preferences_;
     core::auto_ptr_t<memory::manager_t> mem_manager_;
     core::auto_ptr_t<ocio::manager_t> ocio_manager_;
+    core::auto_ptr_t<depgraph::dgraph_t> dependency_graph_;
     core::auto_ptr_t<ui::user_interface_t> ui_;
 
     core::auto_ptr_t<document_t> document_;

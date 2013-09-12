@@ -56,7 +56,9 @@ class remove_node_command_t : public undo::command_t
 {
 public:
 
-    remove_node_command_t( composite_node_t *graph, node_t *n) : undo::command_t(), graph_( graph), node_( n)
+    remove_node_command_t( composite_node_t *graph, node_t *n) : undo::command_t(),
+                                                                 graph_( graph),
+                                                                 node_( n)
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( n);
@@ -194,10 +196,10 @@ public:
     {
     }
 
-    std::set<node_t*> nodes_to_add;
-    std::set<node_t*> nodes_to_remove;
-    std::set<edge_t> edges_to_add;
-    std::set<edge_t> edges_to_remove;
+    //std::set<node_t*> nodes_to_add;
+    //std::set<node_t*> nodes_to_remove;
+    //std::set<edge_t> edges_to_add;
+    //std::set<edge_t> edges_to_remove;
 };
 
 } // undo
@@ -238,9 +240,9 @@ node_graph_modifier_t::~node_graph_modifier_t()
 
 void node_graph_modifier_t::do_add_node( node_t *n)
 {
-    pimpl_->notify_command->nodes_to_add.insert( n);
-    core::auto_ptr_t<undo::command_t> c( new undo::add_node_command_t( graph_, n));
-    pimpl_->command->push_back( boost::move( c));
+    //pimpl_->notify_command->nodes_to_add.insert( n);
+    //core::auto_ptr_t<undo::command_t> c( new undo::add_node_command_t( graph_, n));
+    //pimpl_->command->push_back( boost::move( c));
 }
 
 void node_graph_modifier_t::remove_node( node_t *n)

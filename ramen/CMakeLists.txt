@@ -37,8 +37,6 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/anim/track_model.hpp
                         ui/anim/anim_editor_toolbar.hpp
 
-                        ui/dialogs/multiline_alert.hpp
-                        ui/dialogs/render_composition_dialog.hpp
                         ui/dialogs/smooth_anim_curves_dialog.hpp
 
                         ui/inspector/inspector.hpp
@@ -97,6 +95,13 @@ SET( RAMEN_SOURCES      assert.hpp
                         app/preferences.hpp
                         app/preferences.cpp
 
+                        depgraph/dgraph_fwd.hpp
+                        depgraph/dgraph.hpp
+                        depgraph/dgraph.cpp
+                        depgraph/dnode_fwd.hpp
+                        depgraph/dnode.hpp
+                        depgraph/dnode.cpp
+
                         manipulators/manipulable_fwd.hpp
                         manipulators/manipulable.hpp
                         manipulators/manipulable.cpp
@@ -108,8 +113,6 @@ SET( RAMEN_SOURCES      assert.hpp
 
                         nodes/composite_node.hpp
                         nodes/composite_node.cpp
-                        nodes/edge.hpp
-                        nodes/edge.cpp
                         nodes/node_fwd.hpp
                         nodes/node.hpp
                         nodes/node.cpp
@@ -181,8 +184,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/anim/pick_curves_visitors.cpp
                         ui/anim/track_model.cpp
 
-                        ui/dialogs/multiline_alert.cpp
-                        ui/dialogs/render_composition_dialog.cpp
                         ui/dialogs/smooth_anim_curves_dialog.cpp
                         ui/dialogs/splash_screen.cpp
 
@@ -209,9 +210,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/world_view/world_view_fwd.hpp
                         ui/world_view/world_view.hpp
                         ui/world_view/world_view.cpp
-                        ui/world_view/world_view_hook_fwd.hpp
-                        ui/world_view/world_view_hook.hpp
-                        ui/world_view/world_view_hook.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp
@@ -278,8 +276,7 @@ ENDIF()
 ######################################################
 # ui files
 
-SET( RAMEN_DESIGNER_FILES   ../designer/render_composition.ui
-                            ../designer/smooth_anim_curves.ui
+SET( RAMEN_DESIGNER_FILES   ../designer/smooth_anim_curves.ui
                             )
 
 ######################################################

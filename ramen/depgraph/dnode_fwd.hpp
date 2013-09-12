@@ -2,19 +2,19 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_WORLD_VIEW_HOOK_FWD_HPP
-#define	RAMEN_UI_WORLD_VIEW_HOOK_FWD_HPP
+#ifndef RAMEN_DEPGRAPH_DNODE_FWD_HPP
+#define RAMEN_DEPGRAPH_DNODE_FWD_HPP
 
 #include<ramen/config.hpp>
 
 namespace ramen
 {
-namespace ui
+namespace depgraph
 {
 
-class world_view_hook_t;
+class dnode_t;
 
-} // ui
+} // depgraph
 } // ramen
 
 #endif
