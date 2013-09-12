@@ -90,48 +90,6 @@ void composite_node_t::emit_node_released_signal( node_t *n)
     node_released( n);
 }
 
-// connections
-bool composite_node_t::can_connect( node_t *src, node_t *dst, int port)
-{
-    /*
-    if( !src->has_output_plug() || dst->num_inputs() == 0)
-        return false;
-
-    if( port >= dst->num_inputs())
-        return false;
-    */
-    /*
-    if( node_depends_on_node( *src, *dst))
-        return false;
-    */
-
-    return dst->accept_connection( src, port);
-}
-
-void composite_node_t::connect( node_t *src, node_t *dst, int port)
-{
-    /*
-    RAMEN_ASSERT( src->parent() == this);
-    RAMEN_ASSERT( dst->parent() == this);
-    RAMEN_ASSERT( nodes().contains_ptr( src));
-    RAMEN_ASSERT( nodes().contains_ptr( dst));
-
-    add_edge( edge_t( src, dst, port));
-    */
-}
-
-void composite_node_t::disconnect( node_t *src, node_t *dst, int port)
-{
-    /*
-    RAMEN_ASSERT( src->parent() == this);
-    RAMEN_ASSERT( dst->parent() == this);
-    RAMEN_ASSERT( nodes().contains_ptr( src));
-    RAMEN_ASSERT( nodes().contains_ptr( dst));
-
-    remove_edge( edge_t( src, dst, port));
-    */
-}
-
 void composite_node_t::do_set_frame( float f)
 {
     boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));

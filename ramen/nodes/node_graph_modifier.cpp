@@ -100,12 +100,12 @@ public:
 
     virtual void undo()
     {
-        graph_->disconnect( src_, dst_, port_);
+        //graph_->disconnect( src_, dst_, port_);
     }
 
     virtual void redo()
     {
-        graph_->connect( src_, dst_, port_);
+        //graph_->connect( src_, dst_, port_);
     }
 
 private:
@@ -135,12 +135,12 @@ public:
 
     virtual void undo()
     {
-        graph_->connect( src_, dst_, port_);
+        //graph_->connect( src_, dst_, port_);
     }
 
     virtual void redo()
     {
-        graph_->disconnect( src_, dst_, port_);
+        //graph_->disconnect( src_, dst_, port_);
     }
 
 private:
@@ -273,7 +273,8 @@ void node_graph_modifier_t::remove_node( node_t *n)
 
 bool node_graph_modifier_t::can_connect( node_t *src, node_t *dst, int port) const
 {
-    return graph_->can_connect( src, dst, port);
+    //return graph_->can_connect( src, dst, port);
+    return false;
 }
 
 void node_graph_modifier_t::connect( node_t *src, node_t *dst, int port)

@@ -77,11 +77,6 @@ protected:
     void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n);
     core::auto_ptr_t<node_t> release_node( node_t *n);
 
-    // connections
-    bool can_connect( node_t *src, node_t *dst, int port);
-    void connect( node_t *src, node_t *dst, int port);
-    void disconnect( node_t *src, node_t *dst, int port);
-
 private:
 
     friend class node_graph_modifier_t;
