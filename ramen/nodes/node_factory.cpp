@@ -17,6 +17,9 @@
 
 namespace ramen
 {
+namespace nodes
+{
+
 namespace
 {
 
@@ -193,4 +196,5 @@ bool node_factory_t::is_latest_version( const core::name_t& id) const
     return it != latest_versions_end();
 }
 
+} // nodes
 } // ramen

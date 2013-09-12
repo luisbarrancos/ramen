@@ -6,6 +6,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 null_node_t::null_node_t()
 {
@@ -48,4 +50,5 @@ const node_info_t& null_node_t::null_node_info()
 
 static bool registered = node_factory_t::instance().register_node( null_node_t::null_node_info());
 
+} // nodes
 } // ramen

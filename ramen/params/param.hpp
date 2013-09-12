@@ -94,16 +94,16 @@ public:
     param_set_t *param_set();
 
     /// Returns a const pointer to the node this param belongs to.
-    const node_t *node() const;
+    const nodes::node_t *node() const;
 
     /// Returns a pointer to the node this param belongs to.
-    node_t *node();
+    nodes::node_t *node();
 
     /// Returns a const pointer to the composition node this param belongs to.
-    const world_node_t *world_node() const;
+    const nodes::world_node_t *world_node() const;
 
     /// Returns a pointer to the composition node this param belongs to.
-    world_node_t *world_node();
+    nodes::world_node_t *world_node();
 
     // flags
     // ...

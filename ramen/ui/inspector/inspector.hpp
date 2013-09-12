@@ -36,7 +36,7 @@ public:
     int left_margin() const;
     int width() const;
 
-    void edit_node( node_t *n);
+    void edit_node( nodes::node_t *n);
 
     void update();
 
@@ -54,7 +54,7 @@ private:
 
     void create_header();
 
-    void recreate_panel( node_t *n);
+    void recreate_panel( nodes::node_t *n);
 
     void update_header_widgets();
 

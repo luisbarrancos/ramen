@@ -25,8 +25,8 @@ class add_node_command_t : public undo::command_t
 {
 public:
 
-    add_node_command_t( composite_node_t *graph,
-                        node_t *n) : undo::command_t(), graph_( graph)
+    add_node_command_t( nodes::composite_node_t *graph,
+                        nodes::node_t *n) : undo::command_t(), graph_( graph)
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( n);
@@ -47,18 +47,19 @@ public:
 
 private:
 
-    composite_node_t *graph_;
-    node_t *node_;
-    core::auto_ptr_t<node_t> storage_;
+    nodes::composite_node_t *graph_;
+    nodes::node_t *node_;
+    core::auto_ptr_t<nodes::node_t> storage_;
 };
 
 class remove_node_command_t : public undo::command_t
 {
 public:
 
-    remove_node_command_t( composite_node_t *graph, node_t *n) : undo::command_t(),
-                                                                 graph_( graph),
-                                                                 node_( n)
+    remove_node_command_t( nodes::composite_node_t *graph,
+                           nodes::node_t *n) : undo::command_t(),
+                                               graph_( graph),
+                                               node_( n)
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( n);
@@ -76,16 +77,19 @@ public:
 
 private:
 
-    composite_node_t *graph_;
-    node_t *node_;
-    core::auto_ptr_t<node_t> storage_;
+    nodes::composite_node_t *graph_;
+    nodes::node_t *node_;
+    core::auto_ptr_t<nodes::node_t> storage_;
 };
 
 class connect_command_t : public undo::command_t
 {
 public:
 
-    connect_command_t( composite_node_t *graph, node_t *src, node_t *dst, int port) : undo::command_t()
+    connect_command_t( nodes::composite_node_t *graph,
+                       nodes::node_t *src,
+                       nodes::node_t *dst,
+                       int port) : undo::command_t()
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( src);
@@ -110,9 +114,9 @@ public:
 
 private:
 
-    composite_node_t *graph_;
-    node_t *src_;
-    node_t *dst_;
+    nodes::composite_node_t *graph_;
+    nodes::node_t *src_;
+    nodes::node_t *dst_;
     int port_;
 };
 
@@ -120,7 +124,10 @@ class disconnect_command_t : public undo::command_t
 {
 public:
 
-    disconnect_command_t( composite_node_t *graph, node_t *src, node_t *dst, int port) : undo::command_t()
+    disconnect_command_t( nodes::composite_node_t *graph,
+                          nodes::node_t *src,
+                          nodes::node_t *dst,
+                          int port) : undo::command_t()
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( src);
@@ -145,9 +152,9 @@ public:
 
 private:
 
-    composite_node_t *graph_;
-    node_t *src_;
-    node_t *dst_;
+    nodes::composite_node_t *graph_;
+    nodes::node_t *src_;
+    nodes::node_t *dst_;
     int port_;
 };
 
@@ -155,7 +162,8 @@ class ignore_node_command_t : public undo::command_t
 {
 public:
 
-    ignore_node_command_t( composite_node_t *graph, node_t *n) : undo::command_t()
+    ignore_node_command_t( nodes::composite_node_t *graph,
+                           nodes::node_t *n) : undo::command_t()
     {
         RAMEN_ASSERT( graph);
         RAMEN_ASSERT( n);
@@ -176,8 +184,8 @@ public:
 
 private:
 
-    composite_node_t *graph_;
-    node_t *n_;
+    nodes::composite_node_t *graph_;
+    nodes::node_t *n_;
 };
 
 class notify_all_command_t : public undo::command_t
@@ -203,6 +211,9 @@ public:
 };
 
 } // undo
+
+namespace nodes
+{
 
 struct node_graph_modifier_t::impl
 {
@@ -331,4 +342,5 @@ void node_graph_modifier_t::execute( bool undoable)
         app().document().undo_stack().push_back( boost::move( pimpl_->command));
 }
 
+} // nodes
 } // ramen

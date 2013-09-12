@@ -61,25 +61,25 @@ param_set_t *param_t::param_set()
     return 0;
 }
 
-const node_t *param_t::node() const
+const nodes::node_t *param_t::node() const
 {
     RAMEN_ASSERT( param_set());
 
     return param_set()->node();
 }
 
-node_t *param_t::node()
+nodes::node_t *param_t::node()
 {
     RAMEN_ASSERT( param_set());
 
     return param_set()->node();
 }
 
-const world_node_t *param_t::world_node() const
+const nodes::world_node_t *param_t::world_node() const
 {
     RAMEN_ASSERT( param_set());
 
-    const node_t *n = node();
+    const nodes::node_t *n = node();
 
     if( n)
         return n->world_node();
@@ -87,11 +87,11 @@ const world_node_t *param_t::world_node() const
     return 0;
 }
 
-world_node_t *param_t::world_node()
+nodes::world_node_t *param_t::world_node()
 {
     RAMEN_ASSERT( param_set());
 
-    node_t *n = node();
+    nodes::node_t *n = node();
 
     if( n)
         return n->world_node();

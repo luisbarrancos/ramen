@@ -9,10 +9,13 @@
 
 namespace ramen
 {
+namespace manipulators
+{
 
 class manipulable_t;
 typedef boost::intrusive_ptr<manipulable_t> manipulable_ptr_t;
 
-} // namespace
+} // manipulators
+} // ramen
 
 #endif

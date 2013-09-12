@@ -8,6 +8,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 node_info_t::node_info_t()
 {
@@ -16,4 +18,5 @@ node_info_t::node_info_t()
     first_time_ = true;
 }
 
-} // namespace
+} // nodes
+} // ramen

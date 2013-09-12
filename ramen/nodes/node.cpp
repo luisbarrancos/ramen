@@ -31,6 +31,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 boost::signals2::signal<void ( node_t*)> node_t::node_deleted;
 boost::signals2::signal<void ( node_t*,
@@ -231,4 +233,5 @@ node_t *new_clone( const node_t& other)
     return n;
 }
 
+} // nodes
 } // ramen

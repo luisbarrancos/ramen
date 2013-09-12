@@ -48,17 +48,17 @@ public:
 
     anim_editor_t();
 
-    void set_active_node( node_t *n);
+    //void set_active_node( nodes::node_t *n);
     void clear_all();
 
     // tracks
     boost::shared_ptr<track_model_t> track_model() { return current_;}
-    void recreate_tracks( node_t *n);
+    void recreate_tracks( nodes::node_t *n);
 
     const std::set<anim::track_t*>& active_tracks() const	{ return active_tracks_;}
     std::set<anim::track_t*>& active_tracks()				{ return active_tracks_;}
 
-    void node_renamed( node_t *n);
+    void node_renamed( nodes::node_t *n);
 
     void update();
 

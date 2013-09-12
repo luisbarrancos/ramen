@@ -14,6 +14,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 /*!
 \ingroup nodes
@@ -88,6 +90,7 @@ public:
     bool first_time_;
 };
 
+} // nodes
 } // ramen
 
 #endif

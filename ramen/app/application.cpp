@@ -106,7 +106,7 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
 
     if( !command_line_)
         splash_->show_message( "Initializing builtin nodes");
-    node_factory_t::instance();
+    nodes::node_factory_t::instance();
 
     if( !command_line_)
         splash_->show_message( "Initializing OpenColorIO");

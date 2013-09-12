@@ -9,12 +9,15 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 class node_t;
 class composite_node_t;
 class world_node_t;
 class viewer_node_t;
 
+} // nodes
 } // ramen
 
 #endif

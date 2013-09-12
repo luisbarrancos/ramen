@@ -15,6 +15,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 /*!
 \ingroup nodes
@@ -64,6 +66,7 @@ private:
     std::map<core::name_t, node_info_t> newest_node_infos_;
 };
 
+} // nodes
 } // ramen
 
 #endif

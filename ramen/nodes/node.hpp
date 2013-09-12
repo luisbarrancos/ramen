@@ -36,12 +36,14 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 /*!
 \ingroup nodes
 \brief A node in Ramen's processing graph.
 */
-class RAMEN_API node_t : public manipulable_t
+class RAMEN_API node_t : public manipulators::manipulable_t
 {
 public:
 
@@ -206,6 +208,7 @@ private:
 /// Makes a copy of a node.
 RAMEN_API node_t *new_clone( const node_t& other);
 
+} // nodes
 } // ramen
 
 #endif

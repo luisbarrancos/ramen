@@ -17,7 +17,7 @@ namespace ui
 
 panel_factory_t::panel_factory_t()
 {
-    world_node_t::node_deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
+    nodes::world_node_t::node_deleted.connect( boost::bind( &panel_factory_t::delete_panel, this, _1));
 }
 
 panel_factory_t::~panel_factory_t()
@@ -25,7 +25,7 @@ panel_factory_t::~panel_factory_t()
     //RAMEN_ASSERT( panels_.empty());
 }
 
-panel_factory_t::iterator panel_factory_t::create_panel( node_t *n)
+panel_factory_t::iterator panel_factory_t::create_panel( nodes::node_t *n)
 {
     RAMEN_ASSERT( n != 0);
 
@@ -41,9 +41,9 @@ panel_factory_t::iterator panel_factory_t::create_panel( node_t *n)
     return it;
 }
 
-void panel_factory_t::delete_panel( node_t *n)
+void panel_factory_t::delete_panel( nodes::node_t *n)
 {
-    std::map<node_t*, panel_t*>::iterator it( panels_.find( n));
+    std::map<nodes::node_t*, panel_t*>::iterator it( panels_.find( n));
 
     if( it != panels_.end())
     {

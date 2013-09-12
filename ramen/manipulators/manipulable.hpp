@@ -16,10 +16,13 @@
 
 namespace ramen
 {
+namespace manipulators
+{
 
 /*!
 \ingroup manips
-\brief Base class for objects that can have manipulators, react to events and draw an on-screen overlay using GL.
+\brief Base class for objects that can have manipulators, react to events and
+       draw an on-screen overlay using GL.
 */
 class RAMEN_API manipulable_t : boost::noncopyable
 {
@@ -155,6 +158,7 @@ private:
     iterator active_;
 };
 
+} // manipulators
 } // ramen
 
 #endif

@@ -22,12 +22,12 @@ class RAMEN_API param_set_t : public composite_param_t
 {
 public:
 
-    param_set_t( node_t *n = 0);
+    param_set_t( nodes::node_t *n = 0);
     param_set_t( const param_set_t& other);
 
-    const node_t *node() const    { return node_;}
-    node_t *node()                { return node_;}
-    void set_node( node_t *n)     { node_ = n;}
+    const nodes::node_t *node() const    { return node_;}
+    nodes::node_t *node()                { return node_;}
+    void set_node( nodes::node_t *n)     { node_ = n;}
 
     boost::signals2::signal<void ( param_t*, param_t::change_reason)> param_changed;
 
@@ -35,7 +35,7 @@ public:
 
 private:
 
-    node_t *node_;
+    nodes::node_t *node_;
 };
 
 } // params

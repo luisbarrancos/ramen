@@ -16,6 +16,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 composite_node_t::composite_node_t() : node_t()
 {
@@ -150,4 +152,5 @@ core::auto_ptr_t<node_t> composite_node_t::create_unknown_node( const core::name
     return core::auto_ptr_t<node_t>();
 }
 
+} // nodes
 } // ramen

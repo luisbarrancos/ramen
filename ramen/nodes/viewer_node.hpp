@@ -9,6 +9,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 class RAMEN_API viewer_node_t : public node_t
 {
@@ -30,6 +32,7 @@ private:
     node_t *do_clone() const { return new viewer_node_t(*this);}
 };
 
+} // nodes
 } // ramen
 
 #endif

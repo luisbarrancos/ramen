@@ -343,6 +343,7 @@ bool anim_editor_select_tool_t::keyframe_is_selected( anim::any_curve_ptr_t& c, 
 
 void anim_editor_select_tool_t::create_drag_command()
 {
+    /*
     RAMEN_ASSERT( drag_command_ == 0);
 
     node_t *n = app().ui()->active_node();
@@ -350,6 +351,7 @@ void anim_editor_select_tool_t::create_drag_command()
 
     drag_command_ = new undo::drag_keys_command_t( n, app().ui()->anim_editor().track_model());
     app().ui()->anim_editor().set_command( drag_command_);
+    */
 }
 
 } // ui

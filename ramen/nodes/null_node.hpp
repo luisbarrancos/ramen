@@ -9,6 +9,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 class null_node_t : public node_t
 {
@@ -33,6 +35,7 @@ private:
     virtual bool do_is_identity() const;
 };
 
+} // nodes
 } // ramen
 
 #endif

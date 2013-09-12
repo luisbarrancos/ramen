@@ -44,7 +44,7 @@ class rename_node_command_t : public undo::command_t
 {
 public:
 
-    rename_node_command_t( node_t *n,
+    rename_node_command_t( nodes::node_t *n,
                            const core::string8_t& new_name,
                            QLineEdit *name_edit) : undo::command_t( "Rename Node")
     {
@@ -84,7 +84,7 @@ private:
         name_edit_->blockSignals( false);
     }
 
-    node_t *n_;
+    nodes::node_t *n_;
     core::string8_t new_name_;
     core::string8_t old_name_;
 
@@ -199,7 +199,7 @@ void inspector_t::create_header()
     header_->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
-void inspector_t::edit_node( node_t *n)
+void inspector_t::edit_node( nodes::node_t *n)
 {
     if( app().quitting())
         return;
@@ -242,7 +242,7 @@ void inspector_t::update()
         current_->second->update();
 }
 
-void inspector_t::recreate_panel( node_t *n)
+void inspector_t::recreate_panel( nodes::node_t *n)
 {
     edit_node( 0);
     factory_.delete_panel( n);
@@ -251,6 +251,7 @@ void inspector_t::recreate_panel( node_t *n)
 
 void inspector_t::update_header_widgets()
 {
+    /*
     name_edit_->blockSignals( true);
 
     node_t *n = app().ui()->active_node();
@@ -269,10 +270,12 @@ void inspector_t::update_header_widgets()
     }
 
     name_edit_->blockSignals( false);
+    */
 }
 
 void inspector_t::rename_node()
 {
+    /*
     if( name_edit_->isModified())
     {
         node_t *n = app().ui()->active_node();
@@ -294,10 +297,12 @@ void inspector_t::rename_node()
             name_edit_->blockSignals( false);
         }
     }
+    */
 }
 
 void inspector_t::show_help()
 {
+    /*
     node_t *n = app().ui()->active_node();
 
     RAMEN_ASSERT( n);
@@ -307,6 +312,7 @@ void inspector_t::show_help()
     msg_box.setWindowTitle( "Help");
     msg_box.setText( n->help_string());
     msg_box.exec();
+    */
 }
 
 } // ui

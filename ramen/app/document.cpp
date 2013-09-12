@@ -18,7 +18,6 @@ document_t::document_t() : dirty_( false)
 {
     world_node_.create_params();
     world_node_.create_manipulators();
-
     undo_.reset( new undo::stack_t());
 }
 
@@ -30,12 +29,12 @@ void document_t::set_file( const boost::filesystem::path& p)
     world_node().set_composition_dir( file_.parent_path());
 }
 
-const world_node_t& document_t::world_node() const
+const nodes::world_node_t& document_t::world_node() const
 {
     return world_node_;
 }
 
-world_node_t& document_t::world_node()
+nodes::world_node_t& document_t::world_node()
 {
     return world_node_;
 }

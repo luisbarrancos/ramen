@@ -155,11 +155,8 @@ private:
 
     // edit
     QAction *undo_, *redo_, *ignore_, *delete_;
-    QAction *duplicate_, *group_, *ungroup_, *extract_;
+    QAction *duplicate_, *extract_;
     QAction *clear_cache_, *preferences_;
-
-    // comp
-    //QAction *comp_settings_, *comp_flipbook_, *comp_render_;
 
     // more
     QAction *about_, *project_web_;

@@ -14,6 +14,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 class node_graph_modifier_t
 {
@@ -52,6 +54,7 @@ private:
     impl *pimpl_;
 };
 
+} // nodes
 } // ramen
 
 #endif

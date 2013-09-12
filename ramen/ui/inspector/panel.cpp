@@ -18,7 +18,7 @@ namespace ramen
 namespace ui
 {
 
-panel_t::panel_t( node_t *n) : n_( n), panel_( 0)
+panel_t::panel_t( nodes::node_t *n) : n_( n), panel_( 0)
 {
     panel_ = new QWidget();
 

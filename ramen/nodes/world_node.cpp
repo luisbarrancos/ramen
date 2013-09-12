@@ -26,6 +26,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 namespace
 {
 
@@ -50,7 +52,7 @@ core::name_t g_autokey( "autokey");
 
 world_node_t::world_node_t() : composite_node_t()
 {
-    set_name( "composition");
+    set_name( "world");
 
     #ifndef NDEBUG
         node_released.connect( log_node_released_signal);
@@ -331,5 +333,6 @@ void world_node_t::node_was_renamed( node_t* n,
     }
 }
 
+} // nodes
 } // ramen
 

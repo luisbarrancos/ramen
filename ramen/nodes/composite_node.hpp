@@ -24,6 +24,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 /**
 \ingroup nodes
@@ -97,6 +99,7 @@ private:
     node_container_type nodes_;
 };
 
+} // nodes
 } // ramen
 
 #endif

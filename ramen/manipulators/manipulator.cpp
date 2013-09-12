@@ -6,6 +6,8 @@
 
 namespace ramen
 {
+namespace manipulators
+{
 
 manipulator_t::manipulator_t()
 {
@@ -103,4 +105,5 @@ void manipulator_t::do_mouse_move_event( const ui::mouse_move_event_t& event)   
 void manipulator_t::do_mouse_drag_event( const ui::mouse_drag_event_t& event)       {}
 void manipulator_t::do_mouse_release_event( const ui::mouse_release_event_t& event) {}
 
+} // manipulators
 } // ramen

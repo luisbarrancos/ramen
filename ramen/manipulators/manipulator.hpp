@@ -19,6 +19,8 @@
 
 namespace ramen
 {
+namespace manipulators
+{
 
 /*!
 \ingroup manips
@@ -139,6 +141,7 @@ private:
     bool active_;
 };
 
+} // manipulators
 } // ramen
 
 #endif

@@ -256,29 +256,11 @@ void main_window_t::create_actions()
     extract_ = new QAction( "Extract", this);
     connect( extract_, SIGNAL( triggered()), this, SLOT( extract_nodes()));
 
-    group_ = new QAction( "Group", this);
-    ungroup_ = new QAction( "Ungroup", this);
-
-    clear_cache_ = new QAction( "Clear Image Cache", this);
+    clear_cache_ = new QAction( "Clear Memory Cache", this);
     connect( clear_cache_, SIGNAL( triggered()), this, SLOT( clear_cache()));
 
     preferences_ = new QAction( "Preferences...", this);
     connect( preferences_, SIGNAL( triggered()), this, SLOT( show_preferences_dialog()));
-
-    /*
-    comp_settings_ = new QAction( "Composition Settings", this);
-    comp_settings_->setShortcut( QString( "Ctrl+K"));
-    comp_settings_->setShortcutContext( Qt::ApplicationShortcut);
-    connect( comp_settings_, SIGNAL( triggered()), this, SLOT( show_composition_settings()));
-
-    comp_flipbook_ = new QAction( "Render Flipbook...", this);
-    connect( comp_flipbook_, SIGNAL( triggered()), this, SLOT( render_flipbook()));
-
-    comp_render_ = new QAction( "Render Composition...", this);
-    comp_render_->setShortcut( QString( "Ctrl+R"));
-    comp_render_->setShortcutContext( Qt::ApplicationShortcut);
-    connect( comp_render_, SIGNAL( triggered()), this, SLOT( render_composition()));
-    */
 
     about_ = new QAction( "About Ramen...", this);
     connect( about_, SIGNAL( triggered()), this, SLOT( show_about_box()));
@@ -335,14 +317,6 @@ void main_window_t::create_menus()
     edit_->addSeparator();
     edit_->addAction( preferences_);
 
-    /*
-    composition_ = menubar_->addMenu( "Composition");
-    composition_->addAction( comp_settings_);
-    composition_->addSeparator();
-    composition_->addAction( comp_flipbook_);
-    composition_->addAction( comp_render_);
-    */
-
     create_node_actions();
 
     for( int i = 0; i < node_menus_.size(); ++i)
@@ -397,12 +371,12 @@ void main_window_t::create_node_actions()
     m->add_submenu( "Output");
 
     // sort the list of registered nodes
-    node_factory_t::instance().sort_by_menu_item();
+    nodes::node_factory_t::instance().sort_by_menu_item();
 
     // add our builtin nodes first
-    BOOST_FOREACH( const node_info_t& minfo, node_factory_t::instance().registered_nodes())
+    BOOST_FOREACH( const nodes::node_info_t& minfo, nodes::node_factory_t::instance().registered_nodes())
     {
-        if( minfo.ui_visible && node_factory_t::instance().is_latest_version( minfo.id))
+        if( minfo.ui_visible && nodes::node_factory_t::instance().is_latest_version( minfo.id))
         {
             node_menu_t *menu = find_node_menu( minfo.menu);
             QAction *act = new QAction( QString( minfo.menu_item.c_str()), this);

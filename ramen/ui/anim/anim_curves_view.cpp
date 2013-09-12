@@ -185,10 +185,7 @@ void anim_curves_view_t::mousePressEvent( QMouseEvent *event)
         event->accept();
     }
     else
-    {
-        app().ui()->begin_interaction();
         app().ui()->anim_editor().toolbar().tool()->mouse_press_event( *this, event);
-    }
 }
 
 void anim_curves_view_t::mouseMoveEvent( QMouseEvent *event)
@@ -254,10 +251,7 @@ void anim_curves_view_t::mouseReleaseEvent( QMouseEvent *event)
     }
 
     if( !scroll_mode_ && !zoom_mode_ && !move_time_mode_)
-    {
         app().ui()->anim_editor().toolbar().tool()->mouse_release_event( *this, event);
-        app().ui()->end_interaction();
-    }
     else
         event->accept();
 

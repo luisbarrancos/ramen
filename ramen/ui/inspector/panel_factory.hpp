@@ -23,13 +23,13 @@ public:
     panel_factory_t();
     ~panel_factory_t();
 
-    typedef std::map<node_t*,panel_t*>::iterator iterator;
+    typedef std::map<nodes::node_t*,panel_t*>::iterator iterator;
 
     iterator begin()	{ return panels_.begin();}
     iterator end()		{ return panels_.end();}
 
-    iterator create_panel( node_t *n);
-    void delete_panel( node_t *n);
+    iterator create_panel( nodes::node_t *n);
+    void delete_panel( nodes::node_t *n);
 
 private:
 
@@ -37,8 +37,8 @@ private:
     panel_factory_t( const panel_factory_t&);
     panel_factory_t& operator=( const panel_factory_t&);
 
-    std::map<node_t*,panel_t*> panels_;
-    std::map<node_t*,panel_t*>::iterator current_;
+    std::map<nodes::node_t*,panel_t*> panels_;
+    std::map<nodes::node_t*,panel_t*>::iterator current_;
 };
 
 } // ui

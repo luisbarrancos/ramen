@@ -12,7 +12,7 @@ namespace ramen
 namespace params
 {
 
-param_set_t::param_set_t( node_t *n) : node_( n) {}
+param_set_t::param_set_t(nodes:: node_t *n) : node_( n) {}
 
 param_set_t::param_set_t( const param_set_t& other) : composite_param_t( other)
 {

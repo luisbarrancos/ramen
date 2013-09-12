@@ -271,6 +271,7 @@ void anim_editor_toolbar_t::value_changed( double value)
 
 void anim_editor_toolbar_t::spinbox_pressed()
 {
+    /*
     RAMEN_ASSERT( selected_track_);
     RAMEN_ASSERT( selected_key_index_ != -1);
 
@@ -279,6 +280,7 @@ void anim_editor_toolbar_t::spinbox_pressed()
 
     drag_command_ = new undo::drag_keys_command_t( n, app().ui()->anim_editor().track_model());
     app().ui()->anim_editor().set_command( drag_command_);
+    */
 }
 
 void anim_editor_toolbar_t::spinbox_dragged( double value)

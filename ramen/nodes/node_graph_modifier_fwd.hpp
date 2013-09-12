@@ -20,8 +20,12 @@ class ignore_node_command_t;
 
 } // undo
 
+namespace nodes
+{
+
 class node_graph_modifier_t;
 
+} // nodes
 } // ramen
 
 #endif

@@ -13,6 +13,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 class world_node_t : public composite_node_t
 {
@@ -97,6 +99,7 @@ private:
     nodes_names_map_type nodes_names_map_;
 };
 
+} // nodes
 } // ramen
 
 #endif

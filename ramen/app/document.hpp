@@ -39,11 +39,8 @@ public:
     boost::filesystem::path file() const { return file_;}
     void set_file( const boost::filesystem::path& p);
 
-    //void load( serialization::yaml_iarchive_t& in);
-    //void save( serialization::yaml_oarchive_t& out) const;
-
-    const world_node_t& world_node() const;
-    world_node_t& world_node();
+    const nodes::world_node_t& world_node() const;
+    nodes::world_node_t& world_node();
 
 private:
 
@@ -55,7 +52,7 @@ private:
     core::auto_ptr_t<undo::stack_t> undo_;
     boost::filesystem::path file_;
 
-    world_node_t world_node_;
+    nodes::world_node_t world_node_;
 };
 
 } // ramen

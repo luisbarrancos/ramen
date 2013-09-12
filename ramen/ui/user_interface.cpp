@@ -56,8 +56,6 @@ namespace ui
 
 user_interface_t::user_interface_t() : QObject()
 {
-    active_ = 0;
-    context_ = 0;
     rendering_ = false;
     cancelled_ = false;
     interacting_ = false;
@@ -159,8 +157,8 @@ anim_editor_t& user_interface_t::anim_editor()
 
 void user_interface_t::create_new_document()
 {
-    set_active_node( 0);
-    set_context_node( 0);
+    //set_active_node( 0);
+    //set_context_node( 0);
 
     if( main_window())
         anim_editor().clear_all();
@@ -259,53 +257,8 @@ bool user_interface_t::save_document()
     return true;
 }
 
-void user_interface_t::set_active_node( node_t *n)
+void user_interface_t::node_released( nodes::node_t *n)
 {
-    if( active_ != n)
-    {
-        //if( active_)
-        //    active_->end_active();
-
-        active_ = n;
-
-        //if( active_)
-        //    active_->begin_active();
-
-        inspector().edit_node( n);
-        //viewer().set_active_node( n);
-        anim_editor().set_active_node( n);
-    }
-}
-
-void user_interface_t::set_context_node( node_t *n)
-{
-    if( context_ != n)
-    {
-        //if( context_)
-        //    context_->end_context();
-
-        context_ = n;
-
-        //if( context_)
-        //    context_->begin_context();
-
-        //viewer().set_context_node( n);
-    }
-}
-
-void user_interface_t::node_released( node_t *n)
-{
-    if( n == active_)
-    {
-        set_active_node( 0);
-        update();
-    }
-
-    if( n == context_)
-    {
-        set_context_node( 0);
-        update();
-    }
 }
 
 void user_interface_t::update()
@@ -317,26 +270,6 @@ void user_interface_t::update()
 
         update_anim_editors();
     }
-}
-
-void user_interface_t::begin_interaction()
-{
-    /*
-    app().document().world_node().begin_interaction();
-    //viewer().begin_interaction();
-    interacting_ = true;
-    app().memory_manager().begin_interaction();
-    */
-}
-
-void user_interface_t::end_interaction()
-{
-    /*
-    interacting_ = false;
-    app().memory_manager().end_interaction();
-    //viewer().end_interaction();
-    app().document().world_node().end_interaction();
-    */
 }
 
 int user_interface_t::start_frame() const

@@ -12,6 +12,8 @@
 
 namespace ramen
 {
+namespace manipulators
+{
 
 manipulable_t::manipulable_t() {}
 
@@ -89,7 +91,7 @@ bool manipulable_t::do_mouse_press_event( const ui::mouse_press_event_t& event)
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -118,4 +120,5 @@ void manipulable_t::do_mouse_release_event( const ui::mouse_release_event_t& eve
     active_ = end();
 }
 
-} // namespace
+} // manipulators
+} // ramen

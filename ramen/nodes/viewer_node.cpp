@@ -6,6 +6,8 @@
 
 namespace ramen
 {
+namespace nodes
+{
 
 viewer_node_t::viewer_node_t()
 {
@@ -58,4 +60,5 @@ const node_info_t& viewer_node_t::viewer_node_info()
 
 static bool registered = node_factory_t::instance().register_node( viewer_node_t::viewer_node_info());
 
+} // nodes
 } // ramen

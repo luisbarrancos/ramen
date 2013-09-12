@@ -26,7 +26,7 @@ class panel_t : public QObject
 
 public:
 
-    panel_t( node_t *n);
+    panel_t( nodes::node_t *n);
     ~panel_t();
 
     QWidget *widget() { return panel_;}
@@ -35,7 +35,7 @@ public:
 
 private:
 
-    node_t *n_;
+    nodes::node_t *n_;
     QWidget *panel_;
 };
 
