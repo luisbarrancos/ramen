@@ -57,12 +57,9 @@ protected:
 private:
 
     virtual void do_init();
-    virtual param_t *do_clone() const { return new composite_param_t( *this);}
+    virtual param_t *do_clone() const;
 
     void do_add_param( param_t *p);
-
-    virtual void do_set_frame( float frame);
-    virtual void do_evaluate( float frame);
 
     virtual void do_create_tracks( anim::track_t *parent);
 

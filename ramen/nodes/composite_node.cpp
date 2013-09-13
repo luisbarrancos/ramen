@@ -92,11 +92,6 @@ void composite_node_t::emit_node_released_signal( node_t *n)
     node_released( n);
 }
 
-void composite_node_t::do_set_frame( float f)
-{
-    boost::range::for_each( nodes(), boost::bind( &node_t::set_frame, _1, f));
-}
-
 core::auto_ptr_t<node_t> composite_node_t::create_node( const core::name_t& id, bool ui)
 {
     core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id( id, ui));

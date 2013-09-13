@@ -32,6 +32,11 @@ void composite_param_t::do_init()
     boost::range::for_each( params(), boost::bind( &param_t::init, _1));
 }
 
+param_t *composite_param_t::do_clone() const
+{
+    return new composite_param_t( *this);
+}
+
 void composite_param_t::do_add_param( param_t *p)
 {
     p->set_parent( this);
@@ -90,11 +95,6 @@ param_t *composite_param_t::find( const core::name_t& id)
     return 0;
 }
 
-void composite_param_t::do_set_frame( float frame)
-{
-    boost::range::for_each( params(), boost::bind( &param_t::set_frame, _1, frame));
-}
-
 void composite_param_t::do_create_tracks( anim::track_t *parent)
 {
     /*
@@ -109,11 +109,6 @@ void composite_param_t::do_create_tracks( anim::track_t *parent)
     else
     */
         boost::range::for_each( params(), boost::bind( &param_t::create_tracks, _1, parent));
-}
-
-void composite_param_t::do_evaluate( float frame)
-{
-    boost::range::for_each( params(), boost::bind( &param_t::evaluate, _1, frame));
 }
 
 void composite_param_t::do_convert_relative_paths( const boost::filesystem::path& old_base, const boost::filesystem::path& new_base)

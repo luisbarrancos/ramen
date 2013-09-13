@@ -45,11 +45,11 @@ namespace nodes
 */
 class RAMEN_API node_t : public manipulators::manipulable_t
 {
-public:
+    enum flag_bits
+    {
+    };
 
-    //enum flag_bits
-    //{
-    //};
+public:
 
     virtual const node_info_t *node_info() const { return 0;}
 
@@ -134,9 +134,6 @@ public:
     /// Creates anim tracks for this node and adds them to root.
     void create_tracks( anim::track_t *root);
 
-    /// Sets the current frame to f.
-    void set_frame( float f);
-
     // user interface
     virtual const char *help_string() const;
 
@@ -156,9 +153,6 @@ protected:
 
     node_t( const node_t& other);
     void operator=( const node_t& other);
-
-    /// Evaluate all params at frame frame.
-    void evaluate_params( float frame);
 
     bool is_valid_, is_identity_;
 
@@ -186,12 +180,6 @@ private:
         For subclasses to implement.
     */
     virtual void do_create_tracks( anim::track_t *parent) {}
-
-    /*!
-        \brief Customization hook for node_t::set_frame.
-        For subclasses to implement.
-    */
-    virtual void do_set_frame( float t) {}
 
     // data
     core::string8_t name_;

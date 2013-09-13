@@ -129,18 +129,6 @@ void param_t::create_tracks( anim::track_t *parent)
 
 void param_t::do_create_tracks( anim::track_t *parent) {}
 
-void param_t::set_frame( float frame)
-{
-    evaluate( frame);
-    do_set_frame( frame);
-    emit_param_changed( time_changed);
-}
-
-void param_t::do_set_frame( float frame) {}
-
-void param_t::evaluate( float frame)	{ do_evaluate( frame);}
-void param_t::do_evaluate( float frame)	{}
-
 // undo
 core::auto_ptr_t<undo::command_t> param_t::create_command() { return do_create_command();}
 

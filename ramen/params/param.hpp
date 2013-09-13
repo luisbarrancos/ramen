@@ -17,7 +17,7 @@
 
 #include<boost/function.hpp>
 #include<boost/flyweight.hpp>
-#include<boost/filesystem/fstream.hpp>
+#include<boost/filesystem/path.hpp>
 
 #include<ramen/assert.hpp>
 
@@ -43,6 +43,10 @@ namespace params
 */
 class RAMEN_API param_t : public depgraph::dnode_t
 {
+    enum flag_bits
+    {
+    };
+
 public:
 
     enum change_reason
@@ -50,9 +54,8 @@ public:
         silent_edit = 0,
         user_edited,
         node_edited,
-        node_loaded,
-        time_changed
-    };
+        node_loaded
+   };
 
     /// Constructor.
     param_t();
@@ -117,8 +120,6 @@ public:
 
     // animation
     void create_tracks( anim::track_t *parent);
-    void set_frame( float frame);
-    void evaluate( float frame);
 
     // hash
     // ...
@@ -144,14 +145,12 @@ private:
 
     friend class param_set_t;
 
-    virtual param_t *do_clone() const = 0;
-
     virtual void do_init();
+
+    virtual param_t *do_clone() const = 0;
 
     // time and anim
     virtual void do_create_tracks( anim::track_t *parent);
-    virtual void do_set_frame( float frame);
-    virtual void do_evaluate( float frame);
 
     // undo
     virtual core::auto_ptr_t<undo::command_t> do_create_command();
@@ -173,7 +172,6 @@ private:
     core::name_t id_;
     boost::flyweight<core::string8_t> ui_label_;
     boost::flyweight<core::string8_t> tooltip_;
-
     boost::uint32_t flags_;
 };
 

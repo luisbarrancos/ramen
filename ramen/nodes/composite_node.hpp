@@ -91,8 +91,6 @@ private:
     // non-assignable
     void operator=( const composite_node_t& other);
 
-    virtual void do_set_frame( float f);
-
     void emit_node_added_signal( node_t *n);
     void emit_node_released_signal( node_t *n);
 

@@ -188,17 +188,6 @@ void node_t::create_tracks( anim::track_t *root)
     root->add_child( boost::move( top));
 }
 
-void node_t::set_frame( float f)
-{
-    boost::range::for_each( param_set(), boost::bind( &params::param_t::set_frame, _1, f));
-    do_set_frame( f);
-}
-
-void node_t::evaluate_params( float frame)
-{
-    boost::range::for_each( param_set(), boost::bind( &params::param_t::evaluate, _1, frame));
-}
-
 // ui
 const char *node_t::help_string() const
 {
