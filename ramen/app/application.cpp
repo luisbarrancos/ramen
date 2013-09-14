@@ -57,13 +57,11 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     RAMEN_ASSERT( g_app == 0);
     g_app = this;
 
-    system_.reset( new system::system_t());
-
     max_threads_ = 0;
-    img_cache_size_ = 0;
-    command_line_ = false;
-    render_mode_ = false;
+    mem_cache_size_ = 0;
     quitting_ = false;
+
+    system_.reset( new system::system_t());
     cmd_parser_.reset( new command_line_parser_t( argc, argv));
 
     // Create QApplication
@@ -73,10 +71,10 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     //bundle_path /= "lib/Qt_plugins";
     //qApp->setLibraryPaths( QStringList( QString( ramen::filesystem::file_cstring( bundle_path))));
 
+    cmd_parser_->parse();
+
     // create the application user path, if needed
     boost::filesystem::create_directories( system().application_user_path());
-
-    parse_command_line( cmd_parser_->argc, cmd_parser_->argv);
 
     // init prefs
     preferences_.reset( new preferences_t());
@@ -87,7 +85,7 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     task_scheduler_.initialize( max_threads_);
     Imf::setGlobalThreadCount( max_threads_);
 
-    if( !command_line_)
+    if( !run_command_line())
     {
         splash_.reset( new ui::splash_screen_t());
         splash_->show();
@@ -95,28 +93,28 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     }
 
     // init memory manager
-    if( img_cache_size_ == 0)
+    if( mem_cache_size_ == 0)
     {
         boost::uint64_t percent  = preferences().max_image_memory();
         boost::uint64_t ram_size = system().ram_size();
-        img_cache_size_ = ram_size / (boost::uint64_t) 100 * percent;
+        mem_cache_size_ = ram_size / (boost::uint64_t) 100 * percent;
     }
 
-    mem_manager_.reset( new memory::manager_t( img_cache_size_));
+    mem_manager_.reset( new memory::manager_t( mem_cache_size_));
 
-    if( !command_line_)
+    if( !run_command_line())
         splash_->show_message( "Initializing builtin nodes");
     nodes::node_factory_t::instance();
 
-    if( !command_line_)
+    if( !run_command_line())
         splash_->show_message( "Initializing OpenColorIO");
     ocio_manager_.reset( new ocio::manager_t());
 
-    if( !command_line_)
+    if( !run_command_line())
         splash_->show_message( "Initializing dependency graph");
     dependency_graph_.reset( new depgraph::dgraph_t());
 
-    if( !command_line_)
+    if( !run_command_line())
     {
         splash_->show_message( "Initializing user interface");
         ui_.reset( new ui::user_interface_t());
@@ -129,54 +127,10 @@ application_t::~application_t() {}
 
 int application_t::run()
 {
-    if( !command_line_)
-    {
-        ui()->show();
-        splash_->finish( ui()->main_window());
-        splash_.reset();
-        return ui()->run( infile_);
-    }
-    else
-    {
-        if( render_mode_)
-        {
-            RAMEN_ASSERT( false);
-
-            try
-            {
-                open_document( infile_);
-            }
-            catch( std::exception& e)
-            {
-                fatal_error( e.what(), true);
-            }
-
-            if( !start_frame_)
-                start_frame_ = document().world_node().start_frame();
-
-            if( !end_frame_)
-                end_frame_ = document().world_node().end_frame();
-
-            if( !proxy_level_)
-                proxy_level_ = 0;
-
-            if( !subsample_)
-                subsample_ = 1;
-
-            if( !mb_extra_samples_)
-                mb_extra_samples_ = 0;
-
-            if( !mb_shutter_factor_)
-                mb_shutter_factor_ = 1.0f;
-
-            /*
-            render::render_sequence( document().composition(), start_frame_.get(), end_frame_.get(),
-                                     proxy_level_.get(), subsample_.get(), mb_extra_samples_.get(), mb_shutter_factor_.get());
-            */
-        }
-    }
-
-    return 0;
+    ui()->show();
+    splash_->finish( ui()->main_window());
+    splash_.reset();
+    return ui()->run( boost::filesystem::path());
 }
 
 const system::system_t& application_t::system() const
@@ -186,186 +140,23 @@ const system::system_t& application_t::system() const
     return *system_;
 }
 
-// command line things
-bool application_t::matches_option( char *arg, const char *opt) const
-{
-    if( !strcmp( arg, opt))
-        return true;
+const preferences_t& application_t::preferences() const    { return *preferences_;}
+preferences_t& application_t::preferences()                { return *preferences_;}
 
-    return false;
-}
+const memory::manager_t& application_t::memory_manager() const { return *mem_manager_;}
+memory::manager_t& application_t::memory_manager()             { return *mem_manager_;}
 
-boost::optional<int> application_t::parse_int( int num, int argc, char **argv) const
-{
-    RAMEN_ASSERT( num > 0);
-    RAMEN_ASSERT( argc > 0);
+const ocio::manager_t& application_t::ocio_manager() const { return *ocio_manager_;}
+ocio::manager_t& application_t::ocio_manager()             { return *ocio_manager_;}
 
-    boost::optional<int> result;
+const depgraph::dgraph_t& application_t::dependency_graph() const  { return *dependency_graph_;}
+depgraph::dgraph_t& application_t::dependency_graph()              { return *dependency_graph_;}
 
-    if( num < argc)
-    {
-        try
-        {
-            result = boost::lexical_cast<int>( argv[num]);
-        }
-        catch( std::exception& e) {}
-    }
+const ui::user_interface_t *application_t::ui() const  { return ui_.get();}
+ui::user_interface_t *application_t::ui()              { return ui_.get();}
 
-    return result;
-}
-
-boost::optional<float> application_t::parse_float( int num, int argc, char **argv) const
-{
-    RAMEN_ASSERT( num > 0);
-    RAMEN_ASSERT( argc > 0);
-
-    boost::optional<float> result;
-
-    if( num < argc)
-    {
-        try
-        {
-            result = boost::lexical_cast<float>( argv[num]);
-        }
-        catch( std::exception& e) {}
-    }
-
-    return result;
-}
-
-void application_t::parse_input_file( char *arg)
-{
-    // input file name
-    infile_ = boost::filesystem::path( arg);
-
-    if( infile_.is_relative())
-        infile_ = boost::filesystem::absolute( infile_);
-}
-
-bool application_t::parse_common_option( int argc, char **argv, int& num)
-{
-    if( matches_option( argv[num], "-threads"))
-    {
-        boost::optional<int> op( parse_int( num + 1, argc, argv));
-
-        if( op)
-        {
-            if( op.get() > 0)
-                max_threads_ = op.get();
-            else
-                error( "threads should be equal or greater than 1. Ignoring", true);
-        }
-        else
-        {
-            fatal_error( "no number of threads given.", true);
-            return false;
-        }
-
-        num += 2;
-        return true;
-    }
-    else
-    {
-        if( argv[num][0] == '-')
-            fatal_error( core::string8_t( "unknown option: ") + argv[num], true);
-    }
-
-    return false;
-}
-
-void application_t::parse_command_line( int argc, char **argv)
-{
-    if( argc == 1)
-        return;
-
-    if( matches_option( argv[1], "-help") || matches_option( argv[1], "-h"))
-        usage();
-
-    if( matches_option( argv[1], "-version"))
-    {
-        std::cout << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << std::endl;
-        std::exit( EXIT_SUCCESS);
-    }
-
-    int i = 1;
-    while (i < argc)
-    {
-        if( matches_option( argv[i], "-render"))
-        {
-            command_line_ = true;
-            render_mode_ = true;
-            ++i;
-            parse_render_command_line( argc, argv, i);
-            return;
-        }
-        else if( parse_common_option( argc, argv, i))
-            ;
-        else
-        {
-            parse_input_file( argv[i]);
-            ++i;
-        }
-    }
-}
-
-void application_t::parse_render_command_line( int argc, char **argv, int num)
-{
-    int i = num;
-    while (i < argc)
-    {
-        if( matches_option( argv[i], "-help") || matches_option( argv[i], "-h"))
-            render_usage();
-        else if( matches_option( argv[i], "-frames"))
-        {
-            start_frame_ = parse_int( i + 1, argc, argv);
-            end_frame_ = parse_int( i + 2, argc, argv);
-
-            if( !start_frame_ || !end_frame_)
-                render_usage();
-
-            i += 3;
-        }
-        // TODO: add more options here...
-        else if( parse_common_option( argc, argv, i))
-        {
-        }
-        else
-        {
-            parse_input_file( argv[i]);
-            ++i;
-        }
-    }
-
-    if( infile_.empty())
-        fatal_error( "No composition file given", true);
-
-    // TODO: check everything needed here!
-}
-
-void application_t::usage()
-{
-    std::cout <<	RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << "\n" <<
-                    "Usage: ramen [options] file...\n\n"
-                    "Options:\n"
-                    "-help, -h:       Print help message and exit.\n"
-                    "-version:        Print version number and exit.\n"
-                    "-threads n:      Use n threads.\n\n"
-                    "-render:         Render composition. Run ramen -render -help for more information.\n"
-                    << std::endl;
-    std::exit( EXIT_SUCCESS);
-}
-
-void application_t::render_usage()
-{
-    std::cout <<	RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << "\n" <<
-                    "Usage: ramen -render [options] file...\n\n"
-                    "Options:\n"
-                    "-help, -h:       Print this help message and exit.\n"
-                    "-threads n:      Use n threads.\n\n"
-                    "-frames n m:     Render frames n to m.\n"
-                    << std::endl;
-    std::exit( EXIT_SUCCESS);
-}
+const document_t& application_t::document() const  { return *document_;}
+document_t& application_t::document()              { return *document_;}
 
 void application_t::print_app_info()
 {
@@ -423,7 +214,7 @@ void application_t::delete_document()
 // messages
 void application_t::fatal_error( const core::string8_t& message, bool no_gui) const
 {
-    if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
+    if( !run_command_line() && ui() && !ui()->rendering() && !no_gui)
         ui()->fatal_error( message);
     else
         std::cerr << "Fatal error: " << message << "\n";
@@ -433,7 +224,7 @@ void application_t::fatal_error( const core::string8_t& message, bool no_gui) co
 
 void application_t::error( const core::string8_t& message, bool no_gui) const
 {
-    if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
+    if( !run_command_line() && ui() && !ui()->rendering() && !no_gui)
         ui()->error( message);
     else
     {
@@ -443,7 +234,7 @@ void application_t::error( const core::string8_t& message, bool no_gui) const
 
 void application_t::inform( const core::string8_t& message, bool no_gui) const
 {
-    if( !command_line_ && ui() && !ui()->rendering() && !no_gui)
+    if( !run_command_line() && ui() && !ui()->rendering() && !no_gui)
         ui()->inform( message);
     else
         std::cerr << "Info: " << message << "\n";
@@ -451,7 +242,7 @@ void application_t::inform( const core::string8_t& message, bool no_gui) const
 
 bool application_t::question( const core::string8_t& what, bool default_answer) const
 {
-    if( !command_line_ && ui() && !ui()->rendering())
+    if( !run_command_line() && ui() && !ui()->rendering())
         return ui()->question( what, default_answer);
     else
     {

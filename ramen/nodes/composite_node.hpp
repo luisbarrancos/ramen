@@ -49,8 +49,8 @@ public:
     composite_node_t();
     ~composite_node_t();
 
-    boost::signals2::signal<void( node_t*)> node_added;
-    boost::signals2::signal<void( node_t*)> node_released;
+    static boost::signals2::signal<void( node_t*)> node_added;
+    static boost::signals2::signal<void( node_t*)> node_released;
 
     // iterators & ranges
     node_iterator nodes_begin() { return nodes_.begin();}

@@ -10,6 +10,10 @@
 #include<QTabWidget>
 #include<QTabBar>
 
+#include<ramen/core/string_fwd.hpp>
+
+#include<ramen/nodes/node_fwd.hpp>
+
 class QEvent;
 class QMouseEvent;
 class QDragEvent;
@@ -58,6 +62,12 @@ private:
 
     void detach_viewer( int index, const QPoint& pos);
     void transfer_viewer( int index, viewer_tabs_t *other);
+
+    void node_was_added( nodes::node_t *n);
+    void node_was_deleted( nodes::node_t *n);
+    void node_was_renamed( nodes::node_t* n,
+                           const core::string8_t& old_name,
+                           const core::string8_t& new_name);
 
 private Q_SLOTS:
 

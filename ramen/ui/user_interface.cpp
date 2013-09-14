@@ -504,7 +504,6 @@ void user_interface_t::init_image_types_string()
     image_types_str_ = "Image Files (";
 
     // TODO: this is crashing. investigate why.
-    /*
     std::string list;
     if( OIIO::getattribute( "extension_list", list))
     {
@@ -528,7 +527,6 @@ void user_interface_t::init_image_types_string()
             }
         }
     }
-    */
 
     image_types_str_.append( ")");
 }

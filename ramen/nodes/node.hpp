@@ -64,7 +64,7 @@ public:
                                           const core::string8_t& old_name,
                                           const core::string8_t& new_name)> node_renamed;
 
-    /// Emitted when a node has changed.
+    /// Emitted when this node has changed.
     boost::signals2::signal<void ( node_t*)> changed;
 
     /// Makes a copy of the node.

@@ -7,7 +7,10 @@
 #include<stdlib.h>
 #include<string.h>
 
+#include<iostream>
+
 #include<ramen/assert.hpp>
+#include<ramen/version.hpp>
 
 namespace ramen
 {
@@ -19,16 +22,36 @@ command_line_parser_t::command_line_parser_t( int cmd_argc, char **cmd_argv) : a
     argc = cmd_argc;
     argv = reinterpret_cast<char**>( malloc( argc * sizeof( char*)));
 
-    for( int i = 0; i < argc ; ++i)
+    for( int i = 0; i < argc; ++i)
         argv[i] = strdup( cmd_argv[i]);
 }
 
 command_line_parser_t::~command_line_parser_t()
 {
-    for( int i = 0; i < argc ; ++i)
+    for( int i = 0; i < argc; ++i)
         free( reinterpret_cast<void*>( argv[i]));
 
     free( reinterpret_cast<void*>( argv));
+}
+
+void command_line_parser_t::parse()
+{
+    // TODO: parse command args here.
+    // ...
+
+    if( false)
+        usage();
+}
+
+void command_line_parser_t::usage()
+{
+    std::cout <<	RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << "\n" <<
+                    "Usage: ramen [options] file...\n\n"
+                    "Options:\n"
+                    "-help, -h:       Print help message and exit.\n"
+                    "-version:        Print version number and exit.\n"
+                    << std::endl;
+    exit( EXIT_SUCCESS);
 }
 
 } // ramen

@@ -50,9 +50,6 @@ public:
 
     int run();
 
-    bool command_line() const   { return command_line_;}
-    int max_threads() const     { return max_threads_;}
-
     // messages
     void fatal_error( const core::string8_t& message, bool no_gui = false) const;
     void error( const core::string8_t& message, bool no_gui = false) const;
@@ -63,28 +60,28 @@ public:
     const system::system_t& system() const;
 
     // preferences
-    const preferences_t& preferences() const    { return *preferences_;}
-    preferences_t& preferences()                { return *preferences_;}
+    const preferences_t& preferences() const;
+    preferences_t& preferences();
 
     // memmory manager
-    const memory::manager_t& memory_manager() const { return *mem_manager_;}
-    memory::manager_t& memory_manager()             { return *mem_manager_;}
+    const memory::manager_t& memory_manager() const;
+    memory::manager_t& memory_manager();
 
     // opencolorio
-    const ocio::manager_t& ocio_manager() const { return *ocio_manager_;}
-    ocio::manager_t& ocio_manager()             { return *ocio_manager_;}
+    const ocio::manager_t& ocio_manager() const;
+    ocio::manager_t& ocio_manager();
 
     // dependency graph
-    const depgraph::dgraph_t& dependency_graph() const  { return *dependency_graph_;}
-    depgraph::dgraph_t& dependency_graph()              { return *dependency_graph_;}
+    const depgraph::dgraph_t& dependency_graph() const;
+    depgraph::dgraph_t& dependency_graph();
 
     // user interface
-    const ui::user_interface_t *ui() const  { return ui_.get();}
-    ui::user_interface_t *ui()              { return ui_.get();}
+    const ui::user_interface_t *ui() const;
+    ui::user_interface_t *ui();
 
     // document handling
-    const document_t& document() const  { return *document_;}
-    document_t& document()              { return *document_;}
+    const document_t& document() const;
+    document_t& document();
 
     void create_new_document();
     void open_document( const boost::filesystem::path& p);
@@ -99,32 +96,20 @@ private:
     application_t( const application_t&);
     application_t& operator=( const application_t&);
 
-    // command line
-    bool matches_option( char *arg, const char *opt) const;
-    boost::optional<int> parse_int( int num, int argc, char **argv) const;
-    boost::optional<float> parse_float( int num, int argc, char **argv) const;
-    void parse_input_file( char *arg);
-    bool parse_common_option( int argc, char **argv, int& num);
-
-    void parse_command_line( int argc, char **argv);
-    void parse_render_command_line( int argc, char **argv, int num);
-
-    void usage();
-    void render_usage();
-
+    // logging
     void print_app_info();
 
     // opencolorio
     void init_ocio();
     bool init_ocio_config_from_file( const boost::filesystem::path& p);
 
+    bool run_command_line() const { return false;}
+
     // data
     core::auto_ptr_t<command_line_parser_t> cmd_parser_;
-    boost::uint64_t img_cache_size_;
+    boost::uint64_t mem_cache_size_;
     int max_threads_;
-    bool command_line_;
-    boost::filesystem::path infile_;
-    bool render_mode_;
+    bool quitting_;
 
     tbb::task_scheduler_init task_scheduler_;
     core::auto_ptr_t<system::system_t> system_;
@@ -133,17 +118,8 @@ private:
     core::auto_ptr_t<ocio::manager_t> ocio_manager_;
     core::auto_ptr_t<depgraph::dgraph_t> dependency_graph_;
     core::auto_ptr_t<ui::user_interface_t> ui_;
-
     core::auto_ptr_t<document_t> document_;
-
-    boost::optional<int> start_frame_, end_frame_, proxy_level_,
-                        subsample_, mb_extra_samples_;
-
-    boost::optional<float> mb_shutter_factor_;
-
     core::auto_ptr_t<ui::splash_screen_t> splash_;
-
-    bool quitting_;
 };
 
 RAMEN_API application_t& app();

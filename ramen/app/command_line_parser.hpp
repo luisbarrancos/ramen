@@ -17,8 +17,14 @@ public:
     command_line_parser_t( int cmd_argc, char **cmd_argv);
     ~command_line_parser_t();
 
+    void parse();
+
     int argc;
     char **argv;
+
+private:
+
+    void usage();
 };
 
 } // ramen
