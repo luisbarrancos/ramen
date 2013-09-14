@@ -236,10 +236,10 @@ void inspector_t::set_panel( QWidget *panel)
     }
 }
 
-void inspector_t::update()
+void inspector_t::update_state()
 {
     if( current_ != factory_.end())
-        current_->second->update();
+        current_->second->update_state();
 }
 
 void inspector_t::recreate_panel( nodes::node_t *n)

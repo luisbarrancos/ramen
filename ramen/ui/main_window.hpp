@@ -7,29 +7,21 @@
 
 #include<ramen/ui/main_window_fwd.hpp>
 
-#include<vector>
-#include<map>
-#include<string>
-#include<memory>
-
 #include<QMainWindow>
 #include<QDockWidget>
 
-#include<boost/filesystem/fstream.hpp>
+#include<boost/filesystem/path.hpp>
 
 #include<ramen/core/memory.hpp>
 #include<ramen/core/name.hpp>
 
 #include<ramen/qwidgets/time_slider_fwd.hpp>
 
-#include<ramen/ui/node_menu.hpp>
-#include<ramen/ui/time_controls_fwd.hpp>
-
 #include<ramen/ui/anim/anim_editor_fwd.hpp>
-
-#include<ramen/ui/world_view/world_view_fwd.hpp>
-
 #include<ramen/ui/inspector/inspector_fwd.hpp>
+#include<ramen/ui/nodes_view/nodes_view_tabs_fwd.hpp>
+#include<ramen/ui/time_controls_fwd.hpp>
+#include<ramen/ui/viewer/viewer_tabs_fwd.hpp>
 
 class QAction;
 class QMenu;
@@ -53,12 +45,8 @@ class main_window_t : public QMainWindow
 public:
 
     main_window_t();
-    ~main_window_t();
 
     void add_dock_widget( Qt::DockWidgetArea area, QDockWidget *dock);
-
-    const world_view_t& world_view() const  { return *world_view_;}
-    world_view_t& world_view()              { return *world_view_;}
 
     const inspector_t& inspector() const    { return *inspector_;}
     inspector_t& inspector()                { return *inspector_;}
@@ -72,9 +60,7 @@ public:
     const time_controls_t& time_controls() const    { return *time_controls_;}
     time_controls_t& time_controls()                { return *time_controls_;}
 
-    const std::vector<node_menu_t*>& node_menus() const;
-
-    void update();
+    void update_state();
 
     bool can_close_document();
 
@@ -98,19 +84,12 @@ public Q_SLOTS:
     void undo();
     void redo();
 
-    void ignore_nodes();
-    void delete_nodes();
-    void duplicate_nodes();
-    void extract_nodes();
-
-    void clear_cache();
-
     void show_preferences_dialog();
+
+    void create_viewer();
 
     void show_about_box();
     void go_to_project_website();
-
-    void create_node();
 
 private:
 
@@ -119,18 +98,15 @@ private:
     void create_actions();
     void create_menus();
 
-    void create_node_actions();
-
     void init_recent_files_menu();
     void update_menus();
-
-    node_menu_t *find_node_menu( const core::string8_t& s);
 
     static const char *document_extension();
     static const char *file_dialog_extension();
 
     qwidgets::time_slider_t *time_slider_;
-    world_view_t *world_view_;
+    nodes_view_tabs_t *nodes_view_tabs_;
+    viewer_tabs_t *viewer_tabs_;
     time_controls_t *time_controls_;
     QDockWidget *inspector_dock_;
     inspector_t *inspector_;
@@ -147,25 +123,23 @@ private:
 
     std::vector<QAction *> recently_opened_;
 
-    std::vector<QMenu*> create_submenus_;
-
     // file
     QAction *new_, *open_, *save_, *save_as_;
     QAction *quit_;
 
     // edit
-    QAction *undo_, *redo_, *ignore_, *delete_;
-    QAction *duplicate_, *extract_;
-    QAction *clear_cache_, *preferences_;
+    QAction *undo_;
+    QAction *redo_;
+    QAction *preferences_;
 
-    // more
+    // window
+    QAction *create_viewer_;
+
+    // help
     QAction *about_, *project_web_;
 
     // non - menu actions
     QAction *next_frame_, *prev_frame_;
-
-    std::vector<node_menu_t*> node_menus_;
-    std::map<QAction*,core::name_t> create_node_actions_;
 
     const static int max_recently_opened_files;
 };

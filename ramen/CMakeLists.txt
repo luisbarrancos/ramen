@@ -42,7 +42,10 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/inspector/inspector.hpp
                         ui/inspector/panel.hpp
 
-                        ui/viewer/viewer_tabs_container.hpp
+                        ui/nodes_view/nodes_view.hpp
+                        ui/nodes_view/nodes_view_tabs.hpp
+
+                        ui/viewer/viewer_tabs.hpp
 
                         ui/widgets/color_button.hpp
                         ui/widgets/color_picker.hpp
@@ -51,8 +54,6 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/widgets/hue_picker.hpp
                         ui/widgets/saturation_value_picker.hpp
                         ui/widgets/eyedropper_button.hpp
-
-                        ui/world_view/world_view.hpp
                         )
 
 SET( RAMEN_SOURCES      assert.hpp
@@ -164,7 +165,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/events_util.hpp
                         ui/events_util.cpp
                         ui/main_window.cpp
-                        ui/node_menu.cpp
                         ui/palette.cpp
                         ui/time_controls.cpp
                         ui/user_interface_fwd.hpp
@@ -195,8 +195,16 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/inspector/panel.cpp
                         ui/inspector/panel_factory.cpp
 
-                        ui/viewer/viewer_tabs_container.hpp
-                        ui/viewer/viewer_tabs_container.cpp
+                        ui/nodes_view/nodes_view_fwd.hpp
+                        ui/nodes_view/nodes_view.hpp
+                        ui/nodes_view/nodes_view.cpp
+                        ui/nodes_view/nodes_view_tabs_fwd.hpp
+                        ui/nodes_view/nodes_view_tabs.hpp
+                        ui/nodes_view/nodes_view_tabs.cpp
+
+                        ui/viewer/viewer_tabs_fwd.hpp
+                        ui/viewer/viewer_tabs.hpp
+                        ui/viewer/viewer_tabs.cpp
 
                         ui/widgets/color.cpp
                         ui/widgets/color_button.cpp
@@ -206,10 +214,6 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/widgets/hue_picker.cpp
                         ui/widgets/saturation_value_picker.cpp
                         ui/widgets/eyedropper_button.cpp
-
-                        ui/world_view/world_view_fwd.hpp
-                        ui/world_view/world_view.hpp
-                        ui/world_view/world_view.cpp
 
                         undo/command_fwd.hpp
                         undo/command.hpp

@@ -172,7 +172,7 @@ void anim_editor_t::set_active_node( node_t *n)
 void anim_editor_t::node_renamed( nodes::node_t *n)
 {
     current_->node_track()->set_name( n->name());
-    update();
+    update_state();
 }
 
 void anim_editor_t::clear_all()
@@ -242,7 +242,7 @@ void anim_editor_t::show_context_menu( const QPoint& p)
     menu.exec( QCursor::pos());
 }
 
-void anim_editor_t::update()
+void anim_editor_t::update_state()
 {
     if( !app().quitting())
     {

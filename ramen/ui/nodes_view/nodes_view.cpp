@@ -2,7 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/world_view/world_view.hpp>
+#include<ramen/ui/nodes_view/nodes_view.hpp>
 
 #include<QKeyEvent>
 #include<QMouseEvent>
@@ -24,63 +24,62 @@ namespace ramen
 namespace ui
 {
 
-world_view_t::world_view_t( QWidget *parent) : QWidget( parent)
+nodes_view_t::nodes_view_t( nodes::composite_node_t *n) : QWidget()
 {
+    init( n);
+}
+
+nodes_view_t::nodes_view_t( QWidget *parent, nodes::composite_node_t *n) : QWidget( parent)
+{
+    init( n);
+}
+
+void nodes_view_t::init( nodes::composite_node_t *n)
+{
+    RAMEN_ASSERT( n);
+
     setFocusPolicy( Qt::ClickFocus);
     font_ = QFont( "Helvetica", 10);
     first_resize_ = true;
-    toolbar_ = 0;
+    node_ = n;
 }
 
-world_view_t::~world_view_t() {}
-
-QWidget *world_view_t::create_toolbar()
-{
-    RAMEN_ASSERT( toolbar_ == 0);
-
-    toolbar_ = new QWidget( this);
-    toolbar_->setMinimumSize( 0, 30);
-    toolbar_->setMaximumSize( QWIDGETSIZE_MAX, 30);
-    toolbar_->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed);
-    return toolbar_;
-}
-
-bool world_view_t::event( QEvent *event)
+bool nodes_view_t::event( QEvent *event)
 {
     return QWidget::event( event);
 }
 
-void world_view_t::keyPressEvent( QKeyEvent *event)
+void nodes_view_t::keyPressEvent( QKeyEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::keyReleaseEvent( QKeyEvent *event)
+void nodes_view_t::keyReleaseEvent( QKeyEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::mouseDoubleClickEvent( QMouseEvent *event)
+void nodes_view_t::mouseDoubleClickEvent( QMouseEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::mousePressEvent( QMouseEvent *event)
+void nodes_view_t::mousePressEvent( QMouseEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::mouseMoveEvent( QMouseEvent *event)
+void nodes_view_t::mouseMoveEvent( QMouseEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::mouseReleaseEvent( QMouseEvent *event)
+void nodes_view_t::mouseReleaseEvent( QMouseEvent *event)
 {
     event->ignore();
 }
 
-void world_view_t::resizeEvent( QResizeEvent *event)
+void nodes_view_t::resizeEvent( QResizeEvent *event)
 {
     if( first_resize_)
     {
@@ -99,12 +98,12 @@ void world_view_t::resizeEvent( QResizeEvent *event)
     event->accept();
 }
 
-void world_view_t::paintEvent ( QPaintEvent *event)
+void nodes_view_t::paintEvent ( QPaintEvent *event)
 {
     event->accept();
 }
 
-void world_view_t::contextMenuEvent( QContextMenuEvent *event)
+void nodes_view_t::contextMenuEvent( QContextMenuEvent *event)
 {
     event->accept();
 }

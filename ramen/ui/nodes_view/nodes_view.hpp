@@ -2,29 +2,32 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_WORLD_VIEW_HPP
-#define	RAMEN_UI_WORLD_VIEW_HPP
+#ifndef RAMEN_UI_NODES_VIEW_NODES_VIEW_HPP
+#define	RAMEN_UI_NODES_VIEW_NODES_VIEW_HPP
 
-#include<ramen/ui/world_view/world_view_fwd.hpp>
+#include<ramen/ui/nodes_view/nodes_view_fwd.hpp>
 
 #include<QWidget>
 #include<QFont>
+
+#include<ramen/nodes/composite_node.hpp>
 
 namespace ramen
 {
 namespace ui
 {
 
-class world_view_t : public QWidget
+class nodes_view_t : public QWidget
 {
     Q_OBJECT
 
 public:
 
-    world_view_t( QWidget *parent = 0);
-    ~world_view_t();
+    explicit nodes_view_t( nodes::composite_node_t *n);
+    nodes_view_t( QWidget *parent, nodes::composite_node_t *n);
 
-    QWidget *create_toolbar();
+    const nodes::composite_node_t *node() const { return node_;}
+    nodes::composite_node_t *node()             { return node_;}
 
 protected:
 
@@ -41,7 +44,10 @@ protected:
 
 private:
 
-    QWidget *toolbar_;
+    void init( nodes::composite_node_t *n);
+
+    nodes::composite_node_t *node_;
+
     bool first_resize_;
     QFont font_;
 };

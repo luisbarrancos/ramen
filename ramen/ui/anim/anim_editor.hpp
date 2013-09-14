@@ -60,7 +60,7 @@ public:
 
     void node_renamed( nodes::node_t *n);
 
-    void update();
+    void update_state();
 
     // selection
     bool any_keyframe_selected() const;

@@ -10,7 +10,6 @@
 #include<QWidget>
 
 class QToolButton;
-class QPushButton;
 
 namespace ramen
 {
@@ -27,7 +26,7 @@ public:
 
     bool eventFilter( QObject *watched, QEvent *event);
 
-    void update();
+    void update_state();
 
 public Q_SLOTS:
 
@@ -41,19 +40,12 @@ public Q_SLOTS:
     void next_frame();
     void goto_end();
 
-    void make_flipbook();
-    void set_autokey( bool b);
-
 private:
 
     void stop_playing();
 
     QToolButton *start_, *prev_key_, *prev_frame_, *play_back_;
     QToolButton *stop_, *play_fwd_, *next_frame_, *next_key_, *end_;
-
-    QToolButton *autokey_;
-    QPushButton *flipbook_;
-
     bool stop_playing_;
 };
 

@@ -2,10 +2,10 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_VIEWER_VIEWER_TABS_CONTAINER_HPP
-#define	RAMEN_UI_VIEWER_VIEWER_TABS_CONTAINER_HPP
+#ifndef RAMEN_UI_VIEWER_VIEWER_TABS_HPP
+#define	RAMEN_UI_VIEWER_VIEWER_TABS_HPP
 
-#include<ramen/config.hpp>
+#include<ramen/ui/viewer/viewer_tabs_fwd.hpp>
 
 #include<QTabWidget>
 #include<QTabBar>
@@ -39,19 +39,25 @@ private:
     int selected_tab_;
 };
 
-class viewer_tabs_container_t : public QTabWidget
+class viewer_tabs_t : public QTabWidget
 {
     Q_OBJECT
 
 public:
 
-    explicit viewer_tabs_container_t( QWidget *parent = 0);
+    explicit viewer_tabs_t( QWidget *parent = 0);
 
-    void add_tab( const QString& name);
-    void add_tab( const QString& name, QWidget *tab);
+    void add_viewer( const QString& name);
+    void add_viewer( const QString& name, QWidget *tab);
 
-    void detach_tab( int index, const QPoint& pos);
-    void transfer_tab( int index, viewer_tabs_container_t *other_tabs);
+    void update_state();
+
+private:
+
+    friend class viewer_tabs_bar_t;
+
+    void detach_viewer( int index, const QPoint& pos);
+    void transfer_viewer( int index, viewer_tabs_t *other);
 
 private Q_SLOTS:
 

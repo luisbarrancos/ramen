@@ -38,7 +38,7 @@ public:
 
     void edit_node( nodes::node_t *n);
 
-    void update();
+    void update_state();
 
     panel_factory_t& panel_factory() { return factory_;}
 

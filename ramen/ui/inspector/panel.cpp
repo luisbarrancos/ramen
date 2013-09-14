@@ -45,7 +45,7 @@ panel_t::~panel_t()
     panel_->deleteLater();
 }
 
-void panel_t::update()
+void panel_t::update_state()
 {
     //n_->update_widgets();
 }

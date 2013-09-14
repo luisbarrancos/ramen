@@ -31,7 +31,7 @@ public:
 
     QWidget *widget() { return panel_;}
 
-    void update();
+    void update_state();
 
 private:
 

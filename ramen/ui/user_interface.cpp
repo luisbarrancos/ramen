@@ -266,7 +266,7 @@ void user_interface_t::update()
     if( !app().quitting())
     {
         if( window_)
-            window_->update();
+            window_->update_state();
 
         update_anim_editors();
     }
@@ -290,9 +290,9 @@ float user_interface_t::frame() const
 void user_interface_t::set_start_frame( int t)
 {
     app().document().world_node().set_start_frame( t);
-    main_window()->time_slider().update( app().document().world_node().start_frame(),
-                                         app().document().world_node().frame(),
-                                         app().document().world_node().end_frame());
+    main_window()->time_slider().update_state( app().document().world_node().start_frame(),
+                                               app().document().world_node().frame(),
+                                               app().document().world_node().end_frame());
 
     //render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
     //                                                         app().document().world_node().end_frame());
@@ -301,9 +301,9 @@ void user_interface_t::set_start_frame( int t)
 void user_interface_t::set_end_frame( int t)
 {
     app().document().world_node().set_end_frame( t);
-    main_window()->time_slider().update( app().document().world_node().start_frame(),
-                                         app().document().world_node().frame(),
-                                         app().document().world_node().end_frame());
+    main_window()->time_slider().update_state( app().document().world_node().start_frame(),
+                                               app().document().world_node().frame(),
+                                               app().document().world_node().end_frame());
 
     //render_composition_dialog_t::instance().set_frame_range( app().document().world_node().start_frame(),
     //                                                         app().document().world_node().end_frame());
@@ -312,11 +312,11 @@ void user_interface_t::set_end_frame( int t)
 void user_interface_t::set_frame( double t)
 {
     app().document().world_node().set_frame( t);
-    main_window()->time_slider().update( app().document().world_node().start_frame(),
-                                         app().document().world_node().frame(),
-                                         app().document().world_node().end_frame());
+    main_window()->time_slider().update_state( app().document().world_node().start_frame(),
+                                               app().document().world_node().frame(),
+                                               app().document().world_node().end_frame());
 
-    inspector().update();
+    inspector().update_state();
     update_anim_editors();
     //viewer().frame_changed();
 }
@@ -324,7 +324,7 @@ void user_interface_t::set_frame( double t)
 void user_interface_t::update_anim_editors()
 {
     if( main_window())
-        anim_editor().update();
+        anim_editor().update_state();
 }
 
 void user_interface_t::fatal_error( const core::string8_t& msg) const
@@ -503,6 +503,8 @@ void user_interface_t::init_image_types_string()
 {
     image_types_str_ = "Image Files (";
 
+    // TODO: this is crashing. investigate why.
+    /*
     std::string list;
     if( OIIO::getattribute( "extension_list", list))
     {
@@ -526,6 +528,7 @@ void user_interface_t::init_image_types_string()
             }
         }
     }
+    */
 
     image_types_str_.append( ")");
 }
