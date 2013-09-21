@@ -23,6 +23,7 @@
 
 #include<ramen/core/name.hpp>
 #include<ramen/core/string8.hpp>
+#include<ramen/core/flags.hpp>
 
 #include<ramen/math/box2.hpp>
 

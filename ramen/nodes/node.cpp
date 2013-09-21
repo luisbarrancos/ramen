@@ -19,6 +19,8 @@
 
 #include<ramen/memory/manager.hpp>
 
+#include<ramen/depgraph/dgraph.hpp>
+
 #include<ramen/nodes/world_node.hpp>
 
 #include<ramen/anim/track.hpp>
@@ -164,6 +166,16 @@ params::param_t& node_t::param( const core::name_t& identifier)
 
     // TODO: throw something more appropiate here.
     throw core::runtime_error( core::make_string( "param ", identifier.c_str(), " not found"));
+}
+
+void node_t::add_dependency( params::param_t *src, params::param_t *dst)
+{
+    app().dependency_graph().add_dependency( depgraph::dependency_t( src, dst));
+}
+
+void node_t::add_dependency( const core::name_t& src_id, const core::name_t& dst_id)
+{
+    add_dependency( &param( src_id), &param( dst_id));
 }
 
 void node_t::for_each_param( const boost::function<void ( params::param_t*)>& f)

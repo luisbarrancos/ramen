@@ -7,7 +7,9 @@
 
 #include<ramen/depgraph/dgraph_fwd.hpp>
 
-#include<ramen/depgraph/dnode_fwd.hpp>
+#include<set>
+
+#include<ramen/depgraph/dependency.hpp>
 
 namespace ramen
 {
@@ -27,11 +29,19 @@ public:
     void add_node( dnode_t *n);
     void remove_node( dnode_t *n);
 
+    void add_dependency( const dependency_t& d);
+    void remove_dependency( const dependency_t& d);
+
+    void propagate_dirty_flags();
+
 private:
 
     // non-copyable
     dgraph_t( const dgraph_t&);
     dgraph_t& operator=( const dgraph_t&);
+
+    std::set<dnode_t*> nodes_;
+    std::set<dependency_t> dependencies_;
 };
 
 } // depgraph

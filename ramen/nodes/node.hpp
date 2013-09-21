@@ -122,6 +122,9 @@ public:
         param_set().add_param( p);
     }
 
+    void add_dependency( params::param_t *src, params::param_t *dst);
+    void add_dependency( const core::name_t& src_id, const core::name_t& dst_id);
+
     /// Calls a function f for each param.
     virtual void for_each_param( const boost::function<void ( params::param_t*)>& f);
 

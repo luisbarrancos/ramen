@@ -13,7 +13,7 @@ namespace ramen
 namespace depgraph
 {
 
-dnode_t::dnode_t()
+dnode_t::dnode_t() : dirty_( false)
 {
     app().dependency_graph().add_node( this);
 }
@@ -26,6 +26,17 @@ dnode_t::dnode_t( const dnode_t& other)
 dnode_t::~dnode_t()
 {
     app().dependency_graph().remove_node( this);
+}
+
+bool dnode_t::set_dirty( bool b)
+{
+    if( dirty_ != b)
+    {
+        dirty_ = b;
+
+        if( dirty_)
+            became_dirty( this);
+    }
 }
 
 } // depgraph

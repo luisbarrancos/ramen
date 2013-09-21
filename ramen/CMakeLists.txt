@@ -96,12 +96,16 @@ SET( RAMEN_SOURCES      assert.hpp
                         app/preferences.hpp
                         app/preferences.cpp
 
+                        depgraph/dependency.hpp
+                        depgraph/dependency.cpp
                         depgraph/dgraph_fwd.hpp
                         depgraph/dgraph.hpp
                         depgraph/dgraph.cpp
                         depgraph/dnode_fwd.hpp
                         depgraph/dnode.hpp
                         depgraph/dnode.cpp
+                        depgraph/exceptions.hpp
+                        depgraph/exceptions.cpp
 
                         manipulators/manipulable_fwd.hpp
                         manipulators/manipulable.hpp
