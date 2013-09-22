@@ -20,6 +20,8 @@
 #include<ramen/app/application.hpp>
 #include<ramen/app/preferences.hpp>
 
+#include<ramen/params/float_param.hpp>
+
 #ifndef NDEBUG
     #include<iostream>
 #endif
@@ -31,14 +33,12 @@ namespace nodes
 namespace
 {
 
-/*
 core::name_t g_start_frame( "start_frame");
 core::name_t g_end_frame( "end_frame");
 core::name_t g_frame( "frame");
 core::name_t g_format( "format");
 core::name_t g_frame_rate( "frame_rate");
 core::name_t g_autokey( "autokey");
-*/
 
 // debug stuff
 #ifndef NDEBUG
@@ -75,62 +75,60 @@ node_t *world_node_t::do_clone() const
 
 void world_node_t::do_create_params()
 {
-    /*
-    core::auto_ptr_t<float_param_t> p( new float_param_t());
+    core::auto_ptr_t<params::float_param_t> p( new params::float_param_t());
     start_frame_ = p.get();
     p->set_ui_label( "Start Frame");
     p->set_id( g_start_frame);
-    p->set_default_value( 1);
-    p->set_static( true);
-    p->set_round_to_int( true);
+    //p->set_default_value( 1);
+    //p->set_static( true);
+    //p->set_round_to_int( true);
     //p->set_secret( true);
     add_param( boost::move( p));
 
-    p.reset( new float_param_t());
+    p.reset( new params::float_param_t());
     end_frame_ = p.get();
     p->set_ui_label( "End Frame");
     p->set_id( g_end_frame);
-    p->set_default_value( 100);
-    p->set_static( true);
-    p->set_round_to_int( true);
+    //p->set_default_value( 100);
+    //p->set_static( true);
+    //p->set_round_to_int( true);
     //p->set_secret( true);
     add_param( boost::move( p));
 
-    p.reset( new float_param_t());
+    p.reset( new params::float_param_t());
     frame_ = p.get();
     p->set_ui_label( "Frame");
     p->set_id( g_frame);
-    p->set_default_value( 1);
-    p->set_static( true);
+    //p->set_default_value( 1);
+    //p->set_static( true);
     //p->set_secret( true);
-    p->set_can_undo( false);
+    //p->set_can_undo( false);
     add_param( boost::move( p));
 
-    core::auto_ptr_t<image_format_param_t> f( new image_format_param_t());
-    default_format_ = f.get();
-    f->set_ui_label( "Default Format");
-    f->set_id( g_format);
+    //core::auto_ptr_t<image_format_param_t> f( new image_format_param_t());
+    //default_format_ = f.get();
+    //f->set_ui_label( "Default Format");
+    //f->set_id( g_format);
     //f->set_default_value( app().preferences().default_format());
-    add_param( boost::move( f));
+    //add_param( boost::move( f));
 
-    p.reset( new float_param_t());
+    p.reset( new params::float_param_t());
     frame_rate_ = p.get();
     p->set_ui_label( "Frame Rate");
     p->set_id( g_frame_rate);
-    p->set_range( 1, 60);
-    p->set_default_value( app().preferences().frame_rate());
-    p->set_round_to_int( true);
-    p->set_static( true);
+    //p->set_range( 1, 60);
+    //p->set_default_value( app().preferences().frame_rate());
+    //p->set_round_to_int( true);
+    //p->set_static( true);
     //p->set_secret( true);
-    p->set_can_undo( false);
+    //p->set_can_undo( false);
     add_param( boost::move( p));
 
-    core::auto_ptr_t<bool_param_t> b( new bool_param_t());
-    autokey_ = b.get();
-    b->set_ui_label( "Autokey");
-    b->set_id( g_autokey);
-    add_param( boost::move( b));
-    */
+    //core::auto_ptr_t<bool_param_t> b( new bool_param_t());
+    //autokey_ = b.get();
+    //b->set_ui_label( "Autokey");
+    //b->set_id( g_autokey);
+    //add_param( boost::move( b));
 }
 
 int world_node_t::start_frame() const

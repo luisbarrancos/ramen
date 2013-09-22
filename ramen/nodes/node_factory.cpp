@@ -31,17 +31,6 @@ struct compare_menu_items
     }
 };
 
-bool check_node_class( const core::name_t& c)
-{
-    // TODO: implement this...
-    return true;
-
-    //if( boost::starts_with( c, "image."))
-    //    return true;
-
-    //return false;
-}
-
 } // unnamed
 
 node_factory_t& node_factory_t::instance()
@@ -63,15 +52,9 @@ node_factory_t::~node_factory_t()
 
 bool node_factory_t::register_node( const node_info_t& m)
 {
-    if( !check_node_class( m.id))
-        throw core::runtime_error( core::make_string( "Registered node class with unknown prefix ", m.id.c_str()));
-
     RAMEN_ASSERT( m.major_version >= 0);
     RAMEN_ASSERT( m.minor_version >= 0);
     RAMEN_ASSERT( m.create);
-    RAMEN_ASSERT( !m.menu.empty());
-    RAMEN_ASSERT( !m.submenu.empty());
-    RAMEN_ASSERT( !m.menu_item.empty());
 
     BOOST_FOREACH( const node_info_t& node_info, node_infos_)
     {

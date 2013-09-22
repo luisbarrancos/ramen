@@ -9,30 +9,15 @@
 
 #include<ramen/manipulators/manipulable.hpp>
 
-#include<vector>
-#include<string>
-#include<memory>
-#include<set>
-#include<utility>
-
 #include<boost/signals2/signal.hpp>
-
-#include<QWidget>
 
 #include<ramen/core/string8.hpp>
 
-#include<ramen/containers/ptr_vector.hpp>
-
 #include<ramen/math/point2.hpp>
-#include<ramen/math/box2.hpp>
 
 #include<ramen/params/param_set.hpp>
 
 #include<ramen/nodes/node_factory.hpp>
-
-#include<ramen/undo/command.hpp>
-
-#include<ramen/ui/palette.hpp>
 
 namespace ramen
 {
@@ -139,11 +124,6 @@ public:
 
     // user interface
     virtual const char *help_string() const;
-
-    virtual core::auto_ptr_t<QWidget> create_toolbar()
-    {
-        return core::auto_ptr_t<QWidget>();
-    }
 
     // paths
     virtual void convert_relative_paths( const boost::filesystem::path& old_base,

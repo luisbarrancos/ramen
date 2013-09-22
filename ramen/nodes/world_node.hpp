@@ -97,6 +97,8 @@ private:
 
     typedef boost::bimap<node_t*, core::string8_t> nodes_names_map_type;
     nodes_names_map_type nodes_names_map_;
+
+    params::float_param_t *start_frame_, *end_frame_, *frame_, *frame_rate_;
 };
 
 } // nodes

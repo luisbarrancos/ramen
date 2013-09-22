@@ -153,13 +153,13 @@ IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
     SET_TARGET_PROPERTIES( ramen_core PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
+    SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
+
     SET_TARGET_PROPERTIES( ramen_hash PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
     SET_TARGET_PROPERTIES( ramen_iterators PROPERTIES LIBRARY_OUTPUT_DIRECTORY
-                            ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
-
-    SET_TARGET_PROPERTIES( ramen_gl PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
     SET_TARGET_PROPERTIES( ramen_math PROPERTIES LIBRARY_OUTPUT_DIRECTORY
@@ -173,10 +173,12 @@ ELSE()
     MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
-SET( RAMENLIBS_LIBS ramen_core
-                    ramen_math
-                    ramen_iterators
+SET( RAMENLIBS_LIBS ramen_arrays
+                    ramen_core
                     ramen_gl
+                    ramen_hash
+                    ramen_iterators
+                    ramen_math
                     ramen_os
                     )
 

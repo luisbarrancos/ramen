@@ -170,6 +170,9 @@ params::param_t& node_t::param( const core::name_t& identifier)
 
 void node_t::add_dependency( params::param_t *src, params::param_t *dst)
 {
+    RAMEN_ASSERT( src->is_output());
+    RAMEN_ASSERT( dst->is_input());
+
     app().dependency_graph().add_dependency( depgraph::dependency_t( src, dst));
 }
 

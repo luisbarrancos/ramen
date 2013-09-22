@@ -71,7 +71,7 @@ public:
 
         This function is called to create an instance of this node.
         It can also return a null pointer, or even better, throw an exception
-        derived from std::exception if the node couldn't be created.
+        derived from core::exception if the node couldn't be created.
     */
     node_t *(*create)();
 
@@ -81,7 +81,7 @@ public:
         This function is called to create an instance of this node, when
         the user interface is active. It can show dialog boxes, file dialogs, ...
         It can also return a null pointer, or even better, throw an exception
-        derived from std::exception if the node couldn't be created.
+        derived from core::exception if the node couldn't be created.
     */
     node_t *(*create_gui)();
 

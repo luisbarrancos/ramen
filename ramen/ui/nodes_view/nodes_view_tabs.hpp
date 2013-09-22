@@ -7,11 +7,15 @@
 
 #include<ramen/ui/nodes_view/nodes_view_tabs_fwd.hpp>
 
+#include<vector>
+
 #include<QTabWidget>
 
 #include<ramen/core/string_fwd.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
+
+#include<ramen/ui/nodes_view/nodes_view_fwd.hpp>
 
 namespace ramen
 {
@@ -28,6 +32,9 @@ public:
 
     void add_view( nodes::composite_node_t *n);
 
+    const nodes_view_t *active_view() const;
+    nodes_view_t *active_view();
+
     void update_state();
 
 private:
@@ -40,6 +47,11 @@ private:
 private Q_SLOTS:
 
     void delete_tab( int index);
+
+private:
+
+    std::vector<nodes_view_t*> views_;
+    int active_view_;
 };
 
 } // ui

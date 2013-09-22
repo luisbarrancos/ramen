@@ -139,6 +139,8 @@ SET( RAMEN_SOURCES      assert.hpp
 
                         params/composite_param.hpp
                         params/composite_param.cpp
+                        params/float_param.hpp
+                        params/float_param.cpp
                         params/param_fwd.hpp
                         params/param.hpp
                         params/param.cpp

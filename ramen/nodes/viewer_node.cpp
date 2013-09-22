@@ -46,9 +46,6 @@ const node_info_t& viewer_node_t::viewer_node_info()
         info.id = core::name_t( "builtin.viewer");
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu = "Image";
-        info.submenu = "Util";
-        info.menu_item = "Viewer";
         info.help = "Viewer";
         info.create = &create_viewer_node;
         info.create_gui = &create_viewer_node_gui;

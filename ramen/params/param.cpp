@@ -5,6 +5,7 @@
 #include<ramen/params/param.hpp>
 
 #include<ramen/core/exceptions.hpp>
+#include<ramen/core/flags.hpp>
 
 #include<ramen/nodes/node.hpp>
 
@@ -97,6 +98,21 @@ nodes::world_node_t *param_t::world_node()
         return n->world_node();
 
     return 0;
+}
+
+bool param_t::is_output() const
+{
+    return core::test_flag( flags_, is_output_bit);
+}
+
+bool param_t::is_input() const
+{
+    return !is_output();
+}
+
+bool param_t::set_is_output( bool b)
+{
+    core::set_flag( flags_, is_output_bit, b);
 }
 
 void param_t::set_ui_label( core::string8_t name)

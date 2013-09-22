@@ -26,6 +26,8 @@ public:
     explicit nodes_view_t( nodes::composite_node_t *n);
     nodes_view_t( QWidget *parent, nodes::composite_node_t *n);
 
+    ~nodes_view_t();
+
     const nodes::composite_node_t *node() const { return node_;}
     nodes::composite_node_t *node()             { return node_;}
 

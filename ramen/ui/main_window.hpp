@@ -48,6 +48,9 @@ public:
 
     void add_dock_widget( Qt::DockWidgetArea area, QDockWidget *dock);
 
+    const ui::nodes_view_tabs_t& nodes_view_tabs() const  { return *nodes_view_tabs_;}
+    ui::nodes_view_tabs_t& nodes_view_tabs()              { return *nodes_view_tabs_;}
+
     const inspector_t& inspector() const    { return *inspector_;}
     inspector_t& inspector()                { return *inspector_;}
 

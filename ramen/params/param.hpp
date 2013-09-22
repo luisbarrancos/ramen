@@ -9,12 +9,6 @@
 
 #include<ramen/depgraph/dnode.hpp>
 
-#include<memory>
-#include<sstream>
-#include<string>
-#include<vector>
-#include<utility>
-
 #include<boost/function.hpp>
 #include<boost/flyweight.hpp>
 #include<boost/filesystem/path.hpp>
@@ -23,9 +17,6 @@
 
 #include<ramen/core/name.hpp>
 #include<ramen/core/string8.hpp>
-#include<ramen/core/flags.hpp>
-
-#include<ramen/math/box2.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
@@ -46,6 +37,8 @@ class RAMEN_API param_t : public depgraph::dnode_t
 {
     enum flag_bits
     {
+        is_output_bit   = 1 << 0,
+        dynamic_bit     = 1 << 1
     };
 
 public:
@@ -110,7 +103,9 @@ public:
     nodes::world_node_t *world_node();
 
     // flags
-    // ...
+    bool is_output() const;
+    bool is_input() const;
+    bool set_is_output( bool b);
 
     // toolips
     const core::string8_t& tooltip() const		{ return tooltip_;}
@@ -121,9 +116,6 @@ public:
 
     // animation
     void create_tracks( anim::track_t *parent);
-
-    // hash
-    // ...
 
     // undo
     core::auto_ptr_t<undo::command_t> create_command();
@@ -155,9 +147,6 @@ private:
 
     // undo
     virtual core::auto_ptr_t<undo::command_t> do_create_command();
-
-    // hash
-    // ...
 
     // paths
     virtual void do_convert_relative_paths( const boost::filesystem::path& old_base,

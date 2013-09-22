@@ -19,6 +19,12 @@
 
 #include<ramen/assert.hpp>
 
+#include<ramen/app/application.hpp>
+
+#include<ramen/ui/user_interface.hpp>
+#include<ramen/ui/main_window.hpp>
+#include<ramen/ui/nodes_view/nodes_view_tabs.hpp>
+
 namespace ramen
 {
 namespace ui
@@ -42,6 +48,11 @@ void nodes_view_t::init( nodes::composite_node_t *n)
     font_ = QFont( "Helvetica", 10);
     first_resize_ = true;
     node_ = n;
+}
+
+nodes_view_t::~nodes_view_t()
+{
+    // TODO: remove this view from node_view_tabs
 }
 
 bool nodes_view_t::event( QEvent *event)

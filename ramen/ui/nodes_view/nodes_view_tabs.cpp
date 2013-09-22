@@ -16,7 +16,7 @@ namespace ramen
 namespace ui
 {
 
-nodes_view_tabs_t::nodes_view_tabs_t( QWidget *parent) : QTabWidget( parent)
+nodes_view_tabs_t::nodes_view_tabs_t( QWidget *parent) : QTabWidget( parent), active_view_( -1)
 {
     setMovable( true);
     setTabsClosable( true);
@@ -30,12 +30,31 @@ nodes_view_tabs_t::nodes_view_tabs_t( QWidget *parent) : QTabWidget( parent)
 
 void nodes_view_tabs_t::add_view( nodes::composite_node_t *n)
 {
-    addTab( new nodes_view_t( n), n->name().c_str());
+    nodes_view_t *view = new nodes_view_t( n);
+    views_.push_back( view);
+    active_view_ = views_.size() - 1;
+    addTab( view, n->name().c_str());
 }
 
 void nodes_view_tabs_t::update_state()
 {
     update();
+}
+
+const nodes_view_t *nodes_view_tabs_t::active_view() const
+{
+    if( active_view_ >= 0)
+        return views_[active_view_];
+
+    return 0;
+}
+
+nodes_view_t *nodes_view_tabs_t::active_view()
+{
+    if( active_view_ >= 0)
+        return views_[active_view_];
+
+    return 0;
 }
 
 void nodes_view_tabs_t::node_was_deleted( nodes::node_t *n)
