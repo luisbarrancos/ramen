@@ -8,40 +8,18 @@
 #include<ramen/ui/viewer/viewer_tabs_fwd.hpp>
 
 #include<QTabWidget>
-#include<QTabBar>
 
 #include<ramen/core/string_fwd.hpp>
 
 #include<ramen/nodes/node_fwd.hpp>
 
-class QEvent;
-class QMouseEvent;
-class QDragEvent;
-class QDropEvent;
+#include<ramen/ui/viewer/viewer_fwd.hpp>
+#include<ramen/ui/viewer/viewer_tab_bar.hpp>
 
 namespace ramen
 {
 namespace ui
 {
-
-class viewer_tabs_bar_t : public QTabBar
-{
-    Q_OBJECT
-
-public:
-
-    explicit viewer_tabs_bar_t( QWidget *parent = 0);
-
-protected:
-
-    virtual void mousePressEvent( QMouseEvent *e);
-    virtual void mouseMoveEvent( QMouseEvent *e);
-    virtual void mouseReleaseEvent( QMouseEvent *e);
-
-private:
-
-    int selected_tab_;
-};
 
 class viewer_tabs_t : public QTabWidget
 {
@@ -52,7 +30,6 @@ public:
     explicit viewer_tabs_t( QWidget *parent = 0);
 
     void add_viewer( const QString& name);
-    void add_viewer( const QString& name, QWidget *tab);
 
     void update_state();
 

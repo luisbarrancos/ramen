@@ -37,8 +37,6 @@ class RAMEN_API param_t : public depgraph::dnode_t
 {
     enum flag_bits
     {
-        is_output_bit   = 1 << 0,
-        dynamic_bit     = 1 << 1
     };
 
 public:
@@ -103,9 +101,7 @@ public:
     nodes::world_node_t *world_node();
 
     // flags
-    bool is_output() const;
-    bool is_input() const;
-    bool set_is_output( bool b);
+    // ...
 
     // toolips
     const core::string8_t& tooltip() const		{ return tooltip_;}

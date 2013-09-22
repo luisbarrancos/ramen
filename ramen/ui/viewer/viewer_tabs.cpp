@@ -4,75 +4,17 @@
 
 #include<ramen/ui/viewer/viewer_tabs.hpp>
 
-#include<QApplication>
 #include<QMouseEvent>
-#include<QDrag>
-#include<QMimeData>
 
 #include<ramen/nodes/world_node.hpp>
 #include<ramen/nodes/viewer_node.hpp>
+
+#include<ramen/ui/viewer/viewer.hpp>
 
 namespace ramen
 {
 namespace ui
 {
-
-viewer_tabs_bar_t::viewer_tabs_bar_t( QWidget *parent) : QTabBar( parent)
-{
-    selected_tab_ = -1;
-}
-
-void viewer_tabs_bar_t::mousePressEvent( QMouseEvent *e)
-{
-    if( e->button() == Qt::LeftButton)
-        selected_tab_ = tabAt( e->pos());
-
-    QTabBar::mousePressEvent( e);
-}
-
-void viewer_tabs_bar_t::mouseMoveEvent( QMouseEvent *e)
-{
-    QTabBar::mouseMoveEvent( e);
-}
-
-void viewer_tabs_bar_t::mouseReleaseEvent( QMouseEvent *e)
-{
-    if( e->button() == Qt::LeftButton)
-    {
-        if( selected_tab_ != -1 && !rect().contains( e->pos()))
-        {
-            viewer_tabs_t *src_tabs = dynamic_cast<viewer_tabs_t*>( parent());
-
-            if( QWidget *target = qApp->topLevelAt( e->globalPos()))
-            {
-                QPoint p = target->mapFromGlobal( e->globalPos());
-                QWidget *w = target->childAt( p);
-                while( w)
-                {
-                    if( w == src_tabs)
-                        break;
-
-                    if( viewer_tabs_t *dst_tabs = dynamic_cast<viewer_tabs_t*>( w))
-                    {
-                        src_tabs->transfer_viewer( selected_tab_, dst_tabs);
-                        selected_tab_ = -1;
-                        return;
-                    }
-
-                    w = w->parentWidget();
-                }
-            }
-
-            src_tabs->detach_viewer( selected_tab_, e->globalPos());
-            selected_tab_ = -1;
-            return;
-        }
-    }
-
-    QTabBar::mouseReleaseEvent( e);
-}
-
-/*************************************************************/
 
 viewer_tabs_t::viewer_tabs_t( QWidget *parent) : QTabWidget( parent)
 {
@@ -94,12 +36,7 @@ void viewer_tabs_t::update_state()
 
 void viewer_tabs_t::add_viewer( const QString& name)
 {
-    addTab( new QWidget(), name);
-}
-
-void viewer_tabs_t::add_viewer( const QString& name, QWidget *tab)
-{
-    addTab( tab, name);
+    addTab( new viewer_t( 0), name);
 }
 
 void viewer_tabs_t::detach_viewer( int index, const QPoint& pos)
@@ -129,7 +66,7 @@ void viewer_tabs_t::transfer_viewer( int index, viewer_tabs_t *other)
     QString name = tabText( index);
     removeTab( index);
 
-    other->add_viewer( name, tab);
+    other->addTab( tab, name);
 
     if( !parent() && !count())
         close();

@@ -14,6 +14,9 @@ class param_t;
 class composite_param_t;
 class float_param_t;
 
+class input_param_t;
+class output_param_t;
+
 class param_set_t;
 
 } // params

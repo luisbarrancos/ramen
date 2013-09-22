@@ -129,7 +129,7 @@ main_window_t::main_window_t() : QMainWindow()
     setCentralWidget( viewer_tabs_);
 
     // while testing
-    viewer_tabs_->add_viewer( "Viewer1");
+    //viewer_tabs_->add_viewer( "Viewer1");
 
     // time toolbar
     addToolBar( Qt::BottomToolBarArea, create_time_toolbar());

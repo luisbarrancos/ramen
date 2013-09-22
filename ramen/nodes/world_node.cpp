@@ -68,6 +68,13 @@ world_node_t::world_node_t( const world_node_t& other) : composite_node_t( other
     throw core::not_implemented();
 }
 
+void world_node_t::create_default_nodes()
+{
+    RAMEN_ASSERT( nodes().empty());
+
+    // TODO: create default nodes here...
+}
+
 node_t *world_node_t::do_clone() const
 {
     return new world_node_t( *this);

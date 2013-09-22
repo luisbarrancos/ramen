@@ -2,19 +2,25 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_NODES_VIEW_NODES_VIEW_FWD_HPP
-#define	RAMEN_UI_NODES_VIEW_NODES_VIEW_FWD_HPP
+#include<ramen/ui/viewer/viewer.hpp>
 
-#include<ramen/config.hpp>
+#include<ramen/assert.hpp>
 
 namespace ramen
 {
 namespace ui
 {
 
-class nodes_view_t;
+viewer_t::viewer_t( nodes::viewer_node_t *v)
+{
+    //RAMEN_ASSERT( v);
+
+    viewer_node_ = v;
+}
+
+viewer_t::~viewer_t()
+{
+}
 
 } // ui
 } // ramen
-
-#endif

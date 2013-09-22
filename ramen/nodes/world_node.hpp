@@ -23,6 +23,8 @@ public:
     /// Constructor
     world_node_t();
 
+    void create_default_nodes();
+
     int start_frame() const;
     void set_start_frame( int f);
 
@@ -73,11 +75,6 @@ protected:
 private:
 
     friend class node_graph_modifier_t;
-    friend class undo::add_node_command_t;
-    friend class undo::remove_node_command_t;
-    friend class undo::connect_command_t;
-    friend class undo::disconnect_command_t;
-    friend class undo::ignore_node_command_t;
 
     // non-assignable
     void operator=( const world_node_t& other);

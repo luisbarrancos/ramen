@@ -18,6 +18,7 @@ document_t::document_t() : dirty_( false)
 {
     world_node_.create_params();
     world_node_.create_manipulators();
+    world_node_.create_default_nodes();
     undo_.reset( new undo::stack_t());
 }
 

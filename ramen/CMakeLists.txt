@@ -45,6 +45,8 @@ SET( RAMEN_MOC_CLASSES	${PROJECT_SOURCE_DIR}/ramenlibs/ramen/qwidgets/ramen/qwid
                         ui/nodes_view/nodes_view.hpp
                         ui/nodes_view/nodes_view_tabs.hpp
 
+                        ui/viewer/viewer.hpp
+                        ui/viewer/viewer_tab_bar.hpp
                         ui/viewer/viewer_tabs.hpp
 
                         ui/widgets/color_button.hpp
@@ -141,6 +143,10 @@ SET( RAMEN_SOURCES      assert.hpp
                         params/composite_param.cpp
                         params/float_param.hpp
                         params/float_param.cpp
+                        params/input_param.hpp
+                        params/input_param.cpp
+                        params/output_param.hpp
+                        params/output_param.cpp
                         params/param_fwd.hpp
                         params/param.hpp
                         params/param.cpp
@@ -208,6 +214,11 @@ SET( RAMEN_SOURCES      assert.hpp
                         ui/nodes_view/nodes_view_tabs.hpp
                         ui/nodes_view/nodes_view_tabs.cpp
 
+                        ui/viewer/viewer_fwd.hpp
+                        ui/viewer/viewer.hpp
+                        ui/viewer/viewer.cpp
+                        ui/viewer/viewer_tab_bar.hpp
+                        ui/viewer/viewer_tab_bar.cpp
                         ui/viewer/viewer_tabs_fwd.hpp
                         ui/viewer/viewer_tabs.hpp
                         ui/viewer/viewer_tabs.cpp

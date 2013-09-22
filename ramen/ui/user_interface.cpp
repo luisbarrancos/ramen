@@ -169,6 +169,10 @@ void user_interface_t::create_new_document()
     //                                                         app().document().world_node().end_frame());
 
     //render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
+
+    // reset nodes_view
+    // reset viewer
+
     update();
 }
 
