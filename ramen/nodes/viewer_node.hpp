@@ -12,6 +12,8 @@ namespace ramen
 namespace nodes
 {
 
+extern core::name_t g_viewer_node_id;
+
 class RAMEN_API viewer_node_t : public node_t
 {
 public:

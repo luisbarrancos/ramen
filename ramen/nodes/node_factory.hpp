@@ -49,9 +49,10 @@ public:
     bool is_latest_version( const core::name_t& id) const;
 
     // creation
-    core::auto_ptr_t<node_t> create_by_id( const core::name_t& id, bool ui = false);
+    core::auto_ptr_t<node_t> create_by_id( const core::name_t& id, bool ui);
     core::auto_ptr_t<node_t> create_by_id_with_version( const core::name_t& id,
-                                                        const std::pair<int, int>& version);
+                                                        const std::pair<int, int>& version,
+                                                        bool ui);
 
 private:
 

@@ -7,6 +7,7 @@
 
 #include<ramen/nodes/node_graph_modifier_fwd.hpp>
 
+#include<ramen/core/name.hpp>
 #include<ramen/core/string8.hpp>
 #include<ramen/core/memory.hpp>
 
@@ -23,6 +24,9 @@ public:
 
     node_graph_modifier_t( composite_node_t *graph, core::string8_t undo_name);
     ~node_graph_modifier_t();
+
+    void create_node( const core::name_t& id, bool ui);
+    void create_node( const core::name_t& id, const std::pair<int, int>& version, bool ui);
 
     void add_node( BOOST_RV_REF( core::auto_ptr_t<node_t>) n)
     {

@@ -120,7 +120,7 @@ private:
 
     QMenuBar *menubar_;
 
-    QMenu *file_, *edit_, *composition_, *view_, *help_;
+    QMenu *file_, *edit_, *view_, *help_;
     QMenu *open_recent_;
     QMenu *import_, *export_;
 

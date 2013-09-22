@@ -35,6 +35,7 @@
 #include<ramen/nodes/node.hpp>
 #include<ramen/nodes/node_factory.hpp>
 #include<ramen/nodes/node_graph_modifier.hpp>
+#include<ramen/nodes/viewer_node.hpp>
 
 #include<ramen/undo/stack.hpp>
 
@@ -43,10 +44,10 @@
 #include<ramen/ui/user_interface.hpp>
 #include<ramen/ui/time_controls.hpp>
 
-
 #include<ramen/ui/anim/anim_editor.hpp>
 #include<ramen/ui/inspector/inspector.hpp>
 #include<ramen/ui/nodes_view/nodes_view_tabs.hpp>
+#include<ramen/ui/nodes_view/nodes_view.hpp>
 #include<ramen/ui/viewer/viewer_tabs.hpp>
 
 namespace ramen
@@ -454,6 +455,10 @@ void main_window_t::show_preferences_dialog()
 
 void main_window_t::create_viewer()
 {
+    nodes::composite_node_t *n = nodes_view_tabs().active_view()->node();
+    nodes::node_graph_modifier_t m( n, "Create viewer");
+    m.create_node( nodes::g_viewer_node_id, true);
+    m.execute( true);
 }
 
 void main_window_t::show_about_box() {}

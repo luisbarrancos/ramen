@@ -71,7 +71,8 @@ protected:
     core::auto_ptr_t<node_t> create_node( const core::name_t& id, bool ui);
 
     core::auto_ptr_t<node_t> create_node( const core::name_t& id,
-                                          const std::pair<int,int>& version);
+                                          const std::pair<int,int>& version,
+                                          bool ui);
 
     core::auto_ptr_t<node_t> create_unknown_node( const core::name_t& id,
                                                   const std::pair<int, int>& version);
@@ -82,14 +83,11 @@ protected:
 private:
 
     friend class node_graph_modifier_t;
-    friend class undo::add_node_command_t;
-    friend class undo::remove_node_command_t;
-    friend class undo::connect_command_t;
-    friend class undo::disconnect_command_t;
-    friend class undo::ignore_node_command_t;
 
     // non-assignable
     void operator=( const composite_node_t& other);
+
+    void init_node( node_t *n);
 
     void emit_node_added_signal( node_t *n);
     void emit_node_released_signal( node_t *n);

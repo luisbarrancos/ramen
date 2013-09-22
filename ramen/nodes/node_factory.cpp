@@ -126,7 +126,8 @@ core::auto_ptr_t<node_t> node_factory_t::create_by_id( const core::name_t& id, b
 }
 
 core::auto_ptr_t<node_t> node_factory_t::create_by_id_with_version( const core::name_t& id,
-                                                                    const std::pair<int, int>& version)
+                                                                    const std::pair<int, int>& version,
+                                                                    bool ui)
 {
     std::vector<node_info_t>::iterator best( node_infos_.end());
     std::vector<node_info_t>::iterator it( node_infos_.begin());
@@ -163,7 +164,10 @@ core::auto_ptr_t<node_t> node_factory_t::create_by_id_with_version( const core::
                     best->init();
             }
 
-            n.reset( best->create());
+            if( best->create_gui && ui)
+                n.reset( best->create_gui());
+            else
+                n.reset( best->create());
         }
         catch( ...)
         {

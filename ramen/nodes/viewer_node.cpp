@@ -9,6 +9,8 @@ namespace ramen
 namespace nodes
 {
 
+core::name_t g_viewer_node_id( "builtin.viewer");
+
 viewer_node_t::viewer_node_t()
 {
     set_name( "viewer");
@@ -43,7 +45,7 @@ const node_info_t& viewer_node_t::viewer_node_info()
 
     if( !inited)
     {
-        info.id = core::name_t( "builtin.viewer");
+        info.id = g_viewer_node_id;
         info.major_version = 1;
         info.minor_version = 0;
         info.help = "Viewer";

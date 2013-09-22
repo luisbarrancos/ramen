@@ -85,44 +85,23 @@ core::auto_ptr_t<node_t> composite_node_t::create_node( const core::name_t& id, 
 {
     core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id( id, ui));
 
-    RAMEN_ASSERT( p.get());
-
-    try
-    {
-        p->set_parent( this);
-        p->create_params();
-        p->create_manipulators();
-    }
-    catch( ...)
-    {
-        return core::auto_ptr_t<node_t>();
-    }
+    if( p)
+        init_node( p.get());
 
     return core::auto_ptr_t<node_t>( p.release());
 }
 
 core::auto_ptr_t<node_t> composite_node_t::create_node( const core::name_t& id,
-                                                        const std::pair<int,int>& version)
+                                                        const std::pair<int,int>& version,
+                                                        bool ui)
 {
     RAMEN_ASSERT( !id.empty());
     RAMEN_ASSERT( version.first >= 0 && version.second >= 0);
 
-    core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id_with_version( id, version));
+    core::auto_ptr_t<node_t> p( node_factory_t::instance().create_by_id_with_version( id, version, ui));
 
-    // as a last resort, return an unknown node
-    if( !p.get())
-        return create_unknown_node( id, version);
-
-    try
-    {
-        p->set_parent( this);
-        p->create_params();
-        p->create_manipulators();
-    }
-    catch( ...)
-    {
-        return create_unknown_node( id, version);
-    }
+    if( p)
+        init_node( p.get());
 
     return core::auto_ptr_t<node_t>( p.release());
 }
@@ -134,6 +113,13 @@ core::auto_ptr_t<node_t> composite_node_t::create_unknown_node( const core::name
     throw core::not_implemented();
 
     return core::auto_ptr_t<node_t>();
+}
+
+void composite_node_t::init_node( node_t *n)
+{
+    n->set_parent( this);
+    n->create_params();
+    n->create_manipulators();
 }
 
 } // nodes
