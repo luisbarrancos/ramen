@@ -20,13 +20,13 @@ namespace core
 */
 struct RAMEN_API empty_t : private boost::totally_ordered<empty_t>
 {
-    bool operator==( const empty_t&) const;
-    bool operator<( const empty_t&) const;
+    bool operator==(const empty_t&) const;
+    bool operator<(const empty_t&) const;
 
-    void swap( empty_t&);
+    void swap(empty_t&);
 };
 
-inline void swap( empty_t&, empty_t&) {}
+inline void swap(empty_t&, empty_t&) {}
 
 } // core
 } // ramen

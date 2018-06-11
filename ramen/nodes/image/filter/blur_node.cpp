@@ -21,7 +21,7 @@ void blur_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> r( new popup_param_t( "Channels"));
     r->set_id( "channels");
-    r->menu_items() = boost::assign::list_of( "RGBA")( "RGB")( "Alpha");
+    r->menu_items() = std::vector<std::string>({ "RGBA", "RGB", "Alpha"});
     add_param( r);
 
     std::auto_ptr<float2_param_t> q( new float2_param_t( "Radius"));
@@ -42,7 +42,7 @@ void blur_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> b( new popup_param_t( "Border Mode"));
     b->set_id( "border");
-    b->menu_items() = boost::assign::list_of( "Black")( "Repeat")( "Reflect");
+    b->menu_items() = std::vector<std::string>({ "Black", "Repeat", "Reflect"});
     add_param( b);
 }
 

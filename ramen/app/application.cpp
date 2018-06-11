@@ -85,7 +85,7 @@ application_t::application_t( int argc, char **argv) : system_(), preferences_()
     if( max_threads_ == 0)
         max_threads_ = boost::thread::hardware_concurrency();
 
-    task_scheduler_.initialize( max_threads_);
+//task_scheduler_.initialize( max_threads_);
     Imf::setGlobalThreadCount( max_threads_);
 
     if( !command_line_)

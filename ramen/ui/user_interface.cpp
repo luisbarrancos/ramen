@@ -56,22 +56,22 @@ namespace ui
 user_interface_t::user_interface_t() : QObject()
 {
     active_ = 0;
-	context_ = 0;
-	rendering_ = false;
-	cancelled_ = false;
-	interacting_ = false;
-	event_filter_installed_ = false;
+    context_ = 0;
+    rendering_ = false;
+    cancelled_ = false;
+    interacting_ = false;
+    event_filter_installed_ = false;
 
     image_types_str_ = "Image Files (";
 
-	    BOOST_FOREACH( const std::string& ext, movieio::factory_t::instance().extensions())
-	    {
-			image_types_str_.append( "*.");
-			image_types_str_.append( ext.c_str());
-			image_types_str_.append( " ");
-	    }
+        BOOST_FOREACH( const std::string& ext, movieio::factory_t::instance().extensions())
+        {
+            image_types_str_.append( "*.");
+            image_types_str_.append( ext.c_str());
+            image_types_str_.append( " ");
+        }
 
-	image_types_str_.append( ")");
+    image_types_str_.append( ")");
 
     viewer_ = 0;
     inspector_ = 0;
@@ -96,16 +96,16 @@ void user_interface_t::init()
     inspector_ = new inspector_t();
     anim_editor_ = new anim_editor_t();
     window_ = new main_window_t();
-	restore_window_state();
+    restore_window_state();
 }
 
 void user_interface_t::init_ui_style()
 {
-	QPlastiqueStyle *style = new QPlastiqueStyle();
-	qApp->setStyle( style);
+    //QPlastiqueStyle *style = new QPlastiqueStyle();
+    //qApp->setStyle( style);
 
-	// init palette
-	palette_t::instance();
+    // init palette
+    palette_t::instance();
 }
 
 void user_interface_t::save_window_state()
@@ -121,26 +121,26 @@ void user_interface_t::save_window_state()
 void user_interface_t::restore_window_state()
 {
     boost::filesystem::path p = app().system().application_user_path() / "wstate.ui";
-	{
-	    QFile file(filesystem::file_cstring( p));
+    {
+        QFile file(filesystem::file_cstring( p));
 
-	    if( file.open( QIODevice::ReadOnly))
-	    {
-			QByteArray window_state = file.readAll();
-			window_->restoreState( window_state);
-			return;
-	    }
-	}
+        if( file.open( QIODevice::ReadOnly))
+        {
+            QByteArray window_state = file.readAll();
+            window_->restoreState( window_state);
+            return;
+        }
+    }
 }
 
 void user_interface_t::show() { window_->show();}
 
 int user_interface_t::run( const boost::filesystem::path& p)
-{ 
-	if( !p.empty())
-		open_document( p);
+{
+    if( !p.empty())
+        open_document( p);
 
-	return qApp->exec();
+    return qApp->exec();
 }
 
 void user_interface_t::quit()
@@ -156,17 +156,17 @@ void user_interface_t::create_new_document()
     set_context_node( 0);
 
     if( anim_editor_ )
-    	anim_editor().clear_all();
-	
-	app().create_new_document();
+        anim_editor().clear_all();
+
+    app().create_new_document();
 
     app().document().composition().attach_add_observer( boost::bind( &user_interface_t::node_added, this, _1));
     app().document().composition().attach_release_observer( boost::bind( &user_interface_t::node_released, this, _1));
 
     render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-																app().document().composition().end_frame());
+                                                                app().document().composition().end_frame());
 
-    render_composition_dialog_t::instance().set_mblur_settings( 0, 1);    
+    render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
     update();
 }
 
@@ -178,72 +178,72 @@ void user_interface_t::open_document( const boost::filesystem::path& p)
     if( !ifs.is_open() || !ifs.good())
     {
         error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
-		update();
+        update();
         return;
     }
 
-	std::auto_ptr<serialization::yaml_iarchive_t> in;
-	
-	try
-	{
-		in.reset( new serialization::yaml_iarchive_t( ifs));
-		
-		if( !in->read_composition_header())
-		{
-			create_new_document();
-			error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
-			update();
-			return;
-		}
-		
-		app().document().set_file( p);
-		app().document().load( *in);
-		main_window()->update_recent_files_menu( p);
-	}
-	catch( std::exception& e)
-	{
-		create_new_document();
+    std::auto_ptr<serialization::yaml_iarchive_t> in;
+
+    try
+    {
+        in.reset( new serialization::yaml_iarchive_t( ifs));
+
+        if( !in->read_composition_header())
+        {
+            create_new_document();
+            error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
+            update();
+            return;
+        }
+
+        app().document().set_file( p);
+        app().document().load( *in);
+        main_window()->update_recent_files_menu( p);
+    }
+    catch( std::exception& e)
+    {
+        create_new_document();
         error( std::string( "Couldn't open input file ") + filesystem::file_string( p));
-		update();
-		return;
-	}
+        update();
+        return;
+    }
 
-	// read here ui info
+    // read here ui info
 
-	// update the dialogs
+    // update the dialogs
     render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
                                                     app().document().composition().end_frame());
 
     render_composition_dialog_t::instance().set_mblur_settings( 0, 1);
 
     update();
-	std::string err = in->errors();
-	
-	if( !err.empty())
-		multiline_alert_t::instance().show_alert( "Errors during file open", err);
+    std::string err = in->errors();
+
+    if( !err.empty())
+        multiline_alert_t::instance().show_alert( "Errors during file open", err);
 }
 
 bool user_interface_t::save_document()
 {
     RAMEN_ASSERT( app().document().has_file());
 
-	try
-	{
-		serialization::yaml_oarchive_t out;
-		out.write_composition_header();
-		app().document().save( out);
-		write_ui_state( out);
+    try
+    {
+        serialization::yaml_oarchive_t out;
+        out.write_composition_header();
+        app().document().save( out);
+        write_ui_state( out);
 
-		out.write_to_file( app().document().file());
-		app().document().set_dirty( false);
-	}
-	catch( std::exception& e)
-	{
-		error( std::string( "Couldn't save file. Exception, what = ") + e.what());
-		return false;
-	}
-	
-	return true;
+        out.write_to_file( app().document().file());
+        app().document().set_dirty( false);
+    }
+    catch( std::exception& e)
+    {
+        error( std::string( "Couldn't save file. Exception, what = ") + e.what());
+        return false;
+    }
+
+    return true;
 }
 
 void user_interface_t::set_active_node( node_t *n)
@@ -305,28 +305,28 @@ void user_interface_t::node_released( node_t *n)
 void user_interface_t::update()
 {
     if( !app().quitting())
-	{
+    {
         if( window_)
             window_->update();
 
-		update_anim_editors();
-	}
+        update_anim_editors();
+    }
 }
 
 void user_interface_t::begin_interaction()
 {
-	app().document().composition().begin_interaction();
-	viewer().begin_interaction();
+    app().document().composition().begin_interaction();
+    viewer().begin_interaction();
     interacting_ = true;
     app().memory_manager().begin_interaction();
 }
 
 void user_interface_t::end_interaction()
-{ 
+{
     interacting_ = false;
     app().memory_manager().end_interaction();
-	viewer().end_interaction();
-	app().document().composition().end_interaction();
+    viewer().end_interaction();
+    app().document().composition().end_interaction();
 }
 
 int user_interface_t::start_frame() const
@@ -348,33 +348,33 @@ void user_interface_t::set_start_frame( int t)
 {
     app().document().composition().set_start_frame( t);
     main_window()->time_slider().update( app().document().composition().start_frame(),
-										 app().document().composition().frame(),
-										 app().document().composition().end_frame());
+                                         app().document().composition().frame(),
+                                         app().document().composition().end_frame());
 
     render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-														    app().document().composition().end_frame());
+                                                            app().document().composition().end_frame());
 }
 
 void user_interface_t::set_end_frame( int t)
 {
     app().document().composition().set_end_frame( t);
     main_window()->time_slider().update( app().document().composition().start_frame(),
-										 app().document().composition().frame(),
-										 app().document().composition().end_frame());
+                                         app().document().composition().frame(),
+                                         app().document().composition().end_frame());
 
     render_composition_dialog_t::instance().set_frame_range( app().document().composition().start_frame(),
-														    app().document().composition().end_frame());
+                                                            app().document().composition().end_frame());
 }
 
 void user_interface_t::set_frame( int t)
 {
     app().document().composition().set_frame( t);
     main_window()->time_slider().update( app().document().composition().start_frame(),
-										 app().document().composition().frame(),
-										 app().document().composition().end_frame());
+                                         app().document().composition().frame(),
+                                         app().document().composition().end_frame());
 
     inspector().update();
-	update_anim_editors();
+    update_anim_editors();
     viewer().frame_changed();
 }
 
@@ -424,13 +424,13 @@ bool user_interface_t::image_sequence_file_selector( boost::filesystem::path& p,
 }
 
 bool user_interface_t::image_sequence_file_selector( const std::string& title, const std::string& types,
-						       boost::filesystem::path& p, bool& sequence, bool& relative) const
+                               boost::filesystem::path& p, bool& sequence, bool& relative) const
 {
     static bool was_relative = false;
     static bool was_sequence = true;
 
     QFileDialog dialog( 0, title.c_str(), QString::null, types.c_str());
-	dialog.setOption( QFileDialog::DontUseNativeDialog, true);
+    dialog.setOption( QFileDialog::DontUseNativeDialog, true);
     dialog.setFileMode( QFileDialog::ExistingFile);
 
     QWidget *extra_widgets = new QWidget( &dialog);
@@ -488,24 +488,24 @@ bool user_interface_t::image_sequence_file_selector( const std::string& title, c
 // serialization
 void read_ui_state( const serialization::yaml_iarchive_t& in)
 {
-	// TODO: implement this
+    // TODO: implement this
 }
 
 void user_interface_t::write_ui_state( serialization::yaml_oarchive_t& out) const
 {
-	// out << YAML::BeginMap;
-	// save state( out)
-	// out << YAML::EndMap;
+    // out << YAML::BeginMap;
+    // save state( out)
+    // out << YAML::EndMap;
 }
 
 // event filter
 void user_interface_t::start_long_process()
-{ 
-	RAMEN_ASSERT( !event_filter_installed_);
-	
-	cancelled_ = false;
-	qApp->installEventFilter( this);
-	event_filter_installed_ = true;
+{
+    RAMEN_ASSERT( !event_filter_installed_);
+
+    cancelled_ = false;
+    qApp->installEventFilter( this);
+    event_filter_installed_ = true;
 }
 
 void user_interface_t::process_events() { qApp->processEvents();}
@@ -513,74 +513,74 @@ void user_interface_t::process_events() { qApp->processEvents();}
 bool user_interface_t::process_cancelled() const	{ return cancelled_;}
 
 void user_interface_t::end_long_process()
-{ 
-	RAMEN_ASSERT( event_filter_installed_);	
-	
-	qApp->removeEventFilter( this);
-	event_filter_installed_ = false;
+{
+    RAMEN_ASSERT( event_filter_installed_);
+
+    qApp->removeEventFilter( this);
+    event_filter_installed_ = false;
 }
 
 bool user_interface_t::eventFilter( QObject *watched, QEvent *event)
 {
-	switch( event->type())
-	{
-	case QEvent::KeyPress:
-	{
-		QKeyEvent *key_event = dynamic_cast<QKeyEvent*>( event);
+    switch( event->type())
+    {
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *key_event = dynamic_cast<QKeyEvent*>( event);
 
-		if( key_event->key() == Qt::Key_Escape)
-			cancelled_ = true;
+        if( key_event->key() == Qt::Key_Escape)
+            cancelled_ = true;
 
-		return true;
-	}
-	break;
-	
-	case QEvent::KeyRelease:
-	case QEvent::MouseButtonPress:
-	case QEvent::MouseButtonRelease:
-		return true;
+        return true;
+    }
+    break;
 
-	case QEvent::MouseMove:
-	{
-		QMouseEvent *mouse_event = dynamic_cast<QMouseEvent*>( event);
-		return mouse_event->buttons() == Qt::NoButton;
-	}
-	break;
-	
-	default:
-		return false; // pass all other events
-	}
+    case QEvent::KeyRelease:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+        return true;
+
+    case QEvent::MouseMove:
+    {
+        QMouseEvent *mouse_event = dynamic_cast<QMouseEvent*>( event);
+        return mouse_event->buttons() == Qt::NoButton;
+    }
+    break;
+
+    default:
+        return false; // pass all other events
+    }
 }
 
 boost::unique_future<bool>& user_interface_t::render_image( render::context_t context, render::image_node_renderer_t& renderer)
 {
-	RAMEN_ASSERT( !rendering_);
-	
-	cancelled_ = false;
-	context.mode = render::interface_render;
-	context.cancel = boost::bind( &user_interface_t::process_cancelled, this);
-	renderer.set_context( context);
-	rendering_ = true;
+    RAMEN_ASSERT( !rendering_);
+
+    cancelled_ = false;
+    context.mode = render::interface_render;
+    context.cancel = boost::bind( &user_interface_t::process_cancelled, this);
+    renderer.set_context( context);
+    rendering_ = true;
     boost::unique_future<bool>& future( app().render_thread().render_image( renderer));
 
-	if( future.is_ready())
-	{
-		rendering_ = false;
-		return future;
-	}
+    if( future.is_ready())
+    {
+        rendering_ = false;
+        return future;
+    }
 
-	/*
-	start_long_process();
+    /*
+    start_long_process();
 
-	while( !future.timed_wait( boost::posix_time::milliseconds( 30)))
-		process_events();
+    while( !future.timed_wait( boost::posix_time::milliseconds( 30)))
+        process_events();
 
-	end_long_process();
-	*/
-	
-	future.wait();
-	rendering_ = false;
-	return future;
+    end_long_process();
+    */
+
+    future.wait();
+    rendering_ = false;
+    return future;
 }
 
 int user_interface_t::viewer_toolbar_height() const
@@ -590,11 +590,11 @@ int user_interface_t::viewer_toolbar_height() const
 
 QFont user_interface_t::get_fixed_width_code_font()
 {
-	QFont font;
-	font.setFamily( "Courier");
-	font.setFixedPitch( true);
-	font.setPointSize( 11);
-	return font;
+    QFont font;
+    font.setFamily( "Courier");
+    font.setFixedPitch( true);
+    font.setPointSize( 11);
+    return font;
 }
 
 } // namespace

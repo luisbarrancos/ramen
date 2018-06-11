@@ -12,6 +12,8 @@
 
 #include<ramen/core/poly_fwd.hpp>
 
+#include<utility>
+
 #include<boost/type_traits/is_base_of.hpp>
 #include<boost/type_traits/remove_reference.hpp>
 #include<boost/type_traits/remove_pointer.hpp>
@@ -20,7 +22,6 @@
 #include<boost/mpl/if.hpp>
 #include<boost/mpl/bool.hpp>
 #include<boost/type_traits/has_nothrow_constructor.hpp>
-#include<boost/move/move.hpp>
 #include<boost/swap.hpp>
 
 #include<ramen/core/exceptions.hpp>
@@ -57,10 +58,10 @@ class poly_state_remote : public Interface
 {
 private:
 
-    BOOST_MOVABLE_BUT_NOT_COPYABLE( poly_state_remote)
-
-    // unimplemented
-    poly_state_remote& operator=( BOOST_RV_REF( poly_state_remote) x);
+    // Movable but not copyable.
+    poly_state_remote(const poly_state_remote&) = delete;
+    poly_state_remote& operator=(const poly_state_remote&) = delete;
+    poly_state_remote& operator=(poly_state_remote&&) = delete;
 
 public:
 
@@ -71,11 +72,7 @@ public:
     {
     }
 
-    explicit poly_state_remote( BOOST_RV_REF( value_type) x) : value_ptr_m( new value_type( x))
-    {
-    }
-
-    explicit poly_state_remote( BOOST_RV_REF( poly_state_remote) x) : value_ptr_m( x.value_ptr_m)
+    explicit poly_state_remote( poly_state_remote&& x) : value_ptr_m( x.value_ptr_m)
     {
         assert( value_ptr_m);
         x.value_ptr_m = 0;
@@ -129,10 +126,9 @@ class poly_state_local : public Interface
 {
 private:
 
-    BOOST_MOVABLE_BUT_NOT_COPYABLE( poly_state_local)
-
-    // unimplemented
-    poly_state_local& operator=( BOOST_RV_REF( poly_state_local) x);
+    poly_state_local(const poly_state_local&) = delete;
+    poly_state_local& operator=(const poly_state_local&) = delete;
+    poly_state_local& operator=(poly_state_local&&) = delete;
 
 public:
 
@@ -141,9 +137,7 @@ public:
 
     explicit poly_state_local( const value_type& x) : value_m( x) {}
 
-    explicit poly_state_local( BOOST_RV_REF( value_type) x) : value_m( x) {}
-
-    poly_state_local( BOOST_RV_REF( poly_state_local) x) : value_m( boost::move( x.value_m)) {}
+    poly_state_local(poly_state_local&& x) : value_m( std::move( x.value_m)) {}
 
     const value_type& get() const	{ return value_m; }
     value_type& get()				{ return value_m; }
@@ -190,10 +184,8 @@ class poly_instance : public F
 {
 private:
 
-    BOOST_MOVABLE_BUT_NOT_COPYABLE( poly_instance)
-
-    // unimplemented
-    poly_instance& operator=( BOOST_RV_REF( poly_instance) x);
+    poly_instance(const poly_instance&) = delete;
+    poly_instance& operator=(const poly_instance&) = delete;
 
 public:
 
@@ -201,9 +193,8 @@ public:
     typedef typename F::interface_type interface_type;
 
     explicit poly_instance( const value_type& x): F( x) {}
-    explicit poly_instance( BOOST_RV_REF( value_type) x) : F( x) {}
 
-    explicit poly_instance( BOOST_RV_REF( poly_instance) x) : F( boost::move( static_cast<F&>( x))) {}
+    explicit poly_instance(poly_instance&& x) : F(std::move(static_cast<F&>( x))) {}
 
     poly_copyable_interface* clone( void *storage) const
     {
@@ -212,7 +203,7 @@ public:
 
     poly_copyable_interface* move_clone( void *storage)
     {
-        return ::new ( storage) poly_instance( boost::move( *this));
+        return ::new ( storage) poly_instance( std::move( *this));
     }
 };
 
@@ -245,10 +236,6 @@ struct optimized_storage_type : public boost::mpl::if_<implementation::is_small<
 template <typename I, template <typename> class Instance>
 class poly_base
 {
-private:
-
-    BOOST_COPYABLE_AND_MOVABLE( poly_base)
-
 public:
 
     template <typename T, template <typename> class U>
@@ -260,12 +247,6 @@ public:
 
     template <typename T>
     explicit poly_base( const T& x, typename boost::disable_if<boost::is_base_of<poly_base, T> >::type* = 0)
-    {
-        ::new ( storage()) implementation::poly_instance<Instance<T> >( x);
-    }
-
-    template <typename T>
-    explicit poly_base( BOOST_RV_REF( T) x, typename boost::disable_if<boost::is_base_of<poly_base, T> >::type* = 0)
     {
         ::new ( storage()) implementation::poly_instance<Instance<T> >( x);
     }
@@ -282,7 +263,7 @@ public:
 
     poly_base( const poly_base& x) { x.interface_ref().clone( storage());}
 
-    poly_base( BOOST_RV_REF( poly_base) x)
+    poly_base(poly_base&& x)
     {
         x.interface_ref().move_clone( storage());
     }
@@ -292,21 +273,21 @@ public:
         interface_ref().~interface_type();
     }
 
-    poly_base& operator=( BOOST_COPY_ASSIGN_REF( poly_base) x)
+    poly_base& operator=(const poly_base& x)
     {
         interface_ref().~interface_type();
         x.interface_ref().clone( storage());
         return *this;
     }
 
-    poly_base& operator=( BOOST_RV_REF( poly_base) x)
+    poly_base& operator=(poly_base&& x)
     {
         interface_ref().~interface_type();
         x.interface_ref().move_clone( storage());
         return *this;
     }
 
-    friend inline void swap( poly_base& x, poly_base& y)
+    friend inline void swap(poly_base& x, poly_base& y)
     {
         interface_type& a( x.interface_ref());
         interface_type& b( y.interface_ref());
@@ -318,7 +299,7 @@ public:
         }
 
         // x->tmp
-        poly_base tmp( boost::move( x));
+        poly_base tmp( std::move( x));
         a.~interface_type();
 
         // y->x
@@ -433,10 +414,6 @@ operator==( const poly_base<J, K>& x, const poly_base<J, K>& y)
 template <class F>
 class poly : public F
 {
-private:
-
-    BOOST_COPYABLE_AND_MOVABLE( poly)
-
 public:
 
     poly() : F() {}
@@ -445,22 +422,19 @@ public:
     template <typename T>
     explicit poly( const T& x) : F( x) {}
 
-    template <typename T>
-    explicit poly( BOOST_RV_REF( T) x) : F( x) {}
-
     poly( const poly& x) : F( x) {}
 
-    poly( BOOST_RV_REF( poly) x) : F( boost::move( static_cast<F&>( x))) {}
+    poly( poly&& x) : F( std::move( static_cast<F&>( x))) {}
 
-    poly& operator=( BOOST_COPY_ASSIGN_REF( poly) x)
+    poly& operator=(const poly& x)
     {
         F::operator=( static_cast<const F&>( x));
         return *this;
     }
 
-    poly& operator=( BOOST_RV_REF( poly) x)
+    poly& operator=(poly&& x)
     {
-        F::operator=( boost::move( static_cast<F&>( x)));
+        F::operator=( std::move( static_cast<F&>( x)));
         return *this;
     }
 };
@@ -521,21 +495,21 @@ private:\
     BOOST_COPYABLE_AND_MOVABLE( TYPENAME)\
 public:\
     TYPENAME( const TYPENAME& x);\
-    TYPENAME( BOOST_RV_REF( TYPENAME) x);{}\
-    TYPENAME& operator=( BOOST_COPY_ASSIGN_REF( TYPENAME) x);\
-    TYPENAME& operator=( BOOST_RV_REF( TYPENAME) x);\
+    TYPENAME( TYPENAME&& x);{}\
+    TYPENAME& operator=(const TYPENAME& x);\
+    TYPENAME& operator=( TYPENAME&& x);\
 
 #define RAMEN_POLY_IMPLEMENT_COPY_AND_ASSIGN( TYPENAME, BASETYPENAME) \
     TYPENAME::TYPENAME( const TYPENAME& x) : BASETYPENAME( x) {}\
-    TYPENAME::TYPENAME( BOOST_RV_REF( TYPENAME) x) : BASETYPENAME( boost::move( static_cast<BASETYPENAME&>( x))) {}\
-    TYPENAME& TYPENAME::operator=( BOOST_COPY_ASSIGN_REF( TYPENAME) x)\
+    TYPENAME::TYPENAME( TYPENAME&& x) : BASETYPENAME( std::move( static_cast<BASETYPENAME&>( x))) {}\
+    TYPENAME& TYPENAME::operator=(const TYPENAME& x)\
     {\
         BASETYPENAME::operator=(static_cast<const BASETYPENAME&>( x));\
         return *this;\
     }\
-    TYPENAME& TYPENAME::operator=( BOOST_RV_REF( TYPENAME) x)\
+    TYPENAME& TYPENAME::operator=(TYPENAME&& x)\
     {\
-        BASETYPENAME::operator=( boost::move( static_cast<BASETYPENAME&>( x)));\
+        BASETYPENAME::operator=( std::move( static_cast<BASETYPENAME&>( x)));\
         return *this;\
     }
 
@@ -544,15 +518,15 @@ private:\
     BOOST_COPYABLE_AND_MOVABLE( TYPENAME)\
 public:\
     TYPENAME( const TYPENAME& x) : BASETYPENAME( x) {}\
-    TYPENAME( BOOST_RV_REF( TYPENAME) x) : BASETYPENAME( boost::move( static_cast<BASETYPENAME&>( x))) {}\
-    TYPENAME& operator=( BOOST_COPY_ASSIGN_REF( TYPENAME) x)\
+    TYPENAME(TYPENAME&& x) : BASETYPENAME( std::move( static_cast<BASETYPENAME&>( x))) {}\
+    TYPENAME& operator=(const TYPENAME& x)\
     {\
         BASETYPENAME::operator=(static_cast<const BASETYPENAME&>( x));\
         return *this;\
     }\
-    TYPENAME& operator=( BOOST_RV_REF( TYPENAME) x)\
+    TYPENAME& operator=(TYPENAME&& x)\
     {\
-        BASETYPENAME::operator=( boost::move( static_cast<BASETYPENAME&>( x)));\
+        BASETYPENAME::operator=( std::move( static_cast<BASETYPENAME&>( x)));\
         return *this;\
     }
 

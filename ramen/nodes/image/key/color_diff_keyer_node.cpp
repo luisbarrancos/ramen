@@ -139,7 +139,7 @@ void color_diff_keyer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> r( new popup_param_t( "Output"));
     r->set_id( "output");
-    r->menu_items() = boost::assign::list_of( "Premultiplied")( "Unpremultiplied")( "Alpha")( "Status");
+    r->menu_items() = std::vector<std::string>({ "Premultiplied", "Unpremultiplied", "Alpha", "Status"});
     add_param( r);
 
     std::auto_ptr<color_param_t> p( new color_param_t( "Color"));

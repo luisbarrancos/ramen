@@ -148,7 +148,7 @@ void glow_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> pop( new popup_param_t( "Layer Mode"));
     pop->set_id( "layer_mode");
-    pop->menu_items() = boost::assign::list_of( "Add")( "Screen");
+    pop->menu_items() = std::vector<std::string>({"Add", "Screen"});
     add_param( pop);
 	
     p.reset( new float_param_t( "Background"));

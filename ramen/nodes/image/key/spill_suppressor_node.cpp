@@ -168,7 +168,7 @@ void spill_suppressor_node_t::do_create_params()
 
 		std::auto_ptr<popup_param_t> p( new popup_param_t( "Color"));
 		p->set_id( "bcolor");
-		p->menu_items() = boost::assign::list_of( "Blue")( "Green");
+		p->menu_items() = std::vector<std::string>({ "Blue", "Green"});
 		group->add_param( p);
 
 		std::auto_ptr<float_param_t> q( new float_param_t( "Amount"));

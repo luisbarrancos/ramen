@@ -82,17 +82,17 @@ void output_node_t::do_create_params()
 
         std::auto_ptr<popup_param_t> p( new popup_param_t( "Channels"));
         p->set_id( "exr_channels");
-        p->menu_items() = boost::assign::list_of( "RGBA")( "RGB")( "Alpha");
+        p->menu_items() = std::vector<std::string>({ "RGBA", "RGB", "Alpha"});
         group->add_param( p);
 
         p.reset( new popup_param_t( "Type"));
         p->set_id( "exr_type");
-        p->menu_items() = boost::assign::list_of( "Half")( "Float");
+        p->menu_items() = std::vector<std::string>({ "Half",  "Float"});
         group->add_param( std::auto_ptr<param_t>( p));
 
         p.reset( new popup_param_t( "Compress"));
         p->set_id( "exr_compress");
-        p->menu_items() = boost::assign::list_of( "None")( "RLE")( "ZIPS")( "ZIP")( "PIZ")( "PXR24")( "B44")( "B44A");
+        p->menu_items() = std::vector<std::string>({ "None",  "RLE",  "ZIPS",  "ZIP",  "PIZ",  "PXR24",  "B44",  "B44A"});
         p->set_default_value( (int) 4);
         group->add_param( p);
 
@@ -142,17 +142,17 @@ void output_node_t::do_create_params()
 
         std::auto_ptr<popup_param_t> p( new popup_param_t( "Channels"));
         p->set_id( "tiff_channels");
-        p->menu_items() = boost::assign::list_of( "RGBA")( "RGB");
+        p->menu_items() = std::vector<std::string>({ "RGBA", "RGB"});
         group->add_param( p);
 
         p.reset( new popup_param_t( "Type"));
         p->set_id( "tiff_type");
-        p->menu_items() = boost::assign::list_of( "8 Bits")( "16 Bits")( "Float");
+        p->menu_items() = std::vector<std::string>({ "8 Bits",  "16 Bits",  "Float"});
         group->add_param( std::auto_ptr<param_t>( p));
 
         p.reset( new popup_param_t( "Compress"));
         p->set_id( "tiff_compress");
-        p->menu_items() = boost::assign::list_of( "None")( "LZW")( "ZIP");
+        p->menu_items() = std::vector<std::string>({ "None",  "LZW",  "ZIP"});
         group->add_param( p);
 
         top->add_param( group);
@@ -165,12 +165,12 @@ void output_node_t::do_create_params()
 
         std::auto_ptr<popup_param_t> p( new popup_param_t( "Channels"));
         p->set_id( "tga_channels");
-        p->menu_items() = boost::assign::list_of( "RGBA")( "RGB");
+        p->menu_items() = std::vector<std::string>({ "RGBA", "RGB"});
         group->add_param( p);
 
         p.reset( new popup_param_t( "Compress"));
         p->set_id( "tga_compress");
-        p->menu_items() = boost::assign::list_of( "None")( "RLE");
+        p->menu_items() = std::vector<std::string>({ "None",  "RLE"});
         group->add_param( p);
 
         top->add_param( group);
@@ -183,7 +183,7 @@ void output_node_t::do_create_params()
 
         std::auto_ptr<popup_param_t> p( new popup_param_t( "Channels"));
         p->set_id( "png_channels");
-        p->menu_items() = boost::assign::list_of( "RGBA")( "RGB")( "Alpha");
+        p->menu_items() = std::vector<std::string>({ "RGBA", "RGB", "Alpha"});
         group->add_param( p);
 
         top->add_param( group);

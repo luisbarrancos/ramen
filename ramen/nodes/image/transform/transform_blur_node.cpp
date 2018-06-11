@@ -56,7 +56,7 @@ void transform_blur_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> q( new popup_param_t( "Borders"));
     q->set_id( "borders");
-    q->menu_items() = boost::assign::list_of( "Black")( "Tile")( "Mirror");
+    q->menu_items() = std::vector<std::string>({"Black", "Tile", "Mirror"});
     add_param( q);
 }
 

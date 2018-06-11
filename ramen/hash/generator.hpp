@@ -39,7 +39,7 @@ public:
 
     bool finalized() const
     {
-        return digest_;
+        return digest_.is_initialized();
     }
 
     const digest_type& digest() const;
@@ -53,9 +53,9 @@ private:
 };
 
 template<class T>
-generator_t& operator<<( generator_t& hash_gen, const T& x)
+generator_t& operator<<(generator_t& hash_gen, const T& x)
 {
-    RAMEN_ASSERT( !hash_gen.finalized());
+    RAMEN_ASSERT(!hash_gen.finalized());
     hash_gen.sstream() << x;
 
     hash_gen.set_empty( false);

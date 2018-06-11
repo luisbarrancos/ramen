@@ -21,26 +21,26 @@ enum
     copy_green,
     copy_blue,
     copy_alpha,
-	copy_lum,
+    copy_lum,
     set_one,
     set_zero
 };
 
 void copy_luminance( const image::const_image_view_t& src, const image::channel_view_t& dst)
 {
-	RAMEN_ASSERT( src.dimensions() == dst.dimensions());
-	
-	for( int y = 0, ye = src.height(); y < ye; ++y)
-	{
-		image::const_image_view_t::x_iterator s_it( src.row_begin( y));
-		image::channel_view_t::x_iterator d_it( dst.row_begin( y));
-		
-		for( int x = 0, xe = src.width(); x < xe; ++x)
-		{
-			float lum = image::luminance( *s_it++);
-			*d_it++ = lum;
-		}
-	}
+    RAMEN_ASSERT( src.dimensions() == dst.dimensions());
+
+    for( int y = 0, ye = src.height(); y < ye; ++y)
+    {
+        image::const_image_view_t::x_iterator s_it( src.row_begin( y));
+        image::channel_view_t::x_iterator d_it( dst.row_begin( y));
+
+        for( int x = 0, xe = src.width(); x < xe; ++x)
+        {
+            float lum = image::luminance( *s_it++);
+            *d_it++ = lum;
+        }
+    }
 }
 
 } // unnamed
@@ -52,25 +52,26 @@ void set_channels_node_t::do_create_params()
     std::auto_ptr<popup_param_t> p( new popup_param_t( "Red"));
     p->set_id( "red");
     p->set_default_value( (int) copy_red);
-    p->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha")( "Luminance")( "One")( "Zero");
+    p->menu_items() = std::vector<std::string>({"Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
+
     add_param( p);
 
     p.reset( new popup_param_t( "Green"));
     p->set_id( "green");
     p->set_default_value( (int) copy_green);
-    p->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha")( "Luminance")( "One")( "Zero");
+    p->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param( p);
 
     p.reset( new popup_param_t( "Blue"));
     p->set_id( "blue");
     p->set_default_value( (int) copy_blue);
-    p->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha")( "Luminance")( "One")( "Zero");
+    p->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param( p);
 
     p.reset( new popup_param_t( "Alpha"));
     p->set_id( "alpha");
     p->set_default_value( (int) copy_alpha);
-    p->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha")( "Luminance")( "One")( "Zero");
+    p->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param( p);
 }
 
@@ -79,7 +80,7 @@ void set_channels_node_t::do_calc_bounds( const render::context_t& context)
     int ch_a = get_value<int>( param( "alpha"));
 
     if( ch_a == set_one)
-		set_bounds( format());
+        set_bounds( format());
     else
         set_bounds( input_as<image_node_t>()->bounds());
 }
@@ -99,31 +100,31 @@ void set_channels_node_t::do_process( const image::const_image_view_t& src, cons
 
     // the alpha channel is special if we fill with 0 or 1.
     if( alpha_op == set_one || alpha_op == set_zero)
-		copy_channel( src, get_value<int>( param( "alpha")), image_view(), 3);
+        copy_channel( src, get_value<int>( param( "alpha")), image_view(), 3);
     else
-		copy_channel( src, get_value<int>( param( "alpha")) , dst, 3);
+        copy_channel( src, get_value<int>( param( "alpha")) , dst, 3);
 }
 
 void set_channels_node_t::copy_channel( const image::const_image_view_t& src, int src_ch, const image::image_view_t& dst , int dst_ch)
 {
-	switch( src_ch)
-	{
-		case set_zero:
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 0.0f));
-		break;
-		
-		case set_one:
-			boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 1.0f));
-		break;
-		
-		case copy_lum:
-			copy_luminance( src, boost::gil::nth_channel_view( dst, dst_ch));
-		break;
-		
-		default:
-			boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch), boost::gil::nth_channel_view( dst, dst_ch));
-		break;
-	}
+    switch( src_ch)
+    {
+        case set_zero:
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 0.0f));
+        break;
+
+        case set_one:
+            boost::gil::fill_pixels( boost::gil::nth_channel_view( dst, dst_ch), boost::gil::gray32f_pixel_t( 1.0f));
+        break;
+
+        case copy_lum:
+            copy_luminance( src, boost::gil::nth_channel_view( dst, dst_ch));
+        break;
+
+        default:
+            boost::gil::copy_pixels( boost::gil::nth_channel_view( src, src_ch), boost::gil::nth_channel_view( dst, dst_ch));
+        break;
+    }
 }
 
 // factory

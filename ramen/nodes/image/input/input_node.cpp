@@ -231,7 +231,7 @@ void input_node_t::create_more_params()
 
 	std::auto_ptr<popup_param_t> pop( new popup_param_t( "Out of Range"));
 	pop->set_id( "out_range");
-	pop->menu_items() = boost::assign::list_of( "Hold")( "Loop")( "Black");
+	pop->menu_items() = std::vector<std::string>({ "Hold", "Loop", "Black"});
 	pop->set_include_in_hash( false);
 	add_param( pop);
 	
@@ -259,7 +259,7 @@ void input_node_t::param_changed( param_t *p, param_t::change_reason reason)
 	}
 }
 
-bool input_node_t::do_is_valid() const { return readers_[0];}
+bool input_node_t::do_is_valid() const { return readers_[0].get() != nullptr;}
 
 void input_node_t::do_set_frame( float t)
 {

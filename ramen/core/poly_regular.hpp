@@ -20,21 +20,21 @@ namespace core
 
 struct poly_regular_interface : poly_copyable_interface
 {
-    virtual bool equals( const poly_regular_interface& new_value) const = 0;
+    virtual bool equals(const poly_regular_interface& new_value) const = 0;
 };
 
 template <typename T>
 class poly_regular_instance : public optimized_storage_type<T, poly_regular_interface>::type
 {
-    BOOST_CONCEPT_ASSERT(( RegularConcept<T>));
+    BOOST_CONCEPT_ASSERT((RegularConcept<T>));
 
 public:
 
     typedef typename optimized_storage_type<T, poly_regular_interface>::type base_type;
 
-    explicit poly_regular_instance( const T& x) : base_type( x) {}
+    explicit poly_regular_instance(const T& x) : base_type(x) {}
 
-    explicit poly_regular_instance( BOOST_RV_REF( T) x) : base_type( x) {}
+    explicit poly_regular_instance(T&& x) : base_type(x) {}
 
     RAMEN_POLY_INLINE_COPY_AND_ASSIGN( poly_regular_instance, base_type)
 
@@ -56,7 +56,7 @@ public:
     explicit regular( const T& x) : base_type( x) {}
 
     template<typename T>
-    explicit regular( BOOST_RV_REF( T) x) : base_type( x) {}
+    explicit regular(T&& x) : base_type( x) {}
 
     RAMEN_POLY_INLINE_COPY_AND_ASSIGN( regular, base_type)
 

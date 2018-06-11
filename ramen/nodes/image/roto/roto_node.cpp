@@ -89,18 +89,18 @@ void roto_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> pop( new popup_param_t( "Output"));
     pop->set_id( "output");
-    pop->menu_items() = boost::assign::list_of( "Premultiplied")( "Unpremultiplied");
+    pop->menu_items() = std::vector<std::string>({ "Premultiplied", "Unpremultiplied"});
     pop->set_default_value( 1);
     add_param( pop);
 
     pop.reset( new popup_param_t( "Input Alpha"));
     pop->set_id( "alpha");
-    pop->menu_items() = boost::assign::list_of( "Replace")( "Use");
+    pop->menu_items() = std::vector<std::string>({ "Replace", "Use"});
     add_param( pop);
 
     pop.reset( new popup_param_t( "Update"));
     pop->set_id( "update");
-    pop->menu_items() = boost::assign::list_of( "Mouse Drag")( "Mouse Up");
+    pop->menu_items() = std::vector<std::string>({ "Mouse Drag", "Mouse Up"});
 	pop->set_include_in_hash( false);
     add_param( pop);
 	

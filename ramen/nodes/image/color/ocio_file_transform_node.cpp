@@ -39,12 +39,12 @@ void ocio_file_transform_node_t::do_create_params()
 	
 	std::auto_ptr<popup_param_t> pop( new popup_param_t( "Direction"));
 	pop->set_id( "direction");
-	pop->menu_items() = boost::assign::list_of( "Forward")( "Inverse");
+	pop->menu_items() = std::vector<std::string>({ "Forward", "Inverse"});
 	add_param( pop);
 
 	pop.reset( new popup_param_t( "Interpolation"));
 	pop->set_id( "interpolation");
-	pop->menu_items() = boost::assign::list_of( "Nearest")( "Linear");
+	pop->menu_items() = std::vector<std::string>({ "Nearest", "Linear"});
 	add_param( pop);
 }
 

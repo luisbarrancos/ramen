@@ -20,7 +20,7 @@ void percentile_filter_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p( new popup_param_t( "Channels"));
     p->set_id( "channels");
-    p->menu_items() = boost::assign::list_of( "RGBA")( "RGB")( "Alpha");
+    p->menu_items() = std::vector<std::string>({ "RGBA", "RGB", "Alpha"});
     add_param( p);
 
     std::auto_ptr<float_param_t> q( new float_param_t( "Radius"));

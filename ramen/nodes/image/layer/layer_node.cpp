@@ -44,12 +44,12 @@ void layer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p( new popup_param_t( "Mode"));
     p->set_id( "mode");
-    p->menu_items() = boost::assign::list_of( "Background")( "Foreground");
+    p->menu_items() = std::vector<std::string>({ "Background", "Foreground"});
     add_param( p);
 
     p.reset( new popup_param_t( "Layer Mode"));
     p->set_id( "layer_mode");
-    p->menu_items() = boost::assign::list_of( "Over")( "Add")( "Mult")( "Sub")( "Mix")( "Screen")( "Overlay")( "Difference")( "Max")( "Min");
+    p->menu_items() = std::vector<std::string>({ "Over", "Add", "Mult", "Sub", "Mix", "Screen", "Overlay", "Difference", "Max", "Min"});
     add_param( p);
 
     std::auto_ptr<float_param_t> q( new float_param_t( "Opacity"));

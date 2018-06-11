@@ -27,7 +27,12 @@ void base_warp_node_t::create_default_filter_param()
 {
     std::auto_ptr<popup_param_t> r( new popup_param_t( "Filter"));
     r->set_id( "filter");
-    r->menu_items() = boost::assign::list_of( "Point")( "Bilinear")( "Catrom")( "Mipmap");
+
+    r->menu_items().push_back("Point");
+    r->menu_items().push_back("Bilinear");
+    r->menu_items().push_back("Catrom");
+    r->menu_items().push_back("Mipmap");
+
     r->set_default_value( 2);
     r->set_include_in_hash( false);
     add_param( r);

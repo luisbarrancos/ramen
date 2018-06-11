@@ -90,19 +90,19 @@ void displace_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> q( new popup_param_t( "X channel"));
     q->set_id( "xchannel");
-    q->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha");
+    q->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha"});
     q->set_default_value( 0);
     add_param( q);
 
     q.reset( new popup_param_t( "Y channel"));
     q->set_id( "ychannel");
-    q->menu_items() = boost::assign::list_of( "Red")( "Green")( "Blue")( "Alpha");
+    q->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha"});
     q->set_default_value( 1);
     add_param( q);
 
     q.reset( new popup_param_t( "Borders"));
     q->set_id( "borders");
-    q->menu_items() = boost::assign::list_of( "Black")( "Tile")( "Mirror");
+    q->menu_items() = std::vector<std::string>({ "Black", "Tile", "Mirror"});
     add_param( q);	
 }
 
