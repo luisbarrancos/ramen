@@ -3,56 +3,52 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_IMAGEIO_MULTICHANNEL_READER_HPP
-#define	RAMEN_IMAGEIO_MULTICHANNEL_READER_HPP
+#define RAMEN_IMAGEIO_MULTICHANNEL_READER_HPP
 
-#include<ramen/imageio/reader.hpp>
+#include <ramen/imageio/reader.hpp>
 
-#include<boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple.hpp>
 
 namespace ramen
 {
 namespace imageio
 {
-
 class RAMEN_API multichannel_reader_t : public reader_t
 {
 public:
+    multichannel_reader_t(const boost::filesystem::path& p);
 
-    multichannel_reader_t( const boost::filesystem::path& p);
+    const std::vector<std::string>& channel_list() const { return channels_; }
 
-    const std::vector<std::string>& channel_list() const { return channels_;}
+    void add_channel_name(const std::string& c);
 
-    void add_channel_name( const std::string& c);
+    bool has_extra_channels() const { return has_extra_channels_; }
 
-    bool has_extra_channels() const { return has_extra_channels_;}
-
-    void read_image( const image::image_view_t& view,
-                     const math::box2i_t& crop,
-                     int subsample,
-                     const boost::tuple<int,int,int,int>& channels) const
+    void read_image(const image::image_view_t&              view,
+                    const math::box2i_t&                    crop,
+                    int                                     subsample,
+                    const boost::tuple<int, int, int, int>& channels) const
     {
-        do_read_image( view, crop, subsample, channels);
+        do_read_image(view, crop, subsample, channels);
     }
 
 
 private:
+    void do_read_image(const image::image_view_t& view,
+                               const math::box2i_t&       crop,
+                               int                        subsample) const override;
 
-    virtual void do_read_image( const image::image_view_t& view,
-                                const math::box2i_t& crop,
-                                int subsample) const;
-
-    virtual void do_read_image( const image::image_view_t& view,
-                                const math::box2i_t& crop,
-                                int subsample,
-                                const boost::tuple<int,int,int,int>& channels) const = 0;
+    virtual void do_read_image(const image::image_view_t&              view,
+                               const math::box2i_t&                    crop,
+                               int                                     subsample,
+                               const boost::tuple<int, int, int, int>& channels) const = 0;
 
 protected:
-
     std::vector<std::string> channels_;
-    bool has_extra_channels_;
+    bool                     has_extra_channels_;
 };
 
-} // imageio
-} // ramen
+}  // imageio
+}  // ramen
 
 #endif

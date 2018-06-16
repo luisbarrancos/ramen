@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class ocio_colorspace_combo_t;
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

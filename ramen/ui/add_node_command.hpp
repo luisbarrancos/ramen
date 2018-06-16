@@ -3,54 +3,49 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UNDO_ADD_NODE_COMMAND_HPP
-#define	RAMEN_UNDO_ADD_NODE_COMMAND_HPP
+#define RAMEN_UNDO_ADD_NODE_COMMAND_HPP
 
-#include<ramen/undo/command.hpp>
+#include <ramen/undo/command.hpp>
 
-#include<memory>
-#include<set>
+#include <memory>
+#include <set>
 
-#include<ramen/nodes/node.hpp>
+#include <ramen/nodes/node.hpp>
 
 namespace ramen
 {
 namespace undo
 {
-
 class add_node_command_t : public command_t
 {
 public:
+    add_node_command_t(std::auto_ptr<node_t> n, node_t* src = 0);
+    ~add_node_command_t() override;
 
-    add_node_command_t( std::auto_ptr<node_t> n, node_t *src = 0);
-    virtual ~add_node_command_t();
-  
-    virtual void undo();
-    virtual void redo();
+    void undo() override;
+    void redo() override;
 
 private:
-
-    node_t *src_, *node_;
+    node_t *              src_, *node_;
     std::auto_ptr<node_t> storage_;
 };
 
 class add_nodes_command_t : public command_t
 {
 public:
-
     add_nodes_command_t();
 
-    void add_node( std::auto_ptr<node_t> n);
+    void add_node(std::auto_ptr<node_t> n);
 
-    virtual void undo();
-    virtual void redo();
+    void undo() override;
+    void redo() override;
 
 private:
-
-    std::vector<node_t*> nodes_;
+    std::vector<node_t*>      nodes_;
     boost::ptr_vector<node_t> node_storage_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

@@ -7,9 +7,8 @@
 
 namespace ramen
 {
-
 class application_t;
 
-} // namespace
+}  // namespace
 
 #endif

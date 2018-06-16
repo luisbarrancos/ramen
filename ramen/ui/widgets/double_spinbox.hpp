@@ -5,64 +5,60 @@
 #ifndef RAMEN_UI_WIDGETS_DOUBLE_SPINBOX_HPP
 #define RAMEN_UI_WIDGETS_DOUBLE_SPINBOX_HPP
 
-#include<ramen/ui/widgets/double_spinbox_fwd.hpp>
-#include<ramen/ui/widgets/spinbox.hpp>
+#include <ramen/ui/widgets/double_spinbox_fwd.hpp>
+#include <ramen/ui/widgets/spinbox.hpp>
 
-#include<string>
+#include <string>
 
 namespace ramen
 {
 namespace ui
 {
-
 class double_spinbox_t : public spinbox_t
 {
     Q_OBJECT
 
 public:
-	
-	double_spinbox_t( QWidget *parent = 0);
-	
-	void setSuffix( const QString& s);
-	
-	double value() const;	
-	void restorePreviousValue();
+    double_spinbox_t(QWidget* parent = 0);
+
+    void setSuffix(const QString& s);
+
+    double value() const;
+    void   restorePreviousValue();
 
 public Q_SLOTS:
 
-	bool setValue( double v);
-	
+    bool setValue(double v);
+
 Q_SIGNALS:
 
-	void valueChanged( double value);
+    void valueChanged(double value);
     void spinBoxPressed();
-    void spinBoxDragged( double value);
+    void spinBoxDragged(double value);
     void spinBoxReleased();
 
 protected:
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
-	virtual void keyPressEvent( QKeyEvent *event);
-	virtual void keyReleaseEvent( QKeyEvent *event);
-	
-	virtual void mousePressEvent( QMouseEvent *event);
-	virtual void mouseMoveEvent( QMouseEvent *event);
-	virtual void mouseReleaseEvent( QMouseEvent *event);
-	
-	virtual void contextMenuEvent( QContextMenuEvent *event);
-	
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
 private Q_SLOTS:
 
     void textChanged();
-	
-private:
 
-	void stepBy( int steps);
-		
-	double value_;
-	double previous_value_;
+private:
+    void stepBy(int steps);
+
+    double value_;
+    double previous_value_;
 };
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

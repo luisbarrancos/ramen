@@ -4,33 +4,31 @@
  *
  */
 
-#include<vector>
+#include <vector>
 
-#include<OpenEXR/ImathVec.h>
+#include <OpenEXR/ImathVec.h>
 
-#include<ANN/ANN.h>
+#include <ANN/ANN.h>
 
 class distance_map
 {
 public:
+    distance_map();
+    ~distance_map();
 
-	distance_map();
-	~distance_map();
+    void add_point(Imath::V2i p) { points_.push_back(p); }
 
-	void add_point( Imath::V2i p) { points_.push_back( p);}
+    void build();
 
-	void build();
-
-	int nearest_point( Imath::V2i p, Imath::V2i& np);
-	int nearest_point( Imath::V2i p, Imath::V2i& np, int &index);
+    int nearest_point(Imath::V2i p, Imath::V2i& np);
+    int nearest_point(Imath::V2i p, Imath::V2i& np, int& index);
 
 private:
+    std::vector<Imath::V2i> points_;
 
-	std::vector<Imath::V2i> points_;
-
-	ANNpointArray pts_;
-	ANNpoint qpt_;
-	ANNidxArray ix_;
-	ANNdistArray dists_;
-	ANNkd_tree *kd_;
+    ANNpointArray pts_;
+    ANNpoint      qpt_;
+    ANNidxArray   ix_;
+    ANNdistArray  dists_;
+    ANNkd_tree*   kd_;
 };

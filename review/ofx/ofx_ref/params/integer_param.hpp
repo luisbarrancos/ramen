@@ -5,48 +5,47 @@
 #ifndef RAMEN_OFX_INTEGER_PARAM_HPP
 #define RAMEN_OFX_INTEGER_PARAM_HPP
 
-#include"ofxCore.h"
-#include"ofxParam.h"
+#include "ofxCore.h"
+#include "ofxParam.h"
 
-#include"ofxhPropertySuite.h"
-#include"ofxhParam.h"
+#include "ofxhPropertySuite.h"
+#include "ofxhParam.h"
 
 namespace ramen
 {
 namespace ofx
 {
-
 class image_effect_t;
 
 class integer_param_t : public OFX::Host::Param::IntegerInstance
 {
 public:
+    integer_param_t(const std::string&             name,
+                    OFX::Host::Param::Descriptor&  descriptor,
+                    OFX::Host::Param::SetInstance* instance = 0);
 
-    integer_param_t( const std::string& name, OFX::Host::Param::Descriptor& descriptor, OFX::Host::Param::SetInstance* instance = 0);
+    OfxStatus copy(const OFX::Host::Param::Instance& instance, OfxTime offset);
+    OfxStatus copy(const OFX::Host::Param::Instance& instance, OfxTime offset, OfxRangeD range);
 
-    OfxStatus copy( const OFX::Host::Param::Instance &instance, OfxTime offset);
-    OfxStatus copy( const OFX::Host::Param::Instance &instance, OfxTime offset, OfxRangeD range);
-
-    OfxStatus get( int& v);
-    OfxStatus get( OfxTime time, int& v);
-    OfxStatus set( int v);
-    OfxStatus set( OfxTime time, int v);
-    OfxStatus derive( OfxTime time, int& v);
-    OfxStatus integrate( OfxTime time1, OfxTime time2, int& v);
+    OfxStatus get(int& v);
+    OfxStatus get(OfxTime time, int& v);
+    OfxStatus set(int v);
+    OfxStatus set(OfxTime time, int v);
+    OfxStatus derive(OfxTime time, int& v);
+    OfxStatus integrate(OfxTime time1, OfxTime time2, int& v);
 
     // anim
-    OfxStatus getNumKeys( unsigned int &nKeys) const;
-    OfxStatus getKeyTime( int nth, OfxTime& time) const;
-    OfxStatus getKeyIndex( OfxTime time, int direction, int & index) const;
-    OfxStatus deleteKey( OfxTime time);
+    OfxStatus getNumKeys(unsigned int& nKeys) const;
+    OfxStatus getKeyTime(int nth, OfxTime& time) const;
+    OfxStatus getKeyIndex(OfxTime time, int direction, int& index) const;
+    OfxStatus deleteKey(OfxTime time);
     OfxStatus deleteAllKeys();
 
 private:
-
-    image_effect_t *effect_;
+    image_effect_t* effect_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

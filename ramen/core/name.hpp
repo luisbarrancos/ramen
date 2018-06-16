@@ -5,15 +5,14 @@
 #ifndef RAMEN_NAME_HPP
 #define RAMEN_NAME_HPP
 
-#include<ramen/core/name_fwd.hpp>
+#include <ramen/core/name_fwd.hpp>
 
-#include<iostream>
+#include <iostream>
 
 namespace ramen
 {
 namespace core
 {
-
 /*!
 \ingroup core
 \brief Unique string class
@@ -21,45 +20,37 @@ namespace core
 class RAMEN_API name_t
 {
 public:
-
     name_t();
-    explicit name_t( const char *str);
+    explicit name_t(const char* str);
 
-    name_t& operator=( const name_t& other);
+    name_t& operator=(const name_t& other);
 
-    const char *c_str() const { return data_;}
+    const char* c_str() const { return data_; }
 
     bool empty() const;
 
-    bool operator==( const name_t& other) const { return data_ == other.data_;}
-    bool operator!=( const name_t& other) const { return data_ != other.data_;}
-    bool operator<( const name_t& other) const	{ return data_ < other.data_;}
+    bool operator==(const name_t& other) const { return data_ == other.data_; }
+    bool operator!=(const name_t& other) const { return data_ != other.data_; }
+    bool operator<(const name_t& other) const { return data_ < other.data_; }
 
-    void swap( name_t& other)
+    void swap(name_t& other)
     {
-        const char *tmp = data_;
-        data_ = other.data_;
-        other.data_ = tmp;
+        const char* tmp = data_;
+        data_           = other.data_;
+        other.data_     = tmp;
     }
 
 private:
+    void init(const char* str);
 
-    void init( const char *str);
-
-    const char *data_;
+    const char* data_;
 };
 
-inline void swap( name_t& x, name_t& y)
-{
-    x.swap( y);
-}
+inline void swap(name_t& x, name_t& y) { x.swap(y); }
 
-inline std::ostream& operator<<( std::ostream& os, const name_t& name)
-{
-    return os << name.c_str();
-}
+inline std::ostream& operator<<(std::ostream& os, const name_t& name) { return os << name.c_str(); }
 
-} // core
-} // ramen
+}  // core
+}  // ramen
 
 #endif

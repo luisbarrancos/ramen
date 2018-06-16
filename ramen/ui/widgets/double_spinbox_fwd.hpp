@@ -7,10 +7,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class double_spinbox_t;
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

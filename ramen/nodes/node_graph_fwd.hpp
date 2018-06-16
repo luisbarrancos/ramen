@@ -7,9 +7,8 @@
 
 namespace ramen
 {
-
 class node_graph_t;
 
-} // namespace
+}  // namespace
 
 #endif

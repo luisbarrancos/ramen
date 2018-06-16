@@ -5,16 +5,16 @@
 #ifndef RAMEN_UNDO_COMMAND_HPP
 #define RAMEN_UNDO_COMMAND_HPP
 
-#include<string>
+#include <memory>
+#include <string>
+#include <vector>
 
-#include<boost/function.hpp>
-#include<boost/ptr_container/ptr_vector.hpp>
+#include <boost/function.hpp>
 
 namespace ramen
 {
 namespace undo
 {
-
 /*!
 \ingroup undo
 \brief Base class for actions that can be undone and redone.
@@ -22,15 +22,14 @@ namespace undo
 class command_t
 {
 public:
-
     /// Constructor.
-	command_t();
+    command_t();
 
     /*!
      Constructor.
      \param name Command name.
      */
-    explicit command_t( const std::string& name);
+    explicit command_t(const std::string& name);
 
     /// Destructor.
     virtual ~command_t();
@@ -39,17 +38,17 @@ public:
     const std::string& name() const;
 
     /// Sets this command name.
-    void set_name( const std::string& name) { name_ = name;}
+    void set_name(const std::string& name) { name_ = name; }
 
     /// Returns true if this command is already executed.
-    bool done() const { return done_;}
+    bool done() const { return done_; }
 
     /// Sets if this command is executed.
-    void set_done( bool b);
+    void set_done(bool b);
 
     /// For composite commands, returns true if this command is empty.
-	virtual bool empty() const { return false;}
-	
+    virtual bool empty() const { return false; }
+
     /// Undoes this command.
     virtual void undo();
 
@@ -57,10 +56,9 @@ public:
     virtual void redo();
 
 protected:
-
     std::string name_;
-    bool was_dirty_;
-    bool done_;
+    bool        was_dirty_;
+    bool        done_;
 };
 
 /*!
@@ -70,25 +68,25 @@ protected:
 class generic_command_t : public command_t
 {
 public:
-
     typedef boost::function<void()> function_type;
 
     /*!
-	 Constructor
+     Constructor
      \param name This command name, for undo / redo menus.
-	 \param undo_fun Function to call for undo.
-	 \param redo_fun Function to call for redo.
-	 */
-    generic_command_t( const std::string& name, const function_type& undo_fun, const function_type& redo_fun);
+     \param undo_fun Function to call for undo.
+     \param redo_fun Function to call for redo.
+     */
+    generic_command_t(const std::string&   name,
+                      const function_type& undo_fun,
+                      const function_type& redo_fun);
 
     /// Undoes this command.
-    virtual void undo();
+    void undo() override;
 
     /// Redoes this command.
-    virtual void redo();
+    void redo() override;
 
 private:
-
     function_type undo_;
     function_type redo_;
 };
@@ -96,28 +94,26 @@ private:
 class composite_command_t : public command_t
 {
 public:
-
     /// Constructor.
-    explicit composite_command_t( const std::string& name);
+    explicit composite_command_t(const std::string& name);
 
     /// Undoes this command.
-    virtual void undo();
+    void undo() override;
 
     /// Redoes this command.
-    virtual void redo();
+    void redo() override;
 
     /// Returns true if this command is empty.
-    virtual bool empty() const { return commands_.empty();}
+    bool empty() const override { return commands_.empty(); }
 
     /// Adds a child command to this command.
-    void push_back( std::auto_ptr<command_t> c);
+    void push_back(std::unique_ptr<command_t> c);
 
 protected:
-
-    boost::ptr_vector<command_t> commands_;
+    std::vector<std::unique_ptr<command_t>> commands_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

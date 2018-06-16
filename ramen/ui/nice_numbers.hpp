@@ -3,33 +3,31 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_NICE_NUMBERS_HPP
-#define	RAMEN_UI_NICE_NUMBERS_HPP
+#define RAMEN_UI_NICE_NUMBERS_HPP
 
 namespace ramen
 {
 namespace ui
 {
-
 class nice_numbers_t
 {
 public:
-
-    nice_numbers_t( double imin, double imax, int num_ticks);
+    nice_numbers_t(double imin, double imax, int num_ticks);
 
     struct iterator
     {
-        iterator( double x, double imax, double d)
+        iterator(double x, double imax, double d)
         {
-            x_ = x;
+            x_    = x;
             imax_ = imax;
-            d_ = d;
+            d_    = d;
         }
 
-        iterator( double imax, double d)
+        iterator(double imax, double d)
         {
-            x_ = imax;
+            x_    = imax;
             imax_ = imax;
-            d_ = d;
+            d_    = d;
         }
 
         iterator& operator++()
@@ -38,57 +36,41 @@ public:
             return *this;
         }
 
-        iterator operator++( int)
+        iterator operator++(int)
         {
-            iterator tmp( *this);
+            iterator tmp(*this);
             x_ += d_;
             return tmp;
         }
 
-        double operator*() const { return x_;}
+        double operator*() const { return x_; }
 
-        bool operator==( const iterator& other) const
-        {
-            return x_ == other.x_;
-        }
+        bool operator==(const iterator& other) const { return x_ == other.x_; }
 
-        bool operator!=( const iterator& other) const
-        {
-            return x_ != other.x_;
-        }
+        bool operator!=(const iterator& other) const { return x_ != other.x_; }
 
-        bool operator<( const iterator& other) const
-        {
-            return x_ < other.x_;
-        }
+        bool operator<(const iterator& other) const { return x_ < other.x_; }
 
         double x_;
         double imax_;
         double d_;
     };
 
-    iterator begin() const
-    {
-        return iterator( graphmin_, graphmax_ + 0.5 * d_, d_);
-    }
+    iterator begin() const { return iterator(graphmin_, graphmax_ + 0.5 * d_, d_); }
 
-    iterator end() const
-    {
-        return iterator( graphmax_ + 0.5 * d_, d_);
-    }
+    iterator end() const { return iterator(graphmax_ + 0.5 * d_, d_); }
 
 private:
+    double nice_num(double x, bool round) const;
 
-    double nice_num( double x, bool round) const;
-
-    int nticks_;
+    int    nticks_;
     double range_;
     double graphmin_, graphmax_;
     double d_;
     double nfrac_;
 };
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

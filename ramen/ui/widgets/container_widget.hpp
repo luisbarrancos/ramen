@@ -3,34 +3,31 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_CONTAINER_WIDGET_HPP
-#define	RAMEN_UI_CONTAINER_WIDGET_HPP
+#define RAMEN_UI_CONTAINER_WIDGET_HPP
 
-#include<ramen/ui/widgets/container_widget_fwd.hpp>
+#include <ramen/ui/widgets/container_widget_fwd.hpp>
 
-#include<QStackedWidget>
+#include <QStackedWidget>
 
 namespace ramen
 {
 namespace ui
 {
-
 class container_widget_t : public QStackedWidget
 {
     Q_OBJECT
 
 public:
-    
-    container_widget_t( QWidget *parent = 0);
+    container_widget_t(QWidget* parent = 0);
 
-    void set_contents( QWidget *w);
+    void set_contents(QWidget* w);
     void clear_contents();
 
 private:
-
-    QWidget *contents_;
+    QWidget* contents_;
 };
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

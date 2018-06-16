@@ -3,47 +3,43 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_CURVE_PARAM_HPP
-#define	RAMEN_CURVE_PARAM_HPP
+#define RAMEN_CURVE_PARAM_HPP
 
-#include<ramen/params/animated_param.hpp>
+#include <ramen/params/animated_param.hpp>
 
-#include<OpenEXR/ImathColor.h>
+#include <OpenEXR/ImathColor.h>
 
 namespace ramen
 {
-
 class RAMEN_API curve_param_t : public animated_param_t
 {
     Q_OBJECT
 
 public:
+    explicit curve_param_t(const std::string& name);
 
-    explicit curve_param_t( const std::string& name);
-
-    const Imath::Color3c& color() const       { return color_;}
-    void set_color( const Imath::Color3c& c)  { color_ = c;}
+    const Imath::Color3c& color() const { return color_; }
+    void                  set_color(const Imath::Color3c& c) { color_ = c; }
 
 protected:
-
-    curve_param_t( const curve_param_t& other);
-    void operator=( const curve_param_t& other);
+    curve_param_t(const curve_param_t& other);
+    void operator=(const curve_param_t& other);
 
 private:
-
     void private_init();
 
-    virtual param_t *do_clone() const { return new curve_param_t( *this);}
+    param_t* do_clone() const override { return new curve_param_t(*this); }
 
-    virtual void do_create_tracks( anim::track_t *parent);
+    void do_create_tracks(anim::track_t* parent) override;
 
-    virtual void do_add_to_hash( hash::generator_t& hash_gen) const;
+    void do_add_to_hash(hash::generator_t& hash_gen) const override;
 
-    virtual void do_read( const serialization::yaml_node_t& node);
-    virtual void do_write( serialization::yaml_oarchive_t& out) const;
+    void do_read(const serialization::yaml_node_t& node) override;
+    void do_write(serialization::yaml_oarchive_t& out) const override;
 
     Imath::Color3c color_;
 };
 
-} // namespace
+}  // namespace
 
 #endif

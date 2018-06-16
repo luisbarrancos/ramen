@@ -5,16 +5,15 @@
 #ifndef RAMEN_MANIPULATORS_UTIL_HPP
 #define RAMEN_MANIPULATORS_UTIL_HPP
 
-#include<OpenEXR/ImathVec.h>
+#include <OpenEXR/ImathVec.h>
 
 namespace ramen
 {
 namespace manipulators
 {
+Imath::V2f rotate_point(const Imath::V2f& center, const Imath::V2f& p, float angle_in_degrees);
 
-Imath::V2f rotate_point( const Imath::V2f& center, const Imath::V2f& p, float angle_in_degrees);
-	
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

@@ -3,21 +3,18 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_IMPORT_COMPOSITION_HPP
-#define	RAMEN_IMPORT_COMPOSITION_HPP
+#define RAMEN_IMPORT_COMPOSITION_HPP
 
-#include<utility>
+#include <utility>
 
-#include<ramen/filesystem/path.hpp>
+#include <ramen/filesystem/path.hpp>
 
-#include<ramen/serialization/yaml_iarchive.hpp>
+#include <ramen/serialization/yaml_iarchive.hpp>
 
 namespace ramen
 {
+std::auto_ptr<serialization::yaml_iarchive_t> import_composition(const boost::filesystem::path& p);
 
-std::auto_ptr<serialization::yaml_iarchive_t> import_composition( const boost::filesystem::path& p);
-
-} // ramen
+}  // ramen
 
 #endif
-
-

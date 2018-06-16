@@ -5,191 +5,189 @@
 #ifndef RAMEN_NODES_GRAPH_ALGORITHM_HPP
 #define RAMEN_NODES_GRAPH_ALGORITHM_HPP
 
-#include<boost/range.hpp>
-#include<boost/bind.hpp>
-#include<boost/ref.hpp>
+#include <boost/range.hpp>
+#include <boost/bind.hpp>
+#include <boost/ref.hpp>
 
-#include<ramen/nodes/node.hpp>
-#include<ramen/nodes/edge.hpp>
+#include <ramen/nodes/node.hpp>
+#include <ramen/nodes/edge.hpp>
 
 namespace ramen
 {
-
 namespace detail
 {
-
-void set_inputs_color( node_t& n, graph_color_t c);
+void set_inputs_color(node_t& n, graph_color_t c);
 
 template<class Range>
-void set_multiple_inputs_color( Range& r, graph_color_t c)
+void set_multiple_inputs_color(Range& r, graph_color_t c)
 {
     typedef typename boost::range_iterator<Range>::type iter;
 
-    for( iter it( boost::begin(r)); it != boost::end(r); ++it)
-        set_inputs_color( *(*it), c);
+    for (iter it(boost::begin(r)); it != boost::end(r); ++it)
+        set_inputs_color(*(*it), c);
 }
 
-void set_outputs_color( node_t& n, graph_color_t c);
+void set_outputs_color(node_t& n, graph_color_t c);
 
 template<class Range>
-void set_multiple_outputs_color( Range& r, graph_color_t c)
+void set_multiple_outputs_color(Range& r, graph_color_t c)
 {
     typedef typename boost::range_iterator<Range>::type iter;
 
-    for( iter it( boost::begin(r)); it != boost::end(r); ++it)
-        set_outputs_color( *(*it), c);
+    for (iter it(boost::begin(r)); it != boost::end(r); ++it)
+        set_outputs_color(*(*it), c);
 }
 
 template<class Visitor>
-void depth_first_inputs_recursive_search( node_t& n, Visitor f)
+void depth_first_inputs_recursive_search(node_t& n, Visitor f)
 {
-    for( unsigned int i=0;i<n.num_inputs();++i)
+    for (unsigned int i = 0; i < n.num_inputs(); ++i)
     {
-        if( n.input(i) != 0)
-            depth_first_inputs_recursive_search( *n.input(i), f);
-    }
-	
-    if( n.graph_color() == black)
-    {
-        f( n);
-        n.set_graph_color( white);
-    }
-}
-
-template<class Visitor>
-void breadth_first_inputs_recursive_search( node_t& n, Visitor f)
-{
-    if( n.graph_color() == black)
-    {
-        f( n);
-        n.set_graph_color( white);
+        if (n.input(i) != 0)
+            depth_first_inputs_recursive_search(*n.input(i), f);
     }
 
-    for( unsigned int i=0;i<n.num_inputs();++i)
+    if (n.graph_color() == black)
     {
-        if( n.input(i) != 0)
-            breadth_first_inputs_recursive_search( *n.input(i), f);
+        f(n);
+        n.set_graph_color(white);
     }
 }
 
 template<class Visitor>
-void depth_first_outputs_recursive_search( node_t& n, Visitor f)
+void breadth_first_inputs_recursive_search(node_t& n, Visitor f)
 {
-    for( unsigned int i=0;i<n.num_outputs();++i)
-        depth_first_outputs_recursive_search( *n.output(i), f);
-	
-    if( n.graph_color() == black)
+    if (n.graph_color() == black)
     {
-        f( n);
-        n.set_graph_color( white);
+        f(n);
+        n.set_graph_color(white);
+    }
+
+    for (unsigned int i = 0; i < n.num_inputs(); ++i)
+    {
+        if (n.input(i) != 0)
+            breadth_first_inputs_recursive_search(*n.input(i), f);
     }
 }
 
 template<class Visitor>
-void breadth_first_outputs_recursive_search( node_t& n, Visitor f)
+void depth_first_outputs_recursive_search(node_t& n, Visitor f)
 {
-    if( n.graph_color() == black)
+    for (unsigned int i = 0; i < n.num_outputs(); ++i)
+        depth_first_outputs_recursive_search(*n.output(i), f);
+
+    if (n.graph_color() == black)
     {
-        f( n);
-        n.set_graph_color( white);
-    }
-
-    for( unsigned int i=0;i<n.num_outputs();++i)
-        breadth_first_outputs_recursive_search( *n.output(i), f);
-}
-
-} // detail
-
-template<class Visitor>
-void breadth_first_inputs_search( node_t& first, Visitor f, bool search_first = true)
-{
-    detail::set_inputs_color( first, black);
-
-    if( !search_first)
-        first.set_graph_color( white);
-
-    detail::breadth_first_inputs_recursive_search( first, f);
-}
-
-template<class Visitor>
-void breadth_first_inputs_apply( node_t& n, Visitor f, bool apply_first = true)
-{
-    if( apply_first)
-        f( n);
-
-    for( unsigned int i=0;i<n.num_inputs();++i)
-    {
-        if( n.input(i) != 0)
-            breadth_first_inputs_apply( *n.input(i), f);
+        f(n);
+        n.set_graph_color(white);
     }
 }
 
 template<class Visitor>
-void depth_first_inputs_search( node_t& first, Visitor f, bool search_first = true)
+void breadth_first_outputs_recursive_search(node_t& n, Visitor f)
 {
-    detail::set_inputs_color( first, black);
+    if (n.graph_color() == black)
+    {
+        f(n);
+        n.set_graph_color(white);
+    }
 
-    if( !search_first)
-        first.set_graph_color( white);
+    for (unsigned int i = 0; i < n.num_outputs(); ++i)
+        breadth_first_outputs_recursive_search(*n.output(i), f);
+}
 
-    detail::depth_first_inputs_recursive_search( first, f);
+}  // detail
+
+template<class Visitor>
+void breadth_first_inputs_search(node_t& first, Visitor f, bool search_first = true)
+{
+    detail::set_inputs_color(first, black);
+
+    if (!search_first)
+        first.set_graph_color(white);
+
+    detail::breadth_first_inputs_recursive_search(first, f);
 }
 
 template<class Visitor>
-void breadth_first_outputs_search( node_t& first, Visitor f, bool search_first = true)
+void breadth_first_inputs_apply(node_t& n, Visitor f, bool apply_first = true)
 {
-    detail::set_outputs_color( first, black);
+    if (apply_first)
+        f(n);
 
-    if( !search_first)
-        first.set_graph_color( white);
+    for (unsigned int i = 0; i < n.num_inputs(); ++i)
+    {
+        if (n.input(i) != 0)
+            breadth_first_inputs_apply(*n.input(i), f);
+    }
+}
 
-    detail::breadth_first_outputs_recursive_search( first, f);
+template<class Visitor>
+void depth_first_inputs_search(node_t& first, Visitor f, bool search_first = true)
+{
+    detail::set_inputs_color(first, black);
+
+    if (!search_first)
+        first.set_graph_color(white);
+
+    detail::depth_first_inputs_recursive_search(first, f);
+}
+
+template<class Visitor>
+void breadth_first_outputs_search(node_t& first, Visitor f, bool search_first = true)
+{
+    detail::set_outputs_color(first, black);
+
+    if (!search_first)
+        first.set_graph_color(white);
+
+    detail::breadth_first_outputs_recursive_search(first, f);
 }
 
 template<class Range, class Visitor>
-void breadth_first_multiple_outputs_search( Range& r, Visitor f, bool search_first = true)
+void breadth_first_multiple_outputs_search(Range& r, Visitor f, bool search_first = true)
 {
     typedef typename boost::range_iterator<Range>::type iter;
 
-    detail::set_multiple_outputs_color( r, black);
+    detail::set_multiple_outputs_color(r, black);
 
-    if( !search_first)
+    if (!search_first)
     {
-        for( iter it( boost::begin(r)); it != boost::end(r); ++it)
-            (*it)->set_graph_color( white);
+        for (iter it(boost::begin(r)); it != boost::end(r); ++it)
+            (*it)->set_graph_color(white);
     }
 
-    for( iter it( boost::begin(r)); it != boost::end(r); ++it)
-        detail::breadth_first_outputs_recursive_search( *(*it), f);
+    for (iter it(boost::begin(r)); it != boost::end(r); ++it)
+        detail::breadth_first_outputs_recursive_search(*(*it), f);
 }
 
 template<class Visitor>
-void depth_first_outputs_search( node_t& first, Visitor f, bool search_first = true)
+void depth_first_outputs_search(node_t& first, Visitor f, bool search_first = true)
 {
-    detail::set_outputs_color( first, black);
+    detail::set_outputs_color(first, black);
 
-    if( !search_first)
-        first.set_graph_color( white);
+    if (!search_first)
+        first.set_graph_color(white);
 
-    detail::depth_first_outputs_recursive_search( first, f);
+    detail::depth_first_outputs_recursive_search(first, f);
 }
 
-bool node_depends_on_node( node_t& node, node_t& other);
+bool node_depends_on_node(node_t& node, node_t& other);
 
 template<class Visitor>
-void breadth_first_out_edges_apply( node_t& n, Visitor f)
+void breadth_first_out_edges_apply(node_t& n, Visitor f)
 {
-    for( unsigned int i = 0; i < n.num_outputs(); ++i)
-	{
-		node_t *dst = boost::get<0>( n.output_plug().connections()[i]);
-		int port  = boost::get<2>( n.output_plug().connections()[i]);
-		edge_t e( &n, dst, port);
-		f( e);
+    for (unsigned int i = 0; i < n.num_outputs(); ++i)
+    {
+        node_t* dst  = boost::get<0>(n.output_plug().connections()[i]);
+        int     port = boost::get<2>(n.output_plug().connections()[i]);
+        edge_t  e(&n, dst, port);
+        f(e);
 
-		breadth_first_out_edges_apply( *dst, f);
-	}
+        breadth_first_out_edges_apply(*dst, f);
+    }
 }
 
-} // namespace
+}  // namespace
 
 #endif

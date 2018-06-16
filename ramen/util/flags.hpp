@@ -5,29 +5,28 @@
 #ifndef RAMEN_UTIL_FLAGS_HPP
 #define RAMEN_UTIL_FLAGS_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
 namespace ramen
 {
 namespace util
 {
-
 template<class T, class Bit>
-bool test_flag( T flags, Bit bit)
+bool test_flag(T flags, Bit bit)
 {
     return flags & bit;
 }
 
 template<class T, class Bit>
-void set_flag( T& flags, Bit bit, bool value)
+void set_flag(T& flags, Bit bit, bool value)
 {
-    if( value)
+    if (value)
         flags |= bit;
     else
         flags &= ~bit;
 }
 
-} // util
-} // ramen
+}  // util
+}  // ramen
 
 #endif

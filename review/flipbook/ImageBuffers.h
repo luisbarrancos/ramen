@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -84,40 +84,39 @@
 //
 //-----------------------------------------------------------------------------
 
-#include<OpenEXR/ImfFrameBuffer.h>
-#include<OpenEXR/ImathBox.h>
-#include<OpenEXR/IlmThreadSemaphore.h>
+#include <OpenEXR/ImfFrameBuffer.h>
+#include <OpenEXR/ImathBox.h>
+#include <OpenEXR/IlmThreadSemaphore.h>
 
 class ImageBuffers
 {
-  public:
-
-    ImageBuffers ();
+public:
+    ImageBuffers();
 
     //----------------------------------------------------------
     // Flag that indicates if we are playing forward or backward
     //----------------------------------------------------------
 
-    bool 			forward;
+    bool forward;
 
     //-----------------------------------------------------------------------
     // Flag that indicates if the frames contain RGB or luminance/chroma data
     //-----------------------------------------------------------------------
 
-    bool 			rgbMode;
+    bool rgbMode;
 
     //------------------------------------
     // Number of frames in the ring buffer
     //------------------------------------
 
-    int				numBuffers ();
+    int numBuffers();
 
     //------------------------------------------------
     // Access to the Imf::FrameBuffers
     // i must be in the range from 0 to numBuffers()-1
     //------------------------------------------------
 
-    Imf::FrameBuffer &		frameBuffer (int i);
+    Imf::FrameBuffer& frameBuffer(int i);
 
 
     //------------------------------------------------
@@ -126,7 +125,7 @@ class ImageBuffers
     // channel must be in the range from 0 to 2
     //------------------------------------------------
 
-    char * &			pixels (int i, int channel);
+    char*& pixels(int i, int channel);
 
 
     //-----------------------------------------------------------
@@ -134,32 +133,31 @@ class ImageBuffers
     // i must be in the range from 0 to numBuffers()-1
     //-----------------------------------------------------------
 
-    int &			frameNumber (int i);
+    int& frameNumber(int i);
 
 
     //---------------------------
     // Data window for all frames
     //---------------------------
 
-    Imath::Box2i		dataWindow;
+    Imath::Box2i dataWindow;
 
 
     //-----------
     // Semaphores
     //-----------
 
-    IlmThread::Semaphore	emptyBuffersSemaphore;
-    IlmThread::Semaphore	fullBuffersSemaphore;
-    IlmThread::Semaphore	exitSemaphore1;
-    IlmThread::Semaphore	exitSemaphore2;
-	 
-  private:
+    IlmThread::Semaphore emptyBuffersSemaphore;
+    IlmThread::Semaphore fullBuffersSemaphore;
+    IlmThread::Semaphore exitSemaphore1;
+    IlmThread::Semaphore exitSemaphore2;
 
+private:
     static const int NUM_BUFFERS = 3;
 
-    Imf::FrameBuffer		_frameBuffers[NUM_BUFFERS];
-    char *			_pixels[NUM_BUFFERS][3];
-    int				_frameNumbers[NUM_BUFFERS];
+    Imf::FrameBuffer _frameBuffers[NUM_BUFFERS];
+    char*            _pixels[NUM_BUFFERS][3];
+    int              _frameNumbers[NUM_BUFFERS];
 };
 
 

@@ -1,11 +1,11 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
 #ifndef RAMEN_UI_PY_CONSOLE_HPP
-#define	RAMEN_UI_PY_CONSOLE_HPP
+#define RAMEN_UI_PY_CONSOLE_HPP
 
-#include<boost/noncopyable.hpp>
+#include <boost/noncopyable.hpp>
 
-#include<QObject>
+#include <QObject>
 
 class QWidget;
 class QPlainTextEdit;
@@ -16,36 +16,35 @@ namespace ui
 {
 namespace python
 {
-
-class console_t : public QObject, boost::noncopyable
+class console_t
+: public QObject
+, boost::noncopyable
 {
     Q_OBJECT
 
 public:
-
     static console_t& instance();
 
-    QWidget *widget() { return window_;}
+    QWidget* widget() { return window_; }
 
-    QPlainTextEdit *output_area()	{ return output_;}
+    QPlainTextEdit* output_area() { return output_; }
 
-    void write( const std::string& str);
+    void write(const std::string& str);
 
 public Q_SLOTS:
 
     void clear();
 
 private:
-
     console_t();
     ~console_t();
 
-    QWidget *window_;
-    QPlainTextEdit *output_;
+    QWidget*        window_;
+    QPlainTextEdit* output_;
 };
 
-} // namespace
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
+}  // namespace
 
 #endif

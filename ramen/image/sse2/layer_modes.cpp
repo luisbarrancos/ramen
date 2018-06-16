@@ -2,9 +2,9 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/image/sse2/layer_modes.hpp>
+#include <ramen/image/sse2/layer_modes.hpp>
 
-#include<algorithm>
+#include <algorithm>
 
 using namespace boost::gil;
 
@@ -14,91 +14,91 @@ namespace image
 {
 namespace sse2
 {
-
-pixel_t over_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t over_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
-    f = _mm_mul_ps( f, opacity_);
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
+    f        = _mm_mul_ps(f, opacity_);
 
-    float *p = reinterpret_cast<float*>( &f);
+    float* p = reinterpret_cast<float*>(&f);
 
-    float alpha = p[3];
+    float alpha     = p[3];
     float alpha_inv = 1.0f - alpha;
 
-    __m128 a = _mm_set_ps( 1.0f, alpha_inv, alpha_inv, alpha_inv);
+    __m128 a = _mm_set_ps(1.0f, alpha_inv, alpha_inv, alpha_inv);
 
-    b = _mm_mul_ps( b, a);
-    f = _mm_add_ps( f, b);
-    f = clamp_alpha( f);
+    b = _mm_mul_ps(b, a);
+    f = _mm_add_ps(f, b);
+    f = clamp_alpha(f);
 
-    p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
-pixel_t add_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t add_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
 
-    f = _mm_mul_ps( f, opacity_);
-    f = _mm_add_ps( f, b);
-    f = clamp_alpha( f);
+    f = _mm_mul_ps(f, opacity_);
+    f = _mm_add_ps(f, b);
+    f = clamp_alpha(f);
 
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
-pixel_t mul_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t mul_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
 
-    f = lerp( _mm_mul_ps( f, b), b);
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    f        = lerp(_mm_mul_ps(f, b), b);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
-pixel_t sub_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t sub_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
 
-    f = _mm_mul_ps( f, opacity_);
-    f = _mm_sub_ps( b, f);
-    f = clamp_alpha( f);
+    f = _mm_mul_ps(f, opacity_);
+    f = _mm_sub_ps(b, f);
+    f = clamp_alpha(f);
 
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);}
-
-pixel_t mix_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
-{
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
-
-    f = lerp( f, b);
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
-pixel_t max_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t mix_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
 
-    f = lerp( _mm_max_ps( f, b), b);
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    f        = lerp(f, b);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
-pixel_t min_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& front) const
+pixel_t max_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
 {
-    __m128 b = _mm_load_ps( reinterpret_cast<const float*>( &back));
-    __m128 f = _mm_load_ps( reinterpret_cast<const float*>( &front));
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
 
-    f = lerp( _mm_min_ps( f, b), b);
-    float *p = reinterpret_cast<float*>( &f);
-    return pixel_t( p[0], p[1], p[2], p[3]);
+    f        = lerp(_mm_max_ps(f, b), b);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
+}
+
+pixel_t min_layer_mode_fun::operator()(const pixel_t& back, const pixel_t& front) const
+{
+    __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&back));
+    __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&front));
+
+    f        = lerp(_mm_min_ps(f, b), b);
+    float* p = reinterpret_cast<float*>(&f);
+    return pixel_t(p[0], p[1], p[2], p[3]);
 }
 
 /*
@@ -107,6 +107,6 @@ pixel_t atop_layer_mode_fun::operator()( const pixel_t& back, const pixel_t& fro
 }
 */
 
-} // namespace
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
+}  // namespace

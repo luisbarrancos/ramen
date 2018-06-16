@@ -50,159 +50,164 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ramen/imageio/dpx/dpx_reader.hpp>
+#include <ramen/imageio/dpx/dpx_reader.hpp>
 
-#include<stdexcept>
+#include <stdexcept>
 
-#include<fstream>
+#include <fstream>
 
 namespace ramen
 {
 namespace imageio
 {
-
-dpx_reader_t::dpx_reader_t( const boost::filesystem::path& p) : reader_t( p)
+dpx_reader_t::dpx_reader_t(const boost::filesystem::path& p)
+: reader_t(p)
 {
-    std::ifstream ifile( filesystem::file_cstring( p), std::ios_base::binary);
+    std::ifstream ifile(filesystem::file_cstring(p), std::ios_base::binary);
 
-    if( !ifile)
-		throw exception( "Can't open file");
+    if (!ifile)
+        throw exception("Can't open file");
 
-    read_header( ifile);
+    read_header(ifile);
 
-    int width  = getU32 (imageInfo_.pixelsPerLine, byteOrder_);
-    int height = getU32 (imageInfo_.linesPerImageElement, byteOrder_);
+    int width  = getU32(imageInfo_.pixelsPerLine, byteOrder_);
+    int height = getU32(imageInfo_.linesPerImageElement, byteOrder_);
 
-    info_[adobe::name_t( "format")] = adobe::any_regular_t( Imath::Box2i( Imath::V2i( 0, 0), Imath::V2i( width - 1, height - 1)));
+    info_[adobe::name_t("format")]
+        = adobe::any_regular_t(Imath::Box2i(Imath::V2i(0, 0), Imath::V2i(width - 1, height - 1)));
 }
 
-void dpx_reader_t::read_header( std::ifstream& ifile) const
+void dpx_reader_t::read_header(std::ifstream& ifile) const
 {
     bool strict = false;
 
-    if( !ifile.read( (char *) &fileInfo_, sizeof( fileInfo_)))
-		throw unknown_image_format();
+    if (!ifile.read((char*) &fileInfo_, sizeof(fileInfo_)))
+        throw unknown_image_format();
 
-    switch( getU32 (fileInfo_.magicNumber, BO_BIG))
+    switch (getU32(fileInfo_.magicNumber, BO_BIG))
     {
-    case 0x53445058:
-		byteOrder_ = BO_BIG;
-	break;
+        case 0x53445058:
+            byteOrder_ = BO_BIG;
+            break;
 
-    case 0x58504453:
-		byteOrder_ = BO_LITTLE;
-	break;
+        case 0x58504453:
+            byteOrder_ = BO_LITTLE;
+            break;
 
-    default:
-		throw unknown_image_format();
+        default:
+            throw unknown_image_format();
     }
 
-    if( !ifile.read( (char *) &imageInfo_, sizeof( imageInfo_)))
-		throw unknown_image_format();
+    if (!ifile.read((char*) &imageInfo_, sizeof(imageInfo_)))
+        throw unknown_image_format();
 
-    if (getU16 (imageInfo_.imageOrientation, byteOrder_) != 0)
-		throw unsupported_image( "Cannot read DPX files with image orientation "
-				                  "other than left-to-right, top-to-bottom.");
+    if (getU16(imageInfo_.imageOrientation, byteOrder_) != 0)
+        throw unsupported_image("Cannot read DPX files with image orientation "
+                                "other than left-to-right, top-to-bottom.");
 
-    if (getU16 (imageInfo_.numberOfElements, byteOrder_) != 1)
-		throw unsupported_image( "Cannot read DPX files with "
-								  "multiple image elements.");
-		
-    if (getU32 (imageInfo_.imageElements[0].dataSign, byteOrder_) != 0)
-		throw unsupported_image( "Cannot read DPX files with signed data.");
+    if (getU16(imageInfo_.numberOfElements, byteOrder_) != 1)
+        throw unsupported_image("Cannot read DPX files with "
+                                "multiple image elements.");
+
+    if (getU32(imageInfo_.imageElements[0].dataSign, byteOrder_) != 0)
+        throw unsupported_image("Cannot read DPX files with signed data.");
 
     if (imageInfo_.imageElements[0].descriptor != 50)
-		throw unsupported_image( "Cannot read DPX files with data other than RGB.");
+        throw unsupported_image("Cannot read DPX files with data other than RGB.");
 
-    if (strict && imageInfo_.imageElements[0].transferCharacteristic != 1 &&
-				imageInfo_.imageElements[0].transferCharacteristic != 3)
-	{
-		throw unsupported_image( "Cannot read DPX files with transfer "
-				                  "characteristic other than 'printing "
-								  "density' or 'logarithmic.'");
-	}
-	
+    if (strict && imageInfo_.imageElements[0].transferCharacteristic != 1
+        && imageInfo_.imageElements[0].transferCharacteristic != 3)
+    {
+        throw unsupported_image("Cannot read DPX files with transfer "
+                                "characteristic other than 'printing "
+                                "density' or 'logarithmic.'");
+    }
+
     if (strict && imageInfo_.imageElements[0].colorimetricSpecification != 1)
-		throw unsupported_image("Cannot read DPX files with colorimetric "
-				                  "specification other than printing density.");
+        throw unsupported_image("Cannot read DPX files with colorimetric "
+                                "specification other than printing density.");
 
     if (imageInfo_.imageElements[0].bitSize != 10)
-		throw unsupported_image("Cannot read DPX files with bit size other than 10.");
+        throw unsupported_image("Cannot read DPX files with bit size other than 10.");
 
-    if (getU16 (imageInfo_.imageElements[0].packing, byteOrder_) != 1)
-		throw unsupported_image("Cannot read DPX files with bit packing "
-								  "other than \"filled to 32-bit words.\"");
+    if (getU16(imageInfo_.imageElements[0].packing, byteOrder_) != 1)
+        throw unsupported_image("Cannot read DPX files with bit packing "
+                                "other than \"filled to 32-bit words.\"");
 
-    if (getU16 (imageInfo_.imageElements[0].encoding, byteOrder_) != 0)
-		throw unsupported_image("Cannot read DPX files with encoded data.");
+    if (getU16(imageInfo_.imageElements[0].encoding, byteOrder_) != 0)
+        throw unsupported_image("Cannot read DPX files with encoded data.");
 }
 
-void dpx_reader_t::do_read_image( const image::image_view_t& view, const Imath::Box2i& crop, int subsample) const
+void dpx_reader_t::do_read_image(const image::image_view_t& view,
+                                 const Imath::Box2i&        crop,
+                                 int                        subsample) const
 {
-    std::ifstream ifile( filesystem::file_cstring( path_), std::ios_base::binary);
+    std::ifstream ifile(filesystem::file_cstring(path_), std::ios_base::binary);
 
-    if( !ifile)
-		throw exception( "Can't open file");
+    if (!ifile)
+        throw exception("Can't open file");
 
-    int pixelOffset = getU32( imageInfo_.imageElements[0].offsetToData, byteOrder_);
-    int width  = getU32 (imageInfo_.pixelsPerLine, byteOrder_);
-    int stride = width * 4;
+    int pixelOffset = getU32(imageInfo_.imageElements[0].offsetToData, byteOrder_);
+    int width       = getU32(imageInfo_.pixelsPerLine, byteOrder_);
+    int stride      = width * 4;
 
-    if( !ifile.seekg( pixelOffset + crop.min.y * stride , std::ios_base::beg))
-		throw exception( "Cannot seek pixel data");
+    if (!ifile.seekg(pixelOffset + crop.min.y * stride, std::ios_base::beg))
+        throw exception("Cannot seek pixel data");
 
-    std::vector<boost::uint8_t> buffer( stride);
-    int yy = 0;
+    std::vector<boost::uint8_t> buffer(stride);
+    int                         yy = 0;
 
-    for( int y = crop.min.y; y <= crop.max.y; y += subsample)
+    for (int y = crop.min.y; y <= crop.max.y; y += subsample)
     {
-		char *p = reinterpret_cast<char *>( &( buffer.front()));
+        char* p = reinterpret_cast<char*>(&(buffer.front()));
 
-		if( !ifile.read( p, stride))
-			throw exception( "Error reading file");
-	
-		// copy row here
-		image::image_view_t::x_iterator dst_it( view.row_begin( yy));
-		image::image_view_t::x_iterator dst_end( view.row_end( yy));
-	
-		U32 *q = reinterpret_cast<U32*>( p);
-	
-		for( int x = crop.min.x; x <= crop.max.x; x += subsample)
-		{
-			unsigned int word = getU32( q[x], byteOrder_);
-			boost::gil::get_color( *dst_it, boost::gil::red_t())    = ((word >> 22) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::green_t())  = ((word >> 12) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::blue_t())   = ((word >>  2) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::alpha_t())  = 1.0f;
-			++dst_it;
-	
-			if( dst_it == dst_end)
-			break;
-		}
+        if (!ifile.read(p, stride))
+            throw exception("Error reading file");
 
-        while( dst_it < dst_end)
+        // copy row here
+        image::image_view_t::x_iterator dst_it(view.row_begin(yy));
+        image::image_view_t::x_iterator dst_end(view.row_end(yy));
+
+        U32* q = reinterpret_cast<U32*>(p);
+
+        for (int x = crop.min.x; x <= crop.max.x; x += subsample)
         {
-            U32 *p = reinterpret_cast<U32*>( &( buffer.back()));
-			unsigned int word = getU32( *p, byteOrder_);
-			boost::gil::get_color( *dst_it, boost::gil::red_t())    = ((word >> 22) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::green_t())  = ((word >> 12) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::blue_t())   = ((word >>  2) & 0x3ff) / 1023.0f;
-			boost::gil::get_color( *dst_it, boost::gil::alpha_t())  = 1.0f;
-			++dst_it;
+            unsigned int word                                   = getU32(q[x], byteOrder_);
+            boost::gil::get_color(*dst_it, boost::gil::red_t()) = ((word >> 22) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::green_t())
+                = ((word >> 12) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::blue_t())  = ((word >> 2) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::alpha_t()) = 1.0f;
+            ++dst_it;
+
+            if (dst_it == dst_end)
+                break;
+        }
+
+        while (dst_it < dst_end)
+        {
+            U32*         p    = reinterpret_cast<U32*>(&(buffer.back()));
+            unsigned int word = getU32(*p, byteOrder_);
+            boost::gil::get_color(*dst_it, boost::gil::red_t()) = ((word >> 22) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::green_t())
+                = ((word >> 12) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::blue_t())  = ((word >> 2) & 0x3ff) / 1023.0f;
+            boost::gil::get_color(*dst_it, boost::gil::alpha_t()) = 1.0f;
+            ++dst_it;
         }
 
         // skip scanlines
-		if( y + subsample - 1 <= crop.max.y)
-		{
-			if( !ifile.seekg( (subsample - 1) * stride, std::ios_base::cur))
-			    throw exception( "Cannot seek pixel data");
-		}
+        if (y + subsample - 1 <= crop.max.y)
+        {
+            if (!ifile.seekg((subsample - 1) * stride, std::ios_base::cur))
+                throw exception("Cannot seek pixel data");
+        }
 
         ++yy;
     }
 
-    repeat_scanline_until_end( view, yy - 1);
+    repeat_scanline_until_end(view, yy - 1);
 }
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace

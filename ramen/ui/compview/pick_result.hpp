@@ -3,13 +3,12 @@
 #ifndef RAMEN_UI_COMP_VIEW_PICK_RESULT_HPP
 #define RAMEN_UI_COMP_VIEW_PICK_RESULT_HPP
 
-#include<ramen/nodes/node_fwd.hpp>
+#include <ramen/nodes/node_fwd.hpp>
 
 namespace ramen
 {
 namespace ui
 {
-
 struct pick_result_t
 {
     enum component_t
@@ -20,14 +19,19 @@ struct pick_result_t
         output_picked
     };
 
-    pick_result_t() : node( 0), component( no_pick), plug_num( -1) {}
+    pick_result_t()
+    : node(0)
+    , component(no_pick)
+    , plug_num(-1)
+    {
+    }
 
-    node_t *node;
+    node_t*     node;
     component_t component;
-    int plug_num;
+    int         plug_num;
 };
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

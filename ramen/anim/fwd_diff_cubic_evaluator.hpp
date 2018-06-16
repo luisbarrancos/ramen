@@ -3,25 +3,23 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_ANIM_FWD_DIFF_CUBIC_EVALUATOR_HPP
-#define	RAMEN_ANIM_FWD_DIFF_CUBIC_EVALUATOR_HPP
+#define RAMEN_ANIM_FWD_DIFF_CUBIC_EVALUATOR_HPP
 
-#include<boost/array.hpp>
+#include <array>
 
 namespace ramen
 {
 namespace anim
 {
-
-template<class T=float>
+template<class T = float>
 class fwd_diff_cubic_evaluator_t
 {
 public:
+    typedef T value_type;
 
-	typedef T value_type;
-
-    fwd_diff_cubic_evaluator_t( const boost::array<value_type,4>& p, value_type step_size)
+    fwd_diff_cubic_evaluator_t(const std::array<value_type, 4>& p, value_type step_size)
     {
-        value_type s = step_size;
+        value_type s  = step_size;
         value_type s2 = s * s;
         value_type s3 = s2 * s;
 
@@ -31,7 +29,7 @@ public:
         diff3_ = value_type(6) * p[0] * s3;
     }
 
-    value_type operator()() const { return value_;}
+    value_type operator()() const { return value_; }
 
     fwd_diff_cubic_evaluator_t& operator++()
     {
@@ -41,20 +39,19 @@ public:
         return *this;
     }
 
-    fwd_diff_cubic_evaluator_t operator++( int)
+    fwd_diff_cubic_evaluator_t operator++(int)
     {
-        fwd_diff_cubic_evaluator_t tmp( *this);
-        ++( *this);
+        fwd_diff_cubic_evaluator_t tmp(*this);
+        ++(*this);
         return tmp;
     }
 
 private:
-
     value_type value_;
     value_type diff1_, diff2_, diff3_;
 };
 
-} // anim
-} // ramen
+}  // anim
+}  // ramen
 
 #endif

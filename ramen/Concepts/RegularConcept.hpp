@@ -5,25 +5,22 @@
 #ifndef RAMEN_REGULAR_CONCEPT_HPP
 #define RAMEN_REGULAR_CONCEPT_HPP
 
-#include<boost/concept_check.hpp>
-#include<boost/swap.hpp>
+#include <boost/concept_check.hpp>
+#include <boost/swap.hpp>
 
 namespace ramen
 {
-
-template <class T>
-struct RegularConcept :	boost::CopyConstructible<T>,
-                        boost::Assignable<T>
-                        //boost::EqualityComparable<T>
+template<class T>
+struct RegularConcept
+: boost::CopyConstructible<T>
+, boost::Assignable<T>
+// boost::EqualityComparable<T>
 {
-	BOOST_CONCEPT_USAGE( RegularConcept)
-	{
-		boost::swap( t, t);
-	}
+    BOOST_CONCEPT_USAGE(RegularConcept) { boost::swap(t, t); }
 
-	T t;
+    T t;
 };
 
-} // ramen
+}  // ramen
 
 #endif

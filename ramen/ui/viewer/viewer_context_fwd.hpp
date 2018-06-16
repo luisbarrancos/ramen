@@ -3,9 +3,9 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_VIEWER_VIEWER_CONTEXT_FWD_HPP
-#define	RAMEN_UI_VIEWER_VIEWER_CONTEXT_FWD_HPP
+#define RAMEN_UI_VIEWER_VIEWER_CONTEXT_FWD_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
 namespace ramen
 {
@@ -13,11 +13,10 @@ namespace ui
 {
 namespace viewer
 {
-
 class viewer_context_t;
 
-} // viewer
-} // ui
-} // ramen
+}  // viewer
+}  // ui
+}  // ramen
 
 #endif

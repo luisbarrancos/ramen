@@ -8,64 +8,77 @@
 #ifndef RAMEN_POLY_REGULAR_HPP
 #define RAMEN_POLY_REGULAR_HPP
 
-#include<ramen/Concepts/RegularConcept.hpp>
+#include <ramen/Concepts/RegularConcept.hpp>
 
-#include<ramen/core/poly.hpp>
-#include<ramen/core/empty.hpp>
+#include <ramen/core/poly.hpp>
+#include <ramen/core/empty.hpp>
 
 namespace ramen
 {
 namespace core
 {
-
 struct poly_regular_interface : poly_copyable_interface
 {
     virtual bool equals(const poly_regular_interface& new_value) const = 0;
 };
 
-template <typename T>
+template<typename T>
 class poly_regular_instance : public optimized_storage_type<T, poly_regular_interface>::type
 {
-    BOOST_CONCEPT_ASSERT((RegularConcept<T>));
+    BOOST_CONCEPT_ASSERT((RegularConcept<T>) );
 
 public:
-
     typedef typename optimized_storage_type<T, poly_regular_interface>::type base_type;
 
-    explicit poly_regular_instance(const T& x) : base_type(x) {}
-
-    explicit poly_regular_instance(T&& x) : base_type(x) {}
-
-    RAMEN_POLY_INLINE_COPY_AND_ASSIGN( poly_regular_instance, base_type)
-
-    bool equals( const poly_regular_interface& x) const
+    explicit poly_regular_instance(const T& x)
+    : base_type(x)
     {
-        return this->type_info() == x.type_info() && this->get() == *static_cast<const T*>(x.cast());
+    }
+
+    explicit poly_regular_instance(T&& x)
+    : base_type(x)
+    {
+    }
+
+    RAMEN_POLY_INLINE_COPY_AND_ASSIGN(poly_regular_instance, base_type)
+
+    bool equals(const poly_regular_interface& x) const
+    {
+        return this->type_info() == x.type_info()
+               && this->get() == *static_cast<const T*>(x.cast());
     }
 };
 
 class regular : public poly_base<poly_regular_interface, poly_regular_instance>
 {
 public:
-
     typedef poly_base<poly_regular_interface, poly_regular_instance> base_type;
 
-    regular() : base_type( empty_t()) {}
-
-    template <typename T>
-    explicit regular( const T& x) : base_type( x) {}
+    regular()
+    : base_type(empty_t())
+    {
+    }
 
     template<typename T>
-    explicit regular(T&& x) : base_type( x) {}
+    explicit regular(const T& x)
+    : base_type(x)
+    {
+    }
 
-    RAMEN_POLY_INLINE_COPY_AND_ASSIGN( regular, base_type)
+    template<typename T>
+    explicit regular(T&& x)
+    : base_type(x)
+    {
+    }
 
-    bool is_empty() const { return type_info() == typeid( empty_t);}
+    RAMEN_POLY_INLINE_COPY_AND_ASSIGN(regular, base_type)
+
+    bool is_empty() const { return type_info() == typeid(empty_t); }
 };
 
 typedef poly<regular> poly_regular_t;
 
-} // core
-} // ramen
+}  // core
+}  // ramen
 
 #endif

@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace undo
 {
-
 class stack_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

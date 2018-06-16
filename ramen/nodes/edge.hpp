@@ -5,40 +5,39 @@
 #ifndef RAMEN_NODES_EDGE_HPP
 #define RAMEN_NODES_EDGE_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<ramen/core/name.hpp>
+#include <ramen/core/name.hpp>
 
-#include<ramen/nodes/graph_color.hpp>
-#include<ramen/nodes/node_fwd.hpp>
+#include <ramen/nodes/graph_color.hpp>
+#include <ramen/nodes/node_fwd.hpp>
 
 namespace ramen
 {
-
 struct edge_t
 {
     edge_t();
-    edge_t( node_t *s=0, node_t *d=0, int p=-1);
-    edge_t( node_t *s, const core::name_t& splug, node_t *d, const core::name_t& dplug);
+    edge_t(node_t* s = 0, node_t* d = 0, int p = -1);
+    edge_t(node_t* s, const core::name_t& splug, node_t* d, const core::name_t& dplug);
 
-    bool operator==( const edge_t& other) const;
-    bool operator!=( const edge_t& other) const { return !(*this == other);}
+    bool operator==(const edge_t& other) const;
+    bool operator!=(const edge_t& other) const { return !(*this == other); }
 
-    node_t *src;
+    node_t*      src;
     core::name_t src_plug;
 
-    node_t *dst;
+    node_t*      dst;
     core::name_t dst_plug;
 
     int port;
-	
-	// for graph algorithms
-    graph_color_t graph_color() const            { return graph_color_;}
-    void set_graph_color( graph_color_t c) const { graph_color_ = c;}
-	
+
+    // for graph algorithms
+    graph_color_t graph_color() const { return graph_color_; }
+    void          set_graph_color(graph_color_t c) const { graph_color_ = c; }
+
     mutable graph_color_t graph_color_;
 };
 
-} // ramen
+}  // ramen
 
 #endif

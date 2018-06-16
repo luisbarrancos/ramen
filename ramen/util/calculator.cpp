@@ -18,81 +18,69 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ramen/util/calculator.hpp>
+#include <ramen/util/calculator.hpp>
 
-#include<boost/spirit/include/qi.hpp>
-#include<boost/spirit/include/phoenix_operator.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
 
-namespace qi = boost::spirit::qi;
+namespace qi    = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 
 namespace ramen
 {
 namespace util
 {
-
 struct calculator_t::impl
 {
-    template <typename Iterator>
+    template<typename Iterator>
     struct calc_grammar : qi::grammar<Iterator, double(), ascii::space_type>
     {
-        calc_grammar() : calc_grammar::base_type( expression)
+        calc_grammar()
+        : calc_grammar::base_type(expression)
         {
-            using qi::_val;
             using qi::_1;
+            using qi::_val;
             using qi::double_;
 
-            expression =
-                term                            [_val = _1]
-                >> *(   ('+' >> term            [_val += _1])
-                    |   ('-' >> term            [_val -= _1])
-                    )
-                ;
+            expression
+                = term[_val = _1] >> *(('+' >> term[_val += _1]) | ('-' >> term[_val -= _1]));
 
-            term =
-                factor                          [_val = _1]
-                >> *(   ('*' >> factor          [_val *= _1])
-                    |   ('/' >> factor          [_val /= _1])
-                    )
-                ;
+            term
+                = factor[_val = _1] >> *(('*' >> factor[_val *= _1]) | ('/' >> factor[_val /= _1]));
 
-            factor =
-                double_                         [_val = _1]
-                |   '(' >> expression           [_val = _1] >> ')'
-                |   ('-' >> factor              [_val = -_1])
-                |   ('+' >> factor              [_val = _1])
-                ;
+            factor = double_[_val = _1] | '(' >> expression[_val = _1] >> ')'
+                     | ('-' >> factor[_val = -_1]) | ('+' >> factor[_val = _1]);
         }
 
         qi::rule<Iterator, double(), ascii::space_type> expression, term, factor;
     };
-	
-	boost::optional<double> parse_and_eval( const std::string& s) const
-	{
-		using boost::spirit::ascii::space;
-		
-        std::string::const_iterator iter = s.begin();
-        std::string::const_iterator end = s.end();
-		double result;
-		
-        bool r = phrase_parse( iter, end, calc, space, result);
 
-        if( r && iter == end)
-			return result;
-		else
-			return boost::optional<double>();
-	}
-		
-	calc_grammar<std::string::const_iterator> calc;
+    boost::optional<double> parse_and_eval(const std::string& s) const
+    {
+        using boost::spirit::ascii::space;
+
+        std::string::const_iterator iter = s.begin();
+        std::string::const_iterator end  = s.end();
+        double                      result;
+
+        bool r = phrase_parse(iter, end, calc, space, result);
+
+        if (r && iter == end)
+            return result;
+        else
+            return boost::optional<double>();
+    }
+
+    calc_grammar<std::string::const_iterator> calc;
 };
 
-calculator_t::calculator_t()	{ pimpl_ = new impl();}
-calculator_t::~calculator_t()	{ delete pimpl_;}
+calculator_t::calculator_t() { m_pimpl = new impl(); }
+calculator_t::~calculator_t() { delete m_pimpl; }
 
-boost::optional<double> calculator_t::operator()( const std::string& s) const
+boost::optional<double> calculator_t::operator()(const std::string& s) const
 {
-	return pimpl_->parse_and_eval( s);
+    return m_pimpl->parse_and_eval(s);
 }
 
-} // util
-} // ramen
+}  // util
+}  // ramen

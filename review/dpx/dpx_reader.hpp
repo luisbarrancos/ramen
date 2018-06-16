@@ -51,37 +51,36 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef RAMEN_IMAGEIO_DPX_READER_HPP
-#define	RAMEN_IMAGEIO_DPX_READER_HPP
+#define RAMEN_IMAGEIO_DPX_READER_HPP
 
-#include<ramen/imageio/reader.hpp>
+#include <ramen/imageio/reader.hpp>
 
-#include<fstream>
+#include <fstream>
 
-#include<ramen/imageio/dpx/dpxHeader.h>
+#include <ramen/imageio/dpx/dpxHeader.h>
 
 namespace ramen
 {
 namespace imageio
 {
-
 class dpx_reader_t : public reader_t
 {
 public:
-
-    dpx_reader_t( const boost::filesystem::path& p);
+    dpx_reader_t(const boost::filesystem::path& p);
 
 private:
+    void read_header(std::ifstream& ifile) const;
 
-    void read_header( std::ifstream& ifile) const;
+    virtual void do_read_image(const image::image_view_t& view,
+                               const Imath::Box2i&        crop,
+                               int                        subsample) const;
 
-    virtual void do_read_image( const image::image_view_t& view, const Imath::Box2i& crop, int subsample) const;
-
-    mutable FileInformation fileInfo_;
+    mutable FileInformation  fileInfo_;
     mutable ImageInformation imageInfo_;
-    mutable ByteOrder byteOrder_;
+    mutable ByteOrder        byteOrder_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

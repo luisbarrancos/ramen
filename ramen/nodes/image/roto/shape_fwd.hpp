@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace roto
 {
-
 class shape_t;
 
-} // roto
-} // ramen
+}  // roto
+}  // ramen
 
 #endif

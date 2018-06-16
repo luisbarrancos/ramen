@@ -6,14 +6,13 @@ namespace ramen
 {
 namespace system
 {
-
 struct system_t::impl
 {
-    impl( system_t& self)
+    impl(system_t& self)
     {
-        #error "not implemented"
+#error "not implemented"
     }
 };
 
-} // system
-} // ramen
+}  // system
+}  // ramen

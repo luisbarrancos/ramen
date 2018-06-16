@@ -3,12 +3,15 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_VIEWER_TILED_IMAGE_STRATEGY_HPP
-#define	RAMEN_UI_VIEWER_TILED_IMAGE_STRATEGY_HPP
+#define RAMEN_UI_VIEWER_TILED_IMAGE_STRATEGY_HPP
 
-#include<ramen/ui/viewer/image_view/image_strategy.hpp>
+#include <ramen/ui/viewer/image_view/image_strategy.hpp>
 
-#include<boost/noncopyable.hpp>
-#include<boost/ptr_container/ptr_vector.hpp>
+#include <boost/noncopyable.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
+
+#include <memory>
+#include <vector>
 
 namespace ramen
 {
@@ -16,58 +19,53 @@ namespace ui
 {
 namespace viewer
 {
-
 class tiled_image_strategy_t : public image_strategy_t
 {
 public:
+    tiled_image_strategy_t(const image::buffer_t& pixels,
+                           const Imath::Box2i&    display_window,
+                           const Imath::Box2i&    data_window,
+                           GLenum                 texture_unit = GL_TEXTURE0);
 
-    tiled_image_strategy_t( const image::buffer_t& pixels,
-                            const Imath::Box2i& display_window,
-                            const Imath::Box2i& data_window,
-                            GLenum texture_unit = GL_TEXTURE0);
+    bool update_pixels(const image::buffer_t& pixels,
+                               const Imath::Box2i&    display_window,
+                               const Imath::Box2i&    data_window) override;
 
-    virtual bool update_pixels( const image::buffer_t& pixels,
-                                const Imath::Box2i& display_window,
-                                const Imath::Box2i& data_window);
+    void draw() const override;
 
-	virtual void draw() const;
-
-	virtual boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const;
+    boost::optional<Imath::Color4f> color_at(const Imath::V2i& p) const override;
 
 private:
+    static int tile_size();
 
-	static int tile_size();
+    Imath::Box2i area_for_tile(int x, int y) const;
 
-	Imath::Box2i area_for_tile( int x, int y) const;
+    struct tile_t : boost::noncopyable
+    {
+    public:
+        tile_t(const image::buffer_t& pixels, const Imath::Box2i& area);
+        ~tile_t();
 
-	struct tile_t : boost::noncopyable
-	{
-	public:
+        void update_texture(const Imath::Box2i& area, char* ptr, std::size_t rowsize);
 
-		tile_t( const image::buffer_t& pixels, const Imath::Box2i& area);
-		~tile_t();
+        void draw() const;
 
-		void update_texture( const Imath::Box2i& area, char *ptr, std::size_t rowsize);
+        static char*       pixel_ptr(const image::buffer_t& pixels, int x, int y);
+        static std::size_t rowbytes(const image::buffer_t& pixels);
 
-		void draw() const;
+    private:
+        void alloc_tile(int width, int height);
 
-		static char *pixel_ptr( const image::buffer_t& pixels, int x, int y);
-		static std::size_t rowbytes( const image::buffer_t& pixels);
+        GLuint       texture_id_;
+        Imath::Box2i area_;
+    };
 
-	private:
-
-		void alloc_tile( int width, int height);
-
-		GLuint texture_id_;
-		Imath::Box2i area_;
-	};
-
-	image::buffer_t pixels_;
-	boost::ptr_vector<tile_t> tiles_;
+    image::buffer_t           pixels_;
+    std::vector<std::unique_ptr<tile_t>> tiles_;
 };
 
-} // viewer
-} // ui
-} // ramen
+}  // viewer
+}  // ui
+}  // ramen
 
 #endif

@@ -3,38 +3,34 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_BUTTON_PARAM_HPP
-#define	RAMEN_BUTTON_PARAM_HPP
+#define RAMEN_BUTTON_PARAM_HPP
 
-#include<ramen/params/param.hpp>
+#include <ramen/params/param.hpp>
 
-#include<QPointer>
+#include <QPointer>
 
 class QPushButton;
 
 namespace ramen
 {
-
 class RAMEN_API button_param_t : public param_t
 {
     Q_OBJECT
-    
-public:
 
-    explicit button_param_t( const std::string& name);
+public:
+    explicit button_param_t(const std::string& name);
 
 protected:
-
-    button_param_t( const button_param_t& other);
-    void operator=( const button_param_t& other);
+    button_param_t(const button_param_t& other);
+    void operator=(const button_param_t& other);
 
 private:
+    param_t* do_clone() const override { return new button_param_t(*this); }
 
-    virtual param_t *do_clone() const { return new button_param_t( *this);}
-	
-    virtual void do_enable_widgets( bool e);
+    void do_enable_widgets(bool e) override;
 
-    virtual QWidget *do_create_widgets();
-	
+    QWidget* do_create_widgets() override;
+
     QPointer<QPushButton> button_;
 
 private Q_SLOTS:
@@ -42,7 +38,6 @@ private Q_SLOTS:
     void button_pressed();
 };
 
-} // namespace
+}  // namespace
 
 #endif
-

@@ -5,15 +5,14 @@
 #ifndef RAMEN_CORE_EMPTY_HPP
 #define RAMEN_CORE_EMPTY_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<boost/operators.hpp>
+#include <boost/operators.hpp>
 
 namespace ramen
 {
 namespace core
 {
-
 /*!
 \ingroup core
 \brief Empty class.
@@ -28,7 +27,7 @@ struct RAMEN_API empty_t : private boost::totally_ordered<empty_t>
 
 inline void swap(empty_t&, empty_t&) {}
 
-} // core
-} // ramen
+}  // core
+}  // ramen
 
 #endif

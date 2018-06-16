@@ -3,23 +3,23 @@
 #ifndef RAMEN_CUDA_EXCEPTIONS_HPP
 #define RAMEN_CUDA_EXCEPTIONS_HPP
 
-#include<stdexcept>
+#include <stdexcept>
 
 namespace ramen
 {
 namespace cuda
 {
-	
 class error : public std::runtime_error
 {
 public:
-	
-	explicit error( const std::string& msg);
+    explicit error(const std::string& msg);
 };
 
-struct out_of_memory : std::bad_alloc {};
+struct out_of_memory : std::bad_alloc
+{
+};
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

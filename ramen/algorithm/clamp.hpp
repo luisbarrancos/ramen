@@ -5,27 +5,26 @@
 #ifndef RAMEN_ALGORITHM_CLAMP_HPP
 #define RAMEN_ALGORITHM_CLAMP_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<ramen/assert.hpp>
+#include <cassert>
 
 namespace ramen
 {
-
 template<class T>
-inline T clamp( T x, T lo, T hi)
+inline T clamp(T x, T lo, T hi)
 {
-    RAMEN_ASSERT( lo <= hi);
+    assert(lo <= hi);
 
-    if( x < lo)
+    if (x < lo)
         return lo;
 
-    if( x > hi)
+    if (x > hi)
         return hi;
 
     return x;
 }
 
-} // algorithm
+}  // algorithm
 
 #endif

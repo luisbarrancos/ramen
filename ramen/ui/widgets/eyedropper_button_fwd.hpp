@@ -3,16 +3,15 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_EYEDROPPER_BUTTON_FWD_HPP
-#define	RAMEN_UI_EYEDROPPER_BUTTON_FWD_HPP
+#define RAMEN_UI_EYEDROPPER_BUTTON_FWD_HPP
 
 namespace ramen
 {
 namespace ui
 {
-
 class eyedropper_button_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

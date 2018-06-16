@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class graph_layout_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

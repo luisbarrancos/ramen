@@ -3,57 +3,53 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_IMAGE_SEQ_PARAM_HPP
-#define	RAMEN_IMAGE_SEQ_PARAM_HPP
+#define RAMEN_IMAGE_SEQ_PARAM_HPP
 
-#include<ramen/params/static_param.hpp>
+#include <ramen/params/static_param.hpp>
 
-#include<boost/signals2/signal.hpp>
+#include <boost/signals2/signal.hpp>
 
-#include<QPointer>
+#include <QPointer>
 
-#include<ramen/filesystem/path.hpp>
+#include <ramen/filesystem/path.hpp>
 
-#include<ramen/ui/widgets/line_edit_fwd.hpp>
+#include <ramen/ui/widgets/line_edit_fwd.hpp>
 
 class QPushButton;
 
 namespace ramen
 {
-
 class image_seq_param_t : public static_param_t
 {
     Q_OBJECT
-    
+
 public:
+    image_seq_param_t(const std::string& name, int proxy_level);
 
-    image_seq_param_t( const std::string& name, int proxy_level);
+    boost::signals2::signal<void(const ::boost::filesystem::path&, int, bool, bool)> file_picked;
 
-    boost::signals2::signal<void ( const::boost::filesystem::path&, int, bool, bool)> file_picked;
+    void set_input_text(const std::string& str);
 
-	void set_input_text( const std::string& str);
-	
 protected:
-
-    image_seq_param_t( const image_seq_param_t& other);
-    void operator=( const image_seq_param_t& other);
+    image_seq_param_t(const image_seq_param_t& other);
+    void operator=(const image_seq_param_t& other);
 
 private Q_SLOTS:
 
     void select_pushed();
-	
-private:
 
-    virtual param_t *do_clone() const { return new image_seq_param_t( *this);}
-	
-    virtual QWidget *do_create_widgets();
-    virtual void do_enable_widgets( bool e);
+private:
+    param_t* do_clone() const override { return new image_seq_param_t(*this); }
+
+    QWidget* do_create_widgets() override;
+    void     do_enable_widgets(bool e) override;
 
     QPointer<ui::line_edit_t> input_;
-    QPointer<QPushButton> button_;
-	int proxy_level_;
-	std::string input_text_;
+    QPointer<QPushButton>     button_;
+    int                       proxy_level_;
+    std::string               input_text_;
 };
 
-} // namespace
+}  // namespace
 
 #endif

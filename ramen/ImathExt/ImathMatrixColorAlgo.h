@@ -5,19 +5,18 @@
 #ifndef RAMEN_IMATHEXT_MATRIX_COLOR_ALGO_HPP
 #define RAMEN_IMATHEXT_MATRIX_COLOR_ALGO_HPP
 
-#include<OpenEXR/ImathMatrix.h>
+#include <OpenEXR/ImathMatrix.h>
 
 namespace ramen
 {
 namespace ImathExt
 {
+Imath::M44f hueRotationMatrix(float angle);
+Imath::M44f saturationMatrix(float sat);
+Imath::M44f gainMatrix(const Imath::V3f& g);
+Imath::M44f gainMatrix(float g);
 
-Imath::M44f hueRotationMatrix( float angle);
-Imath::M44f saturationMatrix( float sat);
-Imath::M44f gainMatrix( const Imath::V3f& g);
-Imath::M44f gainMatrix( float g);
-
-} // ImathExt
-} // ramen
+}  // ImathExt
+}  // ramen
 
 #endif

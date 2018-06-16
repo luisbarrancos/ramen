@@ -3,13 +3,12 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_COMPOSITION_FWD_HPP
-#define	RAMEN_COMPOSITION_FWD_HPP
+#define RAMEN_COMPOSITION_FWD_HPP
 
 namespace ramen
 {
-
 class composition_t;
 
-} // ramen
+}  // ramen
 
 #endif

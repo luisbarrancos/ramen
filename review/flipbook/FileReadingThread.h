@@ -4,9 +4,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -18,8 +18,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -46,18 +46,17 @@
 //
 //-----------------------------------------------------------------------------
 
-#include<string>
+#include <string>
 
-#include<OpenEXR/IlmThread.h>
+#include <OpenEXR/IlmThread.h>
 
-#include<ramen/flipbook/internal_flipbook_fwd.hpp>
+#include <ramen/flipbook/internal_flipbook_fwd.hpp>
 
 class ImageBuffers;
 
-class FileReadingThread: IlmThread::Thread
+class FileReadingThread : IlmThread::Thread
 {
-  public:
-
+public:
     //----------------------------------------------------------------
     // Constructor - stores the arguments passed by the caller,
     // and starts the thread by calling run(), below.  The caller
@@ -86,17 +85,16 @@ class FileReadingThread: IlmThread::Thread
     //				empties them.
     //----------------------------------------------------------------
 
-    FileReadingThread( ramen::flipbook::internal_flipbook_t *flip);
-	 
+    FileReadingThread(ramen::flipbook::internal_flipbook_t* flip);
+
     virtual void run();
 
-  private:
-
-    ramen::flipbook::internal_flipbook_t *_flip;
-    const std::string	_fileNameTemplate;
-    int			_firstFrame;
-    int			_lastFrame;
-    ImageBuffers &	_imageBuffers;
+private:
+    ramen::flipbook::internal_flipbook_t* _flip;
+    const std::string                     _fileNameTemplate;
+    int                                   _firstFrame;
+    int                                   _lastFrame;
+    ImageBuffers&                         _imageBuffers;
 };
 
 #endif

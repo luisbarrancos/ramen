@@ -3,31 +3,28 @@
 #ifndef RAMEN_CUDA_DRIVER_EXCEPTIONS_HPP
 #define RAMEN_CUDA_DRIVER_EXCEPTIONS_HPP
 
-#include<ramen/cuda/exceptions.hpp>
+#include <ramen/cuda/exceptions.hpp>
 
-#include<cuda.h>
+#include <cuda.h>
 
 namespace ramen
 {
 namespace cuda
 {
-
 class driver_error : public error
 {
 public:
+    explicit driver_error(CUresult err);
 
-	explicit driver_error( CUresult err);
-
-	CUresult cu_result() const { return error_;}
+    CUresult cu_result() const { return error_; }
 
 protected:
+    static const char* curesult_to_str(CUresult e);
 
-	static const char *curesult_to_str( CUresult e);
-
-	CUresult error_;
+    CUresult error_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,53 +38,46 @@
 //
 //-----------------------------------------------------------------------------
 
-#include<ramen/flipbook/ImageBuffers.h>
+#include <ramen/flipbook/ImageBuffers.h>
 
-#include<ramen/assert.hpp>
+#include <ramen/assert.hpp>
 
 using namespace Imath;
 using namespace Imf;
 using namespace IlmThread;
 
 
-ImageBuffers::ImageBuffers ():
-    forward (true),
-    rgbMode (false),
-    emptyBuffersSemaphore (NUM_BUFFERS),
-    fullBuffersSemaphore (0),
-    exitSemaphore1 (0),
-    exitSemaphore2 (0)
+ImageBuffers::ImageBuffers()
+: forward(true)
+, rgbMode(false)
+, emptyBuffersSemaphore(NUM_BUFFERS)
+, fullBuffersSemaphore(0)
+, exitSemaphore1(0)
+, exitSemaphore2(0)
 {
     // empty
 }
 
 
-int			
-ImageBuffers::numBuffers ()
-{
-    return NUM_BUFFERS;
-}
+int ImageBuffers::numBuffers() { return NUM_BUFFERS; }
 
 
-Imf::FrameBuffer &	
-ImageBuffers::frameBuffer (int i)
+Imf::FrameBuffer& ImageBuffers::frameBuffer(int i)
 {
-    RAMEN_ASSERT (i >= 0 && i < NUM_BUFFERS);
+    RAMEN_ASSERT(i >= 0 && i < NUM_BUFFERS);
     return _frameBuffers[i];
 }
 
 
-char * &
-ImageBuffers::pixels (int i, int channel)
+char*& ImageBuffers::pixels(int i, int channel)
 {
-    RAMEN_ASSERT (i >= 0 && i < NUM_BUFFERS && channel >= 0 && channel < 3);
+    RAMEN_ASSERT(i >= 0 && i < NUM_BUFFERS && channel >= 0 && channel < 3);
     return _pixels[i][channel];
 }
 
 
-int &	
-ImageBuffers::frameNumber (int i)
+int& ImageBuffers::frameNumber(int i)
 {
-    RAMEN_ASSERT (i >= 0 && i < NUM_BUFFERS);
+    RAMEN_ASSERT(i >= 0 && i < NUM_BUFFERS);
     return _frameNumbers[i];
 }

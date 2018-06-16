@@ -5,22 +5,26 @@
 #ifndef RAMEN_RENDER_FLIPBOOK_HPP
 #define RAMEN_RENDER_FLIPBOOK_HPP
 
-#include<string>
+#include <string>
 
-#include<ramen/nodes/node_fwd.hpp>
+#include <ramen/nodes/node_fwd.hpp>
 
-#include<ramen/flipbook/flipbook.hpp>
+#include <ramen/flipbook/flipbook.hpp>
 
 namespace ramen
 {
 namespace flipbook
 {
+bool render_flipbook(flipbook::flipbook_t* flip,
+                     image_node_t*         node,
+                     int                   start,
+                     int                   end,
+                     int                   proxy_level,
+                     int                   subsample,
+                     int                   mb_extra_samples,
+                     float                 mb_shutter_factor);
 
-bool render_flipbook( flipbook::flipbook_t *flip, image_node_t *node,
-						int start, int end, int proxy_level,
-						int subsample, int mb_extra_samples, float mb_shutter_factor);
-
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

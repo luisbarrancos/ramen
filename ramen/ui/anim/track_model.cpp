@@ -2,97 +2,98 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/anim/track_model.hpp>
+#include <ramen/ui/anim/track_model.hpp>
 
-#include<ramen/assert.hpp>
+#include <cassert>
 
-#include<ramen/anim/track.hpp>
+#include <ramen/anim/track.hpp>
 
 namespace ramen
 {
 namespace ui
 {
-
-track_model_t::track_model_t() : QAbstractItemModel( 0), tracks_( 0)
+track_model_t::track_model_t()
+: QAbstractItemModel(0)
+, tracks_(0)
 {
-    tracks_ = new anim::track_t( "Channels");
+    tracks_ = new anim::track_t("Channels");
 }
 
-track_model_t::~track_model_t() { delete tracks_;}
+track_model_t::~track_model_t() { delete tracks_; }
 
-anim::track_t *track_model_t::root_track() { return tracks_;}
+anim::track_t* track_model_t::root_track() { return tracks_; }
 
-anim::track_t *track_model_t::node_track()
+anim::track_t* track_model_t::node_track()
 {
-	RAMEN_ASSERT( tracks_->num_children() == 1);
-	return tracks_->child( 0);
+    assert(tracks_->num_children() == 1);
+    return tracks_->child(0);
 }
 
-QModelIndex track_model_t::index( int row, int column, const QModelIndex &parent) const
+QModelIndex track_model_t::index(int row, int column, const QModelIndex& parent) const
 {
-    if( !hasIndex( row, column, parent))
-         return QModelIndex();
-
-     anim::track_t *parentItem;
-
-     if( !parent.isValid())
-         parentItem = tracks_;
-     else
-         parentItem = static_cast<anim::track_t*>( parent.internalPointer());
-
-     if( row >= parentItem->num_children())
-         return QModelIndex();
-
-     anim::track_t *childItem = parentItem->child( row);
-     return createIndex( row, column, childItem);
-}
-
-QModelIndex track_model_t::parent( const QModelIndex &index) const
-{
-    if( !index.isValid())
+    if (!hasIndex(row, column, parent))
         return QModelIndex();
 
-     anim::track_t *childItem = static_cast<anim::track_t*>( index.internalPointer());
-     anim::track_t *parentItem = childItem->parent();
+    anim::track_t* parentItem;
 
-     if (parentItem == tracks_)
-         return QModelIndex();
+    if (!parent.isValid())
+        parentItem = tracks_;
+    else
+        parentItem = static_cast<anim::track_t*>(parent.internalPointer());
 
-     return createIndex( parentItem->row(), 0, parentItem);
+    if (row >= parentItem->num_children())
+        return QModelIndex();
+
+    anim::track_t* childItem = parentItem->child(row);
+    return createIndex(row, column, childItem);
 }
 
-int track_model_t::rowCount(const QModelIndex &parent) const
+QModelIndex track_model_t::parent(const QModelIndex& index) const
 {
-    anim::track_t *parentItem;
+    if (!index.isValid())
+        return QModelIndex();
 
-    if( parent.column() > 0)
-         return 0;
+    anim::track_t* childItem  = static_cast<anim::track_t*>(index.internalPointer());
+    anim::track_t* parentItem = childItem->parent();
 
-     if( !parent.isValid())
-         parentItem = tracks_;
-     else
-         parentItem = static_cast<anim::track_t*>( parent.internalPointer());
+    if (parentItem == tracks_)
+        return QModelIndex();
 
-     return parentItem->num_children();
- }
+    return createIndex(parentItem->row(), 0, parentItem);
+}
 
-int track_model_t::columnCount(const QModelIndex &parent) const { return 1;}
-
-QVariant track_model_t::data(const QModelIndex &index, int role) const
+int track_model_t::rowCount(const QModelIndex& parent) const
 {
-    if( !index.isValid())
+    anim::track_t* parentItem;
+
+    if (parent.column() > 0)
+        return 0;
+
+    if (!parent.isValid())
+        parentItem = tracks_;
+    else
+        parentItem = static_cast<anim::track_t*>(parent.internalPointer());
+
+    return parentItem->num_children();
+}
+
+int track_model_t::columnCount(const QModelIndex& parent) const { return 1; }
+
+QVariant track_model_t::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid())
         return QVariant();
 
-     if( role != Qt::DisplayRole)
-         return QVariant();
+    if (role != Qt::DisplayRole)
+        return QVariant();
 
-     anim::track_t *item = static_cast<anim::track_t*>( index.internalPointer());
-     return QString( item->name().c_str());
+    anim::track_t* item = static_cast<anim::track_t*>(index.internalPointer());
+    return QString(item->name().c_str());
 }
 
-Qt::ItemFlags track_model_t::flags(const QModelIndex &index) const
+Qt::ItemFlags track_model_t::flags(const QModelIndex& index) const
 {
-    if( !index.isValid())
+    if (!index.isValid())
         return 0;
 
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -100,11 +101,11 @@ Qt::ItemFlags track_model_t::flags(const QModelIndex &index) const
 
 QVariant track_model_t::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if( orientation == Qt::Horizontal && role == Qt::DisplayRole)
-         return QString( tracks_->name().c_str());
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        return QString(tracks_->name().c_str());
 
     return QVariant();
 }
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace

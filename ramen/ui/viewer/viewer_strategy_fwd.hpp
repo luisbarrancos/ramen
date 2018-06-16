@@ -3,7 +3,7 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_VIEWER_STRATEGY_FWD_HPP
-#define	RAMEN_UI_VIEWER_STRATEGY_FWD_HPP
+#define RAMEN_UI_VIEWER_STRATEGY_FWD_HPP
 
 namespace ramen
 {
@@ -11,11 +11,10 @@ namespace ui
 {
 namespace viewer
 {
-
 class viewer_strategy_t;
 
-} // viewer
-} // ui
-} // ramen
+}  // viewer
+}  // ui
+}  // ramen
 
 #endif

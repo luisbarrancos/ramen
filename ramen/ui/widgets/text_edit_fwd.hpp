@@ -7,10 +7,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class text_edit_t;
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

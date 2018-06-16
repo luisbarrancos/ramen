@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class param_spinbox_t;
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

@@ -3,15 +3,14 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_COMPOSITION_VIEW_TOOLBAR_HPP
-#define	RAMEN_UI_COMPOSITION_VIEW_TOOLBAR_HPP
+#define RAMEN_UI_COMPOSITION_VIEW_TOOLBAR_HPP
 
-#include<QWidget>
+#include <QWidget>
 
 namespace ramen
 {
 namespace ui
 {
-
 class composition_view_t;
 
 class composition_view_toolbar_t : public QWidget
@@ -19,17 +18,15 @@ class composition_view_toolbar_t : public QWidget
     Q_OBJECT
 
 public:
+    composition_view_toolbar_t(composition_view_t* comp_view);
 
-    composition_view_toolbar_t( composition_view_t *comp_view);
-	
 private:
+    int toolbar_height() const;
 
-	int toolbar_height() const;
-
-    composition_view_t *comp_view_;
+    composition_view_t* comp_view_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

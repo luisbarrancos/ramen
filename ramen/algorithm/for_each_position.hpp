@@ -5,37 +5,36 @@
 #ifndef RAMEN_ALGORITHM_FOR_EACH_POSITION_HPP
 #define RAMEN_ALGORITHM_FOR_EACH_POSITION_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<boost/bind.hpp>
-#include<boost/range/begin.hpp>
-#include<boost/range/end.hpp>
+#include <boost/bind.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
 
 namespace ramen
 {
-
 template<class InputIterator, class UnaryFunction>
-inline void for_each_position( InputIterator first, InputIterator last, UnaryFunction f)
+inline void for_each_position(InputIterator first, InputIterator last, UnaryFunction f)
 {
-    while( first != last)
+    while (first != last)
     {
-        f( first);
+        f(first);
         ++first;
     }
 }
 
 template<class InputRange, class UnaryFunction>
-inline void for_each_position( InputRange& range, UnaryFunction f)
+inline void for_each_position(InputRange& range, UnaryFunction f)
 {
-    for_each_position( boost::begin( range), boost::end( range), f);
+    for_each_position(boost::begin(range), boost::end(range), f);
 }
 
 template<class InputRange, class UnaryFunction>
-inline void for_each_position( const InputRange& range, UnaryFunction f)
+inline void for_each_position(const InputRange& range, UnaryFunction f)
 {
-    for_each_position( boost::begin( range), boost::end( range), f);
+    for_each_position(boost::begin(range), boost::end(range), f);
 }
 
-} // ramen
+}  // ramen
 
 #endif

@@ -2,32 +2,31 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/app/export_selected_nodes.hpp>
+#include <ramen/app/export_selected_nodes.hpp>
 
-#include<map>
+#include <map>
 
-#include<boost/foreach.hpp>
+#include <boost/foreach.hpp>
 
-#include<ramen/app/application.hpp>
-#include<ramen/app/document.hpp>
+#include <ramen/app/application.hpp>
+#include <ramen/app/document.hpp>
 
-#include<ramen/serialization/yaml_oarchive.hpp>
+#include <ramen/serialization/yaml_oarchive.hpp>
 
-#include<ramen/ui/user_interface.hpp>
+#include <ramen/ui/user_interface.hpp>
 
 namespace ramen
 {
-
-void export_selected_nodes( const boost::filesystem::path& p)
+void export_selected_nodes(const boost::filesystem::path& p)
 {
     /*
-	boost::filesystem::path comp_dir( app().document().composition().composition_dir());
+    boost::filesystem::path comp_dir( app().document().composition().composition_dir());
 
     composition_t comp;
 
-	if( !comp_dir.empty())
-		comp.set_composition_dir( comp_dir);
-	
+    if( !comp_dir.empty())
+        comp.set_composition_dir( comp_dir);
+
     std::map<node_t*, node_t*> relation;
 
     BOOST_FOREACH( node_t& n, app().document().composition().nodes())
@@ -46,20 +45,20 @@ void export_selected_nodes( const boost::filesystem::path& p)
             comp.add_edge( edge_t( relation[e.src], relation[e.dst], e.port));
     }
 
-	comp.set_composition_dir( p.parent_path());
-	
-	try
-	{
-		serialization::yaml_oarchive_t out;
-		out.write_composition_header();
-		comp.write( out);
-		out.write_to_file( p);		
-	}
-	catch( std::exception& e)
-	{
-		app().ui()->error( std::string( "Couldn't save file. Exception, what = ") + e.what());
-	}
+    comp.set_composition_dir( p.parent_path());
+
+    try
+    {
+        serialization::yaml_oarchive_t out;
+        out.write_composition_header();
+        comp.write( out);
+        out.write_to_file( p);
+    }
+    catch( std::exception& e)
+    {
+        app().ui()->error( std::string( "Couldn't save file. Exception, what = ") + e.what());
+    }
     */
 }
 
-} // namespace
+}  // namespace

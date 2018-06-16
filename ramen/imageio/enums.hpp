@@ -9,14 +9,13 @@ namespace ramen
 {
 namespace imageio
 {
-
 enum channel_type
 {
     half_channel_type = 0,
     float_channel_type,
     ubyte_channel_type,
     ushort_channel_type,
-	uint_channel_type
+    uint_channel_type
 };
 
 enum channels
@@ -36,10 +35,10 @@ enum compression_type
     pxr24_compression,
     b44_compression,
     b44a_compression,
-	lzw_compression
+    lzw_compression
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

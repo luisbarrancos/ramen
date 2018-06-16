@@ -3,46 +3,42 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_ANIM_TRACK_MODEL_HPP
-#define	RAMEN_UI_ANIM_TRACK_MODEL_HPP
+#define RAMEN_UI_ANIM_TRACK_MODEL_HPP
 
-#include<QAbstractItemModel>
+#include <QAbstractItemModel>
 
-#include<ramen/anim/track_fwd.hpp>
+#include <ramen/anim/track_fwd.hpp>
 
 namespace ramen
 {
-
 namespace ui
 {
-
 class track_model_t : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-
     track_model_t();
-    ~track_model_t();
+    ~track_model_t() override;
 
-    anim::track_t *root_track();
-	anim::track_t *node_track();
-	
-    QModelIndex index( int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent( const QModelIndex &index) const;
+    anim::track_t* root_track();
+    anim::track_t* node_track();
 
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
 
-    QVariant data(const QModelIndex &index, int role) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    int rowCount(const QModelIndex& parent) const override;
+    int columnCount(const QModelIndex& parent) const override;
+
+    QVariant      data(const QModelIndex& index, int role) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    QVariant      headerData(int section, Qt::Orientation orientation, int role) const override;
 
 private:
-
-    anim::track_t *tracks_;
+    anim::track_t* tracks_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

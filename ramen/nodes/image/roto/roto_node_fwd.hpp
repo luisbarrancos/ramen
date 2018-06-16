@@ -3,16 +3,15 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_ROTO_NODE_FWD_HPP
-#define	RAMEN_ROTO_NODE_FWD_HPP
+#define RAMEN_ROTO_NODE_FWD_HPP
 
 namespace ramen
 {
 namespace image
 {
-
 class roto_node_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

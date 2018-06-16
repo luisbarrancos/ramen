@@ -7,10 +7,9 @@ namespace ramen
 {
 namespace track
 {
-
 class ncc_tracker_t;
 
-} // track
-} // ramen
+}  // track
+}  // ramen
 
 #endif

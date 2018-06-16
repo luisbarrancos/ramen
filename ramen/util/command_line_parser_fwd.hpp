@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace util
 {
-
 class command_line_parser_t;
 
-} // util
-} // ramen
+}  // util
+}  // ramen
 
 #endif

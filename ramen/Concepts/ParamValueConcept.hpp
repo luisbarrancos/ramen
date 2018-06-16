@@ -5,32 +5,28 @@
 #ifndef RAMEN_PARAM_VALUE_CONCEPT_HPP
 #define RAMEN_PARAM_VALUE_CONCEPT_HPP
 
-#include<ramen/core/empty.hpp>
+#include <ramen/core/empty.hpp>
 
-#include<ramen/Concepts/RegularConcept.hpp>
+#include <ramen/Concepts/RegularConcept.hpp>
 
 namespace ramen
 {
-
 /**
 \ingroup concepts
 \brief concept checking class for param values
 */
 template<class T>
-struct ParamValueConcept :  boost::DefaultConstructible<T>,
-                            boost::CopyConstructible<T>,
-                            boost::Assignable<T>,
-                            boost::EqualityComparable<T>
+struct ParamValueConcept
+: boost::DefaultConstructible<T>
+, boost::CopyConstructible<T>
+, boost::Assignable<T>
+, boost::EqualityComparable<T>
 {
 private:
-
-    BOOST_CONCEPT_ASSERT(( RegularConcept<T>));
+    BOOST_CONCEPT_ASSERT((RegularConcept<T>) );
 
 public:
-
-	BOOST_CONCEPT_USAGE( ParamValueConcept)
-	{
-    }
+    BOOST_CONCEPT_USAGE(ParamValueConcept) {}
 };
 
 /**
@@ -38,38 +34,35 @@ public:
 \brief concept checking class for param values that have operator[] defined
 */
 template<class T>
-struct IndexableParamValueConcept : boost::DefaultConstructible<T>,
-                                    boost::CopyConstructible<T>,
-                                    boost::Assignable<T>,
-                                    boost::EqualityComparable<T>
+struct IndexableParamValueConcept
+: boost::DefaultConstructible<T>
+, boost::CopyConstructible<T>
+, boost::Assignable<T>
+, boost::EqualityComparable<T>
 {
 private:
-
-    BOOST_CONCEPT_ASSERT(( ParamValueConcept<T>));
+    BOOST_CONCEPT_ASSERT((ParamValueConcept<T>) );
 
 public:
-
-	BOOST_CONCEPT_USAGE( IndexableParamValueConcept)
-	{
-        checkIndexOperator( t);
-	}
+    BOOST_CONCEPT_USAGE(IndexableParamValueConcept) { checkIndexOperator(t); }
 
     T t;
 
 private:
-
     template<class X>
-    static void nothing( const X& x) {}
-
-    template<class X>
-    static void checkIndexOperator( const X& x)
+    static void nothing(const X& x)
     {
-        nothing( x[0]);
     }
 
-    static void checkIndexOperator( const core::empty_t& x) {}
+    template<class X>
+    static void checkIndexOperator(const X& x)
+    {
+        nothing(x[0]);
+    }
+
+    static void checkIndexOperator(const core::empty_t& x) {}
 };
 
-} // ramen
+}  // ramen
 
 #endif

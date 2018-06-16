@@ -3,21 +3,20 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_GLU_HPP
-#define	RAMEN_GLU_HPP
+#define RAMEN_GLU_HPP
 
-#include<ramen/GL/gl.hpp>
+#include <ramen/GL/gl.hpp>
 
 #ifdef __APPLE__
-    #include<OpenGL/glu.h>
+#include <OpenGL/glu.h>
 #else
-    #include<GL/glu.h>
+#include <GL/glu.h>
 #endif
 
 namespace ramen
 {
+void glu_ortho2d(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top);
 
-void glu_ortho2d( GLdouble left, GLdouble right, GLdouble bottom, GLdouble top);
-
-} // ramen
+}  // ramen
 
 #endif

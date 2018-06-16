@@ -3,9 +3,9 @@
 #ifndef RAMEN_OCIO_SEEXPR_FUNCS_HPP
 #define RAMEN_OCIO_SEEXPR_FUNCS_HPP
 
-#include<memory>
+#include <memory>
 
-#include<SeExprFunc.h>
+#include <SeExprFunc.h>
 
 std::auto_ptr<SeExprFunc> createOcioConvertSeExprFunc();
 

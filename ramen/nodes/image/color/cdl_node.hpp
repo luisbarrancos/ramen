@@ -5,49 +5,45 @@
 #ifndef RAMEN_IMAGE_CDL_NODE_HPP
 #define RAMEN_IMAGE_CDL_NODE_HPP
 
-#include<ramen/nodes/image/pointop_node.hpp>
+#include <ramen/nodes/image/pointop_node.hpp>
 
-#include<OpenColorIO/OpenColorIO.h>
+#include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
-#include<ramen/filesystem/path.hpp>
+#include <ramen/filesystem/path.hpp>
 
 namespace ramen
 {
 namespace image
 {
-
 class cdl_node_t : public pointop_node_t
 {
 public:
-
-    static const node_metaclass_t& cdl_node_metaclass();
-    virtual const node_metaclass_t *metaclass() const;
+    static const node_metaclass_t&  cdl_node_metaclass();
+    const node_metaclass_t* metaclass() const override;
 
     cdl_node_t();
 
-	void read_from_file( const boost::filesystem::path& p);
-	void write_to_file( const boost::filesystem::path& p) const;
-	
-protected:
+    void read_from_file(const boost::filesystem::path& p);
+    void write_to_file(const boost::filesystem::path& p) const;
 
-    cdl_node_t( const cdl_node_t& other);
-    void operator=( const cdl_node_t&);
+protected:
+    cdl_node_t(const cdl_node_t& other);
+    void operator=(const cdl_node_t&);
 
 private:
+    node_t* do_clone() const override { return new cdl_node_t(*this); }
 
-    node_t *do_clone() const { return new cdl_node_t( *this);}
+    void do_create_params() override;
 
-    virtual void do_create_params();
+    void do_process(const image::const_image_view_t& src,
+                            const image::image_view_t&       dst,
+                            const render::context_t&         context) override;
 
-    virtual void do_process( const image::const_image_view_t& src,
-                             const image::image_view_t& dst,
-                             const render::context_t& context);
-	
-	OCIO::CDLTransformRcPtr cdl_transform() const;
+    OCIO::CDLTransformRcPtr cdl_transform() const;
 };
 
-} // image
-} // ramen
+}  // image
+}  // ramen
 
 #endif

@@ -9,13 +9,11 @@ namespace ramen
 {
 namespace serialization
 {
-
 class yaml_node_t;
 class yaml_iarchive_t;
 class yaml_oarchive_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif
-

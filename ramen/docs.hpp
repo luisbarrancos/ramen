@@ -35,5 +35,5 @@
 \section arch Architecture
 
 \section coding_guide Coding Guidelines
-	\subsection nvi Non virtual interface
+    \subsection nvi Non virtual interface
 */

@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace memory
 {
-
 class manager_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

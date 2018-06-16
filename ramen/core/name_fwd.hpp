@@ -5,16 +5,15 @@
 #ifndef RAMEN_CORE_NAME_FWD_HPP
 #define RAMEN_CORE_NAME_FWD_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
 namespace ramen
 {
 namespace core
 {
-
 class name_t;
 
-} // core
-} // ramen
+}  // core
+}  // ramen
 
 #endif

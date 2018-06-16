@@ -5,61 +5,72 @@
 #ifndef RAMEN_COLOR_COLOR3_HPP
 #define RAMEN_COLOR_COLOR3_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<algorithm>
-#include<iostream>
+#include <algorithm>
+#include <iostream>
 
-#include<boost/operators.hpp>
+#include <boost/operators.hpp>
 
-#include<OpenEXR/half.h>
+#include <OpenEXR/half.h>
 
-#include<ramen/assert.hpp>
+#include <cassert>
 
 namespace ramen
 {
 namespace color
 {
-
 /*!
 \ingroup color
 \brief A 3 component color.
 */
 template<class T>
-class color3_t    : boost::addable<color3_t<T>
-                  , boost::subtractable<color3_t<T>
-                  , boost::dividable2<color3_t<T>, T
-                  , boost::multipliable2<color3_t<T>, T
-                  , boost::equality_comparable<color3_t<T>
-                  > > > > >
+class color3_t
+: boost::addable<
+      color3_t<T>,
+      boost::subtractable<
+          color3_t<T>,
+          boost::dividable2<
+              color3_t<T>,
+              T,
+              boost::multipliable2<color3_t<T>, T, boost::equality_comparable<color3_t<T>>>>>>
 {
 public:
-
     typedef T value_type;
 
-    static unsigned int	dimensions() { return 3;}
+    static unsigned int dimensions() { return 3; }
 
     color3_t() {}
 
-    explicit color3_t( T xx) : x( xx), y( xx), z( xx) {}
-
-    color3_t( T xx, T yy, T zz) : x( xx), y( yy), z( zz) {}
-
-    T operator()( unsigned int index) const
+    explicit color3_t(T xx)
+    : x(xx)
+    , y(xx)
+    , z(xx)
     {
-        RAMEN_ASSERT( index < dimensions());
-
-        return static_cast<const T*>( &x)[index];
     }
 
-    T& operator()( unsigned int index)
+    color3_t(T xx, T yy, T zz)
+    : x(xx)
+    , y(yy)
+    , z(zz)
     {
-        RAMEN_ASSERT( index < dimensions());
-
-        return static_cast<T*>( &x)[index];
     }
 
-    color3_t<T>& operator+=( const color3_t<T>& c)
+    T operator()(unsigned int index) const
+    {
+        assert(index < dimensions());
+
+        return static_cast<const T*>(&x)[index];
+    }
+
+    T& operator()(unsigned int index)
+    {
+        assert(index < dimensions());
+
+        return static_cast<T*>(&x)[index];
+    }
+
+    color3_t<T>& operator+=(const color3_t<T>& c)
     {
         x += c.x;
         y += c.y;
@@ -67,7 +78,7 @@ public:
         return *this;
     }
 
-    color3_t<T>& operator-=( const color3_t<T>& c)
+    color3_t<T>& operator-=(const color3_t<T>& c)
     {
         x -= c.x;
         y -= c.y;
@@ -75,7 +86,7 @@ public:
         return *this;
     }
 
-    color3_t<T>& operator*=( T s)
+    color3_t<T>& operator*=(T s)
     {
         x *= s;
         y *= s;
@@ -83,9 +94,9 @@ public:
         return *this;
     }
 
-    color3_t<T>& operator/=( T s)
+    color3_t<T>& operator/=(T s)
     {
-        RAMEN_ASSERT( s != T(0));
+        assert(s != T(0));
 
         x /= s;
         y /= s;
@@ -93,57 +104,48 @@ public:
         return *this;
     }
 
-    bool operator==( const color3_t<T>& other) const
+    bool operator==(const color3_t<T>& other) const
     {
-        return ( x == other.x && y == other.y && z == other.z);
+        return (x == other.x && y == other.y && z == other.z);
     }
 
-    void clamp( T lo = T(0), T hi = T(1))
+    void clamp(T lo = T(0), T hi = T(1))
     {
-        x = std::max( lo, std::min( hi, x));
-        y = std::max( lo, std::min( hi, y));
-        z = std::max( lo, std::min( hi, z));
+        x = std::max(lo, std::min(hi, x));
+        y = std::max(lo, std::min(hi, y));
+        z = std::max(lo, std::min(hi, z));
     }
 
-    T luminance() const
-    {
-        return 0.2126f * x + 0.7152f * y + 0.0722f * z;
-    }
+    T luminance() const { return 0.2126f * x + 0.7152f * y + 0.0722f * z; }
 
-    T min_component() const
-    {
-        return std::min( x, std::min( y, z));
-    }
+    T min_component() const { return std::min(x, std::min(y, z)); }
 
-    T max_component() const
-    {
-        return std::max( x, std::max( y, z));
-    }
+    T max_component() const { return std::max(x, std::max(y, z)); }
 
     T x, y, z;
 };
 
 template<class T>
-color3_t<T> clamp( const color3_t<T>& c, T lo = T(0), T hi = T(1))
+color3_t<T> clamp(const color3_t<T>& c, T lo = T(0), T hi = T(1))
 {
-    color3_t<T> x( c);
-    c.clamp( lo, hi);
+    color3_t<T> x(c);
+    c.clamp(lo, hi);
     return x;
 }
 
 template<class T>
-std::ostream& operator<<( std::ostream& os, const color3_t<T>& c)
+std::ostream& operator<<(std::ostream& os, const color3_t<T>& c)
 {
     os << c.x << ", " << c.y << ", " << c.z;
     return os;
 }
 
 // typedefs
-typedef color3_t<float>     color3f_t;
-typedef color3_t<double>    color3d_t;
-typedef color3_t<half>      color3h_t;
+typedef color3_t<float>  color3f_t;
+typedef color3_t<double> color3d_t;
+typedef color3_t<half>   color3h_t;
 
-} // color
-} // ramen
+}  // color
+}  // ramen
 
 #endif

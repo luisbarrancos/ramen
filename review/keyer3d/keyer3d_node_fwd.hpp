@@ -7,10 +7,9 @@ namespace ramen
 {
 namespace image
 {
-
 class keyer3d_node_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

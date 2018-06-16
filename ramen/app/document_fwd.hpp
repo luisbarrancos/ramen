@@ -7,9 +7,8 @@
 
 namespace ramen
 {
-
 class document_t;
 
-} // namespace
+}  // namespace
 
 #endif

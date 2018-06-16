@@ -8,10 +8,9 @@ namespace ramen
 {
 namespace ofx
 {
-
 class plugin_manager_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

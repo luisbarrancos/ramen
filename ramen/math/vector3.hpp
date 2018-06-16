@@ -5,64 +5,75 @@
 #ifndef RAMEN_MATH_VECTOR3_HPP
 #define RAMEN_MATH_VECTOR3_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<limits>
+#include <limits>
 
-#include<boost/operators.hpp>
+#include <boost/operators.hpp>
 
-#include<OpenEXR/half.h>
+#include <OpenEXR/half.h>
 
-#include<ramen/assert.hpp>
-#include<ramen/math/cmath.hpp>
+#include <cassert>
+#include <ramen/math/cmath.hpp>
 
 namespace ramen
 {
 namespace math
 {
-
 /*!
 \ingroup math
 \brief Three dimensional vector.
 */
 template<class T>
-class vector3_t     : boost::addable<vector3_t<T>
-                    , boost::subtractable<vector3_t<T>
-                    , boost::dividable2<vector3_t<T>, T
-                    , boost::multipliable2<vector3_t<T>, T
-                    , boost::equality_comparable<vector3_t<T>
-                    > > > > >
+class vector3_t
+: boost::addable<
+      vector3_t<T>,
+      boost::subtractable<
+          vector3_t<T>,
+          boost::dividable2<
+              vector3_t<T>,
+              T,
+              boost::multipliable2<vector3_t<T>, T, boost::equality_comparable<vector3_t<T>>>>>>
 {
 public:
-
     typedef T value_type;
 
-    static unsigned int	size()          { return 3;}
-    static unsigned int	dimensions()    { return 3;}
+    static unsigned int size() { return 3; }
+    static unsigned int dimensions() { return 3; }
 
     vector3_t() {}
 
-    explicit vector3_t( T xx) : x( xx), y( xx), z( xx) {}
-
-    vector3_t( T xx, T yy, T zz) : x( xx), y( yy), z( zz) {}
-
-    T operator()( unsigned int index) const
+    explicit vector3_t(T xx)
+    : x(xx)
+    , y(xx)
+    , z(xx)
     {
-        RAMEN_ASSERT( index < size());
-
-        return static_cast<const T*>( &x)[index];
     }
 
-    T& operator()( unsigned int index)
+    vector3_t(T xx, T yy, T zz)
+    : x(xx)
+    , y(yy)
+    , z(zz)
     {
-        RAMEN_ASSERT( index < size());
+    }
 
-        return static_cast<T*>( &x)[index];
+    T operator()(unsigned int index) const
+    {
+        assert(index < size());
+
+        return static_cast<const T*>(&x)[index];
+    }
+
+    T& operator()(unsigned int index)
+    {
+        assert(index < size());
+
+        return static_cast<T*>(&x)[index];
     }
 
     // operators
 
-    vector3_t<T>& operator+=( const vector3_t<T>& vec)
+    vector3_t<T>& operator+=(const vector3_t<T>& vec)
     {
         x += vec.x;
         y += vec.y;
@@ -70,7 +81,7 @@ public:
         return *this;
     }
 
-    vector3_t<T>& operator-=( const vector3_t<T>& vec)
+    vector3_t<T>& operator-=(const vector3_t<T>& vec)
     {
         x -= vec.x;
         y -= vec.y;
@@ -78,7 +89,7 @@ public:
         return *this;
     }
 
-    vector3_t<T>& operator*=( T s)
+    vector3_t<T>& operator*=(T s)
     {
         x *= s;
         y *= s;
@@ -86,9 +97,9 @@ public:
         return *this;
     }
 
-    vector3_t<T>& operator/=( T s)
+    vector3_t<T>& operator/=(T s)
     {
-        RAMEN_ASSERT( s != T(0));
+        assert(s != T(0));
 
         x /= s;
         y /= s;
@@ -96,30 +107,21 @@ public:
         return *this;
     }
 
-    vector3_t<T> operator-() const
-    {
-        return vector3_t<T>( -x, -y, -z);
-    }
+    vector3_t<T> operator-() const { return vector3_t<T>(-x, -y, -z); }
 
-    bool operator==( const vector3_t<T>& other) const
+    bool operator==(const vector3_t<T>& other) const
     {
         return x == other.x && y == other.y && z == other.z;
     }
 
-    T length2() const
-    {
-        return dot( *this, *this);
-    }
+    T length2() const { return dot(*this, *this); }
 
-    T length() const
-    {
-        return cmath<T>::sqrt( length2());
-    }
+    T length() const { return cmath<T>::sqrt(length2()); }
 
     void normalize()
     {
         T l = length();
-        RAMEN_ASSERT( l > T(0));
+        assert(l > T(0));
 
         x /= l;
         y /= l;
@@ -130,32 +132,30 @@ public:
 };
 
 template<class T>
-vector3_t<T> normalize( const vector3_t<T>& v)
+vector3_t<T> normalize(const vector3_t<T>& v)
 {
-    vector3_t<T> x( v);
+    vector3_t<T> x(v);
     x.normalize();
     return x;
 }
 
 template<class T>
-T dot( const vector3_t<T>& a, const vector3_t<T>& b)
+T dot(const vector3_t<T>& a, const vector3_t<T>& b)
 {
-    return ( a.x * b.x) + ( a.y * b.y) + ( a.z * b.z);
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 template<class T>
-vector3_t<T> cross( const vector3_t<T>& a, const vector3_t<T>& b)
+vector3_t<T> cross(const vector3_t<T>& a, const vector3_t<T>& b)
 {
-    return vector3_t<T>( a.y * b.z - a.z * b.y,
-                         a.z * b.x - a.x * b.z,
-                         a.x * b.y - a.y * b.x);
+    return vector3_t<T>(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
 
-typedef vector3_t<float>    vector3f_t;
-typedef vector3_t<double>   vector3d_t;
-typedef vector3_t<half>     vector3h_t;
+typedef vector3_t<float>  vector3f_t;
+typedef vector3_t<double> vector3d_t;
+typedef vector3_t<half>   vector3h_t;
 
-} // math
-} // ramen
+}  // math
+}  // ramen
 
 #endif

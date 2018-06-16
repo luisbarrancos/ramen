@@ -7,16 +7,13 @@ from "Graphics Gems", Academic Press, 1990
 */
 
 #ifndef RAMEN_GGEMS_NEARESTPOINT_H
-#define	RAMEN_GGEMS_NEARESTPOINT_H
+#define RAMEN_GGEMS_NEARESTPOINT_H
 
-#include<ramen/ggems/graphicsgems.h>
+#include <ramen/ggems/graphicsgems.h>
 
-extern "C"
-{
+extern "C" {
 
-Point2 NearestPointOnCurve( Point2 P, Point2 *V, double *out_t);
-
+Point2 NearestPointOnCurve(Point2 P, Point2* V, double* out_t);
 }
 
 #endif
-

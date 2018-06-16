@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class user_interface_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

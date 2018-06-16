@@ -4,9 +4,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -18,8 +18,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -40,15 +40,15 @@
 //
 //-----------------------------------------------------------------------------
 
-#include<ramen/flipbook/FileReadingThread.h>
+#include <ramen/flipbook/FileReadingThread.h>
 
-#include<iostream>
+#include <iostream>
 
-#include<OpenEXR/ImfInputFile.h>
-#include<OpenEXR/Iex.h>
+#include <OpenEXR/ImfInputFile.h>
+#include <OpenEXR/Iex.h>
 
-#include<ramen/flipbook/ImageBuffers.h>
-#include<ramen/flipbook/internal_flipbook.hpp>
+#include <ramen/flipbook/ImageBuffers.h>
+#include <ramen/flipbook/internal_flipbook.hpp>
 
 using namespace IlmThread;
 using namespace Imf;
@@ -56,113 +56,113 @@ using namespace Iex;
 using namespace std;
 
 
-FileReadingThread::FileReadingThread( ramen::flipbook::internal_flipbook_t *flip) :
-    Thread(),
-    _flip( flip),
-    _firstFrame ( 0),
-    _lastFrame (flip->num_frames() - 1),
-    _imageBuffers (flip->image_buffers())
+FileReadingThread::FileReadingThread(ramen::flipbook::internal_flipbook_t* flip)
+: Thread()
+, _flip(flip)
+, _firstFrame(0)
+, _lastFrame(flip->num_frames() - 1)
+, _imageBuffers(flip->image_buffers())
 {
-    start();	// start() calls run()
+    start();  // start() calls run()
 }
 
 
-void
-FileReadingThread::run ()
+void FileReadingThread::run()
 {
     try
     {
-	int i = 0;	// index of the image buffer we will fill next
-	int frame = _firstFrame;
+        int i     = 0;  // index of the image buffer we will fill next
+        int frame = _firstFrame;
 
-	while (true)
-	{
-	    //
-	    // Check if the display thread wants us to exit.
-	    //
+        while (true)
+        {
+            //
+            // Check if the display thread wants us to exit.
+            //
 
-	    if (_imageBuffers.exitSemaphore1.tryWait())
-	    {
-		_imageBuffers.exitSemaphore2.post();
-		return;
-	    }
+            if (_imageBuffers.exitSemaphore1.tryWait())
+            {
+                _imageBuffers.exitSemaphore2.post();
+                return;
+            }
 
-	    //
-	    // Wait for an image buffer to become available.
-	    //
+            //
+            // Wait for an image buffer to become available.
+            //
 
-	    _imageBuffers.emptyBuffersSemaphore.wait();
+            _imageBuffers.emptyBuffersSemaphore.wait();
 
-	    //
-	    // Generate the file name for this frame
-	    // and open the corresponding OpenEXR file.
-	    //
+            //
+            // Generate the file name for this frame
+            // and open the corresponding OpenEXR file.
+            //
 
-	    ramen::imageio::imf_memory_istream is( _flip->stream_for_frame( frame));
-	    InputFile in( is);
+            ramen::imageio::imf_memory_istream is(_flip->stream_for_frame(frame));
+            InputFile                          in(is);
 
-	    //
-	    // Verify that this frame has the same data window
-	    // as all other frames. (We do not dynamically resize
-	    // our image buffers.)
-	    //
+            //
+            // Verify that this frame has the same data window
+            // as all other frames. (We do not dynamically resize
+            // our image buffers.)
+            //
 
-	    if (in.header().dataWindow() != _imageBuffers.dataWindow)
-		THROW (ArgExc,
-		       "Data window of frame " << frame << " "
-		       "differs from data window of "
-		       "frame " << _firstFrame << ".");
+            if (in.header().dataWindow() != _imageBuffers.dataWindow)
+                THROW(ArgExc,
+                      "Data window of frame " << frame
+                                              << " "
+                                                 "differs from data window of "
+                                                 "frame "
+                                              << _firstFrame << ".");
 
-	    //
-	    // Read the OpenEXR file, storing the pixels in
-	    // image buffer i.
-	    //
+            //
+            // Read the OpenEXR file, storing the pixels in
+            // image buffer i.
+            //
 
-	    in.setFrameBuffer (_imageBuffers.frameBuffer (i));
+            in.setFrameBuffer(_imageBuffers.frameBuffer(i));
 
-	    in.readPixels (_imageBuffers.dataWindow.min.y,
-			   _imageBuffers.dataWindow.max.y);
+            in.readPixels(_imageBuffers.dataWindow.min.y, _imageBuffers.dataWindow.max.y);
 
-	    //
-	    // Mark the image buffer as full; the display
-	    // thread can now display this frame.
-	    //
+            //
+            // Mark the image buffer as full; the display
+            // thread can now display this frame.
+            //
 
-	    _imageBuffers.frameNumber (i) = frame;
-	    _imageBuffers.fullBuffersSemaphore.post();
+            _imageBuffers.frameNumber(i) = frame;
+            _imageBuffers.fullBuffersSemaphore.post();
 
-	    //
-	    // Advance to the next frame
-	    //
+            //
+            // Advance to the next frame
+            //
 
-	    if (_imageBuffers.forward)
-	    {
-		if (frame >= _lastFrame)
-		    frame = _firstFrame;
-		else
-		    frame += 1;
-	    }
-	    else
-	    {
-		if (frame <= _firstFrame)
-		    frame = _lastFrame;
-		else
-		    frame -= 1;
-	    }
+            if (_imageBuffers.forward)
+            {
+                if (frame >= _lastFrame)
+                    frame = _firstFrame;
+                else
+                    frame += 1;
+            }
+            else
+            {
+                if (frame <= _firstFrame)
+                    frame = _lastFrame;
+                else
+                    frame -= 1;
+            }
 
-	    i = (i + 1) % _imageBuffers.numBuffers();
-	}
+            i = (i + 1) % _imageBuffers.numBuffers();
+        }
     }
-    catch (const std::exception &exc)
+    catch (const std::exception& exc)
     {
-	//
-	// If anything goes wrong, print an eror message and exit.
-	//
+        //
+        // If anything goes wrong, print an eror message and exit.
+        //
 
-	cerr << exc.what() << endl;
+        cerr << exc.what() << endl;
 
-	_imageBuffers.exitSemaphore2.post();
-	_imageBuffers.fullBuffersSemaphore.post();
-	return;
+        _imageBuffers.exitSemaphore2.post();
+        _imageBuffers.fullBuffersSemaphore.post();
+        return;
     }
 }

@@ -10,16 +10,16 @@ namespace Host
 {
 namespace ImageEffect
 {
-    class ImageEffectPlugin;
-    class Descriptor;
-} // namespace
+class ImageEffectPlugin;
+class Descriptor;
+}  // namespace
 
 namespace Param
 {
-    class Descriptor;
-} // namespace
+class Descriptor;
+}  // namespace
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

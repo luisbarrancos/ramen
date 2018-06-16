@@ -5,13 +5,12 @@
 #ifndef RAMEN_ANIM_CURVE_FWD_HPP
 #define RAMEN_ANIM_CURVE_FWD_HPP
 
-#include<OpenEXR/ImathVec.h>
+#include <OpenEXR/ImathVec.h>
 
 namespace ramen
 {
 namespace anim
 {
-
 class float_key_t;
 class float_curve_t;
 
@@ -27,7 +26,7 @@ class shape_curve_t;
 typedef shape_curve_t<Imath::V2f> shape_curve2f_t;
 typedef shape_curve_t<Imath::V3f> shape_curve3f_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

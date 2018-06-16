@@ -7,8 +7,7 @@ namespace ramen
 {
 namespace image
 {
-
-} // image
-} // ramen
+}  // image
+}  // ramen
 
 #endif

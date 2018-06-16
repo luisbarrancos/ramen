@@ -1,44 +1,42 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
 #ifndef RAMEN_IMAGE_BLUR_NODE_HPP
-#define	RAMEN_IMAGE_BLUR_NODE_HPP
+#define RAMEN_IMAGE_BLUR_NODE_HPP
 
-#include<ramen/nodes/image/base_blur_node.hpp>
+#include <ramen/nodes/image/base_blur_node.hpp>
 
 namespace ramen
 {
 namespace image
 {
-
 class blur_node_t : public base_blur_node_t
 {
 public:
-
-    static const node_metaclass_t& blur_node_metaclass();
-    virtual const node_metaclass_t *metaclass() const;
+    static const node_metaclass_t&  blur_node_metaclass();
+    const node_metaclass_t* metaclass() const override;
 
     blur_node_t();
 
 protected:
-
-    blur_node_t( const blur_node_t& other) : base_blur_node_t( other) {}
-    void operator=( const blur_node_t&);
+    blur_node_t(const blur_node_t& other)
+    : base_blur_node_t(other)
+    {
+    }
+    void operator=(const blur_node_t&);
 
 private:
+    node_t* do_clone() const override { return new blur_node_t(*this); }
 
-    node_t *do_clone() const { return new blur_node_t( *this);}
+    void do_create_params() override;
 
-    virtual void do_create_params();
+    bool do_is_identity() const override;
 
-	virtual bool do_is_identity() const;
-	
-    virtual void do_process( const render::context_t& context);
+    void do_process(const render::context_t& context) override;
 
-    virtual void get_expand_radius( int& hradius, int& vradius) const;
+    void get_expand_radius(int& hradius, int& vradius) const override;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif
-

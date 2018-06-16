@@ -1,43 +1,42 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
 #ifndef RAMEN_SET_MATTE_NODE_HPP
-#define	RAMEN_SET_MATTE_NODE_HPP
+#define RAMEN_SET_MATTE_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include <ramen/nodes/image_node.hpp>
 
 namespace ramen
 {
 namespace image
 {
-
 class set_matte_node_t : public image_node_t
 {
 public:
-
-    static const node_metaclass_t& set_matte_node_metaclass();
-    virtual const node_metaclass_t *metaclass() const;
+    static const node_metaclass_t&  set_matte_node_metaclass();
+    const node_metaclass_t* metaclass() const override;
 
     set_matte_node_t();
 
-    virtual bool use_cache( const render::context_t& context) const { return false;}
+    bool use_cache(const render::context_t& context) const override { return false; }
 
 protected:
-
-    set_matte_node_t( const set_matte_node_t& other) : image_node_t( other) {}
-    void operator=( const set_matte_node_t&);
+    set_matte_node_t(const set_matte_node_t& other)
+    : image_node_t(other)
+    {
+    }
+    void operator=(const set_matte_node_t&);
 
 private:
+    node_t* do_clone() const override { return new set_matte_node_t(*this); }
 
-    virtual node_t *do_clone() const { return new set_matte_node_t( *this);}
+    void do_create_params() override;
 
-    virtual void do_create_params();
+    void do_calc_bounds(const render::context_t& context) override;
 
-    virtual void do_calc_bounds( const render::context_t& context);
-
-    virtual void do_process( const render::context_t& context);
+    void do_process(const render::context_t& context) override;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

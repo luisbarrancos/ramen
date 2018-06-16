@@ -3,29 +3,26 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_IMAGEIO_JPG_READER_HPP
-#define	RAMEN_IMAGEIO_JPG_READER_HPP
+#define RAMEN_IMAGEIO_JPG_READER_HPP
 
-#include<ramen/imageio/reader.hpp>
+#include <ramen/imageio/reader.hpp>
 
 namespace ramen
 {
 namespace imageio
 {
-
 class jpg_reader_t : public reader_t
 {
 public:
-
-    jpg_reader_t( const boost::filesystem::path& p);
+    jpg_reader_t(const boost::filesystem::path& p);
 
 private:
-
-    virtual void do_read_image( const image::image_view_t& view,
-                                const math::box2i_t& crop,
-                                int subsample) const;
+    void do_read_image(const image::image_view_t& view,
+                               const math::box2i_t&       crop,
+                               int                        subsample) const override;
 };
 
-} // imageio
-} // ramen
+}  // imageio
+}  // ramen
 
 #endif

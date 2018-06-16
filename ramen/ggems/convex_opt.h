@@ -10,13 +10,12 @@
 #define RAMEN_GGEMS_CONVEX_OPT_H
 
 #ifdef __cplusplus
-extern "C"
-{
-#endif 
-	
+extern "C" {
+#endif
+
 typedef enum { NotConvex, NotConvexDegenerate, ConvexDegenerate, ConvexCCW, ConvexCW } PolygonClass;
 
-PolygonClass classifyPolygon2( int nvert, float pVert[][2]);
+PolygonClass classifyPolygon2(int nvert, float pVert[][2]);
 
 #ifdef __cplusplus
 }

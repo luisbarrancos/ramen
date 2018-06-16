@@ -1,16 +1,16 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#include<ramen/image/smart_blur.hpp>
+#include <ramen/image/smart_blur.hpp>
 
-#include<algorithm>
-#include<cmath>
+#include <algorithm>
+#include <cmath>
 
-#include<ramen/algorithm/clamp.hpp>
+#include <ramen/algorithm/clamp.hpp>
 
-#include<tbb/blocked_range.h>
-#include<tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 
-#include<ramen/image/color.hpp>
+#include <ramen/image/color.hpp>
 
 using namespace boost::gil;
 
@@ -20,161 +20,178 @@ namespace image
 {
 namespace
 {
+inline float abs(float x) { return x < 0 ? -x : x; }
 
-inline float abs( float x) { return x < 0 ? -x : x;}
-	
-void make_gauss_kernel( float *kernel, int size, float dev)
+void make_gauss_kernel(float* kernel, int size, float dev)
 {
-	if( dev == 0)
-	{
-		kernel[0] = 0.0f;
-		kernel[1] = 1.0f;
-		kernel[2] = 0.0f;
-		return;
-	}
-	
-	int radius = size / 2;
-	float sum = 0;
-	
-	for (int i = 0; i < size; i++)
-	{
-		float diff = ( i - radius)/ dev;
-		float value = std::exp(-diff * diff / 2);
-		kernel[i] = value;
-		sum += value;
-	}
+    if (dev == 0)
+    {
+        kernel[0] = 0.0f;
+        kernel[1] = 1.0f;
+        kernel[2] = 0.0f;
+        return;
+    }
 
-	float norm = 1.0f / sum;
-	
-	for (int i = 0; i < size; i++)
-		kernel[i] *= norm;
+    int   radius = size / 2;
+    float sum    = 0;
+
+    for (int i = 0; i < size; i++)
+    {
+        float diff  = (i - radius) / dev;
+        float value = std::exp(-diff * diff / 2);
+        kernel[i]   = value;
+        sum += value;
+    }
+
+    float norm = 1.0f / sum;
+
+    for (int i = 0; i < size; i++)
+        kernel[i] *= norm;
 }
 
 struct smart_blur_fn
 {
-    smart_blur_fn( const const_image_view_t& src, const image_view_t& dst, float thereshold, float *kernel, int size) : src_(src), dst_(dst)
-	{
-		kernel_ = kernel;
-		k_size_ = size;
-		thereshold_ = thereshold;
-	}
-
-    void operator()( const tbb::blocked_range<std::size_t>& r) const
+    smart_blur_fn(const const_image_view_t& src,
+                  const image_view_t&       dst,
+                  float                     thereshold,
+                  float*                    kernel,
+                  int                       size)
+    : src_(src)
+    , dst_(dst)
     {
-		using namespace boost::gil;
-		
-		int xoff = ( k_size_ - 1) / 2;
+        kernel_     = kernel;
+        k_size_     = size;
+        thereshold_ = thereshold;
+    }
 
-		for( std::size_t y = r.begin(); y != r.end(); ++y)
-		{
-			const_image_view_t::x_iterator src_it( src_.row_begin( y));
-			image_view_t::y_iterator dst_it( dst_.col_begin( y));
+    void operator()(const tbb::blocked_range<std::size_t>& r) const
+    {
+        using namespace boost::gil;
 
-			for( int x = 0, e = src_.width(); x < e; ++x)
-			{
-				float cr = get_color( src_it[x], red_t());
-				float cg = get_color( src_it[x], green_t());
-				float cb = get_color( src_it[x], blue_t());
-				float ca = get_color( src_it[x], alpha_t());
+        int xoff = (k_size_ - 1) / 2;
 
-				float raccum = 0.0f, rweight = 0.0f;
-				float gaccum = 0.0f, gweight = 0.0f;
-				float baccum = 0.0f, bweight = 0.0f;
-				float aaccum = 0.0f, aweight = 0.0f;
+        for (std::size_t y = r.begin(); y != r.end(); ++y)
+        {
+            const_image_view_t::x_iterator src_it(src_.row_begin(y));
+            image_view_t::y_iterator       dst_it(dst_.col_begin(y));
 
-				float *k_it = kernel_;
-				
-				for( int i = -xoff; i <= xoff; ++i)
-				{
-                    int indx = clamp( x + i, 0, (int) src_.width() - 1);
+            for (int x = 0, e = src_.width(); x < e; ++x)
+            {
+                float cr = get_color(src_it[x], red_t());
+                float cg = get_color(src_it[x], green_t());
+                float cb = get_color(src_it[x], blue_t());
+                float ca = get_color(src_it[x], alpha_t());
 
-					float r = get_color( src_it[indx], red_t());
-					float g = get_color( src_it[indx], green_t());
-					float b = get_color( src_it[indx], blue_t());
-					float a = get_color( src_it[indx], alpha_t());
-					float w = *k_it++;
-					
-					if( abs( r - cr) <= thereshold_)
-					{
-						raccum += w * r;
-						rweight += w;
-					}
+                float raccum = 0.0f, rweight = 0.0f;
+                float gaccum = 0.0f, gweight = 0.0f;
+                float baccum = 0.0f, bweight = 0.0f;
+                float aaccum = 0.0f, aweight = 0.0f;
 
-					if( abs( g - cg) <= thereshold_)
-					{
-						gaccum += w * g;
-						gweight += w;
-					}
+                float* k_it = kernel_;
 
-					if( abs( b - cb) <= thereshold_)
-					{
-						baccum += w * b;
-						bweight += w;
-					}
+                for (int i = -xoff; i <= xoff; ++i)
+                {
+                    int indx = clamp(x + i, 0, (int) src_.width() - 1);
 
-					if( abs( a - ca) <= thereshold_)
-					{
-						aaccum += w * a;
-						aweight += w;
-					}
-				}
-				
-				image::pixel_t result( cr, cg, cb, ca);
-				
-				if( rweight != 0)
-					get_color( result, red_t()) = raccum / rweight;
+                    float r = get_color(src_it[indx], red_t());
+                    float g = get_color(src_it[indx], green_t());
+                    float b = get_color(src_it[indx], blue_t());
+                    float a = get_color(src_it[indx], alpha_t());
+                    float w = *k_it++;
 
-				if( gweight != 0)
-					get_color( result, green_t()) = gaccum / gweight;
+                    if (abs(r - cr) <= thereshold_)
+                    {
+                        raccum += w * r;
+                        rweight += w;
+                    }
 
-				if( bweight != 0)
-					get_color( result, blue_t()) = baccum / bweight;
+                    if (abs(g - cg) <= thereshold_)
+                    {
+                        gaccum += w * g;
+                        gweight += w;
+                    }
 
-				if( aweight != 0)
-					get_color( result, alpha_t()) = aaccum / aweight;
-				
-				dst_it[x] = result;
-			}
-		}
+                    if (abs(b - cb) <= thereshold_)
+                    {
+                        baccum += w * b;
+                        bweight += w;
+                    }
+
+                    if (abs(a - ca) <= thereshold_)
+                    {
+                        aaccum += w * a;
+                        aweight += w;
+                    }
+                }
+
+                image::pixel_t result(cr, cg, cb, ca);
+
+                if (rweight != 0)
+                    get_color(result, red_t()) = raccum / rweight;
+
+                if (gweight != 0)
+                    get_color(result, green_t()) = gaccum / gweight;
+
+                if (bweight != 0)
+                    get_color(result, blue_t()) = baccum / bweight;
+
+                if (aweight != 0)
+                    get_color(result, alpha_t()) = aaccum / aweight;
+
+                dst_it[x] = result;
+            }
+        }
     }
 
     const const_image_view_t& src_;
-    const image_view_t& dst_;
-	float *kernel_;
-	int k_size_;
-	float thereshold_;
+    const image_view_t&       dst_;
+    float*                    kernel_;
+    int                       k_size_;
+    float                     thereshold_;
 };
 
-} // unnamed
+}  // unnamed
 
-void smart_blur_rgba( const const_image_view_t& src, const image_view_t& tmp, const image_view_t& dst, 
-					  float stddevx, float stddevy, float thereshold)
+void smart_blur_rgba(const const_image_view_t& src,
+                     const image_view_t&       tmp,
+                     const image_view_t&       dst,
+                     float                     stddevx,
+                     float                     stddevy,
+                     float                     thereshold)
 {
-	// create kernel here
-	int sizex = (int)( stddevx * 6 + 1) | 1;
-	if( sizex == 1) sizex = 3;
-	
-	int sizey = (int)( stddevy * 6 + 1) | 1;
-	if( sizey == 1) sizey = 3;
-	
-	float *kernel = new float[ std::max( sizex, sizey)];
-	
-	make_gauss_kernel( kernel, sizex, stddevx);
-    tbb::parallel_for( tbb::blocked_range<std::size_t>( 0, src.height()),
-					   smart_blur_fn( src, tmp, thereshold, kernel, sizex), tbb::auto_partitioner());
+    // create kernel here
+    int sizex = (int) (stddevx * 6 + 1) | 1;
+    if (sizex == 1)
+        sizex = 3;
 
-	make_gauss_kernel( kernel, sizey, stddevy);
-    tbb::parallel_for( tbb::blocked_range<std::size_t>( 0, tmp.height()),
-					   smart_blur_fn( tmp, dst, thereshold, kernel, sizey), tbb::auto_partitioner());
+    int sizey = (int) (stddevy * 6 + 1) | 1;
+    if (sizey == 1)
+        sizey = 3;
 
-	delete[] kernel;
+    float* kernel = new float[std::max(sizex, sizey)];
+
+    make_gauss_kernel(kernel, sizex, stddevx);
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, src.height()),
+                      smart_blur_fn(src, tmp, thereshold, kernel, sizex),
+                      tbb::auto_partitioner());
+
+    make_gauss_kernel(kernel, sizey, stddevy);
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
+                      smart_blur_fn(tmp, dst, thereshold, kernel, sizey),
+                      tbb::auto_partitioner());
+
+    delete[] kernel;
 }
 
-void smart_blur_rgba( const const_image_view_t& src, const image_view_t& dst, float stddevx, float stddevy, float thereshold)
+void smart_blur_rgba(const const_image_view_t& src,
+                     const image_view_t&       dst,
+                     float                     stddevx,
+                     float                     stddevy,
+                     float                     thereshold)
 {
-	image::image_t tmp( src.height(), src.width());
-	smart_blur_rgba( src, boost::gil::view( tmp), dst, stddevx, stddevy, thereshold);
+    image::image_t tmp(src.height(), src.width());
+    smart_blur_rgba(src, boost::gil::view(tmp), dst, stddevx, stddevy, thereshold);
 }
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace

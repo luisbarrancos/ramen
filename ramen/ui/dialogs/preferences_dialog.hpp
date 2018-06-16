@@ -3,35 +3,32 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_PREFERENCES_DIALOG_HPP
-#define	RAMEN_PREFERENCES_DIALOG_HPP
+#define RAMEN_PREFERENCES_DIALOG_HPP
 
-#include<QDialog>
+#include <QDialog>
 
-#include"ui_preferences.h"
+#include "ui_preferences.h"
 
 namespace ramen
 {
 namespace ui
 {
-
 class preferences_dialog_t : public QDialog
 {
     Q_OBJECT
-    
-public:
 
+public:
     static preferences_dialog_t& instance();
 
     void exec_dialog();
 
 private:
-
     preferences_dialog_t();
-	
-	Ui::preferences ui_;
+
+    Ui::preferences ui_;
 };
 
-} // ui
-} // ramen
+}  // ui
+}  // ramen
 
 #endif

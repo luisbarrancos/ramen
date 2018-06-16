@@ -3,35 +3,34 @@
 #ifndef RAMEN_OFX_DOUBLE_PARAM_HPP
 #define RAMEN_OFX_DOUBLE_PARAM_HPP
 
-#include"ofxCore.h"
-#include"ofxParam.h"
+#include "ofxCore.h"
+#include "ofxParam.h"
 
-#include"ofxhPropertySuite.h"
-#include"ofxhParam.h"
+#include "ofxhPropertySuite.h"
+#include "ofxhParam.h"
 
 namespace ramen
 {
-
 namespace ofx
 {
-
 class image_effect_t;
 
 class double_param_t : public OFX::Host::Param::DoubleInstance
 {
 public:
+    double_param_t(const std::string&             name,
+                   OFX::Host::Param::Descriptor&  descriptor,
+                   OFX::Host::Param::SetInstance* instance = 0);
 
-    double_param_t( const std::string& name, OFX::Host::Param::Descriptor& descriptor, OFX::Host::Param::SetInstance* instance = 0);
+    OfxStatus copy(const OFX::Host::Param::Instance& instance, OfxTime offset);
+    OfxStatus copy(const OFX::Host::Param::Instance& instance, OfxTime offset, OfxRangeD range);
 
-    OfxStatus copy( const OFX::Host::Param::Instance &instance, OfxTime offset);
-    OfxStatus copy( const OFX::Host::Param::Instance &instance, OfxTime offset, OfxRangeD range);
-
-    OfxStatus get( double& v);
-    OfxStatus get( OfxTime time, double& v);
-    OfxStatus set( double v);
-    OfxStatus set( OfxTime time, double v);
-    OfxStatus derive( OfxTime time, double& v);
-    OfxStatus integrate( OfxTime time1, OfxTime time2, double& v);
+    OfxStatus get(double& v);
+    OfxStatus get(OfxTime time, double& v);
+    OfxStatus set(double v);
+    OfxStatus set(OfxTime time, double v);
+    OfxStatus derive(OfxTime time, double& v);
+    OfxStatus integrate(OfxTime time1, OfxTime time2, double& v);
 
     // anim
     OfxStatus getNumKeys(unsigned int& nKeys) const;
@@ -40,15 +39,14 @@ public:
     OfxStatus deleteKey(OfxTime time);
     OfxStatus deleteAllKeys();
 
-	// ui
-	virtual void setEnabled();
-	
-protected:
+    // ui
+    virtual void setEnabled();
 
-    image_effect_t *effect_;
+protected:
+    image_effect_t* effect_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

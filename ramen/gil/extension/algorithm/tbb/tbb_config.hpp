@@ -6,13 +6,12 @@
 #ifndef GIL_EXTENSION_TBB_PARALLEL_CONFIG_HPP
 #define GIL_EXTENSION_TBB_PARALLEL_CONFIG_HPP
 
-#include<tbb/partitioner.h>
-#include<tbb/parallel_for.h>
-#include<tbb/blocked_range.h>
+#include <tbb/partitioner.h>
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
 
 #ifndef GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER
-    #define GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER tbb::auto_partitioner
+#define GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER tbb::auto_partitioner
 #endif
 
 #endif
-

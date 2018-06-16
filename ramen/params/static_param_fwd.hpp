@@ -7,9 +7,8 @@
 
 namespace ramen
 {
-
 class static_param_t;
 
-} // namespace
+}  // namespace
 
 #endif

@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,60 +38,57 @@
 //
 //----------------------------------------------------------------------------
 
-#include<ramen/flipbook/Timer.h>
+#include <ramen/flipbook/Timer.h>
 
-#include<time.h>
+#include <time.h>
 
 #ifdef _WIN32
 
-    #include <windows.h>
+#include <windows.h>
 
-    static int
-    gettimeofday (struct timeval *tv, void *tz)
-    {
-	union
-	{
-	    ULONGLONG ns100;  // time since 1 Jan 1601 in 100ns units
-	    FILETIME ft;
-	} now;
-    
-	GetSystemTimeAsFileTime (&now.ft);
-	tv->tv_usec = long ((now.ns100 / 10LL) % 1000000LL);
-	tv->tv_sec = long ((now.ns100 - 116444736000000000LL) / 10000000LL);
+static int gettimeofday(struct timeval* tv, void* tz)
+{
+    union {
+        ULONGLONG ns100;  // time since 1 Jan 1601 in 100ns units
+        FILETIME  ft;
+    } now;
 
-	return 0;
-    } 
+    GetSystemTimeAsFileTime(&now.ft);
+    tv->tv_usec = long((now.ns100 / 10LL) % 1000000LL);
+    tv->tv_sec  = long((now.ns100 - 116444736000000000LL) / 10000000LL);
+
+    return 0;
+}
 
 #endif
 
 
-Timer::Timer ():
-    playState (RUNNING),
-    _spf (1 / 24.0),
-    _timingError (0),
-    _framesSinceLastFpsFrame (0),
-    _actualFrameRate (0)
+Timer::Timer()
+: playState(RUNNING)
+, _spf(1 / 24.0)
+, _timingError(0)
+, _framesSinceLastFpsFrame(0)
+, _actualFrameRate(0)
 {
-    gettimeofday (&_lastFrameTime, 0);
+    gettimeofday(&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
 }
 
 
-void
-Timer::waitUntilNextFrameIsDue ()
+void Timer::waitUntilNextFrameIsDue()
 {
     if (playState != RUNNING)
     {
-	//
-	// If we are not running, reset all timing state
-	// variables and return without waiting.
-	//
+        //
+        // If we are not running, reset all timing state
+        // variables and return without waiting.
+        //
 
-	gettimeofday (&_lastFrameTime, 0);
-	_timingError = 0;
-	_lastFpsFrameTime = _lastFrameTime;
-	_framesSinceLastFpsFrame = 0;
-	return;
+        gettimeofday(&_lastFrameTime, 0);
+        _timingError             = 0;
+        _lastFpsFrameTime        = _lastFrameTime;
+        _framesSinceLastFpsFrame = 0;
+        return;
     }
 
     //
@@ -100,29 +97,29 @@ Timer::waitUntilNextFrameIsDue ()
     //
 
     timeval now;
-    gettimeofday (&now, 0);
+    gettimeofday(&now, 0);
 
-    float timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
-			       (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+    float timeSinceLastFrame
+        = now.tv_sec - _lastFrameTime.tv_sec + (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
     float timeToSleep = _spf - timeSinceLastFrame - _timingError;
 
-    #ifdef _WIN32
+#ifdef _WIN32
 
-	if (timeToSleep > 0)
-	    Sleep (int (timeToSleep * 1000.0f));
+    if (timeToSleep > 0)
+        Sleep(int(timeToSleep * 1000.0f));
 
-    #else
+#else
 
-	if (timeToSleep > 0)
-	{
-	    timespec ts;
-	    ts.tv_sec = (time_t) timeToSleep;
-	    ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
-	    nanosleep (&ts, 0);
-	}
+    if (timeToSleep > 0)
+    {
+        timespec ts;
+        ts.tv_sec  = (time_t) timeToSleep;
+        ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
+        nanosleep(&ts, 0);
+    }
 
-    #endif
+#endif
 
     //
     // If we slept, it is possible that we woke up a little too early
@@ -132,18 +129,18 @@ Timer::waitUntilNextFrameIsDue ()
     // keep our average frame rate close to one fame every _spf seconds.
     //
 
-    gettimeofday (&now, 0);
+    gettimeofday(&now, 0);
 
-    timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
-		         (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+    timeSinceLastFrame
+        = now.tv_sec - _lastFrameTime.tv_sec + (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
     _timingError += timeSinceLastFrame - _spf;
 
     if (_timingError < -2 * _spf)
-	_timingError = -2 * _spf;
+        _timingError = -2 * _spf;
 
-    if (_timingError >  2 * _spf)
-	_timingError =  2 * _spf;
+    if (_timingError > 2 * _spf)
+        _timingError = 2 * _spf;
 
     _lastFrameTime = now;
 
@@ -153,31 +150,23 @@ Timer::waitUntilNextFrameIsDue ()
 
     if (_framesSinceLastFpsFrame >= 24)
     {
-	float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
-		  (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
+        float t = now.tv_sec - _lastFpsFrameTime.tv_sec
+                  + (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
 
-	if (t > 0)
-	    _actualFrameRate = _framesSinceLastFpsFrame / t;
+        if (t > 0)
+            _actualFrameRate = _framesSinceLastFpsFrame / t;
 
-	_framesSinceLastFpsFrame = 0;
+        _framesSinceLastFpsFrame = 0;
     }
 
     if (_framesSinceLastFpsFrame == 0)
-	_lastFpsFrameTime = now;
+        _lastFpsFrameTime = now;
 
     _framesSinceLastFpsFrame += 1;
 }
 
 
-void
-Timer::setDesiredFrameRate (float fps)
-{
-    _spf = 1 / fps;
-}
+void Timer::setDesiredFrameRate(float fps) { _spf = 1 / fps; }
 
 
-float
-Timer::actualFrameRate ()
-{
-    return _actualFrameRate;
-}
+float Timer::actualFrameRate() { return _actualFrameRate; }

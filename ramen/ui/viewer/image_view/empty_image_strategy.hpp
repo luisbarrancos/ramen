@@ -3,9 +3,9 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_UI_VIEWER_EMPTY_IMAGE_STRATEGY_HPP
-#define	RAMEN_UI_VIEWER_EMPTY_IMAGE_STRATEGY_HPP
+#define RAMEN_UI_VIEWER_EMPTY_IMAGE_STRATEGY_HPP
 
-#include<ramen/ui/viewer/image_view/image_strategy.hpp>
+#include <ramen/ui/viewer/image_view/image_strategy.hpp>
 
 namespace ramen
 {
@@ -13,24 +13,22 @@ namespace ui
 {
 namespace viewer
 {
-
 class empty_image_strategy_t : public image_strategy_t
 {
 public:
+    empty_image_strategy_t(const Imath::Box2i& display_window);
 
-	empty_image_strategy_t( const Imath::Box2i& display_window);
+    bool update_pixels(const image::buffer_t& pixels,
+                               const Imath::Box2i&    display_window,
+                               const Imath::Box2i&    data_window) override;
 
-    virtual bool update_pixels( const image::buffer_t& pixels,
-                                const Imath::Box2i& display_window,
-                                const Imath::Box2i& data_window);
+    void draw() const override;
 
-	virtual void draw() const;
-
-	virtual boost::optional<Imath::Color4f> color_at( const Imath::V2i& p) const;
+    boost::optional<Imath::Color4f> color_at(const Imath::V2i& p) const override;
 };
 
-} // viewer
-} // ui
-} // ramen
+}  // viewer
+}  // ui
+}  // ramen
 
 #endif

@@ -50,123 +50,131 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include<ramen/imageio/dpx/dpx_writer.hpp>
+#include <ramen/imageio/dpx/dpx_writer.hpp>
 
 #include <string.h>
 
-#include<fstream>
+#include <fstream>
 
-#include<adobe/algorithm/clamp.hpp>
+#include <adobe/algorithm/clamp.hpp>
 
-#include<ramen/imageio/dpx/dpxHeader.h>
+#include <ramen/imageio/dpx/dpxHeader.h>
 
 namespace
 {
-
-void writeHeader( std::ofstream &out, unsigned int width, unsigned int height)
+void writeHeader(std::ofstream& out, unsigned int width, unsigned int height)
 {
-    union
-    {
-		struct
-		{
-			FileInformation	fileInfo;
-			ImageInformation imageInfo;
-			ImageOrientation orientation;
-			MotionPictureFilmHeader	mph;
-			TelevisionHeader tvh;
-		};
-	
-		unsigned char padding[8192];
+    union {
+        struct
+        {
+            FileInformation         fileInfo;
+            ImageInformation        imageInfo;
+            ImageOrientation        orientation;
+            MotionPictureFilmHeader mph;
+            TelevisionHeader        tvh;
+        };
+
+        unsigned char padding[8192];
     } header;
 
-    memset( header.padding, 0xff, sizeof (header));
+    memset(header.padding, 0xff, sizeof(header));
 
-    setU32( 0x53445058, header.fileInfo.magicNumber, BO_BIG);
-    setU32( sizeof (header), header.fileInfo.offsetToImageData, BO_BIG);
-    strcpy( header.fileInfo.versionNumber, "V2.0");
+    setU32(0x53445058, header.fileInfo.magicNumber, BO_BIG);
+    setU32(sizeof(header), header.fileInfo.offsetToImageData, BO_BIG);
+    strcpy(header.fileInfo.versionNumber, "V2.0");
 
-    setU32( sizeof (header) + 4 * width * height, header.fileInfo.fileSize, BO_BIG);
-    header.fileInfo.fileName[0] = 0;
+    setU32(sizeof(header) + 4 * width * height, header.fileInfo.fileSize, BO_BIG);
+    header.fileInfo.fileName[0]     = 0;
     header.fileInfo.creationTime[0] = 0;
-    header.fileInfo.creator[0] = 0;
-    header.fileInfo.projectName[0] = 0;
-    header.fileInfo.copyright[0] = 0;
+    header.fileInfo.creator[0]      = 0;
+    header.fileInfo.projectName[0]  = 0;
+    header.fileInfo.copyright[0]    = 0;
 
     setU16(0, header.imageInfo.imageOrientation, BO_BIG);
     setU16(1, header.imageInfo.numberOfElements, BO_BIG);
     setU32(width, header.imageInfo.pixelsPerLine, BO_BIG);
     setU32(height, header.imageInfo.linesPerImageElement, BO_BIG);
 
-    setU32(0, header.imageInfo.imageElements[0].dataSign, BO_BIG); // unsigned
-    header.imageInfo.imageElements[0].descriptor = 50;	// RGB
-    header.imageInfo.imageElements[0].transferCharacteristic = 3; // log
-    header.imageInfo.imageElements[0].colorimetricSpecification = 1; // density
-    header.imageInfo.imageElements[0].bitSize = 10;
-    setU16(1, header.imageInfo.imageElements[0].packing, BO_BIG); // filled
-    setU16(0, header.imageInfo.imageElements[0].encoding, BO_BIG); // none
+    setU32(0, header.imageInfo.imageElements[0].dataSign, BO_BIG);     // unsigned
+    header.imageInfo.imageElements[0].descriptor                = 50;  // RGB
+    header.imageInfo.imageElements[0].transferCharacteristic    = 3;   // log
+    header.imageInfo.imageElements[0].colorimetricSpecification = 1;   // density
+    header.imageInfo.imageElements[0].bitSize                   = 10;
+    setU16(1, header.imageInfo.imageElements[0].packing, BO_BIG);   // filled
+    setU16(0, header.imageInfo.imageElements[0].encoding, BO_BIG);  // none
 
-    setU32(sizeof (header), header.imageInfo.imageElements[0].offsetToData, BO_BIG); // none
+    setU32(sizeof(header), header.imageInfo.imageElements[0].offsetToData, BO_BIG);  // none
 
     for (int i = 0; i < 7; ++i)
-		header.imageInfo.imageElements[i].description[0] = 0;
+        header.imageInfo.imageElements[i].description[0] = 0;
 
     header.orientation.sourceImageFileName[0] = 0;
-    header.orientation.creationTime[0] = 0;
-    header.orientation.inputDev[0] = 0;
-    header.orientation.inputSerial[0] = 0;
+    header.orientation.creationTime[0]        = 0;
+    header.orientation.inputDev[0]            = 0;
+    header.orientation.inputSerial[0]         = 0;
 
     header.mph.filmManufacturerId[0] = 0;
-    header.mph.filmType[0] = 0;
-    header.mph.offset[0] = 0;
-    header.mph.prefix[0] = 0;
-    header.mph.count[0] = 0;
-    header.mph.format[0] = 0;
+    header.mph.filmType[0]           = 0;
+    header.mph.offset[0]             = 0;
+    header.mph.prefix[0]             = 0;
+    header.mph.count[0]              = 0;
+    header.mph.format[0]             = 0;
 
-    if (!out.write ((const char *)&header, sizeof (header)))
-		throw ramen::imageio::exception( "can't write header");
+    if (!out.write((const char*) &header, sizeof(header)))
+        throw ramen::imageio::exception("can't write header");
 }
 
-} // namespace
+}  // namespace
 
 namespace ramen
 {
 namespace imageio
 {
-
-void dpx_writer_t::do_write_image( const boost::filesystem::path& p,
-									const image::const_image_view_t& view,
-									const adobe::dictionary_t& params) const
+void dpx_writer_t::do_write_image(const boost::filesystem::path&   p,
+                                  const image::const_image_view_t& view,
+                                  const adobe::dictionary_t&       params) const
 {
+    std::ofstream out(filesystem::file_cstring(p), std::ios_base::binary);
 
-    std::ofstream out( filesystem::file_cstring( p), std::ios_base::binary);
+    if (!out)
+        throw exception("can't open file");
 
-    if( !out)
-	throw exception( "can't open file");
+    writeHeader(out, view.width(), view.height());
 
-    writeHeader( out, view.width(), view.height());
+    std::vector<boost::uint32_t> buffer(view.width());
 
-    std::vector<boost::uint32_t> buffer( view.width());
-
-    for( int y = 0; y < view.height(); ++y)
+    for (int y = 0; y < view.height(); ++y)
     {
-		image::const_image_view_t::x_iterator src_it( view.row_begin( y));
-		boost::uint32_t *dst = &(buffer.front());
+        image::const_image_view_t::x_iterator src_it(view.row_begin(y));
+        boost::uint32_t*                      dst = &(buffer.front());
 
-		for( int x = 0; x < view.width(); ++x)
-		{
-		    unsigned int r = ( adobe::clamp( (float) boost::gil::get_color( *src_it, boost::gil::red_t())    , 0.0f, 1.0f) * 1023.0f) + 0.5f;
-		    unsigned int g = ( adobe::clamp( (float) boost::gil::get_color( *src_it, boost::gil::green_t())  , 0.0f, 1.0f) * 1023.0f) + 0.5f;
-		    unsigned int b = ( adobe::clamp( (float) boost::gil::get_color( *src_it, boost::gil::blue_t())   , 0.0f, 1.0f) * 1023.0f) + 0.5f;
-		    unsigned int word = (r << 22) | (g << 12) | (b << 2);
-		    setU32( word, (unsigned char *) dst, BO_BIG);
-		    ++src_it;
-		    ++dst;
-		}
+        for (int x = 0; x < view.width(); ++x)
+        {
+            unsigned int r
+                = (adobe::clamp(
+                       (float) boost::gil::get_color(*src_it, boost::gil::red_t()), 0.0f, 1.0f)
+                   * 1023.0f)
+                  + 0.5f;
+            unsigned int g
+                = (adobe::clamp(
+                       (float) boost::gil::get_color(*src_it, boost::gil::green_t()), 0.0f, 1.0f)
+                   * 1023.0f)
+                  + 0.5f;
+            unsigned int b
+                = (adobe::clamp(
+                       (float) boost::gil::get_color(*src_it, boost::gil::blue_t()), 0.0f, 1.0f)
+                   * 1023.0f)
+                  + 0.5f;
+            unsigned int word = (r << 22) | (g << 12) | (b << 2);
+            setU32(word, (unsigned char*) dst, BO_BIG);
+            ++src_it;
+            ++dst;
+        }
 
-		if( !out.write( (const char *) &( buffer.front()), view.width() * 4))
-		    throw exception( "can't write to file");
+        if (!out.write((const char*) &(buffer.front()), view.width() * 4))
+            throw exception("can't write to file");
     }
 }
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace

@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace flipbook
 {
-
 class internal_flipbook_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

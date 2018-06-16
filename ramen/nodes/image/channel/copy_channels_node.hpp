@@ -1,45 +1,47 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
 #ifndef RAMEN_IMAGE_COPY_CHANNELS_NODE_HPP
-#define	RAMEN_IMAGE_COPY_CHANNELS_NODE_HPP
+#define RAMEN_IMAGE_COPY_CHANNELS_NODE_HPP
 
-#include<ramen/nodes/image_node.hpp>
+#include <ramen/nodes/image_node.hpp>
 
 namespace ramen
 {
 namespace image
 {
-
 class copy_channels_node_t : public image_node_t
 {
 public:
-
-    static const node_metaclass_t& copy_channels_node_metaclass();
-    virtual const node_metaclass_t *metaclass() const;
+    static const node_metaclass_t&  copy_channels_node_metaclass();
+    const node_metaclass_t* metaclass() const override;
 
     copy_channels_node_t();
-    
-    virtual bool use_cache( const render::context_t& context) const { return false;}
+
+    bool use_cache(const render::context_t& context) const override { return false; }
 
 protected:
-
-    copy_channels_node_t( const copy_channels_node_t& other) : image_node_t( other) {}
-    void operator=( const copy_channels_node_t&);
+    copy_channels_node_t(const copy_channels_node_t& other)
+    : image_node_t(other)
+    {
+    }
+    void operator=(const copy_channels_node_t&);
 
 private:
+    node_t* do_clone() const override { return new copy_channels_node_t(*this); }
 
-    virtual node_t *do_clone() const { return new copy_channels_node_t( *this);}
+    void do_create_params() override;
 
-    virtual void do_create_params();
+    void do_calc_bounds(const render::context_t& context) override;
 
-    virtual void do_calc_bounds( const render::context_t& context);
+    void do_process(const render::context_t& context) override;
 
-    virtual void do_process( const render::context_t& context);
-
-    void copy_channel( const image::const_image_view_t& src, int src_ch, const image::image_view_t& dst , int dst_ch);
+    void copy_channel(const image::const_image_view_t& src,
+                      int                              src_ch,
+                      const image::image_view_t&       dst,
+                      int                              dst_ch);
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

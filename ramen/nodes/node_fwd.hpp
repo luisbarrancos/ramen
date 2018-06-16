@@ -3,16 +3,15 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_NODE_FWD_HPP
-#define	RAMEN_NODE_FWD_HPP
+#define RAMEN_NODE_FWD_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
 namespace ramen
 {
-
 class node_t;
 class image_node_t;
 
-} // ramen
+}  // ramen
 
 #endif

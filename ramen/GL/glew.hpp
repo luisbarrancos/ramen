@@ -3,8 +3,8 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_GLEW_HPP
-#define	RAMEN_GLEW_HPP
+#define RAMEN_GLEW_HPP
 
-#include<GL/glew.h>
+#include <GL/glew.h>
 
 #endif

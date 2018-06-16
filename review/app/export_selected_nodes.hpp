@@ -3,16 +3,14 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_EXPORT_COMPOSITION_HPP
-#define	RAMEN_EXPORT_COMPOSITION_HPP
+#define RAMEN_EXPORT_COMPOSITION_HPP
 
-#include<ramen/filesystem/path.hpp>
+#include <ramen/filesystem/path.hpp>
 
 namespace ramen
 {
+void export_selected_nodes(const boost::filesystem::path& p);
 
-void export_selected_nodes( const boost::filesystem::path& p);
-
-} // namespace
+}  // namespace
 
 #endif
-

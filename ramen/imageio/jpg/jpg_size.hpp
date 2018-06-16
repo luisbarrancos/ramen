@@ -13,6 +13,6 @@
 #ifndef RAMEN_IMAGEIO_JPEG_JPEGSIZE_HPP
 #define RAMEN_IMAGEIO_JPEG_JPEGSIZE_HPP
 
-bool get_jpeg_size( const char* filename, int& width, int& height );
+bool get_jpeg_size(const char* filename, int& width, int& height);
 
 #endif

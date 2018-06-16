@@ -9,10 +9,9 @@ namespace ramen
 {
 namespace ui
 {
-
 class splash_screen_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

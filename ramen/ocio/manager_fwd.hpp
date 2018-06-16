@@ -3,18 +3,17 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_OCIO_MANAGER_FWD_HPP
-#define	RAMEN_OCIO_MANAGER_FWD_HPP
+#define RAMEN_OCIO_MANAGER_FWD_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
 namespace ramen
 {
 namespace ocio
 {
-
 class manager_t;
 
-} // ocio
-} // ramen
+}  // ocio
+}  // ramen
 
 #endif

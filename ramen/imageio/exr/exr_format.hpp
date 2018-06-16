@@ -3,37 +3,35 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_EXR_FORMAT_HPP
-#define	RAMEN_EXR_FORMAT_HPP
+#define RAMEN_EXR_FORMAT_HPP
 
-#include<ramen/imageio/format.hpp>
+#include <ramen/imageio/format.hpp>
 
 namespace ramen
 {
 namespace imageio
 {
-
 class exr_format_t : public format_t
 {
 public:
-
     exr_format_t();
 
     virtual std::string tag() const;
 
-    virtual bool check_extension( const std::string& str) const;
+    virtual bool check_extension(const std::string& str) const;
 
     virtual std::size_t detect_size() const;
-    virtual bool detect( const char *p) const;
+    bool        detect(const char* p) const override;
 
-    virtual void add_extensions( std::vector<std::string>& ext) const;
+    virtual void add_extensions(std::vector<std::string>& ext) const;
 
-    virtual bool is_multichannel() const { return true;}
+    bool is_multichannel() const override { return true; }
 
-    virtual core::auto_ptr_t<reader_t> reader( const boost::filesystem::path& p) const;
-    virtual core::auto_ptr_t<writer_t> writer() const;
+    core::auto_ptr_t<reader_t> reader(const boost::filesystem::path& p) const override;
+    core::auto_ptr_t<writer_t> writer() const override;
 };
 
-} // imageio
-} // ramen
+}  // imageio
+}  // ramen
 
 #endif

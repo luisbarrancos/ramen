@@ -6,21 +6,21 @@
 // Copyright (c) 2006 Academy of Motion Picture Arts and Sciences
 // ("A.M.P.A.S."). Portions contributed by others as indicated.
 // All rights reserved.
-// 
+//
 // A world-wide, royalty-free, non-exclusive right to distribute, copy,
 // modify, create derivatives, and use, in source and binary forms, is
 // hereby granted, subject to acceptance of this license. Performance of
 // any of the aforementioned acts indicates acceptance to be bound by the
 // following terms and conditions:
-// 
+//
 //   * Redistributions of source code must retain the above copyright
 //     notice, this list of conditions and the Disclaimer of Warranty.
-// 
+//
 //   * Redistributions in binary form must reproduce the above copyright
 //     notice, this list of conditions and the Disclaimer of Warranty
 //     in the documentation and/or other materials provided with the
 //     distribution.
-// 
+//
 //   * Nothing in this license shall be deemed to grant any rights to
 //     trademarks, copyrights, patents, trade secrets or any other
 //     intellectual property of A.M.P.A.S. or any contributors, except
@@ -29,10 +29,10 @@
 //     endorse or promote products derived from this software without
 //     specific prior written permission of A.M.P.A.S. or contributor,
 //     as appropriate.
-// 
+//
 // This license shall be governed by the laws of the State of California,
 // and subject to the jurisdiction of the courts therein.
-// 
+//
 // Disclaimer of Warranty: THIS SOFTWARE IS PROVIDED BY A.M.P.A.S. AND
 // CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
 // BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS
@@ -51,24 +51,18 @@
 #ifndef RAMEN_HALF_EXPLOG_HPP
 #define RAMEN_HALF_EXPLOG_HPP
 
-#include<OpenEXR/half.h>
+#include <OpenEXR/half.h>
 
-extern const unsigned int log10Table[];
-extern const unsigned int logTable[];
+extern const unsigned int   log10Table[];
+extern const unsigned int   logTable[];
 extern const unsigned short expTable[];
 
-inline float log10_h (half x)
-{
-    return *(float *)(&log10Table[x.bits()]);
-}
+inline float log10_h(half x) { return *(float*) (&log10Table[x.bits()]); }
 
 
-inline float log_h (half x)
-{
-    return *(float *)(&logTable[x.bits()]);
-}
+inline float log_h(half x) { return *(float*) (&logTable[x.bits()]); }
 
-inline half exp_h (float x)
+inline half exp_h(float x)
 {
     if (x >= -16.6355323f)
     {
@@ -80,7 +74,7 @@ inline half exp_h (float x)
             // expTable will not fail.
             //
 
-            return *(half *)(&expTable[int (x * 4094.98169f + 68122.7031f)]);
+            return *(half*) (&expTable[int(x * 4094.98169f + 68122.7031f)]);
         }
         else
         {
@@ -102,15 +96,9 @@ inline half exp_h (float x)
 }
 
 
-inline half pow10_h (float x)
-{
-    return exp_h (x * 2.30258509f);
-}
+inline half pow10_h(float x) { return exp_h(x * 2.30258509f); }
 
 
-inline half pow_h (half x, float y)
-{
-    return exp_h (y * log_h (x));
-}
+inline half pow_h(half x, float y) { return exp_h(y * log_h(x)); }
 
 #endif

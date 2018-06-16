@@ -5,111 +5,105 @@
 #ifndef RAMEN_MEMORY_POOL_ALLOCATOR_HPP
 #define RAMEN_MEMORY_POOL_ALLOCATOR_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<vector>
-#include<memory>
+#include <vector>
+#include <memory>
 
-#include<boost/noncopyable.hpp>
-#include<boost/cstdint.hpp>
-#include<boost/thread/locks.hpp>
-#include<boost/exception/all.hpp>
+#include <boost/noncopyable.hpp>
+#include <boost/cstdint.hpp>
+#include <boost/thread/locks.hpp>
+#include <boost/exception/all.hpp>
 
-#include<boost/thread/recursive_mutex.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 
-#include<ramen/assert.hpp>
+#include <cassert>
 
-#include<ramen/memory/lru_cache_interface.hpp>
+#include <ramen/memory/lru_cache_interface.hpp>
 
 namespace ramen
 {
 namespace memory
 {
-
 template<class MemPool>
 class pool_allocator_t : boost::noncopyable
 {
 public:
+    explicit pool_allocator_t(boost::uint64_t size) { pool_.init(size); }
 
-    explicit pool_allocator_t( boost::uint64_t size)
+    void add_cache(lru_cache_interface* c) { caches_.push_back(c); }
+
+    boost::uint64_t max_size() const { return pool_.pool_size(); }
+
+    unsigned char* allocate(std::size_t& s)
     {
-        pool_.init( size);
-    }
+        if (s == 0)
+            return 0;
 
-	void add_cache( lru_cache_interface *c) { caches_.push_back( c);}
+        boost::lock_guard<boost::recursive_mutex> lock(mutex_);
 
-    boost::uint64_t max_size() const { return pool_.pool_size();}
+        while (1)
+        {
+            unsigned char* ptr = pool_.allocate(s);
 
-    unsigned char *allocate( std::size_t& s)
-	{
-		if( s == 0)
-			return 0;
+            if (ptr)
+                return ptr;
 
-	    boost::lock_guard<boost::recursive_mutex> lock( mutex_);
-
-		while( 1)
-	    {
-		    unsigned char *ptr = pool_.allocate( s);
-
-			if( ptr)
-				return ptr;
-
-			if( !erase_lru())
-				break;
-		}
+            if (!erase_lru())
+                break;
+        }
 
         // if we get here, it means there's not enough memory & all caches are empty.
-	    throw boost::enable_error_info( std::bad_alloc());
-		s = 0;
-		return 0;
-	}
+        throw boost::enable_error_info(std::bad_alloc());
+        s = 0;
+        return 0;
+    }
 
-    void deallocate( unsigned char *p, std::size_t s)
-	{
-		if( p == 0)
-			return;
+    void deallocate(unsigned char* p, std::size_t s)
+    {
+        if (p == 0)
+            return;
 
-		RAMEN_ASSERT( s != 0);
+        assert(s != 0);
 
-	    boost::lock_guard<boost::recursive_mutex> lock( mutex_);
-	    pool_.deallocate( p, s);
-	}
+        boost::lock_guard<boost::recursive_mutex> lock(mutex_);
+        pool_.deallocate(p, s);
+    }
 
 private:
+    bool erase_lru()
+    {
+        int                      lru_cache = -1;
+        boost::posix_time::ptime oldest    = boost::posix_time::microsec_clock::universal_time();
 
-	bool erase_lru()
-	{
-		int lru_cache = -1;
-		boost::posix_time::ptime oldest = boost::posix_time::microsec_clock::universal_time();
+        for (int i = 0, ie = caches_.size(); i < ie; ++i)
+        {
+            if (!caches_[i]->empty())
+            {
+                boost::posix_time::ptime touch_time = caches_[i]->lru_time();
 
-		for( int i = 0, ie = caches_.size(); i < ie; ++i)
-		{
-			if( !caches_[i]->empty())
-			{
-				boost::posix_time::ptime touch_time = caches_[i]->lru_time();
+                if (touch_time < oldest)
+                {
+                    lru_cache = i;
+                    oldest    = touch_time;
+                }
+            }
+        }
 
-				if( touch_time < oldest)
-				{
-					lru_cache = i;
-					oldest = touch_time;
-				}
-			}
-		}
+        if (lru_cache < 0)
+            return false;
 
-		if( lru_cache < 0)
-			return false;
-
-		caches_[lru_cache]->erase_lru();
-		return true;
-	}
+        caches_[lru_cache]->erase_lru();
+        return true;
+    }
 
     boost::recursive_mutex mutex_;
-    MemPool pool_;
+    MemPool                pool_;
 
-	std::vector<lru_cache_interface*> caches_;
+    std::vector<lru_cache_interface*> caches_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

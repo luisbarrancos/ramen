@@ -7,10 +7,9 @@ namespace ramen
 {
 namespace undo
 {
-
 class command_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

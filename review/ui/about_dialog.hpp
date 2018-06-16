@@ -3,33 +3,30 @@
 // See CDDL_LICENSE.txt for a copy of the license.
 
 #ifndef RAMEN_ABOUT_DIALOG_HPP
-#define	RAMEN_ABOUT_DIALOG_HPP
+#define RAMEN_ABOUT_DIALOG_HPP
 
-#include<QDialog>
+#include <QDialog>
 
-#include"ui_about.h"
+#include "ui_about.h"
 
 namespace ramen
 {
 namespace ui
 {
-
 class about_dialog_t : public QDialog
 {
     Q_OBJECT
-    
-public:
 
+public:
     static about_dialog_t& instance();
 
 private:
-
     about_dialog_t();
 
-	Ui::about ui_;
+    Ui::about ui_;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

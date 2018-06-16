@@ -5,44 +5,40 @@
 #ifndef RAMEN_UI_GRAPH_LAYOUT_HPP
 #define RAMEN_UI_GRAPH_LAYOUT_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<ramen/ui/graph_layout_fwd.hpp>
+#include <ramen/ui/graph_layout_fwd.hpp>
 
-#include<boost/noncopyable.hpp>
+#include <boost/noncopyable.hpp>
 
-#include<OpenEXR/ImathBox.h>
+#include <OpenEXR/ImathBox.h>
 
-#include<ramen/nodes/node_fwd.hpp>
-#include<ramen/nodes/node_graph_fwd.hpp>
+#include <ramen/nodes/node_fwd.hpp>
+#include <ramen/nodes/node_graph_fwd.hpp>
 
 namespace ramen
 {
 namespace ui
 {
-
 class RAMEN_API graph_layout_t : boost::noncopyable
 {
 public:
-
     graph_layout_t();
     virtual ~graph_layout_t();
 
-    graph_layout_t *clone() const;
+    graph_layout_t* clone() const;
 
-    Imath::Box2f node_bbox( const node_t& n) const;
+    Imath::Box2f node_bbox(const node_t& n) const;
 
-    virtual void place_node( node_t& n, const node_graph_t& g) = 0;
-    virtual void layout_selected_nodes( node_graph_t& g) = 0;
+    virtual void place_node(node_t& n, const node_graph_t& g) = 0;
+    virtual void layout_selected_nodes(node_graph_t& g)       = 0;
 
 protected:
-
-    graph_layout_t( const graph_layout_t& other);
-    void operator=( const graph_layout_t&);
+    graph_layout_t(const graph_layout_t& other);
+    void operator=(const graph_layout_t&);
 
 private:
-
-    virtual graph_layout_t *do_clone() const = 0;
+    virtual graph_layout_t* do_clone() const = 0;
 };
 
 /*************************************************************************/
@@ -50,22 +46,19 @@ private:
 class RAMEN_API simple_graph_layout_t : public graph_layout_t
 {
 public:
-
     simple_graph_layout_t();
 
-    virtual void place_node( node_t& n, const node_graph_t& g);
-    virtual void layout_selected_nodes( node_graph_t& g);
+    void place_node(node_t& n, const node_graph_t& g) override;
+    void layout_selected_nodes(node_graph_t& g) override;
 
 protected:
-
-    simple_graph_layout_t( const simple_graph_layout_t& other);
+    simple_graph_layout_t(const simple_graph_layout_t& other);
 
 private:
-
-    virtual graph_layout_t *do_clone() const;
+    graph_layout_t* do_clone() const override;
 };
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

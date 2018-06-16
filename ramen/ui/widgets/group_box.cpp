@@ -2,46 +2,49 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/ui/widgets/group_box.hpp>
+#include <ramen/ui/widgets/group_box.hpp>
 
-#include<QMouseEvent>
+#include <QMouseEvent>
 
 namespace ramen
 {
 namespace ui
 {
-
-group_box_t::group_box_t( QWidget *parent) : QGroupBox( parent), collapsed_( false), clicked_( false) {}
-
-void group_box_t::mousePressEvent( QMouseEvent *e)
+group_box_t::group_box_t(QWidget* parent)
+: QGroupBox(parent)
+, collapsed_(false)
+, clicked_(false)
 {
-	if( e->button() == Qt::LeftButton && e->pos().y() <= 16)
-		clicked_ = true;
-	else
-		QGroupBox::mousePressEvent( e);
 }
 
-void group_box_t::mouseReleaseEvent( QMouseEvent *e)
+void group_box_t::mousePressEvent(QMouseEvent* e)
 {
-	if( e->button() == Qt::LeftButton && clicked_ && e->pos().y() <= 16)
-	{
-		collapse( !collapsed_);
-		clicked_ = false;
-	}
-	else
-		QGroupBox::mouseReleaseEvent( e);
+    if (e->button() == Qt::LeftButton && e->pos().y() <= 16)
+        clicked_ = true;
+    else
+        QGroupBox::mousePressEvent(e);
 }
 
-void group_box_t::collapse( bool b)
+void group_box_t::mouseReleaseEvent(QMouseEvent* e)
 {
-	collapsed_ = b;
-	
-	if( collapsed_)
-		setFixedSize( width(), 16);
-	else
-		setFixedSize( width(), sizeHint().height());
+    if (e->button() == Qt::LeftButton && clicked_ && e->pos().y() <= 16)
+    {
+        collapse(!collapsed_);
+        clicked_ = false;
+    }
+    else
+        QGroupBox::mouseReleaseEvent(e);
 }
 
-} // ui
-} // ramen
- 
+void group_box_t::collapse(bool b)
+{
+    collapsed_ = b;
+
+    if (collapsed_)
+        setFixedSize(width(), 16);
+    else
+        setFixedSize(width(), sizeHint().height());
+}
+
+}  // ui
+}  // ramen

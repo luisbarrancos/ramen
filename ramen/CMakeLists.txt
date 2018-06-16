@@ -7,25 +7,25 @@
 ######################################################
 # ramen lib sources
 
-IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
+IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
                     ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include/ramen/version.hpp)
 
-    INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
+    INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/include)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
                     ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include/ramen/version.hpp)
 
-    INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    MESSAGE( FATAL_ERROR "Windows not supported yet")
+    INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/include)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    MESSAGE(FATAL_ERROR "Windows not supported yet")
 ELSE()
-    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+    MESSAGE(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
 FILE(GLOB_RECURSE RAMEN_HEADERS ./*.h*)
 
-SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
+SET(RAMEN_MOC_CLASSES	params/animated_param.hpp
                         params/aspect_ratio_param.hpp
                         params/bool_param.hpp
                         params/button_param.hpp
@@ -97,7 +97,7 @@ SET( RAMEN_MOC_CLASSES	params/animated_param.hpp
                         ui/widgets/time_slider.hpp
                         )
 
-SET( RAMEN_SOURCES      system/system.cpp
+SET(RAMEN_SOURCES      system/system.cpp
 
                         anim/any_curve.cpp
                         anim/clipboard.cpp
@@ -402,8 +402,8 @@ SET( RAMEN_SOURCES      system/system.cpp
                         util/string.cpp
                         )
 
-IF( WITH_NODES)
-    SET( RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} nodes/image/input/image_channels_param.hpp
+IF(WITH_NODES)
+    SET(RAMEN_MOC_CLASSES ${RAMEN_MOC_CLASSES} nodes/image/input/image_channels_param.hpp
                                                 nodes/image/input/image_seq_param.hpp
 
                                                 nodes/image/roto/roto_shape_param.hpp
@@ -414,7 +414,7 @@ IF( WITH_NODES)
                                                 params/transform3_param.hpp
                                                 )
 
-    SET( RAMEN_SOURCES ${RAMEN_SOURCES}	imageio/import_multichannel_exr.cpp
+    SET(RAMEN_SOURCES ${RAMEN_SOURCES}	imageio/import_multichannel_exr.cpp
 
                                         manipulators/circle_manipulator.cpp
                                         manipulators/point2_manipulator.cpp
@@ -537,20 +537,20 @@ ENDIF()
 # platform specific
 
 # platform sources
-IF( ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     # Linux
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # OSX
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     # Windows
 ELSE()
-    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+    MESSAGE(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
 
 ######################################################
 # ui files
 
-SET( RAMEN_DESIGNER_FILES   ../designer/preferences.ui
+SET(RAMEN_DESIGNER_FILES   ../designer/preferences.ui
                             ../designer/composition_settings.ui
                             ../designer/render_composition.ui
                             ../designer/smooth_anim_curves.ui
@@ -559,16 +559,16 @@ SET( RAMEN_DESIGNER_FILES   ../designer/preferences.ui
 ######################################################
 # QT
 
-QT4_WRAP_UI( RAMEN_DESIGNER_SOURCES ${RAMEN_DESIGNER_FILES})
-QT4_WRAP_CPP( RAMEN_MOC_SOURCES	${RAMEN_MOC_CLASSES} OPTIONS ${MOC_EXTRA_ARGS})
-QT4_ADD_RESOURCES( RAMEN_RESOURCES ${PROJECT_SOURCE_DIR}/resources/resources.qrc)
+QT4_WRAP_UI(RAMEN_DESIGNER_SOURCES ${RAMEN_DESIGNER_FILES})
+QT4_WRAP_CPP(RAMEN_MOC_SOURCES	${RAMEN_MOC_CLASSES} OPTIONS ${MOC_EXTRA_ARGS})
+QT4_ADD_RESOURCES(RAMEN_RESOURCES ${PROJECT_SOURCE_DIR}/resources/resources.qrc)
 
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 ######################################################
 # ramen lib
 
-ADD_LIBRARY( ramen SHARED   ${RAMEN_HEADERS}
+ADD_LIBRARY(ramen SHARED   ${RAMEN_HEADERS}
                             ${RAMEN_SOURCES}
                             ${RAMEN_MOC_SOURCES}
                             ${RAMEN_DESIGNER_SOURCES}
@@ -576,66 +576,66 @@ ADD_LIBRARY( ramen SHARED   ${RAMEN_HEADERS}
                             ${RAMEN_RESOURCES}
                             )
 
-SET_TARGET_PROPERTIES( ramen PROPERTIES
+SET_TARGET_PROPERTIES(ramen PROPERTIES
                              VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION_PATCH}
                              SOVERSION ${RAMEN_VERSION_MAJOR})
 
-TARGET_LINK_LIBRARIES( ramen ${RAMEN_ALL_LIBS})
+TARGET_LINK_LIBRARIES(ramen ${RAMEN_ALL_LIBS})
 
 ######################################################
 # copy files
 
-#IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
-#    ADD_CUSTOM_COMMAND( PRE_BUILD
+#IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+#    ADD_CUSTOM_COMMAND(PRE_BUILD
 #                        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/ocio ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/ocio
 #                        OUTPUT ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/ocio/config.ocio
 #                        )
-#ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-#    ADD_CUSTOM_COMMAND( PRE_BUILD
+#ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+#    ADD_CUSTOM_COMMAND(PRE_BUILD
 #                        COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/ocio ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/ocio
 #                        OUTPUT ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/ocio/config.ocio
 #                        )
-#ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-#    MESSAGE( FATAL_ERROR "Windows not supported yet")
+#ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+#    MESSAGE(FATAL_ERROR "Windows not supported yet")
 #ELSE()
-#    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+#    MESSAGE(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 #ENDIF()
 
 ######################################################
 # ramen binary
 
-SET( RAMEN_APP_SOURCES	main.cpp)
+SET(RAMEN_APP_SOURCES	main.cpp)
 
-ADD_EXECUTABLE( ramen.bin ${RAMEN_APP_SOURCES})
-TARGET_LINK_LIBRARIES( ramen.bin ramen ${RAMEN_ALL_LIBS})
+ADD_EXECUTABLE(ramen.bin ${RAMEN_APP_SOURCES})
+TARGET_LINK_LIBRARIES(ramen.bin ramen ${RAMEN_ALL_LIBS})
 
-IF( CMAKE_SYSTEM_NAME MATCHES "Linux")
+IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/linux/ramen
+    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/linux/ramen
                     ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/bin/ramen COPYONLY)
 
-    SET_TARGET_PROPERTIES( ramen PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+    SET_TARGET_PROPERTIES(ramen PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/lib/)
 
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+    SET_TARGET_PROPERTIES(ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/bin/)
 
-    SET_PROPERTY( SOURCE main.cpp APPEND PROPERTY OBJECT_DEPENDS
+    SET_PROPERTY(SOURCE main.cpp APPEND PROPERTY OBJECT_DEPENDS
                     ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/bin/ramen)
 
-    #SET_PROPERTY( SOURCE main.cpp APPEND PROPERTY OBJECT_DEPENDS
+    #SET_PROPERTY(SOURCE main.cpp APPEND PROPERTY OBJECT_DEPENDS
     #                ${PROJECT_BINARY_DIR}/ramen-${RAMEN_VERSION}/ocio/config.ocio)
 
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    SET_TARGET_PROPERTIES( ramen PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    SET_TARGET_PROPERTIES(ramen PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/lib/)
 
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+    SET_TARGET_PROPERTIES(ramen.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                             ${PROJECT_BINARY_DIR}/Ramen-${RAMEN_VERSION}.app/Contents/MacOS/)
 
-    SET_TARGET_PROPERTIES( ramen.bin PROPERTIES OUTPUT_NAME Ramen)
-ELSEIF( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    MESSAGE( FATAL_ERROR "Windows not supported yet")
+    SET_TARGET_PROPERTIES(ramen.bin PROPERTIES OUTPUT_NAME Ramen)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    MESSAGE(FATAL_ERROR "Windows not supported yet")
 ELSE()
-    MESSAGE( FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
+    MESSAGE(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()

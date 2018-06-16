@@ -7,7 +7,6 @@ namespace ramen
 {
 namespace ui
 {
-
 struct mouse_enter_event_t;
 struct mouse_leave_event_t;
 
@@ -21,7 +20,7 @@ struct key_release_event_t;
 
 struct paint_event_t;
 
-} // namespace
-} // namespace
+}  // namespace
+}  // namespace
 
 #endif

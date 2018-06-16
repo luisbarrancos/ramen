@@ -5,17 +5,16 @@
 #ifndef RAMEN_NODE_METACLASS_HPP
 #define RAMEN_NODE_METACLASS_HPP
 
-#include<ramen/config.hpp>
+#include <ramen/config.hpp>
 
-#include<ramen/nodes/node_fwd.hpp>
+#include <ramen/nodes/node_fwd.hpp>
 
-#include<string>
+#include <string>
 
-#include<boost/function.hpp>
+#include <boost/function.hpp>
 
 namespace ramen
 {
-
 /*!
 \ingroup nodes
 \brief This class contains information about a node class like ids, menus, etc.
@@ -23,7 +22,6 @@ namespace ramen
 class RAMEN_API node_metaclass_t
 {
 public:
-
     node_metaclass_t();
 
     /// Unique id for this node
@@ -51,7 +49,7 @@ public:
     std::string hotkey;
 
     /// Short help for this node
-    const char *help;
+    const char* help;
 
     /*!
         \brief Called before the first instance of this node is created.
@@ -72,7 +70,7 @@ public:
         It can also return a null pointer, or even better, throw an exception
         derived from std::exception if the node couldn't be created.
     */
-    node_t *(*create)();
+    node_t* (*create)();
 
     /*!
         \brief Creates a new node
@@ -82,13 +80,13 @@ public:
         It can also return a null pointer, or even better, throw an exception
         derived from std::exception if the node couldn't be created.
     */
-    node_t *(*create_gui)();
+    node_t* (*create_gui)();
 
-// private:
+    // private:
 
     bool first_time_;
 };
 
-} // ramen
+}  // ramen
 
 #endif

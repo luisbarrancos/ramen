@@ -2,52 +2,40 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#include<ramen/memory/manager.hpp>
+#include <ramen/memory/manager.hpp>
 
-#include<ramen/assert.hpp>
+#include <cassert>
 
 namespace ramen
 {
 namespace memory
 {
-
-manager_t::manager_t( boost::uint64_t size)
+manager_t::manager_t(boost::uint64_t size)
 {
-    img_cache_.reset( new image_cache_t());
-    img_alloc_.reset( new image_allocator_type( size));
-	image_allocator().add_cache( img_cache_.get());
+    img_cache_.reset(new image_cache_t());
+    img_alloc_.reset(new image_allocator_type(size));
+    image_allocator().add_cache(img_cache_.get());
 }
 
 manager_t::~manager_t() {}
 
-void manager_t::begin_interaction()
+void manager_t::begin_interaction() { image_cache().begin_interaction(); }
+
+void manager_t::end_interaction() { image_cache().end_interaction(); }
+
+void manager_t::clear_caches() { image_cache().clear(); }
+
+void manager_t::insert_in_cache(node_t* n, const digest_type& key, image::buffer_t& img)
 {
-    image_cache().begin_interaction();
+    image_cache().insert(n, key, img);
 }
 
-void manager_t::end_interaction()
+boost::optional<image::buffer_t> manager_t::find_in_cache(const digest_type&  key,
+                                                          const Imath::Box2i& area)
 {
-    image_cache().end_interaction();
+    boost::optional<image::buffer_t> result = image_cache().find(key, area);
+    return result;
 }
 
-void manager_t::clear_caches()
-{
-    image_cache().clear();
-}
-
-void manager_t::insert_in_cache( node_t *n,
-                                 const digest_type& key,
-                                 image::buffer_t& img)
-{
-	image_cache().insert( n, key, img);
-}
-
-boost::optional<image::buffer_t> manager_t::find_in_cache( const digest_type& key,
-                                                           const Imath::Box2i& area)
-{
-	boost::optional<image::buffer_t> result = image_cache().find( key, area);
-	return result;
-}
-
-} // memory
-} // ramen
+}  // memory
+}  // ramen

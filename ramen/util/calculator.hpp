@@ -3,32 +3,29 @@
 #ifndef RAMEN_UTIL_CALCULATOR_HPP
 #define RAMEN_UTIL_CALCULATOR_HPP
 
-#include<string>
+#include <string>
 
-#include<boost/noncopyable.hpp>
-#include<boost/optional.hpp>
+#include <boost/noncopyable.hpp>
+#include <boost/optional.hpp>
 
 namespace ramen
 {
 namespace util
 {
-
 class calculator_t : boost::noncopyable
 {
 public:
+    calculator_t();
+    ~calculator_t();
 
-	calculator_t();
-	~calculator_t();
+    boost::optional<double> operator()(const std::string& str) const;
 
-	boost::optional<double> operator()( const std::string& str) const;
-	
 private:
-
-	struct impl;
-	impl *pimpl_;
+    struct impl;
+    impl* m_pimpl;
 };
-	
-} // util
-} // ramen
+
+}  // util
+}  // ramen
 
 #endif
