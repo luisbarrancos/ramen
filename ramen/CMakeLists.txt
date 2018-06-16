@@ -5,7 +5,7 @@
 ######################################################################
 
 ######################################################
-# ramen lib sources
+# version header
 
 IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
     CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/ramen/version.hpp.in
@@ -22,6 +22,68 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 ELSE()
     MESSAGE(FATAL_ERROR "Platform ${CMAKE_SYSTEM_NAME} not supported yet")
 ENDIF()
+
+######################################################
+# extern sources
+
+SET(AGG_SOURCES ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_arc.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_arrowhead.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_bezier_arc.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_bspline.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_curves.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_embedded_raster_fonts.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_gsv_text.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_image_filters.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_line_aa_basics.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_line_profile_aa.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_rounded_rect.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_sqrt_tables.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_trans_affine.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_trans_double_path.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_trans_single_path.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_trans_warp_magnifier.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_bspline.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_contour.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_dash.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_markers_term.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_smooth_poly1.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vcgen_stroke.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vpgen_clip_polygon.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vpgen_clip_polyline.cpp
+                ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/src/agg_vpgen_segmentator.cpp)
+
+ADD_DEFINITIONS(-DYAML_CPP_NO_CONTRIB)
+
+SET(YAML_CPP_SOURCES ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/aliasmanager.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/binary.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/conversion.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/directives.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/emitfromevents.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/emitter.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/emitterstate.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/emitterutils.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/exp.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/iterator.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/node.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/nodebuilder.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/nodeownership.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/null.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/ostream.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/parser.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/regex.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/scanner.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/scanscalar.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/scantag.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/scantoken.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/simplekey.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/singledocparser.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/stream.cpp
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/src/tag.cpp)
+
+SET(EXTERN_SOURCES ${AGG_SOURCES} ${YAML_CPP_SOURCES})
+
+######################################################
+# ramen lib sources
 
 FILE(GLOB_RECURSE RAMEN_HEADERS ./*.h*)
 
@@ -568,17 +630,17 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 ######################################################
 # ramen lib
 
-ADD_LIBRARY(ramen SHARED   ${RAMEN_HEADERS}
-                            ${RAMEN_SOURCES}
-                            ${RAMEN_MOC_SOURCES}
-                            ${RAMEN_DESIGNER_SOURCES}
-                            ${RAMEN_PLATFORM_SOURCES}
-                            ${RAMEN_RESOURCES}
-                            )
+ADD_LIBRARY(ramen SHARED ${RAMEN_HEADERS}
+                         ${RAMEN_SOURCES}
+                         ${RAMEN_MOC_SOURCES}
+                         ${RAMEN_DESIGNER_SOURCES}
+                         ${RAMEN_PLATFORM_SOURCES}
+                         ${RAMEN_RESOURCES}
+                         ${EXTERN_SOURCES})
 
 SET_TARGET_PROPERTIES(ramen PROPERTIES
-                             VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION_PATCH}
-                             SOVERSION ${RAMEN_VERSION_MAJOR})
+                            VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION_PATCH}
+                            SOVERSION ${RAMEN_VERSION_MAJOR})
 
 TARGET_LINK_LIBRARIES(ramen ${RAMEN_ALL_LIBS})
 
@@ -604,7 +666,7 @@ TARGET_LINK_LIBRARIES(ramen ${RAMEN_ALL_LIBS})
 ######################################################
 # ramen binary
 
-SET(RAMEN_APP_SOURCES	main.cpp)
+SET(RAMEN_APP_SOURCES main.cpp)
 
 ADD_EXECUTABLE(ramen.bin ${RAMEN_APP_SOURCES})
 TARGET_LINK_LIBRARIES(ramen.bin ramen ${RAMEN_ALL_LIBS})

@@ -60,7 +60,7 @@ ENDIF()
 # compiler flags
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fvisibility=hidden -fvisibility-inlines-hidden")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fvisibility=hidden -fvisibility-inlines-hidden -Wno-deprecated-declarations")
 ELSEIF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")
 ELSE()
@@ -75,17 +75,12 @@ FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(GLEW REQUIRED)
 
 # boost
-SET(Boost_ADDITIONAL_VERSIONS "1.53.0")
-SET(BOOST_NEEDED_LIBS  filesystem
-                        thread
-                        system
-                        date_time
-                        )
+SET(Boost_ADDITIONAL_VERSIONS "1.61.0")
+SET(BOOST_NEEDED_LIBS  filesystem thread system date_time)
 
 FIND_PACKAGE(Boost COMPONENTS ${BOOST_NEEDED_LIBS} REQUIRED)
 
 FIND_PACKAGE(TBB REQUIRED)
-FIND_PACKAGE(YamlCpp REQUIRED)
 
 # Qt
 SET(QT_MT_REQUIRED false)
@@ -105,7 +100,7 @@ FIND_PACKAGE(OpenImageIO REQUIRED)
 
 FIND_PACKAGE(OpenColorIO REQUIRED)
 
-FIND_PACKAGE(Agg REQUIRED)
+#FIND_PACKAGE(Agg REQUIRED)
 FIND_PACKAGE(ZLIB REQUIRED)
 
 ######################################################
@@ -125,61 +120,58 @@ SET(MOC_EXTRA_ARGS -DQT_MOC_RUN)
 ######################################################
 # includes
 
-INCLUDE_DIRECTORIES(   ${PROJECT_SOURCE_DIR}
-                        ${PROJECT_SOURCE_DIR}/ramen/
+INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}
+                     ${PROJECT_SOURCE_DIR}/ramen/
 
-                        ${NEEDED_QT_INCLUDES}
+                     ${PROJECT_SOURCE_DIR}/extern/antigrain-2.4/include
+                     ${PROJECT_SOURCE_DIR}/extern/yaml-cpp-0.3.0/include
 
-                        ${Boost_INCLUDE_DIR}
-                        ${TBB_INCLUDE_DIRS}
-                        ${YAMLCPP_INCLUDE_DIRS}
+                     ${NEEDED_QT_INCLUDES}
 
-                        ${OPENGL_INCLUDE_DIR}
-                        ${GLEW_INCLUDE_DIRS}
+                     ${Boost_INCLUDE_DIR}
+                     ${TBB_INCLUDE_DIRS}
 
-                        ${HALF_INCLUDE_DIRS}
-                        ${IMATH_INCLUDE_DIRS}
-                        ${OPENEXR_INCLUDE_DIR}
-                        ${OPENEXR_INCLUDE_DIR}/OpenEXR/
+                     ${OPENGL_INCLUDE_DIR}
+                     ${GLEW_INCLUDE_DIRS}
 
-                        ${JPEG_INCLUDE_DIR}
-                        ${PNG_INCLUDE_DIR}
-                        ${TIFF_INCLUDE_DIR}
-                        ${OPENIMAGEIO_INCLUDE_DIRS}
+                     ${HALF_INCLUDE_DIRS}
+                     ${IMATH_INCLUDE_DIRS}
+                     ${OPENEXR_INCLUDE_DIR}
+                     ${OPENEXR_INCLUDE_DIR}/OpenEXR/
 
-                        ${OPENCOLORIO_INCLUDE_DIRS}
-                        ${AGG_INCLUDE_DIRS}
+                     ${JPEG_INCLUDE_DIR}
+                     ${PNG_INCLUDE_DIR}
+                     ${TIFF_INCLUDE_DIR}
+                     ${OPENIMAGEIO_INCLUDE_DIRS}
 
-                        ${ZLIB_INCLUDE_DIRS}
-                        )
+                     ${OPENCOLORIO_INCLUDE_DIRS}
+
+                     ${ZLIB_INCLUDE_DIRS})
 
 ######################################################
 # libraries
 
 SET(RAMEN_ALL_LIBS	${NEEDED_QT_LIBS}
 
-                        ${OPENCOLORIO_LIBRARIES}
-                        ${OPENIMAGEIO_LIBRARIES}
+                    ${OPENCOLORIO_LIBRARIES}
+                    ${OPENIMAGEIO_LIBRARIES}
 
-                        ${HALF_LIBRARIES}
-                        ${IMATH_LIBRARIES}
-                        ${OPENEXR_LIBRARIES}
+                    ${HALF_LIBRARIES}
+                    ${IMATH_LIBRARIES}
+                    ${OPENEXR_LIBRARIES}
 
-                        ${JPEG_LIBRARIES}
-                        ${PNG_LIBRARIES}
-                        ${TIFF_LIBRARIES}
+                    ${JPEG_LIBRARIES}
+                    ${PNG_LIBRARIES}
+                    ${TIFF_LIBRARIES}
 
-                        ${GLEW_LIBRARIES}
-                        ${OPENGL_LIBRARIES}
+                    ${GLEW_LIBRARIES}
+                    ${OPENGL_LIBRARIES}
 
-                        ${Boost_LIBRARIES}
-                        ${TBB_LIBRARIES}
-                        ${YAMLCPP_LIBRARIES}
-                        ${AGG_LIBRARIES}
-                        ${ZLIB_LIBRARIES}
+                    ${Boost_LIBRARIES}
+                    ${TBB_LIBRARIES}
+                    ${ZLIB_LIBRARIES}
 
-                        ${RAMEN_ALL_LIBS}
-                        )
+                    ${RAMEN_ALL_LIBS})
 
 ######################################################
 # ramen
