@@ -50,7 +50,7 @@ viewer_context_t::viewer_context_t(QWidget* parent)
     current_ = strategies_.rend() - 1;
 
     // get the palette colors
-    QColor col(palette().color(QPalette::Base));
+    QColor col(palette().color(QPalette::Window));
     back_color_ = Imath::Color3f(col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
 
     col       = palette().color(QPalette::ButtonText);

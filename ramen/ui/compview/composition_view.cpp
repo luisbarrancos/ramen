@@ -524,12 +524,6 @@ void composition_view_t::paintEvent(QPaintEvent* event)
     p.setFont(font_);
     p.setPen(Qt::NoPen);
 
-    QBrush brush;
-    brush.setColor(palette_t::instance().qcolor("background"));
-    brush.setStyle(Qt::SolidPattern);
-    p.setBrush(brush);
-    p.drawRect(0, 0, width(), height());
-
     QTransform xf;
     xf.translate(viewport().device().min.x, viewport().device().min.y);
     xf.scale(viewport().zoom_x(), viewport().zoom_y());

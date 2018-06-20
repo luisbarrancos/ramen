@@ -19,7 +19,6 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QKeyEvent>
-#include <QPlastiqueStyle>
 
 #include <cassert>
 
@@ -100,8 +99,7 @@ void user_interface_t::init()
 
 void user_interface_t::init_ui_style()
 {
-    // QPlastiqueStyle *style = new QPlastiqueStyle();
-    // qApp->setStyle( style);
+    qApp->setStyle("plastique");
 
     // init palette
     palette_t::instance();

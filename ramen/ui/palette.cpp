@@ -21,7 +21,7 @@ struct palette_t::impl
 
     void rebuild_palette()
     {
-        QColor bgcol = QApplication::palette().color(QPalette::Base);
+        QColor bgcol = QApplication::palette().color(QPalette::Background);
         QColor fgcol = QApplication::palette().color(QPalette::Text);
 
         error_color_ = Imath::Color3c(255, 0, 255);

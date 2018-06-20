@@ -173,7 +173,7 @@ void anim_curves_view_t::mousePressEvent(QMouseEvent* event)
         return;
     }
 
-    float      time = app().document().composition().frame();
+    float time = app().document().composition().frame();
     Imath::V2i q(world_to_screen(Imath::V2f(time, 0)));
 
     if (abs(q.x - push_x_) <= 4)
@@ -269,13 +269,6 @@ void anim_curves_view_t::paintEvent(QPaintEvent* event)
     painter_ = &painter;  // save the ptr for use in members
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
-
-    // draw bg
-    QBrush brush;
-    brush.setColor(palette_t::instance().qcolor("background"));
-    brush.setStyle(Qt::SolidPattern);
-    painter.setBrush(brush);
-    painter.drawRect(0, 0, width(), height());
 
     draw_grid();
 
