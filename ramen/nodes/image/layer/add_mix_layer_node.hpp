@@ -12,8 +12,8 @@ namespace image
 class add_mix_layer_node_t : public base_layer_node_t
 {
 public:
-    static const node_metaclass_t&  add_mix_layer_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& add_mix_layer_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     add_mix_layer_node_t();
 

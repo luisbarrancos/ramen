@@ -12,8 +12,8 @@ namespace image
 class color_match_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  color_match_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& color_match_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     color_match_node_t();
 

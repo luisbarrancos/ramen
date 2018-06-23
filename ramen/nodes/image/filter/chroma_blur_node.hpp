@@ -12,8 +12,8 @@ namespace image
 class chroma_blur_node_t : public areaop_node_t
 {
 public:
-    static const node_metaclass_t&  chroma_blur_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& chroma_blur_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     chroma_blur_node_t();
 

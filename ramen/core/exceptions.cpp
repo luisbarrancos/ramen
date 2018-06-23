@@ -34,9 +34,9 @@ bad_type_cast::bad_type_cast(const type_t& src_type, const type_t& dst_type)
 {
     assert(src_type != dst_type);
     message_ = std::move(make_string("bad cast: src_type = ",
-                                       type_to_string(src_type),
-                                       " dst_type = ",
-                                       type_to_string(dst_type)));
+                                     type_to_string(src_type),
+                                     " dst_type = ",
+                                     type_to_string(dst_type)));
 }
 
 const char* bad_type_cast::what() const { return message_.c_str(); }

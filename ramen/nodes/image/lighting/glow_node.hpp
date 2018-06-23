@@ -12,8 +12,8 @@ namespace image
 class glow_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  glow_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& glow_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     glow_node_t();
 

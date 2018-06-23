@@ -12,8 +12,8 @@ namespace image
 class alpha_ops_node_t : public areaop_node_t
 {
 public:
-    static const node_metaclass_t&  alpha_ops_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& alpha_ops_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     alpha_ops_node_t();
 

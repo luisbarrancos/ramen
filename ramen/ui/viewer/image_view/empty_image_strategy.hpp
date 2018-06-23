@@ -19,8 +19,8 @@ public:
     empty_image_strategy_t(const Imath::Box2i& display_window);
 
     bool update_pixels(const image::buffer_t& pixels,
-                               const Imath::Box2i&    display_window,
-                               const Imath::Box2i&    data_window) override;
+                       const Imath::Box2i&    display_window,
+                       const Imath::Box2i&    data_window) override;
 
     void draw() const override;
 

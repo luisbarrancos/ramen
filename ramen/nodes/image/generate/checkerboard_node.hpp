@@ -12,8 +12,8 @@ namespace image
 class checkerboard_node_t : public generator_node_t
 {
 public:
-    static const node_metaclass_t&  checkerboard_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& checkerboard_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     checkerboard_node_t();
 

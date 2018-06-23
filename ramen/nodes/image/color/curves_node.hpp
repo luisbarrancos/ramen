@@ -14,8 +14,8 @@ namespace image
 class curves_node_t : public pointop_node_t
 {
 public:
-    static const node_metaclass_t&  curves_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& curves_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     curves_node_t();
 
@@ -36,8 +36,8 @@ private:
     void do_create_params() override;
 
     void do_process(const image::const_image_view_t& src,
-                            const image::image_view_t&       dst,
-                            const render::context_t&         context) override;
+                    const image::image_view_t&       dst,
+                    const render::context_t&         context) override;
 };
 
 }  // namespace

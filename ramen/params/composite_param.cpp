@@ -37,13 +37,13 @@ composite_param_t::composite_param_t(const composite_param_t& other)
 
 void composite_param_t::do_init()
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.init();
 }
 
 void composite_param_t::do_set_param_set(param_set_t* parent)
 {
-    for (param_t& p: params())
+    for (param_t& p : params())
         p.set_param_set(parent);
 }
 
@@ -79,7 +79,7 @@ const param_t* composite_param_t::find(const std::string& id) const
 
 param_t* composite_param_t::find(const std::string& id)
 {
-    for (param_t& p: params())
+    for (param_t& p : params())
     {
         if (p.id() == id)
             return &p;
@@ -98,7 +98,7 @@ param_t* composite_param_t::find(const std::string& id)
 
 void composite_param_t::do_set_frame(float frame)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.set_frame(frame);
 }
 
@@ -108,7 +108,7 @@ void composite_param_t::do_create_tracks(anim::track_t* parent)
     {
         std::auto_ptr<anim::track_t> t(new anim::track_t(name()));
 
-        for (auto& p: params())
+        for (auto& p : params())
             p.create_tracks(t.get());
 
         if (t->num_children() != 0)
@@ -116,32 +116,32 @@ void composite_param_t::do_create_tracks(anim::track_t* parent)
     }
     else
     {
-        for (auto& p: params())
+        for (auto& p : params())
             p.create_tracks(parent);
     }
 }
 
 void composite_param_t::do_evaluate(float frame)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.evaluate(frame);
 }
 
 void composite_param_t::do_add_to_hash(hash::generator_t& hash_gen) const
 {
-    for (const param_t& p: params())
+    for (const param_t& p : params())
         p.add_to_hash(hash_gen);
 }
 
 void composite_param_t::do_update_widgets()
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.update_widgets();
 }
 
 void composite_param_t::do_enable_widgets(bool e)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.enable_widgets(e);
 }
 
@@ -149,33 +149,33 @@ void composite_param_t::do_format_changed(const Imath::Box2i& new_format,
                                           float               aspect,
                                           const Imath::V2f&   proxy_scale)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.format_changed(new_format, aspect, proxy_scale);
 }
 
 void composite_param_t::do_convert_relative_paths(const boost::filesystem::path& old_base,
                                                   const boost::filesystem::path& new_base)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.convert_relative_paths(old_base, new_base);
 }
 
 void composite_param_t::do_make_paths_absolute()
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.make_paths_absolute();
 }
 
 void composite_param_t::do_make_paths_relative()
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.make_paths_relative();
 }
 
 // util
 void composite_param_t::do_apply_function(const boost::function<void(param_t*)>& f)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.apply_function(f);
 }
 
@@ -194,7 +194,7 @@ void composite_param_t::do_write(serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "children" << YAML::Value;
     out.begin_seq();
 
-    for (const auto& p: params())
+    for (const auto& p : params())
         p.write(out);
 
     out.end_seq();
@@ -214,7 +214,7 @@ void composite_param_t::create_widgets_inside_widget(QWidget* parent)
     layout->setSpacing(5);
     layout->setSizeConstraint(QLayout::SetFixedSize);
 
-    for (param_t& p: params())
+    for (param_t& p : params())
     {
         if (!p.secret())
         {

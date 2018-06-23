@@ -28,8 +28,8 @@ public:
                            GLenum                 texture_unit = GL_TEXTURE0);
 
     bool update_pixels(const image::buffer_t& pixels,
-                               const Imath::Box2i&    display_window,
-                               const Imath::Box2i&    data_window) override;
+                       const Imath::Box2i&    display_window,
+                       const Imath::Box2i&    data_window) override;
 
     void draw() const override;
 
@@ -60,7 +60,7 @@ private:
         Imath::Box2i area_;
     };
 
-    image::buffer_t           pixels_;
+    image::buffer_t                      pixels_;
     std::vector<std::unique_ptr<tile_t>> tiles_;
 };
 

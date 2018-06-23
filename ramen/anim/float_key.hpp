@@ -69,9 +69,9 @@ public:
     void write(serialization::yaml_oarchive_t& out) const;
 
 private:
-    value_type                  value_;
-    value_type                  v0_, v1_;  // tangents
-    bool                        tangent_cont_;
+    value_type                value_;
+    value_type                v0_, v1_;  // tangents
+    bool                      tangent_cont_;
     std::array<value_type, 4> coeffs_;
 };
 

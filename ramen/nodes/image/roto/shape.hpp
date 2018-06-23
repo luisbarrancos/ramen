@@ -196,10 +196,10 @@ public:
 
     // parameterised
     bool autokey() const override;
-    void         set_autokey(bool b);
+    void set_autokey(bool b);
 
     bool track_mouse() const override;
-    void         set_track_mouse(bool b);
+    void set_track_mouse(bool b);
 
     void param_edit_finished() override;
 
@@ -244,7 +244,7 @@ private:
     shape_t* do_clone() const override;
 
     void do_create_params() override;
-    void         param_changed(param_t* p, param_t::change_reason reason);
+    void param_changed(param_t* p, param_t::change_reason reason);
 
     void do_create_manipulators() override;
 

@@ -157,7 +157,7 @@ void create_tool_t::close_shape(bool success)
 
 shape_t* create_tool_t::pick_shape(const ui::mouse_press_event_t& event, int& span_index, float& t)
 {
-    for (roto::shape_t& s: parent().scene())
+    for (roto::shape_t& s : parent().scene())
     {
         if (!s.is_null())
         {

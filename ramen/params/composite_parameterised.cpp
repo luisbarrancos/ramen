@@ -19,7 +19,7 @@ composite_parameterised_t::composite_parameterised_t(const composite_parameteris
 : parameterised_t(other)
 , children_(other.children_)
 {
-    for (auto& c: children_)
+    for (auto& c : children_)
         c.set_parent(this);
 }
 

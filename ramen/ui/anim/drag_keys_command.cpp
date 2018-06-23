@@ -12,7 +12,7 @@ namespace ramen
 {
 namespace undo
 {
-drag_keys_command_t::drag_keys_command_t(node_t*                                     node,
+drag_keys_command_t::drag_keys_command_t(node_t*                                   node,
                                          const std::shared_ptr<ui::track_model_t>& model)
 : anim_editor_command_t(node, model)
 {

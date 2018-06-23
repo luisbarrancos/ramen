@@ -20,8 +20,8 @@ namespace image
 class roto_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  roto_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& roto_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     roto_node_t();
 
@@ -59,7 +59,7 @@ private:
     node_t* do_clone() const override { return new roto_node_t(*this); }
 
     void do_create_params() override;
-    void         param_changed(param_t* p, param_t::change_reason reason);
+    void param_changed(param_t* p, param_t::change_reason reason);
 
     void do_create_manipulators() override;
 
@@ -76,11 +76,11 @@ private:
     void do_calc_inputs_interest(const render::context_t& context) override;
 
     void do_process(const render::context_t& context) override;
-    void         do_process_motion_blur(const render::context_t& context, const Imath::Box2i& area);
+    void do_process_motion_blur(const render::context_t& context, const Imath::Box2i& area);
 
     // serialization
     void do_read(const serialization::yaml_node_t& node,
-                         const std::pair<int, int>&        version) override;
+                 const std::pair<int, int>&        version) override;
     void do_write(serialization::yaml_oarchive_t& out) const override;
 
     // util functions

@@ -136,7 +136,7 @@ private:
 void convolve33(const const_image_view_t& src, const image_view_t& dst, const Imath::M33f& k)
 {
     assert(src.dimensions() == dst.dimensions()
-                 && "convolve33: src and dst views must have the same size");
+           && "convolve33: src and dst views must have the same size");
     tbb::parallel_for(tbb::blocked_range<int>(0, dst.height()),
                       detail::convolve33_fun(src, dst, k),
                       tbb::auto_partitioner());

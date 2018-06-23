@@ -48,7 +48,7 @@ private:
 
     // paths
     void do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                           const boost::filesystem::path& new_base) override;
+                                   const boost::filesystem::path& new_base) override;
     void do_make_paths_absolute() override;
     void do_make_paths_relative() override;
 

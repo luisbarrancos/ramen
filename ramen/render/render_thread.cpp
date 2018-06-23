@@ -78,11 +78,11 @@ private:
     }
 
 public:
-    std::thread   thread;
-    bool          finish;
-    bool          ready;
-    bool          do_work;
-    bool          cancel;
+    std::thread thread;
+    bool        finish;
+    bool        ready;
+    bool        do_work;
+    bool        cancel;
 
     boost::mutex              mutex;
     boost::condition_variable cond;

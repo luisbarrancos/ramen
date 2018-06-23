@@ -52,10 +52,10 @@ private:
     void do_recursive_process(const render::context_t& context) override;
 
     void do_process(const render::context_t& context) override;
-    void         do_process(const render::context_t&   context,
-                            const image_node_t*        src,
-                            const image::image_view_t& dst,
-                            const matrix3_type&        xf);
+    void do_process(const render::context_t&   context,
+                    const image_node_t*        src,
+                    const image::image_view_t& dst,
+                    const matrix3_type&        xf);
 
     void do_process_mipmap(const render::context_t& context);
     void do_process_mipmap(const render::context_t&   context,

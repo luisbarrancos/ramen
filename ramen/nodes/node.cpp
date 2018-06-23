@@ -118,7 +118,7 @@ bool node_t::is_context() const { return util::test_flag(flags_, context_bit); }
 int node_t::find_input(const core::name_t& id) const
 {
     int index = 0;
-    for (const node_input_plug_t& i: input_plugs())
+    for (const node_input_plug_t& i : input_plugs())
     {
         if (i.id() == id)
             return index;
@@ -218,7 +218,7 @@ void node_t::reconnect_node()
 
     if (comp)
     {
-        for (edge_t& e: comp->edges())
+        for (edge_t& e : comp->edges())
         {
             if (e.dst == this)
                 input_plugs()[e.port].set_input(e.src, core::name_t("unused"));
@@ -289,7 +289,7 @@ void node_t::end_interaction()
 
 bool node_t::is_valid() const
 {
-    for (const node_input_plug_t& i: input_plugs())
+    for (const node_input_plug_t& i : input_plugs())
     {
         if (!i.connected() && !i.optional())
             return false;
@@ -304,7 +304,7 @@ bool node_t::is_valid() const
         bool all_optional     = true;
         bool all_disconnected = true;
 
-        for (const node_input_plug_t& i: input_plugs())
+        for (const node_input_plug_t& i : input_plugs())
         {
             if (i.connected())
                 all_disconnected = false;
@@ -347,7 +347,7 @@ void node_t::clear_hash()
 
     if (cacheable())
     {
-        for (node_input_plug_t& i: input_plugs())
+        for (node_input_plug_t& i : input_plugs())
         {
             if (i.connected())
             {

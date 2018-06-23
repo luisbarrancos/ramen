@@ -21,7 +21,7 @@ public:
     virtual bool check_extension(const std::string& str) const;
 
     virtual std::size_t detect_size() const;
-    bool        detect(const char* p) const override;
+    bool                detect(const char* p) const override;
 
     virtual void add_extensions(std::vector<std::string>& ext) const;
 

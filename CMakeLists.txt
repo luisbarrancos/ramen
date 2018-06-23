@@ -29,9 +29,9 @@ ENDIF()
 ######################################################
 # version
 
-SET(RAMEN_VERSION_MAJOR "0")
-SET(RAMEN_VERSION_MINOR "9")
-SET(RAMEN_VERSION_PATCH "5")
+SET(RAMEN_VERSION_MAJOR "1")
+SET(RAMEN_VERSION_MINOR "0")
+SET(RAMEN_VERSION_PATCH "0")
 SET(RAMEN_VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION_PATCH})
 
 ####################################################################

@@ -108,7 +108,7 @@ tiled_image_strategy_t::tiled_image_strategy_t(const image::buffer_t& pixels,
     {
         for (int i = 0; i < xtiles; ++i)
         {
-            Imath::Box2i area(area_for_tile(i, j));
+            Imath::Box2i            area(area_for_tile(i, j));
             std::unique_ptr<tile_t> tile(new tile_t(pixels_, area));
             tiles_.push_back(std::move(tile));
         }

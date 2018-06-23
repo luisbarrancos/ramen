@@ -12,8 +12,8 @@ namespace image
 class nop_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  nop_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& nop_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     nop_node_t();
 

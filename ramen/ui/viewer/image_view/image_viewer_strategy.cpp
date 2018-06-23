@@ -879,7 +879,7 @@ void image_viewer_strategy_t::mouse_release_event(QMouseEvent* event)
 void image_viewer_strategy_t::wheel_event(QWheelEvent* event)
 {
     Imath::V2f wpos = screen_to_world(Imath::V2i(event->x(), event->y()));
-    if (event->delta() > 0)
+    if (event->delta() < 0)
         viewport_.zoom(wpos, 1.10f);
     else
         viewport_.zoom(wpos, 1.0f / 1.10f);

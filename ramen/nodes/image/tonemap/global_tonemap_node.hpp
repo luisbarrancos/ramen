@@ -12,8 +12,8 @@ namespace image
 class global_tonemap_node_t : public pointop_node_t
 {
 public:
-    static const node_metaclass_t&  global_tonemap_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& global_tonemap_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     global_tonemap_node_t();
 
@@ -25,11 +25,11 @@ protected:
     void operator=(const global_tonemap_node_t&);
 
 private:
-    node_t*      do_clone() const override { return new global_tonemap_node_t(*this); }
-    void do_create_params() override;
-    void do_process(const image::const_image_view_t& src,
-                            const image::image_view_t&       dst,
-                            const render::context_t&         context) override;
+    node_t* do_clone() const override { return new global_tonemap_node_t(*this); }
+    void    do_create_params() override;
+    void    do_process(const image::const_image_view_t& src,
+                       const image::image_view_t&       dst,
+                       const render::context_t&         context) override;
 };
 
 }  // namespace

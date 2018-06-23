@@ -98,7 +98,7 @@ void combo_group_param_t::do_update_widgets()
         stack_->setCurrentIndex(get_value<int>(*this));
         menu_->blockSignals(false);
 
-        for (auto& p: params())
+        for (auto& p : params())
             p.update_widgets();
     }
 }
@@ -129,7 +129,7 @@ QWidget* combo_group_param_t::do_create_widgets()
 
     stack_ = new QStackedWidget();
 
-    for (param_t& p: params())
+    for (param_t& p : params())
     {
         QWidget* w = p.create_widgets();
 

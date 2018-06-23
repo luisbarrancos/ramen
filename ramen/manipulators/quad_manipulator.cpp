@@ -151,9 +151,7 @@ void quad_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t&
     }
 }
 
-void quad_manipulator_t::get_corners(std::array<Imath::V2f, 4>& pts,
-                                     float                        aspect,
-                                     int                          scale) const
+void quad_manipulator_t::get_corners(std::array<Imath::V2f, 4>& pts, float aspect, int scale) const
 {
     pts[0] = get_absolute_value<Imath::V2f>(*topleft_) * scale;
     pts[1] = get_absolute_value<Imath::V2f>(*topright_) * scale;

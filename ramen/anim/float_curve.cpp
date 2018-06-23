@@ -40,7 +40,7 @@ void float_curve_t::copy(const float_curve_t& other, time_type offset)
 {
     clear();
 
-    for (const float_key_t& k: other.keys())
+    for (const float_key_t& k : other.keys())
     {
         float_key_t new_k = k;
         new_k.set_time(k.time() + offset);
@@ -57,7 +57,7 @@ void float_curve_t::copy(const float_curve_t& other,
 {
     clear();
 
-    for (const float_key_t& k: other.keys())
+    for (const float_key_t& k : other.keys())
     {
         if (k.time() >= start && k.time() <= end)
         {
@@ -262,7 +262,7 @@ Imath::Box2f float_curve_t::bounds() const
 {
     Imath::Box2f bounds;
 
-    for (const anim::float_key_t& k: keys())
+    for (const anim::float_key_t& k : keys())
         bounds.extendBy(Imath::V2f(k.time(), k.value()));
 
     return bounds;
@@ -272,7 +272,7 @@ Imath::Box2f float_curve_t::selection_bounds() const
 {
     Imath::Box2f bounds;
 
-    for (const anim::float_key_t& k: keys())
+    for (const anim::float_key_t& k : keys())
     {
         if (k.selected())
             bounds.extendBy(Imath::V2f(k.time(), k.value()));

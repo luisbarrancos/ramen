@@ -12,8 +12,8 @@ namespace image
 class camera_shake_node_t : public xform2d_node_t
 {
 public:
-    static const node_metaclass_t&  camera_shake_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& camera_shake_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     camera_shake_node_t();
 

@@ -77,7 +77,7 @@ node_output_plug_t::~node_output_plug_t() {}
 void node_output_plug_t::add_output(node_t* n, const core::name_t& plug)
 {
     assert(boost::range::find_if(connections_, match_output_connection(n, plug))
-                 == connections_.end());
+           == connections_.end());
 
     int port = n->find_input(plug);
     assert(port >= 0);
@@ -88,7 +88,7 @@ void node_output_plug_t::add_output(node_t* n, const core::name_t& plug)
 void node_output_plug_t::add_output(node_t* n, int port)
 {
     assert(boost::range::find_if(connections_, match_output_connection_by_port(n, port))
-                 == connections_.end());
+           == connections_.end());
     connections_.push_back(boost::tuples::make_tuple(n, n->input_plugs()[port].id(), port));
 }
 

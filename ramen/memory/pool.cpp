@@ -34,8 +34,7 @@ struct pool_t::implementation_t
         {
             // preconditions
             assert(free && "mem_block_t::split : trying to split a non free block");
-            assert((size - s > sizeof(mem_block_t))
-                         && "mem_block_t::split : block can't be split");
+            assert((size - s > sizeof(mem_block_t)) && "mem_block_t::split : block can't be split");
 
             std::size_t old_size = size;
 
@@ -47,9 +46,9 @@ struct pool_t::implementation_t
 
             // postconditions
             assert(old_size == (size + new_block->size + sizeof(mem_block_t))
-                         && "mem_block_t::split : block sizes don't match");
+                   && "mem_block_t::split : block sizes don't match");
             assert(is_contiguous(*new_block)
-                         && "mem_block_t::split : non contiguous resulting blocks");
+                   && "mem_block_t::split : non contiguous resulting blocks");
 
             return new_block;
         }

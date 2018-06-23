@@ -44,7 +44,7 @@ const std::vector<std::string>& factory_t::extensions() const
 {
     if (!imageio_extensions_added_)
     {
-        for (const std::string& ext: imageio::factory_t::instance().extensions())
+        for (const std::string& ext : imageio::factory_t::instance().extensions())
             extensions_.push_back(ext);
 
         imageio_extensions_added_ = true;

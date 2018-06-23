@@ -12,8 +12,8 @@ namespace image
 class color_diff_keyer_node_t : public keyer_node_t
 {
 public:
-    static const node_metaclass_t&  color_diff_keyer_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& color_diff_keyer_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     color_diff_keyer_node_t();
 

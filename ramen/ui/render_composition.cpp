@@ -114,7 +114,7 @@ void render_composition(composition_t& comp,
     {
         new_context.frame = i;
 
-        for (node_t& n: comp.nodes())
+        for (node_t& n : comp.nodes())
         {
             if (node_output_interface* out = dynamic_cast<node_output_interface*>(&n))
             {

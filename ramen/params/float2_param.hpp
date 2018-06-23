@@ -52,8 +52,8 @@ private:
     void do_write(serialization::yaml_oarchive_t& out) const override;
 
     void do_format_changed(const Imath::Box2i& new_domain,
-                                   float               aspect,
-                                   const Imath::V2f&   proxy_scale) override;
+                           float               aspect,
+                           const Imath::V2f&   proxy_scale) override;
 
     void do_update_widgets() override;
     void do_enable_widgets(bool e) override;

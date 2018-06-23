@@ -25,7 +25,7 @@ triple_t* tool_t::pick_point(shape_t* s, const ui::mouse_event_t& event)
         Imath::V2f p(event.wpos.x / event.aspect_ratio, event.wpos.y);
         p = p * s->inv_global_xform().get();
 
-        for (triple_t& t: s->triples())
+        for (triple_t& t : s->triples())
         {
             if (inside_pick_distance(t.p1() + offset, p, event.pixel_scale))
                 return &t;
@@ -45,7 +45,7 @@ void tool_t::select_points_in_box(shape_t*                 s,
 
     Imath::V2f offset = s->offset();
 
-    for (triple_t& t: s->triples())
+    for (triple_t& t : s->triples())
     {
         Imath::V2f p((t.p1() + offset) * s->global_xform());
 

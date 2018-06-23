@@ -12,8 +12,8 @@ namespace image
 class set_dod_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  set_dod_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& set_dod_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     set_dod_node_t();
 

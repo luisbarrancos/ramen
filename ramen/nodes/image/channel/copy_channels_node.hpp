@@ -12,8 +12,8 @@ namespace image
 class copy_channels_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  copy_channels_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& copy_channels_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     copy_channels_node_t();
 

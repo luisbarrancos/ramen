@@ -25,7 +25,7 @@ protected:
     void operator=(const pointop_node_t&);
 
 private:
-    void do_process(const render::context_t& context) override;
+    void         do_process(const render::context_t& context) override;
     virtual void do_process(const image::const_image_view_t& src,
                             const image::image_view_t&       dst,
                             const render::context_t&         context)

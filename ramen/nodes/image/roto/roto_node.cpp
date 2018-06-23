@@ -222,7 +222,7 @@ void roto_node_t::deselect_all()
 
 roto::shape_t* roto_node_t::selected()
 {
-    for (roto::shape_t& s: scene_)
+    for (roto::shape_t& s : scene_)
     {
         if (s.selected())
             return &s;
@@ -250,11 +250,11 @@ void roto_node_t::do_set_frame(float f)
 
 void roto_node_t::do_create_tracks(anim::track_t* parent)
 {
-    for (param_t& p: param_set())
+    for (param_t& p : param_set())
     {
         p.create_tracks(parent);
     }
-    for (roto::shape_t& s: scene())
+    for (roto::shape_t& s : scene())
     {
         s.create_tracks(parent);
     }
@@ -262,7 +262,7 @@ void roto_node_t::do_create_tracks(anim::track_t* parent)
 
 void roto_node_t::do_update_widgets()
 {
-    for (roto::shape_t& s: scene())
+    for (roto::shape_t& s : scene())
     {
         s.update_widgets();
     }
@@ -427,7 +427,7 @@ void roto_node_t::param_changed(param_t* p, param_t::change_reason reason)
     {
         bool b = track_mouse();
 
-        for (roto::shape_t& s: scene())
+        for (roto::shape_t& s : scene())
             s.set_track_mouse(b);
     }
 }

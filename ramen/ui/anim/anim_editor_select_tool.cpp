@@ -91,7 +91,7 @@ void anim_editor_select_tool_t::mouse_press_event(anim_curves_view_t& view, QMou
     if (view.show_tangents())
     {
         pick_tangents_visitor v0(view, p);
-        for (anim::track_t* t: app().ui()->anim_editor().active_tracks())
+        for (anim::track_t* t : app().ui()->anim_editor().active_tracks())
         {
             boost::apply_visitor(v0, t->curve().get());
 
@@ -108,7 +108,7 @@ void anim_editor_select_tool_t::mouse_press_event(anim_curves_view_t& view, QMou
     }
 
     pick_keyframe_visitor v1(view, p);
-    for (anim::track_t* t: app().ui()->anim_editor().active_tracks())
+    for (anim::track_t* t : app().ui()->anim_editor().active_tracks())
     {
         boost::apply_visitor(v1, t->curve().get());
 
@@ -124,7 +124,7 @@ void anim_editor_select_tool_t::mouse_press_event(anim_curves_view_t& view, QMou
     {
         can_insert_keyframe_visitor v0(view, p, view.snap_frames());
 
-        for (anim::track_t* t: app().ui()->anim_editor().active_tracks())
+        for (anim::track_t* t : app().ui()->anim_editor().active_tracks())
         {
             boost::apply_visitor(v0, t->curve().get());
 
@@ -261,7 +261,7 @@ void anim_editor_select_tool_t::mouse_drag_event(anim_curves_view_t& view, QMous
             }
 
             drag_command_->start_drag(d, view.snap_frames());
-            for (anim::track_t* t: app().ui()->anim_editor().active_tracks())
+            for (anim::track_t* t : app().ui()->anim_editor().active_tracks())
             {
                 if (app().ui()->anim_editor().any_keyframe_selected(t->curve().get()))
                     drag_command_->drag_curve(t);
@@ -290,7 +290,7 @@ void anim_editor_select_tool_t::mouse_release_event(anim_curves_view_t& view, QM
             area.extendBy(Imath::V2i(last_x_, last_y_));
 
             box_pick_keyframes_visitor v(view, area);
-            for (anim::track_t* t: app().ui()->anim_editor().active_tracks())
+            for (anim::track_t* t : app().ui()->anim_editor().active_tracks())
                 boost::apply_visitor(v, t->curve().get());
         }
     }

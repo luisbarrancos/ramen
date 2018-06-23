@@ -24,8 +24,8 @@ namespace image
 class input_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  image_input_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& image_input_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     input_node_t();
     input_node_t(const boost::filesystem::path& path,
@@ -56,12 +56,12 @@ private:
     node_t* do_clone() const override { return new input_node_t(*this); }
 
     void do_create_params() override;
-    void         create_image_params(const boost::filesystem::path& p = boost::filesystem::path());
-    void         create_more_params();
+    void create_image_params(const boost::filesystem::path& p = boost::filesystem::path());
+    void create_more_params();
 
     void param_changed(param_t* p, param_t::change_reason reason);
 
-    void         do_set_frame(float t) override;
+    void                 do_set_frame(float t) override;
     boost::optional<int> map_frame_to_sequence(float t) const;
 
     bool do_is_valid() const override;
@@ -77,11 +77,11 @@ private:
     // serialization
     virtual void do_read(const serialization::yaml_node_t& node,
                          const std::pair<int, int>&        version);
-    void do_write(serialization::yaml_oarchive_t& out) const override;
+    void         do_write(serialization::yaml_oarchive_t& out) const override;
 
     // paths
     void convert_relative_paths(const boost::filesystem::path& old_base,
-                                        const boost::filesystem::path& new_base) override;
+                                const boost::filesystem::path& new_base) override;
     void make_paths_absolute() override;
     void make_paths_relative() override;
 
@@ -97,8 +97,8 @@ private:
 
     static const int num_proxy_levels;
 
-    Imath::Box2i                                      real_defined_;
-    std::vector<input_clip_t>                         clips_;
+    Imath::Box2i                                    real_defined_;
+    std::vector<input_clip_t>                       clips_;
     std::vector<std::shared_ptr<movieio::reader_t>> readers_;
 };
 

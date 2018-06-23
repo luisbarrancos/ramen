@@ -12,8 +12,8 @@ namespace image
 class crop_node_t : public image_node_t
 {
 public:
-    static const node_metaclass_t&  crop_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& crop_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     crop_node_t();
 

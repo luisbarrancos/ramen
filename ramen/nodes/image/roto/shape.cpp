@@ -141,7 +141,7 @@ void shape_t::unparent_all_children()
 {
     std::vector<shape_t*> childs;
 
-    for (roto::shape_t& s: children())
+    for (roto::shape_t& s : children())
         childs.push_back(&s);
 
     boost::range::for_each(childs, boost::bind(&shape_t::set_parent, _1, (shape_t*) 0));
@@ -286,7 +286,7 @@ void shape_t::deselect_all_points() const
 
 bool shape_t::any_point_selected() const
 {
-    for (const triple_t& t: triples())
+    for (const triple_t& t : triples())
     {
         if (t.selected())
             return true;
@@ -297,7 +297,7 @@ bool shape_t::any_point_selected() const
 
 bool shape_t::all_points_selected() const
 {
-    for (const triple_t& t: triples())
+    for (const triple_t& t : triples())
     {
         if (!t.selected())
             return false;
@@ -375,7 +375,7 @@ Imath::Box2f shape_t::bbox() const
 {
     Imath::Box2f box;
 
-    for (const triple_t& t: triples())
+    for (const triple_t& t : triples())
     {
         box.extendBy(t.p0() + offset_);
         box.extendBy(t.p1() + offset_);
@@ -389,7 +389,7 @@ Imath::Box2f shape_t::global_bbox() const
 {
     Imath::Box2f box;
 
-    for (const triple_t& t: triples())
+    for (const triple_t& t : triples())
     {
         box.extendBy((t.p0() + offset_) * global_xform());
         box.extendBy((t.p1() + offset_) * global_xform());
@@ -557,7 +557,7 @@ void shape_t::set_shape_key(float frame)
 {
     anim::shape_key2f_t& key(curve_.insert(frame));
 
-    for (const triple_t& t: triples())
+    for (const triple_t& t : triples())
     {
         key.value().push_back(t.p0());
         key.value().push_back(t.p1());
@@ -720,7 +720,7 @@ void shape_t::insert_point(int span, float t)
 
 void shape_t::insert_point_in_keys(int span, float t)
 {
-    for (anim::shape_key2f_t& k: anim_curve().keys())
+    for (anim::shape_key2f_t& k : anim_curve().keys())
         insert_point_in_key(k, span, t);
 }
 

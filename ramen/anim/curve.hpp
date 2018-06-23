@@ -111,7 +111,7 @@ public:
     // selection
     void select_all_keyframes(bool b) const
     {
-        for (const auto& k: keys())
+        for (const auto& k : keys())
             k.select(b);
     }
 

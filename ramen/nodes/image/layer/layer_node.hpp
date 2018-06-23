@@ -12,8 +12,8 @@ namespace image
 class layer_node_t : public base_layer_node_t
 {
 public:
-    static const node_metaclass_t&  layer_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& layer_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     layer_node_t();
 
@@ -31,7 +31,7 @@ private:
 
     void do_calc_bounds(const render::context_t& context) override;
 
-    void do_process(const render::context_t& context) override;
+    void         do_process(const render::context_t& context) override;
     virtual void do_process_mult_min_overlay_mix(const render::context_t& context);
 };
 

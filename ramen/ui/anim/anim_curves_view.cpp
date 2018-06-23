@@ -173,7 +173,7 @@ void anim_curves_view_t::mousePressEvent(QMouseEvent* event)
         return;
     }
 
-    float time = app().document().composition().frame();
+    float      time = app().document().composition().frame();
     Imath::V2i q(world_to_screen(Imath::V2f(time, 0)));
 
     if (abs(q.x - push_x_) <= 4)
@@ -287,7 +287,7 @@ void anim_curves_view_t::paintEvent(QPaintEvent* event)
     // draw curves
     draw_curve_visitor v(*this);
 
-    for (const anim::track_t* t: app().ui()->anim_editor().active_tracks())
+    for (const anim::track_t* t : app().ui()->anim_editor().active_tracks())
     {
         pen.setColor(QColor(t->color().x, t->color().y, t->color().z));
         painter.setPen(pen);
@@ -301,7 +301,7 @@ void anim_curves_view_t::paintEvent(QPaintEvent* event)
     painter.setPen(pen);
 
     draw_keyframes_visitor v2(*this, show_tangents());
-    for (const anim::track_t* t: app().ui()->anim_editor().active_tracks())
+    for (const anim::track_t* t : app().ui()->anim_editor().active_tracks())
         boost::apply_visitor(v2, t->curve().get());
 
     draw_axes();
@@ -574,7 +574,7 @@ void anim_curves_view_t::frame_all()
 {
     bbox_curve_visitor v;
 
-    for (const anim::track_t* t: app().ui()->anim_editor().active_tracks())
+    for (const anim::track_t* t : app().ui()->anim_editor().active_tracks())
         boost::apply_visitor(v, t->curve().get());
 
     frame_area(v.bbox);
@@ -584,7 +584,7 @@ void anim_curves_view_t::frame_selection()
 {
     bbox_curve_visitor v(Imath::Box2f(), true);
 
-    for (const anim::track_t* t: app().ui()->anim_editor().active_tracks())
+    for (const anim::track_t* t : app().ui()->anim_editor().active_tracks())
         boost::apply_visitor(v, t->curve().get());
 
     frame_area(v.bbox);

@@ -32,7 +32,7 @@ scene_t::scene_t(const scene_t& other)
 {
     std::map<shape_t*, const shape_t*> relation;
 
-    for (const shape_t& s: other.shapes())
+    for (const shape_t& s : other.shapes())
     {
         std::auto_ptr<shape_t> new_s(new_clone(s));
         relation[new_s.get()] = &s;
@@ -42,7 +42,7 @@ scene_t::scene_t(const scene_t& other)
         shapes_.push_back(new_s);
     }
 
-    for (shape_t& s: shapes())
+    for (shape_t& s : shapes())
     {
         const shape_t* old_s       = relation[&s];
         std::string    parent_name = old_s->parent_name();
@@ -61,7 +61,7 @@ scene_t::~scene_t()
 {
     // unparent all shapes before deleting the scene.
     // this avoids an assertion in boost intrusive.
-    for (shape_t& s: shapes())
+    for (shape_t& s : shapes())
     {
         s.set_parent(0);
     }
@@ -141,7 +141,7 @@ scene_t::iterator scene_t::iterator_for_shape(shape_t* s)
 
 void scene_t::update_all_xforms(bool motion_blur_only)
 {
-    for (shape_t& s: shapes())
+    for (shape_t& s : shapes())
     {
         if (!s.parent())
         {
@@ -155,7 +155,7 @@ void scene_t::update_all_xforms(bool motion_blur_only)
 
 void scene_t::set_frame(float f, bool motion_blur)
 {
-    for (shape_t& s: shapes())
+    for (shape_t& s : shapes())
     {
         if (motion_blur && !s.motion_blur())
             continue;
@@ -166,7 +166,7 @@ void scene_t::set_frame(float f, bool motion_blur)
 
 void scene_t::add_to_hash_str(hash::generator_t& hash_gen) const
 {
-    for (const auto& s: shapes())
+    for (const auto& s : shapes())
         s.add_to_hash_str(hash_gen);
 }
 
@@ -174,7 +174,7 @@ void scene_t::add_to_hash_str(const std::vector<float>& frames, hash::generator_
 {
     float current_frame = parent().composition()->frame();
 
-    for (const shape_t& s: shapes())
+    for (const shape_t& s : shapes())
     {
         if (!s.motion_blur())
             s.add_to_hash_str(hash_gen);
@@ -187,7 +187,7 @@ void scene_t::add_to_hash_str(const std::vector<float>& frames, hash::generator_
     {
         self->set_frame(frames[i], true);
 
-        for (const shape_t& s: shapes())
+        for (const shape_t& s : shapes())
         {
             if (s.motion_blur())
                 s.add_to_hash_str(hash_gen);
@@ -201,7 +201,7 @@ Imath::Box2f scene_t::bounding_box() const
 {
     Imath::Box2f bbox;
 
-    for (const shape_t& s: shapes())
+    for (const shape_t& s : shapes())
         extend_bbox(bbox, s);
 
     return bbox;
@@ -213,7 +213,7 @@ Imath::Box2f scene_t::bounding_box(const std::vector<float>& frames) const
 
     Imath::Box2f bbox;
 
-    for (const shape_t& s: shapes())
+    for (const shape_t& s : shapes())
     {
         if (!s.motion_blur())
             extend_bbox(bbox, s);
@@ -227,7 +227,7 @@ Imath::Box2f scene_t::bounding_box(const std::vector<float>& frames) const
         self->set_frame(frames[i], true);
         self->update_all_xforms(true);
 
-        for (const shape_t& s: shapes())
+        for (const shape_t& s : shapes())
         {
             if (s.motion_blur())
                 extend_bbox(bbox, s);
@@ -307,7 +307,7 @@ void scene_t::write(serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "shapes" << YAML::Value;
     out.begin_seq();
 
-    for (const auto& s: shapes())
+    for (const auto& s : shapes())
         s.write(out, version);
 
     out.end_seq();

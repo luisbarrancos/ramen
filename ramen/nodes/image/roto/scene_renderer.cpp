@@ -75,7 +75,7 @@ scene_renderer_t::scene_renderer_t(const scene_t&      scene,
     int max_width  = 0;
     int max_height = 0;
 
-    for (const shape_t& s: scene_)
+    for (const shape_t& s : scene_)
     {
         if (s.is_null() || !s.active() || s.opacity() == 0.0f)
             continue;
@@ -122,7 +122,7 @@ void scene_renderer_t::render()
 {
     int bbox_index = 0;
 
-    for (const shape_t& s: scene_)
+    for (const shape_t& s : scene_)
     {
         if (!s.is_null() && s.active() && s.opacity() != 0.0f)
         {

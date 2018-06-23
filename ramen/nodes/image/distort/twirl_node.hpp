@@ -12,8 +12,8 @@ namespace image
 class twirl_node_t : public distort_node_t
 {
 public:
-    static const node_metaclass_t&  twirl_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& twirl_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     twirl_node_t();
 

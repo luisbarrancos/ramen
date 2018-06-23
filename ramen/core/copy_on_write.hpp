@@ -41,10 +41,7 @@ public:
         object_.reset(new implementation_t(x), capture_deleter_t());
     }
 
-    explicit copy_on_write_t(T&& x)
-    {
-        object_.reset(new implementation_t(x), capture_deleter_t());
-    }
+    explicit copy_on_write_t(T&& x) { object_.reset(new implementation_t(x), capture_deleter_t()); }
 
     const value_type& read() const
     {

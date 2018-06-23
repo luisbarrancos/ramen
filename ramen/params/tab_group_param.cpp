@@ -29,7 +29,7 @@ QWidget* tab_group_param_t::do_create_widgets()
 {
     tab_ = new QTabWidget();
 
-    for (param_t& p: params())
+    for (param_t& p : params())
     {
         QWidget* w = p.create_widgets();
 
@@ -49,7 +49,7 @@ void tab_group_param_t::do_enable_widgets(bool e)
 
 void tab_group_param_t::do_create_tracks(anim::track_t* parent)
 {
-    for (auto& p: params())
+    for (auto& p : params())
         p.create_tracks(parent);
 }
 

@@ -134,13 +134,13 @@ public:
     // Repeat for each keyframe.
     void erase_points(int index, int num)
     {
-        for (auto& k: this->keys())
+        for (auto& k : this->keys())
             k.erase_points(index, num);
     }
 
     void insert_points(int before, int num)
     {
-        for (auto& k: this->keys())
+        for (auto& k : this->keys())
             k.insert_points(before, num);
     }
 
@@ -165,8 +165,8 @@ public:
         out << YAML::Key << "keys" << YAML::Value;
         out.begin_seq();
 
-        for (const auto& k: this->keys())
-            k,write(out);
+        for (const auto& k : this->keys())
+            k.write(out);
 
         out.end_seq();
         out.end_map();

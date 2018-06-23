@@ -12,8 +12,8 @@ namespace image
 class fractal_noise_node_t : public generator_node_t
 {
 public:
-    static const node_metaclass_t&  fractal_noise_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& fractal_noise_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     fractal_noise_node_t();
 

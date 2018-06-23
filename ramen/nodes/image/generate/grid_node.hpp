@@ -12,8 +12,8 @@ namespace image
 class grid_node_t : public generator_node_t
 {
 public:
-    static const node_metaclass_t&  grid_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& grid_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     grid_node_t();
 

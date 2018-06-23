@@ -50,7 +50,7 @@ public:
 
     // tracks
     std::shared_ptr<track_model_t> track_model() { return current_; }
-    void                             recreate_tracks(node_t* n);
+    void                           recreate_tracks(node_t* n);
 
     const std::set<anim::track_t*>& active_tracks() const { return active_tracks_; }
     std::set<anim::track_t*>&       active_tracks() { return active_tracks_; }

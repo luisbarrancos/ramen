@@ -14,8 +14,8 @@ namespace image
 class output_node_t : public base_output_node_t
 {
 public:
-    static const node_metaclass_t&  output_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& output_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     output_node_t();
 

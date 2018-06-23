@@ -54,7 +54,7 @@ buffer_t::buffer_t() { init(); }
 buffer_t::buffer_t(int width, int height, int channels)
 {
     assert((channels == 1 || channels == 3 || channels == 4)
-                 && "buffer_t: only 1, 3 and 4 channels images supported");
+           && "buffer_t: only 1, 3 and 4 channels images supported");
 
     init();
     channels_ = channels;
@@ -69,7 +69,7 @@ buffer_t::buffer_t(int width, int height, int channels)
 buffer_t::buffer_t(const Imath::Box2i& bounds, int channels)
 {
     assert((channels == 1 || channels == 3 || channels == 4)
-                 && "buffer_t: only 1, 3 and 4 channels images supported");
+           && "buffer_t: only 1, 3 and 4 channels images supported");
 
     init();
     bounds_   = bounds;

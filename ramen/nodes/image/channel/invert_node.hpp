@@ -12,8 +12,8 @@ namespace image
 class invert_node_t : public pointop_node_t
 {
 public:
-    static const node_metaclass_t&  invert_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& invert_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     invert_node_t();
 
@@ -33,8 +33,8 @@ private:
 
     void do_process(const render::context_t& context) override;
     void do_process(const image::const_image_view_t& src,
-                            const image::image_view_t&       dst,
-                            const render::context_t&         context) override;
+                    const image::image_view_t&       dst,
+                    const render::context_t&         context) override;
 };
 
 }  // namespace

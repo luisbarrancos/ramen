@@ -118,7 +118,8 @@ param_set_t::param_set_t(const param_set_t& other)
 {
     parent_ = 0;
 
-    for (auto& p : params_) p.set_param_set(this);
+    for (auto& p : params_)
+        p.set_param_set(this);
 }
 
 param_set_t::~param_set_t()
@@ -149,7 +150,7 @@ param_t& param_set_t::find(const std::string& id)
 {
     assert(!id.empty());
 
-    for (param_t& p: params())
+    for (param_t& p : params())
     {
         if (p.id() == id)
             return p;
@@ -225,7 +226,7 @@ bool param_set_t::autokey() const
 
 void param_set_t::add_to_hash(hash::generator_t& hash_gen) const
 {
-    for (const param_t& p: params())
+    for (const param_t& p : params())
     {
         if (p.include_in_hash())
             p.add_to_hash(hash_gen);
@@ -234,7 +235,8 @@ void param_set_t::add_to_hash(hash::generator_t& hash_gen) const
 
 void param_set_t::for_each_param(const boost::function<void(param_t*)>& f)
 {
-    for (auto& p : params_) p.apply_function(f);
+    for (auto& p : params_)
+        p.apply_function(f);
 }
 
 // serialization
@@ -270,7 +272,7 @@ void param_set_t::write(serialization::yaml_oarchive_t& out) const
 {
     out << YAML::Key << "params" << YAML::Value;
     out.begin_seq();
-    for (const param_t& p: params())
+    for (const param_t& p : params())
     {
         p.write(out);
     }

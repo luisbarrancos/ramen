@@ -143,7 +143,7 @@ void parameterised_t::create_tracks(anim::track_t* root)
 {
     std::auto_ptr<anim::track_t> top(new anim::track_t(name()));
 
-    for (param_t& p: param_set())
+    for (param_t& p : param_set())
     {
         p.create_tracks(top.get());
     }

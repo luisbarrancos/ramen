@@ -62,7 +62,7 @@ user_interface_t::user_interface_t()
 
     image_types_str_ = "Image Files (";
 
-    for (const std::string& ext: movieio::factory_t::instance().extensions())
+    for (const std::string& ext : movieio::factory_t::instance().extensions())
     {
         image_types_str_.append("*.");
         image_types_str_.append(ext.c_str());

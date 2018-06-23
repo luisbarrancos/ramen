@@ -58,7 +58,7 @@ delete_roto_command_t::delete_roto_command_t(image::roto_node_t& node, roto::sha
     parent_ = shape->parent();
     shape_->select(false);
 
-    for (roto::shape_t& s: shape_->children())
+    for (roto::shape_t& s : shape_->children())
         children_.push_back(&s);
 }
 

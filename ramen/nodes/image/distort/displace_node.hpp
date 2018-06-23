@@ -12,8 +12,8 @@ namespace image
 class displace_node_t : public distort_node_t
 {
 public:
-    static const node_metaclass_t&  displace_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& displace_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     displace_node_t();
 

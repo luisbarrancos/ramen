@@ -12,8 +12,8 @@ namespace image
 class unsharp_mask_node_t : public areaop_node_t
 {
 public:
-    static const node_metaclass_t&  unsharp_mask_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& unsharp_mask_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     unsharp_mask_node_t();
 

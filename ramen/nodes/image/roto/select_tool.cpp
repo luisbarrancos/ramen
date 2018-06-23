@@ -225,7 +225,7 @@ void select_tool_t::mouse_drag_event(const ui::mouse_drag_event_t& event)
     {
         assert(!selected_->is_null());
 
-        for (triple_t& t: selected_->triples())
+        for (triple_t& t : selected_->triples())
         {
             if (t.selected())
                 t.move(off);
@@ -356,7 +356,7 @@ bool select_tool_t::pick_axes(const shape_t&           s,
 
 shape_t* select_tool_t::pick_nulls(const ui::mouse_press_event_t& event, bool& xaxis, bool& yaxis)
 {
-    for (roto::shape_t& s: parent().scene())
+    for (roto::shape_t& s : parent().scene())
     {
         if (s.is_null())
         {
@@ -370,7 +370,7 @@ shape_t* select_tool_t::pick_nulls(const ui::mouse_press_event_t& event, bool& x
 
 shape_t* select_tool_t::pick_shape(const ui::mouse_press_event_t& event)
 {
-    for (roto::shape_t& s: parent().scene())
+    for (roto::shape_t& s : parent().scene())
     {
         if (!s.is_null())
         {
@@ -418,7 +418,7 @@ triple_t* select_tool_t::pick_tangent(shape_t& s, const ui::mouse_event_t& event
         p = p * s.inv_global_xform().get();
         p -= s.offset();
 
-        for (triple_t& t: s.triples())
+        for (triple_t& t : s.triples())
         {
             if (inside_pick_distance(t.p0(), p, event.pixel_scale))
             {

@@ -68,17 +68,22 @@ composite_command_t::composite_command_t(const std::string& name)
 
 void composite_command_t::undo()
 {
-    for (auto& c: commands_) c->undo();
+    for (auto& c : commands_)
+        c->undo();
     command_t::undo();
 }
 
 void composite_command_t::redo()
 {
-    for (auto& c: commands_) c->redo();
+    for (auto& c : commands_)
+        c->redo();
     command_t::redo();
 }
 
-void composite_command_t::push_back(std::unique_ptr<command_t> c) { commands_.push_back(std::move(c)); }
+void composite_command_t::push_back(std::unique_ptr<command_t> c)
+{
+    commands_.push_back(std::move(c));
+}
 
 }  // namespace
 }  // namespace

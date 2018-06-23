@@ -64,7 +64,7 @@ bool image_node_t::accept_connection(node_t* src, int port) const
 
 void image_node_t::format_changed()
 {
-    for (auto& p: param_set())
+    for (auto& p : param_set())
         p.format_changed(format(), aspect_ratio(), proxy_scale());
 }
 
@@ -165,7 +165,7 @@ void image_node_t::calc_inputs_interest(const render::context_t& context)
 void image_node_t::do_calc_inputs_interest(const render::context_t& context)
 {
     // by default, pass the interest area to the inputs
-    for (node_input_plug_t& i: input_plugs())
+    for (node_input_plug_t& i : input_plugs())
     {
         if (i.connected())
         {
@@ -339,7 +339,7 @@ void image_node_t::recursive_process(const render::context_t& context)
     if (!context.render_cancelled())
         write_image_to_cache(context);
 
-    for (node_input_plug_t& i: input_plugs())
+    for (node_input_plug_t& i : input_plugs())
     {
         if (i.connected())
         {
@@ -369,7 +369,7 @@ void image_node_t::do_recursive_process(const render::context_t& context)
     // as long as we keep a copy, the pixels won't be deleted
     std::vector<image::buffer_t> buffers;
 
-    for (node_input_plug_t& i: input_plugs())
+    for (node_input_plug_t& i : input_plugs())
     {
         if (context.render_cancelled())
             return;
@@ -387,7 +387,7 @@ void image_node_t::do_recursive_process(const render::context_t& context)
     }
 
     int j = 0;
-    for (node_input_plug_t& i: input_plugs())
+    for (node_input_plug_t& i : input_plugs())
     {
         if (i.connected())
         {

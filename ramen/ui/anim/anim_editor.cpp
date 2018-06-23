@@ -138,7 +138,7 @@ anim_editor_t::anim_editor_t()
 void anim_editor_t::set_active_node(node_t* n)
 {
     std::shared_ptr<track_model_t> old       = current_;
-    QItemSelectionModel*             sel_model = tree_->selectionModel();
+    QItemSelectionModel*           sel_model = tree_->selectionModel();
 
     active_tracks_.clear();
 
@@ -269,7 +269,7 @@ void anim_editor_t::insert_in_active_tracks(anim::track_t* t)
 bool anim_editor_t::any_keyframe_selected() const
 {
     any_selected_visitor v;
-    for (const anim::track_t* t: active_tracks())
+    for (const anim::track_t* t : active_tracks())
     {
         boost::apply_visitor(v, t->curve().get());
         if (v.any_selected)
@@ -282,7 +282,7 @@ bool anim_editor_t::any_keyframe_selected() const
 bool anim_editor_t::any_float_keyframe_selected() const
 {
     any_selected_visitor v;
-    for (const anim::track_t* t: active_tracks())
+    for (const anim::track_t* t : active_tracks())
     {
         const anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -307,7 +307,7 @@ bool anim_editor_t::any_keyframe_selected(const anim::any_curve_ptr_t& c) const
 void anim_editor_t::deselect_all()
 {
     deselect_all_visitor v;
-    for (const anim::track_t* t: active_tracks())
+    for (const anim::track_t* t : active_tracks())
         boost::apply_visitor(v, t->curve().get());
 }
 
@@ -316,7 +316,7 @@ void anim_editor_t::get_selected_keyframe(anim::track_t*& track, int& key_index)
     track     = 0;
     key_index = -1;
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         count_selected_visitor v;
         boost::apply_visitor(v, t->curve().get());
@@ -385,7 +385,7 @@ void anim_editor_t::delete_selected_keyframes()
         create_command();
 
         delete_selected_keys_visitor v;
-        for (anim::track_t* t: active_tracks())
+        for (anim::track_t* t : active_tracks())
         {
             anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -415,7 +415,7 @@ void anim_editor_t::set_autotangents(anim::keyframe_t::auto_tangent_method m, bo
     can_set_autotangents_visitor v0(m);
     set_autotangents_visitor     v1(m);
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -445,7 +445,7 @@ void anim_editor_t::set_extrapolation(anim::extrapolation_method m)
     can_set_extrapolation_visitor v0(m);
     set_extrapolation_visitor     v1(m);
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -469,7 +469,7 @@ void anim_editor_t::reverse_keyframes()
 {
     create_command();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -492,7 +492,7 @@ void anim_editor_t::negate_keyframes()
 {
     create_command();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -515,7 +515,7 @@ void anim_editor_t::sample_keyframes()
 {
     create_command();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -538,7 +538,7 @@ void anim_editor_t::smooth_keyframes(float filter_size, bool resample)
 {
     create_command();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -561,7 +561,7 @@ void anim_editor_t::high_pass_keyframes(float filter_size, bool resample)
 {
     create_command();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -603,7 +603,7 @@ void anim_editor_t::copy_curves()
 
     anim::clipboard_t::instance().begin_copy();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::clipboard_t::instance().copy_curve(t->curve_name(), t->curve().get());
     }
@@ -618,7 +618,7 @@ void anim_editor_t::copy_keyframes()
 
     anim::clipboard_t::instance().begin_copy();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::clipboard_t::instance().copy_keys(t->curve_name(), t->curve().get());
     }
@@ -635,7 +635,7 @@ void anim_editor_t::paste()
 
     float frame = app().document().composition().frame();
 
-    for (anim::track_t* t: active_tracks())
+    for (anim::track_t* t : active_tracks())
     {
         anim::any_curve_ptr_t& c(t->curve().get());
 
@@ -656,7 +656,7 @@ void anim_editor_t::paste()
 void anim_editor_t::select_all()
 {
     select_all_visitor v;
-    for (const anim::track_t* t: active_tracks())
+    for (const anim::track_t* t : active_tracks())
         boost::apply_visitor(v, t->curve().get());
 
     toolbar().selection_changed();

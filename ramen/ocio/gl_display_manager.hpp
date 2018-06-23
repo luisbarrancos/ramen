@@ -71,7 +71,7 @@ private:
 
     OCIO::ConstProcessorRcPtr processor_;
 
-    gl::program_t                 program_;
+    gl::program_t               program_;
     std::shared_ptr<gl_lut3d_t> lut_;
 
     float           exposure_;

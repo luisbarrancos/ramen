@@ -39,8 +39,8 @@ private:
     void do_set_frame(int frame) override;
 
     void do_read_frame(const image::image_view_t& view,
-                               const math::box2i_t&       crop,
-                               int                        subsample) const override;
+                       const math::box2i_t&       crop,
+                       int                        subsample) const override;
 
     virtual void do_read_frame(const image::image_view_t&              view,
                                const math::box2i_t&                    crop,
@@ -51,10 +51,10 @@ private:
 
     void create_reader();
 
-    filesystem::path_sequence_t          seq_;
+    filesystem::path_sequence_t        seq_;
     std::shared_ptr<imageio::reader_t> reader_;
-    core::dictionary_t                   frame_info_;
-    bool                                 has_extra_channels_;
+    core::dictionary_t                 frame_info_;
+    bool                               has_extra_channels_;
 };
 
 }  // movieio

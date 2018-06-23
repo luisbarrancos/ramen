@@ -23,8 +23,8 @@ public:
 
 private:
     void do_write_image(const boost::filesystem::path&   p,
-                                const image::const_image_view_t& view,
-                                const core::dictionary_t&        params) const override;
+                        const image::const_image_view_t& view,
+                        const core::dictionary_t&        params) const override;
 
     void write_half(const boost::filesystem::path&   p,
                     Imf::Header&                     header,

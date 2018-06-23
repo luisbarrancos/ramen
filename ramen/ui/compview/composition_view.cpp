@@ -359,7 +359,7 @@ void composition_view_t::wheelEvent(QWheelEvent* event)
 {
     Imath::V2f wpos = screen_to_world(Imath::V2i(event->x(), event->y()));
     layout_.set_interest_point(wpos);
-    if (event->delta() > 0)
+    if (event->delta() < 0)
         viewport().zoom(wpos, 1.10f);
     else
         viewport().zoom(wpos, 1.0f / 1.10f);
@@ -487,7 +487,7 @@ void composition_view_t::box_pick_release_handler(QMouseEvent* event)
     Imath::Box2f b(screen_to_world(Imath::V2i(push_x_, push_y_)));
     b.extendBy(screen_to_world(Imath::V2i(last_x_, last_y_)));
 
-    for (node_t& n: app().document().composition().nodes())
+    for (node_t& n : app().document().composition().nodes())
     {
         if (box_pick_node(&n, b))
             n.toggle_selection();
@@ -569,7 +569,7 @@ void composition_view_t::draw_edges(QPainter& p)
 {
     draw_edges_visitor visitor(*this, p);
 
-    for (node_t& n: app().document().composition().nodes())
+    for (node_t& n : app().document().composition().nodes())
         n.accept(visitor);
 }
 
@@ -577,7 +577,7 @@ void composition_view_t::draw_nodes(QPainter& p)
 {
     draw_node_visitor visitor(p);
 
-    for (node_t& n: app().document().composition().nodes())
+    for (node_t& n : app().document().composition().nodes())
         n.accept(visitor);
 }
 
@@ -626,7 +626,7 @@ bool composition_view_t::pick_edge(const Imath::V2f& p, node_t*& src, node_t*& d
 {
     pick_edge_visitor visitor(*this, p);
 
-    for (node_t& n: app().document().composition().nodes())
+    for (node_t& n : app().document().composition().nodes())
     {
         n.accept(visitor);
 

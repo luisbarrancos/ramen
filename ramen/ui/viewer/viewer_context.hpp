@@ -67,10 +67,10 @@ public:
     OCIO::DisplayTransformRcPtr ocio_transform();
 
     std::shared_ptr<ocio::gl_lut3d_t>& display_lut();
-    const std::string&                   display_device() const;
-    const std::string&                   display_transform() const;
-    float                                exposure() const;
-    float                                gamma() const;
+    const std::string&                 display_device() const;
+    const std::string&                 display_transform() const;
+    float                              exposure() const;
+    float                              gamma() const;
 
     void display_transform_changed();
     void exposure_changed();

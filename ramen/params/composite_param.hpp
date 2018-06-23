@@ -64,12 +64,12 @@ private:
     void do_create_tracks(anim::track_t* parent) override;
 
     void do_format_changed(const Imath::Box2i& new_format,
-                                   float               aspect,
-                                   const Imath::V2f&   proxy_scale) override;
+                           float               aspect,
+                           const Imath::V2f&   proxy_scale) override;
 
     // paths
     void do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                           const boost::filesystem::path& new_base) override;
+                                   const boost::filesystem::path& new_base) override;
 
     void do_make_paths_absolute() override;
     void do_make_paths_relative() override;
@@ -79,7 +79,7 @@ private:
 
     // serialization
     virtual void do_read(serialization::yaml_iarchive_t& node);
-    void do_write(serialization::yaml_oarchive_t& out) const override;
+    void         do_write(serialization::yaml_oarchive_t& out) const override;
 
     QWidget* do_create_widgets() override;
 

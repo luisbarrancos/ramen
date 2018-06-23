@@ -21,7 +21,7 @@ namespace ramen
 {
 namespace undo
 {
-anim_editor_command_t::anim_editor_command_t(node_t*                                     node,
+anim_editor_command_t::anim_editor_command_t(node_t*                                   node,
                                              const std::shared_ptr<ui::track_model_t>& model)
 : command_t("Edit Curves")
 {

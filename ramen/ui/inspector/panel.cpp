@@ -26,7 +26,7 @@ panel_t::panel_t(parameterised_t* p)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSizeConstraint(QLayout::SetFixedSize);
 
-    for (param_t& param: p_->param_set())
+    for (param_t& param : p_->param_set())
     {
         QWidget* w = param.create_widgets();
 

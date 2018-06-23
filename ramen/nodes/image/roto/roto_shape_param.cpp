@@ -246,7 +246,7 @@ void roto_shape_param_t::update_parent_menu()
 
     int new_index = 0, i = 1;
 
-    for (const roto::shape_t& s: node->scene())
+    for (const roto::shape_t& s : node->scene())
     {
         if (s.name() == item)
             new_index = i;

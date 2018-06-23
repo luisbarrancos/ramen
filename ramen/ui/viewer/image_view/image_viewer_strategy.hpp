@@ -100,7 +100,7 @@ public:
 
     Imath::Color4f color_at(int x, int y) const override;
     void           pick_colors_in_box(const Imath::Box2i&                          b,
-                                              boost::function<void(const Imath::Color4f&)> f) const override;
+                                      boost::function<void(const Imath::Color4f&)> f) const override;
 
     virtual void center_image();
     virtual void frame_image();

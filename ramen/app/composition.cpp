@@ -107,7 +107,7 @@ void composition_t::merge_composition(composition_t& other)
     // rename all nodes from other composition
     unique_name_map_t<node_t*> nmap(node_map());
 
-    for (node_t& n: other.nodes())
+    for (node_t& n : other.nodes())
     {
         std::string new_name(nmap.make_name_unique(n.name()));
 
@@ -131,7 +131,7 @@ void composition_t::merge_composition(composition_t& other)
         add_node(nn);
     }
 
-    for (edge_t& e: other_edges)
+    for (edge_t& e : other_edges)
         add_edge(e);
 }
 
@@ -329,10 +329,10 @@ void composition_t::read(serialization::yaml_iarchive_t& in)
     read_nodes(in);
     read_edges(in);
 
-    for (node_t& n: nodes())
+    for (node_t& n : nodes())
         added_(&n);
 
-    for (node_t& n: nodes())
+    for (node_t& n : nodes())
         n.for_each_param(boost::bind(&param_t::emit_param_changed, _1, param_t::node_loaded));
 }
 

@@ -71,7 +71,7 @@ void apply_color_matrix(const const_image_view_t& src,
                         const Imath::M44f&        m)
 {
     assert(src.dimensions() == dst.dimensions()
-                 && "Apply color matrix, src and dst must have the same size");
+           && "Apply color matrix, src and dst must have the same size");
     tbb::parallel_for(tbb::blocked_range<int>(0, src.height()),
                       detail::apply_color_matrix_fn(src, dst, m),
                       tbb::auto_partitioner());

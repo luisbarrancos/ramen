@@ -12,8 +12,8 @@ namespace image
 class smart_blur_node_t : public base_blur_node_t
 {
 public:
-    static const node_metaclass_t&  smart_blur_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& smart_blur_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     smart_blur_node_t();
 

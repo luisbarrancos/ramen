@@ -68,7 +68,7 @@ bool node_factory_t::register_node(const node_metaclass_t& m)
     assert(!m.submenu.empty());
     assert(!m.menu_item.empty());
 
-    for (const node_metaclass_t& metaclass: metaclasses_)
+    for (const node_metaclass_t& metaclass : metaclasses_)
     {
         if (metaclass.id == m.id && metaclass.major_version == m.major_version
             && metaclass.minor_version == m.minor_version)

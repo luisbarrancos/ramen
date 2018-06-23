@@ -47,8 +47,8 @@ protected:
     typedef map_type::iterator                          iterator;
 
     std::shared_ptr<ui::track_model_t> model_;
-    std::set<node_t*>                    nodes_;
-    map_type                             curves_;
+    std::set<node_t*>                  nodes_;
+    map_type                           curves_;
 };
 
 }  // namespace

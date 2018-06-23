@@ -12,8 +12,8 @@ namespace image
 class turbulent_displace_node_t : public distort_node_t
 {
 public:
-    static const node_metaclass_t&  turbulent_displace_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& turbulent_displace_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     turbulent_displace_node_t();
 

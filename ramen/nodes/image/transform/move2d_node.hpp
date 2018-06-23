@@ -12,8 +12,8 @@ namespace image
 class move2d_node_t : public xform2d_node_t
 {
 public:
-    static const node_metaclass_t&  move2d_node_metaclass();
-    const node_metaclass_t* metaclass() const override;
+    static const node_metaclass_t& move2d_node_metaclass();
+    const node_metaclass_t*        metaclass() const override;
 
     move2d_node_t();
 
@@ -25,7 +25,7 @@ private:
     node_t* do_clone() const override { return new move2d_node_t(*this); }
 
     void do_create_params() override;
-    void         param_changed(param_t* p, param_t::change_reason reason);
+    void param_changed(param_t* p, param_t::change_reason reason);
 
     void do_create_manipulators() override;
 

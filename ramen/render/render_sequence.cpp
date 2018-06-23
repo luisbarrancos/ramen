@@ -42,10 +42,7 @@ struct add_output
     {
     }
 
-    void operator()(node_output_interface* out) const
-    {
-        m_outputs.push_back(out);
-    }
+    void operator()(node_output_interface* out) const { m_outputs.push_back(out); }
 
     std::vector<node_output_interface*>& m_outputs;
 };
@@ -104,7 +101,7 @@ void render_sequence(composition_t& comp,
     {
         new_context.frame = i;
 
-        for (node_t& n: comp.nodes())
+        for (node_t& n : comp.nodes())
         {
             if (node_output_interface* out = dynamic_cast<node_output_interface*>(&n))
             {

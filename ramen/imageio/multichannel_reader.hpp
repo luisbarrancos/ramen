@@ -35,8 +35,8 @@ public:
 
 private:
     void do_read_image(const image::image_view_t& view,
-                               const math::box2i_t&       crop,
-                               int                        subsample) const override;
+                       const math::box2i_t&       crop,
+                       int                        subsample) const override;
 
     virtual void do_read_image(const image::image_view_t&              view,
                                const math::box2i_t&                    crop,
