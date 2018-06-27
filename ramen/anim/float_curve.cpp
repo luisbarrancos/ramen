@@ -11,11 +11,7 @@
 #include <sstream>
 #include <cmath>
 
-#include <boost/range/algorithm/for_each.hpp>
-
 #include <OpenEXR/ImathFun.h>
-
-#include <ramen/algorithm/for_each_position.hpp>
 
 #include <ramen/anim/util.hpp>
 
@@ -26,6 +22,7 @@ namespace ramen
 {
 namespace anim
 {
+
 float_curve_t::float_curve_t()
 : curve_t<float_key_t>()
 {
@@ -254,8 +251,8 @@ void float_curve_t::recalc_tangents_and_coefficients(iterator it)
 
 void float_curve_t::recalc_tangents_and_coefficients()
 {
-    for_each_position(keys(),
-                      boost::bind(&float_curve_t::recalc_tangents_and_coefficients, this, _1));
+    for (auto it = keys().begin(), e = keys().end(); it != e; ++it)
+        recalc_tangents_and_coefficients(it);
 }
 
 Imath::Box2f float_curve_t::bounds() const
@@ -285,7 +282,10 @@ std::string float_curve_t::str() const
 {
     std::stringstream s;
     s << extrapolation();
-    boost::range::for_each(keys(), boost::bind(&float_key_t::str, _1, boost::ref(s)));
+
+    for(auto& key: keys())
+        key.str(s);
+
     return s.str();
 }
 
@@ -318,7 +318,10 @@ void float_curve_t::write(serialization::yaml_oarchive_t& out) const
 
     out << YAML::Key << "keys" << YAML::Value;
     out.begin_seq();
-    boost::range::for_each(keys(), boost::bind(&float_key_t::write, _1, boost::ref(out)));
+
+    for(auto& key: keys())
+        key.write(out);
+
     out.end_seq();
 
     out.end_map();

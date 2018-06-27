@@ -4,10 +4,6 @@
 
 #include <ramen/params/parameterised.hpp>
 
-#include <boost/bind.hpp>
-
-#include <boost/range/algorithm/for_each.hpp>
-
 #include <ramen/app/composition.hpp>
 
 #include <ramen/anim/track.hpp>
@@ -41,7 +37,9 @@ parameterised_t* parameterised_t::clone() const { return do_clone(); }
 void parameterised_t::create_params()
 {
     do_create_params();
-    boost::range::for_each(param_set(), boost::bind(&param_t::init, _1));
+
+    for(auto& p : param_set())
+        p.init();
 }
 
 void parameterised_t::set_parent(parameterised_t* parent)
@@ -154,18 +152,23 @@ void parameterised_t::create_tracks(anim::track_t* root)
 
 void parameterised_t::set_frame(float f)
 {
-    boost::range::for_each(param_set(), boost::bind(&param_t::set_frame, _1, f));
+    for(auto& p : param_set())
+        p.set_frame(f);
+
     do_set_frame(f);
 }
 
 void parameterised_t::evaluate_params(float frame)
 {
-    boost::range::for_each(param_set(), boost::bind(&param_t::evaluate, _1, frame));
+    for(auto& p : param_set())
+        p.evaluate(frame);
 }
 
 void parameterised_t::update_widgets()
 {
-    boost::range::for_each(param_set(), boost::bind(&param_t::update_widgets, _1));
+    for(auto& p : param_set())
+        p.update_widgets();
+
     do_update_widgets();
 }
 

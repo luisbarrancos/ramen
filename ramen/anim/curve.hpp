@@ -5,9 +5,9 @@
 #ifndef RAMEN_ANIM_CURVE_HPP
 #define RAMEN_ANIM_CURVE_HPP
 
+#include <functional>
 #include <string>
 
-#include <boost/bind.hpp>
 #include <boost/range/algorithm/remove_if.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 
@@ -89,7 +89,7 @@ public:
 
     void erase_selected_keyframes()
     {
-        keys().erase(boost::range::remove_if(keys(), boost::bind(&key_type::selected, _1)),
+        keys().erase(boost::range::remove_if(keys(), std::bind(&key_type::selected, std::placeholders::_1)),
                      keys().end());
     }
 
@@ -117,7 +117,7 @@ public:
 
     bool any_keyframe_selected() const
     {
-        return boost::range::find_if(keys(), boost::bind(&key_type::selected, _1)) != keys().end();
+        return boost::range::find_if(keys(), std::bind(&key_type::selected, std::placeholders::_1)) != keys().end();
     }
 
     bool has_keyframe_at(time_type time) const { return keys().has_keyframe_at(time); }

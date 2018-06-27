@@ -34,12 +34,6 @@ SET(RAMEN_VERSION_MINOR "0")
 SET(RAMEN_VERSION_PATCH "0")
 SET(RAMEN_VERSION ${RAMEN_VERSION_MAJOR}.${RAMEN_VERSION_MINOR}.${RAMEN_VERSION_PATCH})
 
-####################################################################
-# options
-
-OPTION(WITH_NODES "Build nodes" ON)
-OPTION(WITH_TESTS "Build tests" ON)
-
 ######################################################
 # platform specific
 

@@ -9,7 +9,6 @@
 #include <algorithm>
 
 #include <boost/bind.hpp>
-#include <boost/range/algorithm/for_each.hpp>
 
 #include <ramen/nodes/graph_algorithm.hpp>
 
@@ -53,7 +52,9 @@ node_t::node_t(const node_t& other)
 , inputs_(other.inputs_)
 , outputs_(other.outputs_)
 {
-    boost::range::for_each(outputs_, boost::bind(&node_output_plug_t::set_parent_node, _1, this));
+    for ( auto& output : outputs_ )
+        output.set_parent_node( this ) ;
+
     flags_       = other.flags_;
     loc_         = other.loc_;
     composition_ = other.composition_;
@@ -491,18 +492,21 @@ const char* node_t::help_string() const
 void node_t::convert_relative_paths(const boost::filesystem::path& old_base,
                                     const boost::filesystem::path& new_base)
 {
-    boost::range::for_each(param_set(),
-                           boost::bind(&param_t::convert_relative_paths, _1, old_base, new_base));
+    for(auto& param : param_set() )
+        param.convert_relative_paths(old_base, new_base);
+
 }
 
 void node_t::make_paths_absolute()
 {
-    boost::range::for_each(param_set(), boost::bind(&param_t::make_paths_absolute, _1));
+    for(auto& param : param_set() )
+        param.make_paths_absolute();
 }
 
 void node_t::make_paths_relative()
 {
-    boost::range::for_each(param_set(), boost::bind(&param_t::make_paths_relative, _1));
+    for(auto& param : param_set() )
+        param.make_paths_relative();
 }
 
 // serialization

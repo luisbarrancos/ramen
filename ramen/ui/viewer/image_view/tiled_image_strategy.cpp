@@ -8,9 +8,6 @@
 #include <cassert>
 #include <iostream>
 
-#include <boost/bind.hpp>
-#include <boost/range/algorithm/for_each.hpp>
-
 #include <cassert>
 
 namespace ramen
@@ -159,7 +156,10 @@ void tiled_image_strategy_t::draw() const
 {
     gl_active_texture(texture_unit_);
     gl_tex_envf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    boost::range::for_each(tiles_, boost::bind(&tile_t::draw, _1));
+
+    for( const auto& tile : tiles_ )
+        tile->draw() ;
+
 }
 
 boost::optional<Imath::Color4f> tiled_image_strategy_t::color_at(const Imath::V2i& p) const

@@ -4,9 +4,6 @@
 
 #include <ramen/ui/viewer/viewer_context.hpp>
 
-#include <boost/bind.hpp>
-#include <boost/range/algorithm/for_each.hpp>
-
 #include <ramen/GL/glu.hpp>
 
 #include <ramen/app/application.hpp>
@@ -86,12 +83,15 @@ void viewer_context_t::set_autoupdate(bool b)
 
 void viewer_context_t::node_added(node_t* n)
 {
-    boost::range::for_each(strategies_, boost::bind(&viewer_strategy_t::node_added, _1, n));
+    for(auto& strategy : strategies_)
+        strategy.node_added(n);
+
 }
 
 void viewer_context_t::node_released(node_t* n)
 {
-    boost::range::for_each(strategies_, boost::bind(&viewer_strategy_t::node_released, _1, n));
+    for(auto& strategy : strategies_)
+        strategy.node_released(n);
 }
 
 void viewer_context_t::set_active_node(node_t* n)
@@ -209,7 +209,10 @@ void viewer_context_t::initializeGL()
     {
         test_gl_extensions();
         display_lut_.reset(new ocio::gl_lut3d_t());
-        boost::range::for_each(strategies_, boost::bind(&viewer_strategy_t::init, _1));
+
+        for(auto& strategy : strategies_)
+            strategy.init();
+
         strategy().begin_active_view();
         first_time_ = false;
     }
@@ -222,7 +225,8 @@ void viewer_context_t::initializeGL()
 
 void viewer_context_t::resizeGL(int w, int h)
 {
-    boost::range::for_each(strategies_, boost::bind(&viewer_strategy_t::resize, _1, w, h));
+    for(auto& strategy : strategies_)
+        strategy.resize(w, h);
 }
 
 void viewer_context_t::paintGL() { strategy().paint(); }
@@ -279,7 +283,8 @@ void viewer_context_t::test_gl_extensions()
         app().fatal_error("Video card not supported: Not enough texture units");
 
     // let each implementation test other extensions
-    boost::range::for_each(strategies_, boost::bind(&viewer_strategy_t::test_gl_extensions, _1));
+    for(auto& strategy : strategies_)
+        strategy.test_gl_extensions();
 }
 
 // utils

@@ -5,7 +5,6 @@
 #include <ramen/nodes/image/roto/roto_node.hpp>
 
 #include <boost/bind.hpp>
-#include <boost/range/algorithm/for_each.hpp>
 
 #include <cassert>
 
@@ -131,7 +130,9 @@ void roto_node_t::do_create_params()
 void roto_node_t::for_each_param(const boost::function<void(param_t*)>& f)
 {
     parameterised_t::for_each_param(f);
-    boost::range::for_each(scene_, boost::bind(&parameterised_t::for_each_param, _1, f));
+
+    for(auto& s : scene_)
+        s.for_each_param(f);
 }
 
 void roto_node_t::do_create_manipulators()
@@ -216,8 +217,11 @@ std::auto_ptr<roto::shape_t> roto_node_t::release_shape(roto::shape_t* s)
 
 void roto_node_t::deselect_all()
 {
-    boost::range::for_each(scene_, boost::bind(&roto::shape_t::select, _1, false));
-    boost::range::for_each(scene_, boost::bind(&roto::shape_t::deselect_all_points, _1));
+    for(const auto& s : scene_)
+    {
+        s.select(false);
+        s.deselect_all_points();
+    }
 }
 
 roto::shape_t* roto_node_t::selected()
