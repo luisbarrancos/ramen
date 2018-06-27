@@ -52,8 +52,8 @@ node_t::node_t(const node_t& other)
 , inputs_(other.inputs_)
 , outputs_(other.outputs_)
 {
-    for ( auto& output : outputs_ )
-        output.set_parent_node( this ) ;
+    for (auto& output : outputs_)
+        output.set_parent_node(this);
 
     flags_       = other.flags_;
     loc_         = other.loc_;
@@ -492,20 +492,19 @@ const char* node_t::help_string() const
 void node_t::convert_relative_paths(const boost::filesystem::path& old_base,
                                     const boost::filesystem::path& new_base)
 {
-    for(auto& param : param_set() )
+    for (auto& param : param_set())
         param.convert_relative_paths(old_base, new_base);
-
 }
 
 void node_t::make_paths_absolute()
 {
-    for(auto& param : param_set() )
+    for (auto& param : param_set())
         param.make_paths_absolute();
 }
 
 void node_t::make_paths_relative()
 {
-    for(auto& param : param_set() )
+    for (auto& param : param_set())
         param.make_paths_relative();
 }
 

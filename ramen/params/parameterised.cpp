@@ -38,7 +38,7 @@ void parameterised_t::create_params()
 {
     do_create_params();
 
-    for(auto& p : param_set())
+    for (auto& p : param_set())
         p.init();
 }
 
@@ -152,7 +152,7 @@ void parameterised_t::create_tracks(anim::track_t* root)
 
 void parameterised_t::set_frame(float f)
 {
-    for(auto& p : param_set())
+    for (auto& p : param_set())
         p.set_frame(f);
 
     do_set_frame(f);
@@ -160,13 +160,13 @@ void parameterised_t::set_frame(float f)
 
 void parameterised_t::evaluate_params(float frame)
 {
-    for(auto& p : param_set())
+    for (auto& p : param_set())
         p.evaluate(frame);
 }
 
 void parameterised_t::update_widgets()
 {
-    for(auto& p : param_set())
+    for (auto& p : param_set())
         p.update_widgets();
 
     do_update_widgets();

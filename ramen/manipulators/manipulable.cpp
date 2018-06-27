@@ -21,7 +21,7 @@ void manipulable_t::do_create_manipulators() {}
 void manipulable_t::draw_overlay(const ui::paint_event_t& event) const { do_draw_overlay(event); }
 void manipulable_t::do_draw_overlay(const ui::paint_event_t& event) const
 {
-    for(const auto& m : manipulators())
+    for (const auto& m : manipulators())
         m.draw_overlay(event);
 }
 
@@ -65,7 +65,7 @@ void manipulable_t::mouse_enter_event(const ui::mouse_enter_event_t& event)
 }
 void manipulable_t::do_mouse_enter_event(const ui::mouse_enter_event_t& event)
 {
-    for(auto& m : manipulators())
+    for (auto& m : manipulators())
         m.mouse_enter_event(event);
 }
 
@@ -75,7 +75,7 @@ void manipulable_t::mouse_leave_event(const ui::mouse_leave_event_t& event)
 }
 void manipulable_t::do_mouse_leave_event(const ui::mouse_leave_event_t& event)
 {
-    for(auto& m : manipulators())
+    for (auto& m : manipulators())
         m.mouse_leave_event(event);
 }
 
@@ -107,7 +107,7 @@ void manipulable_t::mouse_move_event(const ui::mouse_move_event_t& event)
 
 void manipulable_t::do_mouse_move_event(const ui::mouse_move_event_t& event)
 {
-    for(auto& m : manipulators())
+    for (auto& m : manipulators())
         m.mouse_move_event(event);
 }
 

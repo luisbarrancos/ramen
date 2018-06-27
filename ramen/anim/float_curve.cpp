@@ -22,7 +22,6 @@ namespace ramen
 {
 namespace anim
 {
-
 float_curve_t::float_curve_t()
 : curve_t<float_key_t>()
 {
@@ -283,7 +282,7 @@ std::string float_curve_t::str() const
     std::stringstream s;
     s << extrapolation();
 
-    for(auto& key: keys())
+    for (auto& key : keys())
         key.str(s);
 
     return s.str();
@@ -319,7 +318,7 @@ void float_curve_t::write(serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "keys" << YAML::Value;
     out.begin_seq();
 
-    for(auto& key: keys())
+    for (auto& key : keys())
         key.write(out);
 
     out.end_seq();

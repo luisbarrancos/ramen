@@ -83,14 +83,13 @@ void viewer_context_t::set_autoupdate(bool b)
 
 void viewer_context_t::node_added(node_t* n)
 {
-    for(auto& strategy : strategies_)
+    for (auto& strategy : strategies_)
         strategy.node_added(n);
-
 }
 
 void viewer_context_t::node_released(node_t* n)
 {
-    for(auto& strategy : strategies_)
+    for (auto& strategy : strategies_)
         strategy.node_released(n);
 }
 
@@ -210,7 +209,7 @@ void viewer_context_t::initializeGL()
         test_gl_extensions();
         display_lut_.reset(new ocio::gl_lut3d_t());
 
-        for(auto& strategy : strategies_)
+        for (auto& strategy : strategies_)
             strategy.init();
 
         strategy().begin_active_view();
@@ -225,7 +224,7 @@ void viewer_context_t::initializeGL()
 
 void viewer_context_t::resizeGL(int w, int h)
 {
-    for(auto& strategy : strategies_)
+    for (auto& strategy : strategies_)
         strategy.resize(w, h);
 }
 
@@ -283,7 +282,7 @@ void viewer_context_t::test_gl_extensions()
         app().fatal_error("Video card not supported: Not enough texture units");
 
     // let each implementation test other extensions
-    for(auto& strategy : strategies_)
+    for (auto& strategy : strategies_)
         strategy.test_gl_extensions();
 }
 

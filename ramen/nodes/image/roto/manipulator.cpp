@@ -42,7 +42,7 @@ void manipulator_t::do_draw_overlay(const ui::paint_event_t& event) const
 
     glEnable(GL_MAP1_VERTEX_3);
 
-    for(const auto& m : roto->scene())
+    for (const auto& m : roto->scene())
         manipulator_t::draw_shape(m, event, roto->aspect_ratio(), true);
 
     glDisable(GL_MAP1_VERTEX_3);
@@ -165,7 +165,7 @@ void manipulator_t::draw_axes(const shape_t&           s,
 
 void manipulator_t::draw_control_polygon(const shape_t& s, float pixel_scale)
 {
-    for(auto& t : s.triples())
+    for (auto& t : s.triples())
         manipulator_t::draw_triple(t, s.global_xform(), s.offset(), pixel_scale);
 }
 
