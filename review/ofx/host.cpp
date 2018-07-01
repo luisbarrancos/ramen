@@ -57,7 +57,7 @@ host_impl::host_impl()
     _properties.setStringProperty(
         kOfxImageEffectPropSupportedComponents, kOfxImageComponentRGBA, 0);
     //_properties.setStringProperty( kOfxImageEffectPropSupportedComponents,
-    //kFnOfxImageComponentMotionVectors, 1);
+    // kFnOfxImageComponentMotionVectors, 1);
 
     _properties.setStringProperty(
         kOfxImageEffectPropSupportedContexts, kOfxImageEffectContextGenerator, 0);

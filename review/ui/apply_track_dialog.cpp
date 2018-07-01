@@ -43,7 +43,7 @@ const image::tracker_node_t* apply_track_dialog_t::exec(image::apply_track_mode&
     std::vector<const image::tracker_node_t*> trackers;
     ui_.tracker_combo_->clear();
 
-    for (const node_t& n: app().document().composition().nodes())
+    for (const node_t& n : app().document().composition().nodes())
     {
         const image::tracker_node_t* t = dynamic_cast<const image::tracker_node_t*>(&n);
 
