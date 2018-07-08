@@ -233,7 +233,7 @@ void param_set_t::add_to_hash(hash::generator_t& hash_gen) const
     }
 }
 
-void param_set_t::for_each_param(const boost::function<void(param_t*)>& f)
+void param_set_t::for_each_param(const std::function<void(param_t*)>& f)
 {
     for (auto& p : params_)
         p.apply_function(f);

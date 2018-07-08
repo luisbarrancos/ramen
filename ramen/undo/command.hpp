@@ -5,11 +5,10 @@
 #ifndef RAMEN_UNDO_COMMAND_HPP
 #define RAMEN_UNDO_COMMAND_HPP
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
-
-#include <boost/function.hpp>
 
 namespace ramen
 {
@@ -63,12 +62,12 @@ protected:
 
 /*!
 \ingroup undo
-\brief Generic command that uses boost::functions for undo and redo.
+\brief Generic command that uses std::functions for undo and redo.
 */
 class generic_command_t : public command_t
 {
 public:
-    typedef boost::function<void()> function_type;
+    typedef std::function<void()> function_type;
 
     /*!
      Constructor

@@ -173,7 +173,7 @@ void composite_param_t::do_make_paths_relative()
 }
 
 // util
-void composite_param_t::do_apply_function(const boost::function<void(param_t*)>& f)
+void composite_param_t::do_apply_function(const std::function<void(param_t*)>& f)
 {
     for (auto& p : params())
         p.apply_function(f);

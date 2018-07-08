@@ -85,7 +85,7 @@ public:
     void add_to_hash(hash::generator_t& hash_gen) const;
 
     // util
-    void for_each_param(const boost::function<void(param_t*)>& f);
+    void for_each_param(const std::function<void(param_t*)>& f);
 
     // serialization
     void read(const serialization::yaml_node_t& node);

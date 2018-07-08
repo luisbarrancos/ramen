@@ -131,7 +131,7 @@ param_t& parameterised_t::param(const std::string& identifier)
     return param_set().find(identifier);
 }
 
-void parameterised_t::for_each_param(const boost::function<void(param_t*)>& f)
+void parameterised_t::for_each_param(const std::function<void(param_t*)>& f)
 {
     param_set().for_each_param(f);
 }

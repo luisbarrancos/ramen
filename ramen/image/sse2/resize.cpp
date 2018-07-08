@@ -146,7 +146,7 @@ struct resize_y_fun
         float filter_width = std::max(1.0f, scale_);
         int   filter_area  = filter.filter_area(scale_);
 
-        for (int x = r.begin(); x < r.end(); ++x)
+        for (int x = r.begin(), xe = r.end(); x < xe; ++x)
         {
             image::const_image_view_t::y_iterator src_it(src_.col_begin(x));
             image::image_view_t::y_iterator       dst_it(dst_.col_begin(x));
@@ -210,22 +210,15 @@ void resize(const image::const_image_view_t& src,
             const Imath::V2f&                scale)
 {
     resize_x_fun<Filter> xf(src, src_defined, tmp, tmp_area, center.x, scale.x);
-    resize_y_fun<Filter> yf(tmp,
-                            tmp_area.min.y,
-                            tmp_area.max.y,
-                            dst,
-                            dst_area.min.y,
-                            dst_area.max.y,
-                            center.y,
-                            scale.y);
+    resize_y_fun<Filter> yf(tmp, tmp_area.min.y, tmp_area.max.y, dst, dst_area.min.y, dst_area.max.y, center.y, scale.y);
 
-#ifndef NDEBUG
+    //#ifndef NDEBUG
     xf(tbb::blocked_range<int>(0, tmp.height()));
     yf(tbb::blocked_range<int>(0, dst.width()));
-#else
-    tbb::parallel_for(tbb::blocked_range<int>(0, tmp.height()), xf);
-    tbb::parallel_for(tbb::blocked_range<int>(0, dst.width()), yf);
-#endif
+    //#else
+    //    tbb::parallel_for(tbb::blocked_range<int>(0, tmp.height()), xf);
+    //    tbb::parallel_for(tbb::blocked_range<int>(0, dst.width()), yf);
+    //#endif
 }
 
 /***********************************************************************/

@@ -7,15 +7,12 @@
 
 #include <ramen/ui/viewer/viewer_fwd.hpp>
 
+#include <functional>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <QObject>
-
-#include <map>
-
-#include <boost/function.hpp>
 
 #include <ramen/nodes/node_fwd.hpp>
 

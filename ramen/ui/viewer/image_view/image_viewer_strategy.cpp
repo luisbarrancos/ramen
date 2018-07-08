@@ -901,8 +901,8 @@ Imath::Color4f image_viewer_strategy_t::color_at(int x, int y) const
     return Imath::Color4f(0, 0, 0, 0);
 }
 
-void image_viewer_strategy_t::pick_colors_in_box(
-    const Imath::Box2i& b, boost::function<void(const Imath::Color4f&)> f) const
+void image_viewer_strategy_t::pick_colors_in_box(const Imath::Box2i&                        b,
+                                                 std::function<void(const Imath::Color4f&)> f) const
 {
     Imath::Box2i xbox;
     Imath::V2f   wpos = screen_to_world(b.min);

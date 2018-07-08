@@ -7,14 +7,14 @@
 
 #include <ramen/ui/viewer/viewer_strategy_fwd.hpp>
 
+#include <functional>
+
 #include <QObject>
 #include <QKeyEvent>
 #include <QMouseEvent>
 
 // avoid a moc error, when including boost
 #ifndef QT_MOC_RUN
-#include <boost/function.hpp>
-
 #include <OpenEXR/ImathBox.h>
 #include <OpenEXR/ImathColor.h>
 
@@ -96,8 +96,8 @@ public:
 
     // eyedropper & color picking
     virtual Imath::Color4f color_at(int x, int y) const;
-    virtual void           pick_colors_in_box(const Imath::Box2i&                          b,
-                                              boost::function<void(const Imath::Color4f&)> f) const;
+    virtual void           pick_colors_in_box(const Imath::Box2i&                        b,
+                                              std::function<void(const Imath::Color4f&)> f) const;
 
     // utils
     virtual void frame_rect(const Imath::Box2f& b) const;

@@ -185,7 +185,7 @@ public:
     void write(serialization::yaml_oarchive_t& out) const;
 
     // util
-    void apply_function(const boost::function<void(param_t*)>& f);
+    void apply_function(const std::function<void(param_t*)>& f);
 
     // widgets
     QWidget* create_widgets();
@@ -243,7 +243,7 @@ private:
     virtual void do_write(serialization::yaml_oarchive_t& out) const;
 
     // util
-    virtual void do_apply_function(const boost::function<void(param_t*)>& f);
+    virtual void do_apply_function(const std::function<void(param_t*)>& f);
 
     // widgets
     virtual QWidget* do_create_widgets();

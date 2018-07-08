@@ -209,13 +209,13 @@ void param_t::make_paths_relative() { do_make_paths_relative(); }
 void param_t::do_make_paths_relative() {}
 
 // util
-void param_t::apply_function(const boost::function<void(param_t*)>& f)
+void param_t::apply_function(const std::function<void(param_t*)>& f)
 {
     f(this);
     do_apply_function(f);
 }
 
-void param_t::do_apply_function(const boost::function<void(param_t*)>& f) {}
+void param_t::do_apply_function(const std::function<void(param_t*)>& f) {}
 
 // serialization
 void param_t::read(const serialization::yaml_node_t& in) { do_read(in); }

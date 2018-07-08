@@ -9,9 +9,8 @@
 
 #include <ramen/nodes/node_fwd.hpp>
 
+#include <functional>
 #include <string>
-
-#include <boost/function.hpp>
 
 namespace ramen
 {

@@ -7,7 +7,7 @@
 
 #include <ramen/ui/compview/composition_view_fwd.hpp>
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include <QWidget>
 #include <QFont>
@@ -112,8 +112,8 @@ private:
     bool connect_mode_;
     bool box_pick_mode_;
 
-    pick_result_t                       last_pick_;
-    boost::function<void(QMouseEvent*)> drag_handler_, release_handler_;
+    pick_result_t                     last_pick_;
+    std::function<void(QMouseEvent*)> drag_handler_, release_handler_;
 
     composition_view_layout_t layout_;
 };

@@ -3,6 +3,7 @@
 #include <ramen/render/render_thread.hpp>
 
 #include <cassert>
+#include <functional>
 #include <thread>
 
 #include <boost/bind.hpp>
@@ -35,7 +36,7 @@ struct render_thread_t::impl
         thread.join();
     }
 
-    boost::unique_future<bool>& run_function(const boost::function<void()>& f)
+    boost::unique_future<bool>& run_function(const std::function<void()>& f)
     {
         assert(!do_work && "render_thread_t is not reentrant");
         boost::unique_lock<boost::mutex> lock(mutex);
@@ -71,7 +72,7 @@ private:
         }
     }
 
-    bool call_fun(const boost::function<void()>& f)
+    bool call_fun(const std::function<void()>& f)
     {
         f();
         return !cancel;

@@ -49,7 +49,7 @@ public:
     void           selection_changed();
 
     // params
-    void for_each_param(const boost::function<void(param_t*)>& f) override;
+    void for_each_param(const std::function<void(param_t*)>& f) override;
 
 protected:
     roto_node_t(const roto_node_t& other);

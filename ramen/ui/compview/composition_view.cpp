@@ -229,8 +229,8 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
 {
     event->accept();
 
-    drag_handler_    = boost::function<void(QMouseEvent*)>();
-    release_handler_ = boost::function<void(QMouseEvent*)>();
+    drag_handler_    = std::function<void(QMouseEvent*)>();
+    release_handler_ = std::function<void(QMouseEvent*)>();
     connect_mode_    = false;
     box_pick_mode_   = false;
 

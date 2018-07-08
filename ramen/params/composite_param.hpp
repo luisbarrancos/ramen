@@ -75,7 +75,7 @@ private:
     void do_make_paths_relative() override;
 
     // util
-    void do_apply_function(const boost::function<void(param_t*)>& f) override;
+    void do_apply_function(const std::function<void(param_t*)>& f) override;
 
     // serialization
     virtual void do_read(serialization::yaml_iarchive_t& node);

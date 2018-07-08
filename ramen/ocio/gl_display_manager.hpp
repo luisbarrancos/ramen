@@ -5,11 +5,11 @@
 #ifndef RAMEN_OCIO_GL_DISPLAY_MANAGER_HPP
 #define RAMEN_OCIO_GL_DISPLAY_MANAGER_HPP
 
+#include <functional>
+#include <memory>
 #include <utility>
 
 #include <boost/noncopyable.hpp>
-#include <memory>
-#include <boost/function.hpp>
 
 #include <OpenEXR/ImathColor.h>
 
@@ -24,7 +24,7 @@ namespace ocio
 class gl_display_manager_t : boost::noncopyable
 {
 public:
-    typedef boost::function<std::pair<std::string, std::string>(int)> get_context_callback_t;
+    typedef std::function<std::pair<std::string, std::string>(int)> get_context_callback_t;
 
     enum view_channels_t
     {

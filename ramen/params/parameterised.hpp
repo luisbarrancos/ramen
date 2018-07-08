@@ -105,7 +105,7 @@ public:
     virtual void param_edit_finished() = 0;
 
     /// Calls a function f for each param.
-    virtual void for_each_param(const boost::function<void(param_t*)>& f);
+    virtual void for_each_param(const std::function<void(param_t*)>& f);
 
     /// Creates anim tracks for this parameterised and adds them to root.
     void create_tracks(anim::track_t* root);

@@ -127,7 +127,7 @@ void roto_node_t::do_create_params()
     selection_changed();
 }
 
-void roto_node_t::for_each_param(const boost::function<void(param_t*)>& f)
+void roto_node_t::for_each_param(const std::function<void(param_t*)>& f)
 {
     parameterised_t::for_each_param(f);
 

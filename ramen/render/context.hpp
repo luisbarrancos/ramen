@@ -9,7 +9,7 @@
 
 #include <ramen/image/format.hpp>
 
-#include <boost/function.hpp>
+#include <functional>
 
 #include <ramen/app/composition_fwd.hpp>
 #include <ramen/nodes/node_fwd.hpp>
@@ -52,8 +52,8 @@ struct RAMEN_API context_t
     int   motion_blur_extra_samples;
     float motion_blur_shutter_factor;
 
-    boost::function<bool()> cancel;
-    util::error_log_t*      error_log;
+    std::function<bool()> cancel;
+    util::error_log_t*    error_log;
 
 private:
     static bool default_cancel();

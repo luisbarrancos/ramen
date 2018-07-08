@@ -7,6 +7,8 @@
 
 #include <ramen/nodes/image/roto/tool.hpp>
 
+#include <memory>
+
 #include <ramen/nodes/image/roto/shape_fwd.hpp>
 #include <ramen/nodes/image/roto/triple.hpp>
 

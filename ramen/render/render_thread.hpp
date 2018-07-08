@@ -3,7 +3,8 @@
 #ifndef RAMEN_RENDER_RENDER_THREAD_HPP
 #define RAMEN_RENDER_RENDER_THREAD_HPP
 
-#include <boost/function.hpp>
+#include <functional>
+
 #include <boost/thread.hpp>
 
 #include <ramen/render/image_node_renderer.hpp>
