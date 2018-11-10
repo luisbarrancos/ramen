@@ -7,7 +7,9 @@
 
 #include <QWidget>
 
+#ifndef Q_MOC_RUN
 #include <ramen/image/format.hpp>
+#endif
 
 class QComboBox;
 class QSpinBox;

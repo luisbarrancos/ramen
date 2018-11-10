@@ -15,6 +15,7 @@
 #include <QMainWindow>
 #include <QDockWidget>
 
+#ifndef Q_MOC_RUN
 #include <boost/filesystem/fstream.hpp>
 
 #include <ramen/core/memory.hpp>
@@ -25,6 +26,7 @@
 #include <ramen/ui/compview/composition_view_fwd.hpp>
 #include <ramen/ui/time_controls_fwd.hpp>
 #include <ramen/ui/widgets/time_slider_fwd.hpp>
+#endif
 
 class QAction;
 class QMenu;

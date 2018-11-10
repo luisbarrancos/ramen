@@ -7,7 +7,9 @@
 
 #include <ramen/params/param.hpp>
 
+#ifndef Q_MOC_RUN
 #include <boost/signals2/connection.hpp>
+#endif
 
 #include <QPointer>
 

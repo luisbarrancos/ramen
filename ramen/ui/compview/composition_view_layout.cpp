@@ -99,9 +99,7 @@ void composition_view_layout_t::do_place_node(node_t* n, const Imath::V2f& p) co
     n->set_location(Imath::V2f(0, 0));
     Imath::V2f size = get_node_bbox(n).max;
 
-    if (box_intersects_any_node(Imath::Box2f(q, q + size)))
-    {
-    }
+    if (box_intersects_any_node(Imath::Box2f(q, q + size))) {}
 
     n->set_location(q);
 }

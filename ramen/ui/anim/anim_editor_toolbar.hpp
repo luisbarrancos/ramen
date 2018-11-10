@@ -8,7 +8,7 @@
 #include <QWidget>
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <ramen/ui/anim/anim_editor_toolbar_fwd.hpp>
 #include <ramen/ui/anim/anim_editor_tool.hpp>
 #include <ramen/ui/widgets/double_spinbox_fwd.hpp>

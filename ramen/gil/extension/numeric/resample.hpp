@@ -48,11 +48,10 @@ template<typename Sampler,  // Models SamplerConcept
          typename SrcView,  // Models RandomAccess2DImageViewConcept
          typename DstView,  // Models MutableRandomAccess2DImageViewConcept
          typename MapFn>    // Models MappingFunctionConcept
-void
-resample_pixels(const SrcView& src_view,
-                const DstView& dst_view,
-                const MapFn&   dst_to_src,
-                Sampler        sampler = Sampler())
+void resample_pixels(const SrcView& src_view,
+                     const DstView& dst_view,
+                     const MapFn&   dst_to_src,
+                     Sampler        sampler = Sampler())
 {
     typename DstView::point_t                   dst_dims = dst_view.dimensions();
     typename DstView::point_t                   dst_p;

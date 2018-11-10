@@ -13,7 +13,7 @@
 #include <QObject>
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <memory>
 
 #include <ramen/nodes/node_fwd.hpp>

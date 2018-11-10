@@ -7,6 +7,7 @@
 
 #include <QWidget>
 
+#ifndef Q_MOC_RUN
 #include <vector>
 
 #include <boost/noncopyable.hpp>
@@ -14,6 +15,7 @@
 #include <ramen/ui/viewport.hpp>
 
 #include <ramen/ui/anim/edit_keys_visitors.hpp>
+#endif
 
 class QAction;
 class QPainter;

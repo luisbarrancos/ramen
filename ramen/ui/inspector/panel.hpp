@@ -7,7 +7,9 @@
 
 #include <ramen/ui/inspector/panel_fwd.hpp>
 
+#ifndef Q_MOC_RUN
 #include <boost/signals2/connection.hpp>
+#endif
 
 #include <QObject>
 

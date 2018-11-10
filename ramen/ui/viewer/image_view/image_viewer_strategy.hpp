@@ -8,7 +8,7 @@
 #include <ramen/ui/viewer/viewer_strategy.hpp>
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <memory>
 
 #include <ramen/nodes/image_node.hpp>

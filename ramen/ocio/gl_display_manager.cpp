@@ -25,15 +25,15 @@ static const char* ocio_display_shader_source
         "uniform float alpha;"
         "void main( void)"
         "{"
-        "vec4 col = texture2D( tex, gl_TexCoord[0].st);"
-        "vec4 acol = vec4( col.a, col.a, col.a, col.a);"
-        "vec4 expv = vec4( exposure, exposure, exposure, 1);"
+        "vec4 col = texture2D(tex, gl_TexCoord[0].st);"
+        "vec4 acol = vec4(col.a, col.a, col.a, col.a);"
+        "vec4 expv = vec4(exposure, exposure, exposure, 1);"
         "col *= expv;"
-        "col = apply_lut( col, lut3d) * channel_mask;"
-        "vec4 gammav = vec4( gamma, gamma, gamma, 1);"
-        "col = pow( col, gammav);"
-        "col = (col * ( 1 - alpha)) + ( alpha * acol);"
-        "gl_FragColor = max( col, vec4( 0, 0, 0, 0));"
+        "col = apply_lut(col, lut3d) * channel_mask;"
+        "vec4 gammav = vec4(gamma, gamma, gamma, 1);"
+        "col = pow(col, gammav);"
+        "col = (col * (1.0 - alpha)) + (alpha * acol);"
+        "gl_FragColor = max( col, vec4(0.0, 0.0, 0.0, 0.0));"
         "}" };
 
 }  // unnamed

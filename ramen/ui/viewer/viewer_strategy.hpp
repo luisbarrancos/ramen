@@ -14,7 +14,7 @@
 #include <QMouseEvent>
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <OpenEXR/ImathBox.h>
 #include <OpenEXR/ImathColor.h>
 

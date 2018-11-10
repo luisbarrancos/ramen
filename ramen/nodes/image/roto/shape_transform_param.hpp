@@ -5,7 +5,9 @@
 #ifndef RAMEN_SHAPE_TRANSFORM_PARAM_HPP
 #define RAMEN_SHAPE_TRANSFORM_PARAM_HPP
 
+#ifndef Q_MOC_RUN
 #include <ramen/params/composite_param.hpp>
+#endif
 
 #include <OpenEXR/ImathMatrix.h>
 

@@ -138,8 +138,8 @@ protected:
     /*!
         \brief Customization hook for manipulable_t::mouse_release_event.
         Implement in subclasses if you need to handle this event class.
-    */ virtual void
-    do_mouse_release_event(const ui::mouse_release_event_t& event);
+    */
+    virtual void do_mouse_release_event(const ui::mouse_release_event_t& event);
 
 private:
     /*!

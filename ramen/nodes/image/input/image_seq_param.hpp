@@ -7,7 +7,9 @@
 
 #include <ramen/params/static_param.hpp>
 
+#ifndef Q_MOC_RUN
 #include <boost/signals2/signal.hpp>
+#endif
 
 #include <QPointer>
 

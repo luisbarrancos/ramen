@@ -10,7 +10,9 @@
 #include <string>
 #include <vector>
 
+#ifndef Q_MOC_RUN
 #include <boost/assign/list_of.hpp>
+#endif
 
 #include <QPointer>
 

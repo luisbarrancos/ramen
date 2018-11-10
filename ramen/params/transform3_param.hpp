@@ -6,7 +6,7 @@
 #define RAMEN_TRANSFORM3_PARAM_HPP
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <ramen/params/composite_param.hpp>
 
 #include <OpenEXR/ImathMatrix.h>

@@ -107,9 +107,7 @@ ADD_DEFINITIONS(-DBOOST_FILESYSTEM_VERSION=3)
 ADD_DEFINITIONS(-DBOOST_FILESYSTEM_NO_DEPRECATED)
 
 ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
-
-# looks like we need to set this manually...
-SET(MOC_EXTRA_ARGS -DQT_MOC_RUN)
+SET(MOC_EXTRA_ARGS )
 
 ######################################################
 # includes

@@ -11,7 +11,9 @@
 
 #include <memory>
 
+#ifndef Q_MOC_RUN
 #include <boost/ptr_container/ptr_vector.hpp>
+#endif
 
 #include <ramen/undo/command.hpp>
 

@@ -210,7 +210,14 @@ void resize(const image::const_image_view_t& src,
             const Imath::V2f&                scale)
 {
     resize_x_fun<Filter> xf(src, src_defined, tmp, tmp_area, center.x, scale.x);
-    resize_y_fun<Filter> yf(tmp, tmp_area.min.y, tmp_area.max.y, dst, dst_area.min.y, dst_area.max.y, center.y, scale.y);
+    resize_y_fun<Filter> yf(tmp,
+                            tmp_area.min.y,
+                            tmp_area.max.y,
+                            dst,
+                            dst_area.min.y,
+                            dst_area.max.y,
+                            center.y,
+                            scale.y);
 
     //#ifndef NDEBUG
     xf(tbb::blocked_range<int>(0, tmp.height()));

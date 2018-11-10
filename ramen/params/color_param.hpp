@@ -12,10 +12,12 @@
 #include <QPointer>
 #include <QToolButton>
 
+#ifndef Q_MOC_RUN
 #include <ramen/ui/widgets/color.hpp>
 #include <ramen/ui/widgets/param_spinbox_fwd.hpp>
 #include <ramen/ui/widgets/color_button_fwd.hpp>
 #include <ramen/ui/widgets/eyedropper_button_fwd.hpp>
+#endif
 
 namespace ramen
 {

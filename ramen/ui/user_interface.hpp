@@ -10,7 +10,7 @@
 #include <QFont>
 
 // avoid a moc error, when including boost
-#ifndef QT_MOC_RUN
+#ifndef Q_MOC_RUN
 #include <ramen/config.hpp>
 
 #include <ramen/ui/user_interface_fwd.hpp>

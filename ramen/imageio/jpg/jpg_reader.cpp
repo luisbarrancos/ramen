@@ -6,7 +6,8 @@
 
 #include <stdio.h>
 
-extern "C" {
+extern "C"
+{
 #include <jpeglib.h>
 }
 

@@ -5,6 +5,7 @@
 #ifndef RAMEN_ANIMATED_PARAM_HPP
 #define RAMEN_ANIMATED_PARAM_HPP
 
+#ifndef Q_MOC_RUN
 #include <ramen/params/animated_param_fwd.hpp>
 
 #include <ramen/params/param.hpp>
@@ -12,6 +13,7 @@
 #include <boost/tuple/tuple.hpp>
 
 #include <ramen/anim/float_curve.hpp>
+#endif
 #include <ramen/anim/any_curve.hpp>
 
 #include <ramen/serialization/archive_fwd.hpp>
