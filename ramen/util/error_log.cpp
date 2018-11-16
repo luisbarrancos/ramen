@@ -8,7 +8,7 @@ namespace ramen
 {
 namespace util
 {
-error_log_t::error_log_t() {}
+error_log_t::error_log_t() = default;
 
 std::stringstream& error_log_t::error_stream() { return error_stream_; }
 

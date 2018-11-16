@@ -16,7 +16,7 @@ double repeat_time(double t, double start_time, double end_time)
 {
     double ipart;
     double new_time = std::fabs(
-        std::modf((double) (t - start_time) / (end_time - start_time), &ipart));
+        std::modf((t - start_time) / (end_time - start_time), &ipart));
 
     if (t < start_time)
         new_time = 1.0 - new_time;

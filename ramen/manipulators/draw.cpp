@@ -175,7 +175,7 @@ void draw_bezier_curve(
 
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i <= steps; ++i)
-        glEvalCoord1f((GLfloat) i / (float) steps);
+        glEvalCoord1f(static_cast<GLfloat>(i) / static_cast<GLfloat>(steps));
     glEnd();
 
     ctrlpoints[0][0] = a.x;
@@ -199,7 +199,7 @@ void draw_bezier_curve(
 
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i <= steps; ++i)
-        glEvalCoord1f((GLfloat) i / (float) steps);
+        glEvalCoord1f(static_cast<GLfloat>(i) / static_cast<float>(steps));
     glEnd();
 }
 
@@ -239,9 +239,9 @@ void draw_xy_axes(
     float                 pixel_scale)
 {
     float cs = Imath::Math<float>::cos(
-        (double) angle * math::constants<double>::deg2rad());
+        static_cast<double>(angle) * math::constants<double>::deg2rad());
     float ss = Imath::Math<float>::sin(
-        (double) angle * math::constants<double>::deg2rad());
+        static_cast<double>(angle) * math::constants<double>::deg2rad());
     draw_xy_axes(
         c,
         Imath::V2f(cs, ss) * xsize,

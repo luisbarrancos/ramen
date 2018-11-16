@@ -29,13 +29,13 @@ void gl_color(const Imath::Color4f& c) { gl_color4f(c.r, c.g, c.b, c.a); }
 
 void gl_mult_matrix(const Imath::M44f& m)
 {
-    glMultMatrixf((GLfloat*) m[0]);
+    glMultMatrixf(static_cast<const GLfloat*>(m[0]));
     check_gl_errors();
 }
 
 void gl_load_matrix(const Imath::M44f& m)
 {
-    glLoadMatrixf((GLfloat*) m[0]);
+    glLoadMatrixf(static_cast<const GLfloat*>(m[0]));
     check_gl_errors();
 }
 

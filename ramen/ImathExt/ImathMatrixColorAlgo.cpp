@@ -212,7 +212,7 @@ void huerotatemat(float mat[4][4], float rot)
     float zrs, zrc;
     float zsx, zsy;
 
-    identmat((float*) mmat);
+    identmat(reinterpret_cast<float*>(mmat));
 
     /* rotate the grey vector into positive Z */
     mag = sqrt(2.0);
@@ -250,7 +250,7 @@ void huerotatemat(float mat[4][4], float rot)
 Imath::M44f hueRotationMatrix(float angle)
 {
     float m[4][4];
-    identmat((float*) m);
+    identmat(reinterpret_cast<float*>(m));
     huerotatemat(m, angle);
     return Imath::M44f(m);
 }

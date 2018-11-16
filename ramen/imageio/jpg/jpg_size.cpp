@@ -215,7 +215,7 @@ bool read_2_bytes(unsigned int* res)
     c2 = NEXTBYTE();
     if (c2 == EOF)
         return false;
-    *res = (((unsigned int) c1) << 8) + ((unsigned int) c2);
+    *res = ((static_cast<unsigned int>(c1)) << 8) + (static_cast<unsigned int>(c2));
     return true;
 }
 
@@ -261,7 +261,7 @@ bool process_SOFn(int& width, int& height)
         !read_2_bytes(&image_height) || !read_2_bytes(&image_width))
         return false;
 
-    width = (int) image_width;
-    height = (int) image_height;
+    width = static_cast<int>(image_width);
+    height = static_cast<int>(image_height);
     return true;
 }

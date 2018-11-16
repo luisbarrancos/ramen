@@ -154,14 +154,14 @@ float perlin_t::do_noise3(float vec[3]) const
 
 void perlin_t::normalize2(float v[2]) const
 {
-    float s = std::sqrt((double) v[0] * v[0] + v[1] * v[1]);
+    float s = std::sqrt(static_cast<double>(v[0]) * v[0] + v[1] * v[1]);
     v[0] = v[0] / s;
     v[1] = v[1] / s;
 }
 
 void perlin_t::normalize3(float v[3]) const
 {
-    float s = std::sqrt((double) v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+    float s = std::sqrt(static_cast<double>(v[0]) * v[0] + v[1] * v[1] + v[2] * v[2]);
     v[0] = v[0] / s;
     v[1] = v[1] / s;
     v[2] = v[2] / s;
@@ -177,15 +177,15 @@ void perlin_t::init(int seed)
     {
         p[i] = i;
 
-        g1[i] = (float) ((rng.nexti() % (B + B)) - B) / B;
+        g1[i] = static_cast<float>((rng.nexti() % (B + B)) - B) / B;
 
         for (j = 0; j < 2; j++)
-            g2[i][j] = (float) ((rng.nexti() % (B + B)) - B) / B;
+            g2[i][j] = static_cast<float>((rng.nexti() % (B + B)) - B) / B;
 
         normalize2(g2[i]);
 
         for (j = 0; j < 3; j++)
-            g3[i][j] = (float) ((rng.nexti() % (B + B)) - B) / B;
+            g3[i][j] = static_cast<float>((rng.nexti() % (B + B)) - B) / B;
 
         normalize3(g3[i]);
     }

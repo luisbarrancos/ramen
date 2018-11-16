@@ -133,7 +133,7 @@ float simplex_noise_generator_t::noise(float x, float y)
     int   i = math::fast_float_floor(xs);
     int   j = math::fast_float_floor(ys);
 
-    float t = (float) (i + j) * G2;
+    float t = static_cast<float>(i + j) * G2;
     float X0 = i - t; /* Unskew the cell origin back to (x,y) space */
     float Y0 = j - t;
     float x0 = x - X0; /* The x,y distances from the cell origin */
@@ -224,7 +224,7 @@ float simplex_noise_generator_t::noise(float x, float y, float z)
     int   j = math::fast_float_floor(ys);
     int   k = math::fast_float_floor(zs);
 
-    float t = (float) (i + j + k) * G3;
+    float t = static_cast<float>(i + j + k) * G3;
     float X0 = i - t; /* Unskew the cell origin back to (x,y,z) space */
     float Y0 = j - t;
     float Z0 = k - t;

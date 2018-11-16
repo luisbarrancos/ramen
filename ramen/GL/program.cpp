@@ -36,8 +36,8 @@ void program_t::compile(const char* src0, const char* src1)
         gl_detach_shader(program_, shader_);
 
     const GLchar* shader_src[2];
-    shader_src[0] = (GLchar*) src0;
-    shader_src[1] = (GLchar*) src1;
+    shader_src[0] = static_cast<const GLchar*>(src0);
+    shader_src[1] = static_cast<const GLchar*>(src1);
 
     /*
     #ifndef NDEBUG

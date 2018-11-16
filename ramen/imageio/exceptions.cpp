@@ -8,13 +8,13 @@ namespace ramen
 {
 namespace imageio
 {
-exception::exception() {}
+exception::exception() = default;
 exception::exception(const std::string& msg)
   : what_(msg)
 {
 }
 
-const char* exception::what() const throw()
+const char* exception::what() const noexcept
 {
     if (!what_.empty())
         return what_.c_str();

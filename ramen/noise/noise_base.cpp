@@ -7,7 +7,7 @@ namespace ramen
 {
 namespace noise
 {
-noise_base_t::noise_base_t() {}
+noise_base_t::noise_base_t() = default;
 
 }  // namespace noise
 }  // namespace ramen
