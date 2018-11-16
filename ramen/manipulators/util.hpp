@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MANIPULATORS_UTIL_HPP
-#define RAMEN_MANIPULATORS_UTIL_HPP
+#pragma once
 
 #include <OpenEXR/ImathVec.h>
 
@@ -16,4 +15,3 @@ Imath::V2f rotate_point(const Imath::V2f& center, const Imath::V2f& p, float ang
 }  // namespace
 }  // namespace
 
-#endif

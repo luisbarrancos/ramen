@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_INVERT_HPP
-#define RAMEN_IMAGE_GENERIC_INVERT_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -118,4 +117,3 @@ void invert_channel(const const_channel_view_t& src, const channel_view_t& dst)
 }  // namespace
 }  // namespace
 
-#endif /* _INVERT_HPP */

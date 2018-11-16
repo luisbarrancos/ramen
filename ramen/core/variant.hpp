@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CORE_VARIANT_HPP
-#define RAMEN_CORE_VARIANT_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -257,4 +256,3 @@ RAMEN_API std::ostream& operator<<(std::ostream& os, const variant_t& x);
 }  // core
 }  // ramen
 
-#endif

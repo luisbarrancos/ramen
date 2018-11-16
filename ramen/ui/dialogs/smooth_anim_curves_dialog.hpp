@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_SMOOTH_ANIM_CURVES_DIALOG_HPP
-#define RAMEN_SMOOTH_ANIM_CURVES_DIALOG_HPP
+#pragma once
 
 
 #include <QDialog>
@@ -32,4 +31,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

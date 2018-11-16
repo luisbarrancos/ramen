@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_OCIO_GL_DISPLAY_MANAGER_HPP
-#define RAMEN_OCIO_GL_DISPLAY_MANAGER_HPP
+#pragma once
 
 #include <functional>
 #include <memory>
@@ -82,4 +81,3 @@ private:
 }  // ocio
 }  // ramen
 
-#endif

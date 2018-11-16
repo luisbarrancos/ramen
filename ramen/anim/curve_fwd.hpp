@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_CURVE_FWD_HPP
-#define RAMEN_ANIM_CURVE_FWD_HPP
+#pragma once
 
 #include <OpenEXR/ImathVec.h>
 
@@ -29,4 +28,3 @@ typedef shape_curve_t<Imath::V3f> shape_curve3f_t;
 }  // namespace
 }  // namespace
 
-#endif

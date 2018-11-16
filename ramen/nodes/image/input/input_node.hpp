@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_INPUT_NODE_HPP
-#define RAMEN_IMAGE_INPUT_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image_node.hpp>
 
@@ -105,4 +104,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

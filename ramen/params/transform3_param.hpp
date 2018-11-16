@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_TRANSFORM3_PARAM_HPP
-#define RAMEN_TRANSFORM3_PARAM_HPP
+#pragma once
 
 // avoid a moc error, when including boost
 #ifndef Q_MOC_RUN
@@ -64,4 +63,3 @@ private:
 
 }  // namespace
 
-#endif

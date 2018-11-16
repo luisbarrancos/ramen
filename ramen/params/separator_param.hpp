@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_SEPARATOR_PARAM_HPP
-#define RAMEN_SEPARATOR_PARAM_HPP
+#pragma once
 
 #include <ramen/params/param.hpp>
 
@@ -27,4 +26,3 @@ private:
 
 }  // namespace
 
-#endif

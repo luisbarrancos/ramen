@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UTIL_ERROR_LOG_HPP
-#define RAMEN_UTIL_ERROR_LOG_HPP
+#pragma once
 
 #include <sstream>
 
@@ -33,4 +32,3 @@ private:
 }  // util
 }  // ramen
 
-#endif

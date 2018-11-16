@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef HALF_HALF_LUT_HPP
-#define HALF_HALF_LUT_HPP
+#pragma once
 
 #include <boost/scoped_array.hpp>
 
@@ -73,4 +72,3 @@ private:
     boost::scoped_array<half> lut_;
 };
 
-#endif

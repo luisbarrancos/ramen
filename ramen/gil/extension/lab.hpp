@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_LABCOLORSPACE_HPP
-#define GIL_EXTENSION_LABCOLORSPACE_HPP
+#pragma once
 
 #include <cmath>
 
@@ -221,4 +220,3 @@ private:
 }
 }  // namespace boost::gil
 
-#endif

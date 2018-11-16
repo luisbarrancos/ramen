@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_ACCUMULATOR_HPP
-#define RAMEN_IMAGE_ACCUMULATOR_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -52,4 +51,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

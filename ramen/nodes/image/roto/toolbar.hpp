@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ROTO_TOOLBAR_HPP
-#define RAMEN_ROTO_TOOLBAR_HPP
+#pragma once
 
 #include <memory>
 
@@ -49,4 +48,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

@@ -1,8 +1,7 @@
 // This code comes from the procedural texturing an modelling book.
 // Add a proper copyright here.
 
-#ifndef RAMEN_NOISE_PERM_ARRAY_HPP
-#define RAMEN_NOISE_PERM_ARRAY_HPP
+#pragma once
 
 #include <boost/cstdint.hpp>
 
@@ -34,4 +33,3 @@ private:
 }  // noise
 }  // ramen
 
-#endif

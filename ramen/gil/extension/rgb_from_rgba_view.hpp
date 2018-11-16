@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_RGB_FROM_RGBA_VIEW_HPP
-#define GIL_EXTENSION_RGB_FROM_RGBA_VIEW_HPP
+#pragma once
 
 #include <boost/gil/gil_all.hpp>
 
@@ -160,4 +159,3 @@ typename rgb_from_rgba_view_type<View>::type rgb_from_rgba_view(const View& src)
 }  // namespace
 }  // namespace
 
-#endif

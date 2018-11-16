@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_UI_WIDGETS_TEXT_EDIT_HPP
-#define RAMEN_UI_WIDGETS_TEXT_EDIT_HPP
+#pragma once
 
 #include <QPlainTextEdit>
 
@@ -27,4 +26,3 @@ Q_SIGNALS:
 }  // ui
 }  // ramen
 
-#endif

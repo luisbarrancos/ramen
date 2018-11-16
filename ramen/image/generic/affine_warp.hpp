@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_AFFINE_WARP_HPP
-#define RAMEN_IMAGE_GENERIC_AFFINE_WARP_HPP
+#pragma once
 
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
@@ -120,4 +119,3 @@ void affine_warp_nearest(const Imath::Box2i&       src_area,
 }  // namespace
 }  // namespace
 
-#endif

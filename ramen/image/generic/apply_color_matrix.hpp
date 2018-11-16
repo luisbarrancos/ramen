@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_APPLY_COLOR_MATRIX_HPP
-#define RAMEN_IMAGE_GENERIC_APPLY_COLOR_MATRIX_HPP
+#pragma once
 
 #include <OpenEXR/ImathMatrix.h>
 
@@ -23,4 +22,3 @@ void apply_color_matrix(const const_image_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

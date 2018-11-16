@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_ANIM_EDIT_KEYS_VISITORS_HPP
-#define RAMEN_UI_ANIM_EDIT_KEYS_VISITORS_HPP
+#pragma once
 
 #include <vector>
 #include <map>
@@ -225,4 +224,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

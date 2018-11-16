@@ -6,8 +6,7 @@
  * in "Graphics Gems IV", Academic Press, 1994
  */
 
-#ifndef RAMEN_GGEMS_CONVEX_OPT_H
-#define RAMEN_GGEMS_CONVEX_OPT_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,4 +20,3 @@ PolygonClass classifyPolygon2(int nvert, float pVert[][2]);
 }
 #endif
 
-#endif

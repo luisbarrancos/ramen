@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_LAYER_MODES_HPP
-#define RAMEN_IMAGE_GENERIC_LAYER_MODES_HPP
+#pragma once
 
 #include <algorithm>
 
@@ -84,4 +83,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

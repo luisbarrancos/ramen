@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_COMPOSITION_VIEW_LAYOUT_HPP
-#define RAMEN_UI_COMPOSITION_VIEW_LAYOUT_HPP
+#pragma once
 
 #include <boost/optional.hpp>
 
@@ -43,4 +42,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

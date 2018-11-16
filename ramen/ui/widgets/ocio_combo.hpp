@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_QR_OCIO_COMBO_HPP
-#define RAMEN_QR_OCIO_COMBO_HPP
+#pragma once
 
 #include <QComboBox>
 
@@ -27,4 +26,3 @@ protected:
 }  // ui
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_ANIM_EDITOR_HPP
-#define RAMEN_UI_ANIM_EDITOR_HPP
+#pragma once
 
 #include <ramen/ui/anim/anim_editor_fwd.hpp>
 
@@ -142,4 +141,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

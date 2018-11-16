@@ -5,8 +5,7 @@
     or a copy at http://stlab.adobe.com/licenses.html)
 */
 
-#ifndef RAMEN_CORE_POLY_COPYABLE_HPP
-#define RAMEN_CORE_POLY_COPYABLE_HPP
+#pragma once
 
 #include <ramen/core/poly.hpp>
 
@@ -60,4 +59,3 @@ typedef poly<copyable> poly_copyable_t;
 }  // core
 }  // ramen
 
-#endif

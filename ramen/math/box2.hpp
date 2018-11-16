@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MATH_BOX2_HPP
-#define RAMEN_MATH_BOX2_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -66,4 +65,3 @@ typedef box2_t<half>   box2h_t;
 }  // math
 }  // ramen
 
-#endif

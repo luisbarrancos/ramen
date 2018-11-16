@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODES_GRAPH_COLOR_HPP
-#define RAMEN_NODES_GRAPH_COLOR_HPP
+#pragma once
 
 namespace ramen
 {
@@ -18,4 +17,3 @@ enum graph_color_t
 
 }  // namespace
 
-#endif

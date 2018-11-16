@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_CURVES_NODE_HPP
-#define RAMEN_IMAGE_CURVES_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image/pointop_node.hpp>
 
@@ -43,4 +42,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

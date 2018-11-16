@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CORE_MEMORY_HPP
-#define RAMEN_CORE_MEMORY_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -156,4 +155,3 @@ T* aligned_ptr(T* p, int alignment)
 }  // core
 }  // ramen
 
-#endif

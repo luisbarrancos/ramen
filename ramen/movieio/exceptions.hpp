@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MOVIEIO_EXCEPTIONS_HPP
-#define RAMEN_MOVIEIO_EXCEPTIONS_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -46,4 +45,3 @@ struct RAMEN_API frame_out_of_bounds : public exception
 }  // movieio
 }  // ramen
 
-#endif

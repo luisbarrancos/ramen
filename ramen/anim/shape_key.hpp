@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_SHAPE_KEY_HPP
-#define RAMEN_SHAPE_KEY_HPP
+#pragma once
 
 #include <vector>
 #include <algorithm>
@@ -129,4 +128,3 @@ typedef shape_key_t<Imath::V3f> shape_key3f_t;
 }  // anim
 }  // ramen
 
-#endif

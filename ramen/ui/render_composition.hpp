@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UI_RENDER_COMPOSITION_HPP
-#define RAMEN_UI_RENDER_COMPOSITION_HPP
+#pragma once
 
 #include <ramen/app/composition_fwd.hpp>
 
@@ -23,4 +22,3 @@ void render_composition(composition_t& comp,
 }  // namespace
 }  // namespace
 
-#endif

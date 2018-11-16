@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MATH_POINT3_HPP
-#define RAMEN_MATH_POINT3_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -127,4 +126,3 @@ typedef point3_t<half>   point3h_t;
 }  // math
 }  // ramen
 
-#endif

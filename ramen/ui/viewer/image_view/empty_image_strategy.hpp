@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_VIEWER_EMPTY_IMAGE_STRATEGY_HPP
-#define RAMEN_UI_VIEWER_EMPTY_IMAGE_STRATEGY_HPP
+#pragma once
 
 #include <ramen/ui/viewer/image_view/image_strategy.hpp>
 
@@ -31,4 +30,3 @@ public:
 }  // ui
 }  // ramen
 
-#endif

@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_SET_MATTE_NODE_HPP
-#define RAMEN_SET_MATTE_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image_node.hpp>
 
@@ -39,4 +38,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

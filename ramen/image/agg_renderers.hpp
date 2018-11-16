@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_AGG_RENDERERS_HPP
-#define RAMEN_AGG_RENDERERS_HPP
+#pragma once
 
 #include <algorithm>
 
@@ -156,4 +155,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

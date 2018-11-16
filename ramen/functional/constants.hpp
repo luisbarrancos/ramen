@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_FUNCTIONAL_CONSTANTS_HPP
-#define RAMEN_FUNCTIONAL_CONSTANTS_HPP
+#pragma once
 
 #include <functional>
 
@@ -29,4 +28,3 @@ struct always_zero
 
 }  // namespace
 
-#endif

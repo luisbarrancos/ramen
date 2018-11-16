@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_VIEWPORT_HPP
-#define RAMEN_VIEWPORT_HPP
+#pragma once
 
 #include <OpenEXR/ImathMatrix.h>
 
@@ -59,4 +58,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

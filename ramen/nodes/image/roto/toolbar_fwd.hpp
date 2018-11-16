@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ROTO_TOOLBAR_FWD_HPP
-#define RAMEN_ROTO_TOOLBAR_FWD_HPP
+#pragma once
 
 namespace ramen
 {
@@ -14,4 +13,3 @@ class toolbar_t;
 }  // namespace
 }  // namespace
 
-#endif

@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_PROCESSING_HPP
-#define RAMEN_IMAGE_PROCESSING_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -389,4 +388,3 @@ extern std::function<void(const boost::gil::gray32fc_view_t&,
 }  // namespace
 }  // namespace
 
-#endif

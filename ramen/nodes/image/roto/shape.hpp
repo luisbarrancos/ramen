@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ROTO_SHAPE_HPP
-#define RAMEN_ROTO_SHAPE_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -287,4 +286,3 @@ RAMEN_API shape_t* new_clone(const shape_t& other);
 }  // roto
 }  // ramen
 
-#endif

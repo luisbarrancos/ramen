@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_TRACK_HPP
-#define RAMEN_ANIM_TRACK_HPP
+#pragma once
 
 #include <string>
 #include <memory>
@@ -117,4 +116,3 @@ void for_each_curve(track_t* t, Fun f)
 }  // namespace
 }  // namespace
 
-#endif

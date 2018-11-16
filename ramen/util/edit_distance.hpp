@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_UTIL_EDIT_DISTANCE_HPP
-#define RAMEN_UTIL_EDIT_DISTANCE_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -45,4 +44,3 @@ private:
 }  // util
 }  // ramen
 
-#endif

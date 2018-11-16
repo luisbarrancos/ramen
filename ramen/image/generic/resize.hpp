@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_RESIZE_HPP
-#define RAMEN_IMAGE_GENERIC_RESIZE_HPP
+#pragma once
 
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
@@ -74,4 +73,3 @@ void resize(const const_image_view_t& src, const image_view_t& dst)
 }  // namespace
 }  // namespace
 
-#endif

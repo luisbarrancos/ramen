@@ -36,8 +36,7 @@
  * Contact: stegu@itn.liu.se
  */
 
-#ifndef RAMEN_NOISE_SIMPLEX_NOISE_HPP
-#define RAMEN_NOISE_SIMPLEX_NOISE_HPP
+#pragma once
 
 #include <ramen/noise/noise_base.hpp>
 
@@ -122,4 +121,3 @@ private:
 }  // noise
 }  // ramen
 
-#endif

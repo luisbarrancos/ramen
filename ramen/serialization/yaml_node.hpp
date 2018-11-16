@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_SERIALIZATION_YAML_NODE_HPP
-#define RAMEN_SERIALIZATION_YAML_NODE_HPP
+#pragma once
 
 #include <sstream>
 
@@ -98,4 +97,3 @@ typedef boost::optional<yaml_node_t> optional_yaml_node_t;
 }  // namespace
 }  // namespace
 
-#endif

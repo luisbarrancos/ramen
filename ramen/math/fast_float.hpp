@@ -32,8 +32,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef RAMEN_MATH_FAST_FLOAT_HPP
-#define RAMEN_MATH_FAST_FLOAT_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -69,4 +68,3 @@ inline int fast_float_ceil(double v) { return fast_float_round(v + RAMEN_DOUBLEM
 }  // math
 }  // ramen
 
-#endif

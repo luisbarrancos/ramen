@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_TBB_ALGO_PARALLEL_TRANSFORM_HPP
-#define GIL_EXTENSION_TBB_ALGO_PARALLEL_TRANSFORM_HPP
+#pragma once
 
 #include "tbb_config.hpp"
 
@@ -58,4 +57,3 @@ GIL_FORCEINLINE void tbb_transform_pixels(const View1& src, const View2& dst, Fu
 }  // namespace
 }  // namespace
 
-#endif

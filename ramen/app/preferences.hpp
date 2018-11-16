@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_PREFERENCES_HPP
-#define RAMEN_PREFERENCES_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -78,4 +77,3 @@ private:
 
 }  // ramen
 
-#endif

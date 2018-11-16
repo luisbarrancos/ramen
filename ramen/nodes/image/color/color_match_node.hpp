@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_COLOR_MATCH_NODE_HPP
-#define RAMEN_IMAGE_COLOR_MATCH_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image_node.hpp>
 
@@ -36,4 +35,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

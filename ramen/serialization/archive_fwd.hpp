@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_SERIALIZATION_ARCHIVE_FWD_HPP
-#define RAMEN_SERIALIZATION_ARCHIVE_FWD_HPP
+#pragma once
 
 namespace ramen
 {
@@ -16,4 +15,3 @@ class yaml_oarchive_t;
 }  // namespace
 }  // namespace
 
-#endif

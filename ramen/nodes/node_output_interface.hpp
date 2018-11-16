@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODE_OUTPUT_INTERFACE_HPP
-#define RAMEN_NODE_OUTPUT_INTERFACE_HPP
+#pragma once
 
 #include <ramen/render/context.hpp>
 
@@ -21,4 +20,3 @@ public:
 
 }  // ramen
 
-#endif

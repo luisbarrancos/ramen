@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_EDIT_MENU_COMMANDS_HPP
-#define RAMEN_EDIT_MENU_COMMANDS_HPP
+#pragma once
 
 #include <ramen/undo/command.hpp>
 
@@ -87,4 +86,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

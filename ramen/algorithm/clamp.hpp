@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ALGORITHM_CLAMP_HPP
-#define RAMEN_ALGORITHM_CLAMP_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -27,4 +26,3 @@ inline T clamp(T x, T lo, T hi)
 
 }  // algorithm
 
-#endif

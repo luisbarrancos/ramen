@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_COLOR_BARS_HPP
-#define RAMEN_COLOR_BARS_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -19,4 +18,3 @@ void make_color_bars(const image_view_t& view,
 }  // namespace
 }  // namespace
 
-#endif

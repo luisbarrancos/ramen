@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_TGA_FORMAT_HPP
-#define RAMEN_TGA_FORMAT_HPP
+#pragma once
 
 #include <ramen/imageio/format.hpp>
 
@@ -35,4 +34,3 @@ public:
 }  // imageio
 }  // ramen
 
-#endif

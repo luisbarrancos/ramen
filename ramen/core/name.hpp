@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NAME_HPP
-#define RAMEN_NAME_HPP
+#pragma once
 
 #include <ramen/core/name_fwd.hpp>
 
@@ -53,4 +52,3 @@ inline std::ostream& operator<<(std::ostream& os, const name_t& name) { return o
 }  // core
 }  // ramen
 
-#endif

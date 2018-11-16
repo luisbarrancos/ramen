@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_SMART_BLUR_HPP
-#define RAMEN_IMAGE_SMART_BLUR_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -25,4 +24,3 @@ void smart_blur_rgba(const const_image_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

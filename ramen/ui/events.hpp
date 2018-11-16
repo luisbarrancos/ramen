@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_EVENTS_HPP
-#define RAMEN_UI_EVENTS_HPP
+#pragma once
 
 #include <ramen/ui/events_fwd.hpp>
 
@@ -199,4 +198,3 @@ struct paint_event_t
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MANIPULATORS_DRAW_HPP
-#define RAMEN_MANIPULATORS_DRAW_HPP
+#pragma once
 
 #include <OpenEXR/ImathMatrix.h>
 #include <OpenEXR/ImathColor.h>
@@ -69,4 +68,3 @@ float shadow_offset(float pixel_scale);
 }  // namespace
 }  // namespace
 
-#endif

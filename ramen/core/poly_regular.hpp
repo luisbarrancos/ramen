@@ -5,8 +5,7 @@
     or a copy at http://stlab.adobe.com/licenses.html)
 */
 
-#ifndef RAMEN_POLY_REGULAR_HPP
-#define RAMEN_POLY_REGULAR_HPP
+#pragma once
 
 #include <ramen/Concepts/RegularConcept.hpp>
 
@@ -81,4 +80,3 @@ typedef poly<regular> poly_regular_t;
 }  // core
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_INIT_IMAGE_PROCESSING_HPP
-#define RAMEN_IMAGE_INIT_IMAGE_PROCESSING_HPP
+#pragma once
 
 namespace ramen
 {
@@ -14,4 +13,3 @@ void init_image_processing();
 }  // image
 }  // ramen
 
-#endif

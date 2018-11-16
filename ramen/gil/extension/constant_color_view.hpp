@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_CONSTANT_COLOR_VIEW_HPP
-#define GIL_EXTENSION_CONSTANT_COLOR_VIEW_HPP
+#pragma once
 
 #include <boost/gil/utilities.hpp>
 #include <boost/gil/image_view.hpp>
@@ -59,4 +58,3 @@ image_view<virtual_2d_locator<detail::constant_color_fn<Pixel>, false>> make_con
 }  // namespace
 }  // namespace
 
-#endif

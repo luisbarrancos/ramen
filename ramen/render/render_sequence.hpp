@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_RENDER_SEQUENCE_HPP
-#define RAMEN_RENDER_SEQUENCE_HPP
+#pragma once
 
 #include <vector>
 
@@ -48,4 +47,3 @@ void render_sequence(composition_t& comp,
 }  // namespace
 }  // namespace
 
-#endif

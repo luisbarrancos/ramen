@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MATH_MATRIX33_HPP
-#define RAMEN_MATH_MATRIX33_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -138,4 +137,3 @@ typedef matrix33_t<half>   matrix33h_t;
 }  // math
 }  // ramen
 
-#endif

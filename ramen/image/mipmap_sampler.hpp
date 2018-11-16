@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_MIPMAP_HPP
-#define RAMEN_IMAGE_MIPMAP_HPP
+#pragma once
 
 #include <vector>
 
@@ -168,4 +167,3 @@ public:
 }  // namespace
 }  // namespace
 
-#endif

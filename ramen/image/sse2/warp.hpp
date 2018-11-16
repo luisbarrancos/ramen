@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_WARP_HPP
-#define RAMEN_IMAGE_SSE2_WARP_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -53,4 +52,3 @@ void warp_bicubic(const Imath::Box2i&       src_area,
 }  // namespace
 }  // namespace
 
-#endif

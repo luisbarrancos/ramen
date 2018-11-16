@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MEMORY_MANAGER_HPP
-#define RAMEN_MEMORY_MANAGER_HPP
+#pragma once
 
 #include <ramen/memory/manager_fwd.hpp>
 
@@ -59,4 +58,3 @@ private:
 }  // memory
 }  // ramen
 
-#endif

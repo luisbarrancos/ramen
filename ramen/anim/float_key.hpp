@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_FLOAT_KEY_HPP
-#define RAMEN_ANIM_FLOAT_KEY_HPP
+#pragma once
 
 #include <ramen/anim/keyframe.hpp>
 
@@ -78,4 +77,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

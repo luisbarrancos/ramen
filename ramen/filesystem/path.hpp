@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_FILESYSTEM_PATH_HPP
-#define RAMEN_FILESYSTEM_PATH_HPP
+#pragma once
 
 #include <boost/filesystem/path.hpp>
 
@@ -29,4 +28,3 @@ boost::filesystem::path convert_relative_path(const boost::filesystem::path& p,
 }  // filesystem
 }  // ramen
 
-#endif

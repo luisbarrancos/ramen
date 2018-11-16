@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UI_EVENTS_UTIL_HPP
-#define RAMEN_UI_EVENTS_UTIL_HPP
+#pragma once
 
 #include <ramen/ui/events.hpp>
 
@@ -21,4 +20,3 @@ key_event_t::key_t translate_keys(QKeyEvent* event);
 }  // namespace
 }  // namespace
 
-#endif

@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_ALGORITHM_TRANSFORM3_HPP
-#define GIL_EXTENSION_ALGORITHM_TRANSFORM3_HPP
+#pragma once
 
 #include <boost/gil/algorithm.hpp>
 
@@ -63,4 +62,3 @@ GIL_FORCEINLINE F transform_pixel_positions(
 }  // namespace
 }  // namespace
 
-#endif

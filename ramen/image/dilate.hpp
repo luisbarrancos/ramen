@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_DILATE_HPP
-#define RAMEN_IMAGE_DILATE_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -32,4 +31,3 @@ void dilate(const boost::gil::gray32fc_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

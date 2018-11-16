@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UTIL_CALCULATOR_HPP
-#define RAMEN_UTIL_CALCULATOR_HPP
+#pragma once
 
 #include <string>
 
@@ -28,4 +27,3 @@ private:
 }  // util
 }  // ramen
 
-#endif

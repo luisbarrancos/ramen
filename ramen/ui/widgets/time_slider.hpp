@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_TIME_SLIDER_HPP
-#define RAMEN_UI_TIME_SLIDER_HPP
+#pragma once
 
 #include <ramen/ui/widgets/time_slider_fwd.hpp>
 
@@ -85,4 +84,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

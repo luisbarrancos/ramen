@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_PROCESSING_SSE2_KEY_MIX_HPP
-#define RAMEN_IMAGE_PROCESSING_SSE2_KEY_MIX_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -22,4 +21,3 @@ void key_mix(const const_image_view_t&   bg,
 }  // namespace
 }  // namespace
 
-#endif

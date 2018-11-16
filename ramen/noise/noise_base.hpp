@@ -1,8 +1,7 @@
 // This code comes from the procedural texturing an modelling book.
 // Add a proper copyright here.
 
-#ifndef RAMEN_NOISE_BASE_HPP
-#define RAMEN_NOISE_BASE_HPP
+#pragma once
 
 #include <boost/config.hpp>
 
@@ -38,4 +37,3 @@ protected:
 }  // noise
 }  // ramen
 
-#endif

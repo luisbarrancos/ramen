@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_OCIO_FILE_TRANSFORM_NODE_HPP
-#define RAMEN_OCIO_FILE_TRANSFORM_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image/pointop_node.hpp>
 
@@ -41,4 +40,3 @@ private:
 }  // image
 }  // ramen
 
-#endif

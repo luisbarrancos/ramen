@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_RESIZE_HPP
-#define RAMEN_IMAGE_RESIZE_HPP
+#pragma once
 
 #include <ramen/image/filters.hpp>
 #include <ramen/image/generic/resize.hpp>
@@ -37,4 +36,3 @@ void resize_catrom(const image::const_image_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

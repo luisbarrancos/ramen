@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_RENDER_RENDER_THREAD_HPP
-#define RAMEN_RENDER_RENDER_THREAD_HPP
+#pragma once
 
 #include <functional>
 
@@ -35,4 +34,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

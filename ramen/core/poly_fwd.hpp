@@ -5,8 +5,7 @@
     or a copy at http://stlab.adobe.com/licenses.html)
 */
 
-#ifndef RAMEN_CORE_POLY_FWD_HPP
-#define RAMEN_CORE_POLY_FWD_HPP
+#pragma once
 
 namespace ramen
 {
@@ -18,4 +17,3 @@ class poly;
 }  // core
 }  // ramen
 
-#endif

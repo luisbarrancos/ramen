@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_PERCENTILE_FILTER_HPP
-#define RAMEN_IMAGE_PERCENTILE_FILTER_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -32,4 +31,3 @@ void percentile_filter_alpha(const const_image_view_t& src,
 }  // image
 }  // ramen
 
-#endif

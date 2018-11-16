@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UI_WIDGETS_SPINBOX_HPP
-#define RAMEN_UI_WIDGETS_SPINBOX_HPP
+#pragma once
 
 #include <ramen/ui/widgets/spinbox_fwd.hpp>
 
@@ -89,4 +88,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

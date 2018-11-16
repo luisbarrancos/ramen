@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_WIDGETS_GROUP_BOX_HPP
-#define RAMEN_UI_WIDGETS_GROUP_BOX_HPP
+#pragma once
 
 #include <QGroupBox>
 
@@ -32,4 +31,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

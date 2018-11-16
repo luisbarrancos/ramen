@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_UI_WIDGETS_LINE_EDIT_HPP
-#define RAMEN_UI_WIDGETS_LINE_EDIT_HPP
+#pragma once
 
 #include <ramen/ui/widgets/line_edit_fwd.hpp>
 
@@ -26,4 +25,3 @@ protected:
 }  // ui
 }  // ramen
 
-#endif

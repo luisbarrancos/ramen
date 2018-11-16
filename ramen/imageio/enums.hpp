@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGEIO_ENUMS_HPP
-#define RAMEN_IMAGEIO_ENUMS_HPP
+#pragma once
 
 namespace ramen
 {
@@ -41,4 +40,3 @@ enum compression_type
 }  // namespace
 }  // namespace
 
-#endif

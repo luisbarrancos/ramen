@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COMP_SETTINGS_DIALOG_HPP
-#define RAMEN_COMP_SETTINGS_DIALOG_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -35,4 +34,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

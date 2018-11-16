@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COMPOSITION_HPP
-#define RAMEN_COMPOSITION_HPP
+#pragma once
 
 #include <vector>
 #include <utility>
@@ -193,4 +192,3 @@ private:
 
 }  // ramen
 
-#endif

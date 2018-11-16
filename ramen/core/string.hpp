@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CORE_STRING_HPP
-#define RAMEN_CORE_STRING_HPP
+#pragma once
 
 #include <ramen/core/string_fwd.hpp>
 
@@ -190,4 +189,3 @@ inline std::size_t hash_value(const string_t& str)
 }  // core
 }  // ramen
 
-#endif

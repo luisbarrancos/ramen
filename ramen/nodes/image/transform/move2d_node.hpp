@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_MOVE2D_NODE_HPP
-#define RAMEN_IMAGE_MOVE2D_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image/xform2d_node.hpp>
 
@@ -35,4 +34,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

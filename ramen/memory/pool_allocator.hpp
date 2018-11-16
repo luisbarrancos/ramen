@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MEMORY_POOL_ALLOCATOR_HPP
-#define RAMEN_MEMORY_POOL_ALLOCATOR_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -106,4 +105,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

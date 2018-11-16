@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATHEXT_BOX_ALGO_HPP
-#define RAMEN_IMATHEXT_BOX_ALGO_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -179,4 +178,3 @@ inline std::ostream& operator<<(std::ostream& os, const Imath::Box<T>& b)
     return os;
 }
 
-#endif

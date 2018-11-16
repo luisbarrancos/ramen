@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGEIO_ALGORITHM_HPP
-#define RAMEN_IMAGEIO_ALGORITHM_HPP
+#pragma once
 
 namespace ramen
 {
@@ -69,4 +68,3 @@ void transform_subsampled(const SrcRange& src, DstRange& dst, Fun f, int subsamp
 }  // namespace
 }  // namespace
 
-#endif

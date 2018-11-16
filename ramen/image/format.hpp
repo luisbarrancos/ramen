@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_FORMAT_HPP
-#define RAMEN_IMAGE_FORMAT_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -59,4 +58,3 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const format_t& f);
 }  // image
 }  // ramen
 
-#endif

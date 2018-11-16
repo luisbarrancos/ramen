@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_FILESYSTEM_PATH_SEQUENCE_HPP
-#define RAMEN_FILESYSTEM_PATH_SEQUENCE_HPP
+#pragma once
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -73,4 +72,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

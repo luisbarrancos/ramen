@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_BEZIER_DETAIL_HPP
-#define RAMEN_BEZIER_DETAIL_HPP
+#pragma once
 
 #include <OpenEXR/ImathFun.h>
 
@@ -26,4 +25,3 @@ T bilerp(const T& a, const T& b, const T& c, const T& d, Q u, Q v)
 }  // bezier
 }  // ramen
 
-#endif

@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UI_COMP_VIEW_PICK_RESULT_HPP
-#define RAMEN_UI_COMP_VIEW_PICK_RESULT_HPP
+#pragma once
 
 #include <ramen/nodes/node_fwd.hpp>
 
@@ -34,4 +33,3 @@ struct pick_result_t
 }  // ui
 }  // ramen
 
-#endif

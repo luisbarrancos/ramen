@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_ROTO_SELECT_TOOL_HPP
-#define RAMEN_ROTO_SELECT_TOOL_HPP
+#pragma once
 
 #include <ramen/nodes/image/roto/tool.hpp>
 
@@ -62,4 +61,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_BEZIER_CURVE_HPP
-#define RAMEN_BEZIER_CURVE_HPP
+#pragma once
 
 #include <cassert>
 #include <cmath>
@@ -205,4 +204,3 @@ public:
 }  // bezier
 }  // ramen
 
-#endif

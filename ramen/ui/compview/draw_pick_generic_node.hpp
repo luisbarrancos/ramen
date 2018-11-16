@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COMPVIEW_DRAW_PICK_GENERIC_HPP
-#define RAMEN_COMPVIEW_DRAW_PICK_GENERIC_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -35,4 +34,3 @@ bool box_pick_generic_node(const node_t* n, const Imath::Box2f& b);
 }  // ui
 }  // ramen
 
-#endif

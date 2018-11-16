@@ -1,8 +1,7 @@
 // This code comes from the procedural texturing an modelling book.
 // Add a proper copyright here.
 
-#ifndef RAMEN_NOISE_VECTOR_NOISE_ADAPTOR_HPP
-#define RAMEN_NOISE_VECTOR_NOISE_ADAPTOR_HPP
+#pragma once
 
 #include <OpenEXR/ImathVec.h>
 
@@ -65,4 +64,3 @@ private:
 }  // noise
 }  // ramen
 
-#endif

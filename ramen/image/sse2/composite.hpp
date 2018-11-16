@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_COMPOSITE_HPP
-#define RAMEN_IMAGE_SSE2_COMPOSITE_HPP
+#pragma once
 
 #include <ramen/image/generic/composite.hpp>
 
@@ -48,4 +47,3 @@ void composite_min(const const_image_view_t& back,
 }  // namespace
 }  // namespace
 
-#endif

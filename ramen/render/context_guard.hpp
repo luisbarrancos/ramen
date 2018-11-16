@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_RENDER_CONTEXT_GUARD_HPP
-#define RAMEN_RENDER_CONTEXT_GUARD_HPP
+#pragma once
 
 #include <map>
 
@@ -41,4 +40,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

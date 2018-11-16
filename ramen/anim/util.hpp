@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_UTIL_HPP
-#define RAMEN_ANIM_UTIL_HPP
+#pragma once
 
 namespace ramen
 {
@@ -14,4 +13,3 @@ double repeat_time(double t, double start_time, double end_time);
 }  // anim
 }  // ramen
 
-#endif

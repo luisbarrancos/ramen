@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_FWD_DIFF_CUBIC_EVALUATOR_HPP
-#define RAMEN_ANIM_FWD_DIFF_CUBIC_EVALUATOR_HPP
+#pragma once
 
 #include <array>
 
@@ -54,4 +53,3 @@ private:
 }  // anim
 }  // ramen
 
-#endif

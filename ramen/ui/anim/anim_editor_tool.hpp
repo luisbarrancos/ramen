@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_ANIM_EDITOR_TOOL_HPP
-#define RAMEN_UI_ANIM_EDITOR_TOOL_HPP
+#pragma once
 
 class QKeyEvent;
 class QMouseEvent;
@@ -33,4 +32,3 @@ public:
 }  // namespace
 }  // namespace
 
-#endif

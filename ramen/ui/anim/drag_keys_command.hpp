@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_ANIM_DRAG_KEYS_COMMAND_HPP
-#define RAMEN_UI_ANIM_DRAG_KEYS_COMMAND_HPP
+#pragma once
 
 #include <ramen/ui/anim/anim_editor_command.hpp>
 
@@ -32,4 +31,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

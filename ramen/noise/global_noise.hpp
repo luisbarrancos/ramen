@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_GLOBAL_NOISE_HPP
-#define RAMEN_GLOBAL_NOISE_HPP
+#pragma once
 
 #include <ramen/noise/simplex_noise.hpp>
 
@@ -16,4 +15,3 @@ extern simplex_noise_t global_noise3;
 }  // namespace
 }  // namespace
 
-#endif

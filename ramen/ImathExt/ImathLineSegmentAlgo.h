@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATHEXT_LINE_SEGMENT_ALGO_HPP
-#define RAMEN_IMATHEXT_LINE_SEGMENT_ALGO_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 #include <OpenEXR/ImathFun.h>
@@ -56,4 +55,3 @@ bool intersects(const Imath::Vec2<T>&             p0,
 
 }  // namespace
 
-#endif

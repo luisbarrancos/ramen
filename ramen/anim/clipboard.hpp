@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIM_CLIPBOARD_HPP
-#define RAMEN_ANIM_CLIPBOARD_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -61,4 +60,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

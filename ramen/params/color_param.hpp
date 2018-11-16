@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COLOR_PARAM_HPP
-#define RAMEN_COLOR_PARAM_HPP
+#pragma once
 
 #include <ramen/params/animated_param.hpp>
 
@@ -81,4 +80,3 @@ private Q_SLOTS:
 
 }  // namespace
 
-#endif

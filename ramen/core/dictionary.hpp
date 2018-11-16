@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CORE_DICTIONARY_HPP
-#define RAMEN_CORE_DICTIONARY_HPP
+#pragma once
 
 #include <ramen/core/dictionary_fwd.hpp>
 
@@ -184,4 +183,3 @@ T get_optional(const dictionary_t& dic, const dictionary_t::key_type& key, const
 }  // core
 }  // ramen
 
-#endif

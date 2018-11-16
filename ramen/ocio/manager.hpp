@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_OCIO_MANAGER_HPP
-#define RAMEN_OCIO_MANAGER_HPP
+#pragma once
 
 #include <ramen/ocio/manager_fwd.hpp>
 
@@ -56,4 +55,3 @@ private:
 }  // ocio
 }  // ramen
 
-#endif

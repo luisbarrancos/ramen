@@ -1,8 +1,7 @@
 // This code comes from the procedural texturing an modelling book.
 // Add a proper copyright here.
 
-#ifndef RAMEN_NOISE_PERLIN_HPP
-#define RAMEN_NOISE_PERLIN_HPP
+#pragma once
 
 #include <boost/noncopyable.hpp>
 
@@ -52,4 +51,3 @@ private:
 }  // noise
 }  // ramen
 
-#endif

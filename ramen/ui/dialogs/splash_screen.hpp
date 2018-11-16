@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_SPLASH_SCREEN_HPP
-#define RAMEN_UI_SPLASH_SCREEN_HPP
+#pragma once
 
 #include <string>
 
@@ -48,4 +47,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

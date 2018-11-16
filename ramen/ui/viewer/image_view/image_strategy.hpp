@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_VIEWER_IMAGE_STRATEGY_HPP
-#define RAMEN_UI_VIEWER_IMAGE_STRATEGY_HPP
+#pragma once
 
 #include <OpenEXR/ImathColor.h>
 
@@ -52,4 +51,3 @@ protected:
 }  // ui
 }  // ramen
 
-#endif

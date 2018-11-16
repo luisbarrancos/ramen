@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_GLOW_NODE_HPP
-#define RAMEN_GLOW_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image_node.hpp>
 
@@ -49,4 +48,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

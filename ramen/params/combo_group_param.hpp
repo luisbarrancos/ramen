@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COMBO_GROUP_PARAM_HPP
-#define RAMEN_COMBO_GROUP_PARAM_HPP
+#pragma once
 
 #ifndef Q_MOC_RUN
 #include <ramen/params/composite_param.hpp>
@@ -56,4 +55,3 @@ private Q_SLOTS:
 
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_ANIMATED_PARAM_HPP
-#define RAMEN_ANIMATED_PARAM_HPP
+#pragma once
 
 #ifndef Q_MOC_RUN
 #include <ramen/params/animated_param_fwd.hpp>
@@ -95,4 +94,3 @@ private:
 
 }  // ramen
 
-#endif

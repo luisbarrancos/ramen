@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_PROCESSING_APPLY_GAMMA_EXP_LOG_HPP
-#define RAMEN_IMAGE_PROCESSING_APPLY_GAMMA_EXP_LOG_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -21,4 +20,3 @@ void apply_pow10(const const_image_view_t& src, const image_view_t& dst);
 }  // namespace
 }  // namespace
 
-#endif

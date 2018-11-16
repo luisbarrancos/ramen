@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_BOX_BLUR_MASK_HPP
-#define RAMEN_IMAGE_BOX_BLUR_MASK_HPP
+#pragma once
 
 #include <vector>
 #include <algorithm>
@@ -210,4 +209,3 @@ void box_blur_mask(const ConstGrayView& src,
 }  // namespace
 }  // namespace
 
-#endif

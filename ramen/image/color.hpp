@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_COLOR_HPP
-#define RAMEN_IMAGE_COLOR_HPP
+#pragma once
 
 #include <algorithm>
 
@@ -145,4 +144,3 @@ Imath::Color3f hsv_to_rgb(const Imath::Color3f& src);
 }  // namespace
 }  // namespace
 
-#endif

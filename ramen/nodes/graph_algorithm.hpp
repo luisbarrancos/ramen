@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODES_GRAPH_ALGORITHM_HPP
-#define RAMEN_NODES_GRAPH_ALGORITHM_HPP
+#pragma once
 
 #include <boost/range.hpp>
 #include <boost/bind.hpp>
@@ -190,4 +189,3 @@ void breadth_first_out_edges_apply(node_t& n, Visitor f)
 
 }  // namespace
 
-#endif

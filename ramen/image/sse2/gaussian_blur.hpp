@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_GAUSSIAN_BLUR_HPP
-#define RAMEN_IMAGE_SSE2_GAUSSIAN_BLUR_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -23,4 +22,3 @@ void gaussian_blur_rgba(const const_image_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

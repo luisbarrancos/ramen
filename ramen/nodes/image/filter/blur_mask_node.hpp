@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_BLUR_MASK_NODE_HPP
-#define RAMEN_IMAGE_BLUR_MASK_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image/base_blur_node.hpp>
 
@@ -42,4 +41,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGEIO_PNG_WRITER_HPP
-#define RAMEN_IMAGEIO_PNG_WRITER_HPP
+#pragma once
 
 #include <ramen/imageio/oiio/oiio_writer.hpp>
 
@@ -28,4 +27,3 @@ private:
 }  // imageio
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_PARAM_VALUE_HPP
-#define RAMEN_PARAM_VALUE_HPP
+#pragma once
 
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -169,4 +168,3 @@ typedef core::poly<param_indexable_value> poly_param_indexable_value_t;
 
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_INVALID_PIXELS_HPP
-#define RAMEN_IMAGE_INVALID_PIXELS_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -18,4 +17,3 @@ void count_invalid_pixels(const image_view_t& img,
 }  // image
 }  // ramen
 
-#endif

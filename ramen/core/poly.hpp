@@ -5,8 +5,7 @@
     or a copy at http://stlab.adobe.com/licenses.html)
 */
 
-#ifndef RAMEN_CORE_POLY_HPP
-#define RAMEN_CORE_POLY_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -558,4 +557,3 @@ public:                                                                         
         return *this;                                                                              \
     }
 
-#endif

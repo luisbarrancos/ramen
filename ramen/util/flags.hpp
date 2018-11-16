@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UTIL_FLAGS_HPP
-#define RAMEN_UTIL_FLAGS_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -29,4 +28,3 @@ void set_flag(T& flags, Bit bit, bool value)
 }  // util
 }  // ramen
 
-#endif

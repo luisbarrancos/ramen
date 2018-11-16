@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_PROJECTIVE_WARP_HPP
-#define RAMEN_IMAGE_SSE2_PROJECTIVE_WARP_HPP
+#pragma once
 
 #include <ramen/image/generic/samplers.hpp>
 
@@ -31,4 +30,3 @@ void projective_warp_catrom(const Imath::Box2i&       src_area,
 }  // namespace
 }  // namespace
 
-#endif

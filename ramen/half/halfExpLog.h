@@ -48,8 +48,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef RAMEN_HALF_EXPLOG_HPP
-#define RAMEN_HALF_EXPLOG_HPP
+#pragma once
 
 #include <OpenEXR/half.h>
 
@@ -101,4 +100,3 @@ inline half pow10_h(float x) { return exp_h(x * 2.30258509f); }
 
 inline half pow_h(half x, float y) { return exp_h(y * log_h(x)); }
 
-#endif

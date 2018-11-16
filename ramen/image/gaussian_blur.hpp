@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_IMAGE_GAUSSIAN_BLUR_HPP
-#define RAMEN_IMAGE_GAUSSIAN_BLUR_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -54,4 +53,3 @@ void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

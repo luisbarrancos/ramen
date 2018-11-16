@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_ALPHA_ALGORITHM_HPP
-#define GIL_EXTENSION_ALPHA_ALGORITHM_HPP
+#pragma once
 
 #include <boost/gil/channel_algorithm.hpp>
 #include <boost/gil/rgba.hpp>
@@ -189,4 +188,3 @@ image_view<virtual_2d_locator<detail::checks_fn<Pixel>, false>> make_checks_view
 }  // namespace
 }  // namespace
 
-#endif

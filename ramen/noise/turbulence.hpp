@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_NOISE_TURBULENCE_HPP
-#define RAMEN_NOISE_TURBULENCE_HPP
+#pragma once
 
 #include <OpenEXR/ImathVec.h>
 
@@ -85,4 +84,3 @@ private:
 }  // noise
 }  // ramen
 
-#endif

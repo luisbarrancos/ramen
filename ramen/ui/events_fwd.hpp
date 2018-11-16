@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_UI_EVENTS_FWD_HPP
-#define RAMEN_UI_EVENTS_FWD_HPP
+#pragma once
 
 namespace ramen
 {
@@ -23,4 +22,3 @@ struct paint_event_t;
 }  // namespace
 }  // namespace
 
-#endif

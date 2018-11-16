@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATHEXT_IMATH_TYPE_TRAITS_HPP
-#define RAMEN_IMATHEXT_IMATH_TYPE_TRAITS_HPP
+#pragma once
 
 #include <boost/type_traits/has_nothrow_constructor.hpp>
 #include <boost/type_traits/has_nothrow_copy.hpp>
@@ -48,4 +47,3 @@ RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Matrix44)
 
 }  // boost
 
-#endif

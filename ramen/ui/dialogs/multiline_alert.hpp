@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MULTILINE_ALERT_HPP
-#define RAMEN_MULTILINE_ALERT_HPP
+#pragma once
 
 #include <string>
 
@@ -33,4 +32,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

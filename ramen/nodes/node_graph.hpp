@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_NODES_NODE_GRAPH_HPP
-#define RAMEN_NODES_NODE_GRAPH_HPP
+#pragma once
 
 #include <ramen/nodes/node_graph_fwd.hpp>
 
@@ -88,4 +87,3 @@ private:
 
 }  // ramen
 
-#endif

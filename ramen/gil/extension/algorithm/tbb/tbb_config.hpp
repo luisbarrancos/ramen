@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_TBB_PARALLEL_CONFIG_HPP
-#define GIL_EXTENSION_TBB_PARALLEL_CONFIG_HPP
+#pragma once
 
 #include <tbb/partitioner.h>
 #include <tbb/parallel_for.h>
@@ -14,4 +13,3 @@
 #define GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER tbb::auto_partitioner
 #endif
 
-#endif

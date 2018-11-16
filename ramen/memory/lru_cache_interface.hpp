@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MEMORY_LRU_CACHE_INTERFACE_HPP
-#define RAMEN_MEMORY_LRU_CACHE_INTERFACE_HPP
+#pragma once
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -26,4 +25,3 @@ public:
 }  // memory
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_GAUSSIAN_BLUR_CHANNEL_HPP
-#define RAMEN_IMAGE_GENERIC_GAUSSIAN_BLUR_CHANNEL_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -29,4 +28,3 @@ void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CONFIG_COMPILER_HPP
-#define RAMEN_CONFIG_COMPILER_HPP
+#pragma once
 
 #if defined(__GNUC__)
 #define RAMEN_CONFIG_COMPILER_GNUC
@@ -15,4 +14,3 @@
 #define RAMEN_CONFIG_COMPILER_CYGWIN
 #endif
 
-#endif

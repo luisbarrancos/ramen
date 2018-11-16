@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_BEZIER_BERNSTEIN_HPP
-#define RAMEN_BEZIER_BERNSTEIN_HPP
+#pragma once
 
 #include <array>
 
@@ -55,4 +54,3 @@ void all_bernstein(T u, std::array<T, Degree + 1>& B)
 }  // bezier
 }  // ramen
 
-#endif

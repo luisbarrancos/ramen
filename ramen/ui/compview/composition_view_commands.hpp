@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_COMMANDS_HPP
-#define RAMEN_UI_COMMANDS_HPP
+#pragma once
 
 #include <ramen/undo/command.hpp>
 #include <ramen/nodes/node_fwd.hpp>
@@ -44,4 +43,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

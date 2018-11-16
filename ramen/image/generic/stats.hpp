@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_STATS_HPP
-#define RAMEN_IMAGE_GENERIC_STATS_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -55,4 +54,3 @@ pixel_t mean(const const_image_view_t& v)
 }  // namespace
 }  // namespace
 
-#endif

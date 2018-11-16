@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_COLORDIFF_KEYER_NODE_HPP
-#define RAMEN_COLORDIFF_KEYER_NODE_HPP
+#pragma once
 
 #include <ramen/nodes/image/keyer_node.hpp>
 
@@ -37,4 +36,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

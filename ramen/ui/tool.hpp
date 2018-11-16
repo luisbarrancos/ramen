@@ -1,7 +1,6 @@
 // Copyright (c) 2011 Esteban Tovagliari
 
-#ifndef RAMEN_UI_TOOL_HPP
-#define RAMEN_UI_TOOL_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -47,4 +46,3 @@ protected:
 }  // namespace
 }  // namespace
 
-#endif

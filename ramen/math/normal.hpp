@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MATH_NORMAL_HPP
-#define RAMEN_MATH_NORMAL_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -156,4 +155,3 @@ typedef normal_t<half>   normalh_t;
 }  // math
 }  // ramen
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_DOCUMENT_HPP
-#define RAMEN_DOCUMENT_HPP
+#pragma once
 
 #include <ramen/app/document_fwd.hpp>
 
@@ -58,4 +57,3 @@ private:
 
 }  // ramen
 
-#endif

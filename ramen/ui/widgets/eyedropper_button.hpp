@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_EYEDROPPER_BUTTON_HPP
-#define RAMEN_UI_EYEDROPPER_BUTTON_HPP
+#pragma once
 
 #include <ramen/ui/widgets/eyedropper_button_fwd.hpp>
 
@@ -39,4 +38,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

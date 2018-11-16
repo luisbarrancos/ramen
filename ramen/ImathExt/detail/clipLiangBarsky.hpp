@@ -21,8 +21,7 @@
 //
 //----------------------------------------------------------------------------
 
-#ifndef OPENEXR_EXT_DETAIL_CLIP_LIANG_BARSKY_INCLUDED
-#define OPENEXR_EXT_DETAIL_CLIP_LIANG_BARSKY_INCLUDED
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -331,4 +330,3 @@ unsigned clipLineSegment(T* x1, T* y1, T* x2, T* y2, const Imath::Box<Imath::Vec
 }  // namespace
 }  // namespace
 
-#endif

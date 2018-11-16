@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_WIDGETS_COLOR_SWATCH_HPP
-#define RAMEN_UI_WIDGETS_COLOR_SWATCH_HPP
+#pragma once
 
 #include <QWidget>
 #include <QImage>
@@ -52,4 +51,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

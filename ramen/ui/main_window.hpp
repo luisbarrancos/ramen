@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_MAIN_WINDOW_HPP
-#define RAMEN_UI_MAIN_WINDOW_HPP
+#pragma once
 
 #include <ramen/ui/main_window_fwd.hpp>
 
@@ -178,4 +177,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

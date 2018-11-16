@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_LUMINANCE_VIEW_HPP
-#define GIL_EXTENSION_LUMINANCE_VIEW_HPP
+#pragma once
 
 #include <boost/gil/gil_all.hpp>
 
@@ -86,4 +85,3 @@ typename luminance_view_type<View>::type luminance_view(const View& src)
 }  // namespace
 }  // namespace
 
-#endif

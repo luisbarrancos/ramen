@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_RESIZE_HPP
-#define RAMEN_IMAGE_SSE2_RESIZE_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -56,4 +55,3 @@ void resize_half(const image::const_image_view_t& src,
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MOVIEIO_IMAGE_SEQ_READER_HPP
-#define RAMEN_MOVIEIO_IMAGE_SEQ_READER_HPP
+#pragma once
 
 #include <ramen/movieio/reader.hpp>
 
@@ -60,4 +59,3 @@ private:
 }  // movieio
 }  // ramen
 
-#endif

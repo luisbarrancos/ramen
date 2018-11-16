@@ -1,7 +1,6 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-#ifndef RAMEN_STATIC_PARAM_HPP
-#define RAMEN_STATIC_PARAM_HPP
+#pragma once
 
 #include <ramen/params/param.hpp>
 
@@ -23,4 +22,3 @@ protected:
 
 }  // namespace
 
-#endif

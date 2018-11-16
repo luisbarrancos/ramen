@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_COLOR_COLOR3_HPP
-#define RAMEN_COLOR_COLOR3_HPP
+#pragma once
 
 #include <ramen/config.hpp>
 
@@ -148,4 +147,3 @@ typedef color3_t<half>   color3h_t;
 }  // color
 }  // ramen
 
-#endif

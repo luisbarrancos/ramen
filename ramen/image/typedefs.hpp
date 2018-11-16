@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_TYPEDEFS_HPP
-#define RAMEN_IMAGE_TYPEDEFS_HPP
+#pragma once
 
 #include <boost/gil/gil_all.hpp>
 
@@ -134,4 +133,3 @@ typedef Imath::M44f matrix4_t;
 }  // namespace
 }  // namespace
 
-#endif

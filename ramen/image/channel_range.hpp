@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_CHANNEL_RANGE_HPP
-#define RAMEN_IMAGE_CHANNEL_RANGE_HPP
+#pragma once
 
 namespace ramen
 {
@@ -24,4 +23,3 @@ public:
 }  // namespace
 }  // namespace
 
-#endif

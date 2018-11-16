@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATH_GL_HPP
-#define RAMEN_IMATH_GL_HPP
+#pragma once
 
 #include <ramen/GL/gl.hpp>
 
@@ -28,4 +27,3 @@ void gl_load_matrix(const Imath::M44f& m);
 
 }  // ramen
 
-#endif

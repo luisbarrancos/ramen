@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_MANIPULATORS_PICK_HPP
-#define RAMEN_MANIPULATORS_PICK_HPP
+#pragma once
 
 #include <OpenEXR/ImathBox.h>
 
@@ -67,4 +66,3 @@ pick_box_result pick_box(const Imath::V2f&   p,
 }  // namespace
 }  // namespace
 
-#endif

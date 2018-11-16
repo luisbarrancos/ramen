@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UTIL_STRING_HPP
-#define RAMEN_UTIL_STRING_HPP
+#pragma once
 
 #include <string>
 
@@ -18,4 +17,3 @@ void increment_string_number(std::string& str);
 }  // util
 }  // ramen
 
-#endif

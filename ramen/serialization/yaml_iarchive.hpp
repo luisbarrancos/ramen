@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_SERIALIZATION_YAML_IARCHIVE_HPP
-#define RAMEN_SERIALIZATION_YAML_IARCHIVE_HPP
+#pragma once
 
 #include <utility>
 #include <sstream>
@@ -68,4 +67,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

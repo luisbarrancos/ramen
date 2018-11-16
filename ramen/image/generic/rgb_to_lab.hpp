@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_RGBTOLAB_HPP
-#define RAMEN_IMAGE_GENERIC_RGBTOLAB_HPP
+#pragma once
 
 #include <ramen/gil/extension/algorithm/tbb/tbb_transform.hpp>
 
@@ -106,4 +105,3 @@ void convert_lab_to_rgb(const const_image_view_t& src, const image_view_t& dst)
 }  // namespace
 }  // namespace
 
-#endif

@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_GENERIC_MATH_HPP
-#define RAMEN_IMAGE_GENERIC_MATH_HPP
+#pragma once
 
 #include <ramen/image/typedefs.hpp>
 
@@ -77,4 +76,3 @@ void mul_channel_scalar(const const_channel_view_t& a, float f, const channel_vi
 }  // namespace
 }  // namespace
 
-#endif

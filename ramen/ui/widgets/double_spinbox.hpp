@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_WIDGETS_DOUBLE_SPINBOX_HPP
-#define RAMEN_UI_WIDGETS_DOUBLE_SPINBOX_HPP
+#pragma once
 
 #include <ramen/ui/widgets/double_spinbox_fwd.hpp>
 #include <ramen/ui/widgets/spinbox.hpp>
@@ -61,4 +60,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

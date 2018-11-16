@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_CONTAINER_PTR_VECTOR_UTIL_HPP
-#define RAMEN_CONTAINER_PTR_VECTOR_UTIL_HPP
+#pragma once
 
 #include <memory>
 #include <algorithm>
@@ -43,4 +42,3 @@ void swap_elements(Iter first, Iter second, boost::ptr_vector<T, C, A>& vec)
 }  // container
 }  // ramen
 
-#endif

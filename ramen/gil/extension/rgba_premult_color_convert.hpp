@@ -3,8 +3,7 @@
 //  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GIL_EXTENSION_RGBA_PREMULT_COLOR_CONVERT_HPP
-#define GIL_EXTENSION_RGBA_PREMULT_COLOR_CONVERT_HPP
+#pragma once
 
 #include <boost/gil/color_convert.hpp>
 
@@ -31,4 +30,3 @@ private:
 }  // namespace
 }  // namespace
 
-#endif

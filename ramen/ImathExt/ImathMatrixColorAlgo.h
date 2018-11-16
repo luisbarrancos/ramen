@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATHEXT_MATRIX_COLOR_ALGO_HPP
-#define RAMEN_IMATHEXT_MATRIX_COLOR_ALGO_HPP
+#pragma once
 
 #include <OpenEXR/ImathMatrix.h>
 
@@ -19,4 +18,3 @@ Imath::M44f gainMatrix(float g);
 }  // ImathExt
 }  // ramen
 
-#endif

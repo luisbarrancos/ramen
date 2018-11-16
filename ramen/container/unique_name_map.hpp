@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UNIQUE_NAME_MAP_HPP
-#define RAMEN_UNIQUE_NAME_MAP_HPP
+#pragma once
 
 #include <map>
 #include <string>
@@ -159,4 +158,3 @@ private:
 
 }  // namespace
 
-#endif

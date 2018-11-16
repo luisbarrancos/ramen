@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_GL_IMAGE_VIEW_SHADERS_HPP
-#define RAMEN_GL_IMAGE_VIEW_SHADERS_HPP
+#pragma once
 
 namespace ramen
 {
@@ -45,4 +44,3 @@ static const char* alpha_shader_source = { "uniform sampler2D tex;"
 }  // namespace
 }  // namespace
 
-#endif

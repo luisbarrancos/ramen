@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_UI_NICE_NUMBERS_HPP
-#define RAMEN_UI_NICE_NUMBERS_HPP
+#pragma once
 
 namespace ramen
 {
@@ -73,4 +72,3 @@ private:
 }  // ui
 }  // ramen
 
-#endif

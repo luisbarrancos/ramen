@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMAGE_SSE2_SAMPLERS_HPP
-#define RAMEN_IMAGE_SSE2_SAMPLERS_HPP
+#pragma once
 
 #include <ramen/image/generic/samplers.hpp>
 
@@ -70,4 +69,3 @@ public:
 }  // namespace
 }  // namespace
 
-#endif

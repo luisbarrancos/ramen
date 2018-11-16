@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_BEZIER_ALGORITHM_HPP
-#define RAMEN_BEZIER_ALGORITHM_HPP
+#pragma once
 
 #include <OpenEXR/ImathFun.h>
 
@@ -80,4 +79,3 @@ Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f, 3>& c, const Imath::
 }  // bezier
 }  // ramen
 
-#endif

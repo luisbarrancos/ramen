@@ -2,8 +2,7 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-#ifndef RAMEN_IMATHEXT_MATRIX_ALGO_HPP
-#define RAMEN_IMATHEXT_MATRIX_ALGO_HPP
+#pragma once
 
 #include <boost/optional.hpp>
 #include <boost/array.hpp>
@@ -101,4 +100,3 @@ boost::array<Vec2<T> ,4>& dst)
 
 }  // Imath
 
-#endif
