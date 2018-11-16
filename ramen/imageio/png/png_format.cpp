@@ -29,7 +29,8 @@ std::size_t png_format_t::detect_size() const { return 4; }
 bool png_format_t::detect(const char* p) const
 {
     const unsigned char* pp = reinterpret_cast<const unsigned char*>(p);
-    return (pp[0] == 0x89) && (pp[1] == 0x50) && (pp[2] == 0x4E) && (pp[3] == 0x47);
+    return (pp[0] == 0x89) && (pp[1] == 0x50) && (pp[2] == 0x4E) &&
+           (pp[3] == 0x47);
 }
 
 void png_format_t::add_extensions(std::vector<std::string>& ext) const
@@ -38,7 +39,8 @@ void png_format_t::add_extensions(std::vector<std::string>& ext) const
     ext.push_back("PNG");
 }
 
-core::auto_ptr_t<reader_t> png_format_t::reader(const boost::filesystem::path& p) const
+core::auto_ptr_t<reader_t> png_format_t::reader(
+    const boost::filesystem::path& p) const
 {
     return core::auto_ptr_t<reader_t>(new oiio_reader_t(p));
 }
@@ -48,8 +50,8 @@ core::auto_ptr_t<writer_t> png_format_t::writer() const
     return core::auto_ptr_t<writer_t>(new png_writer_t());
 }
 
-static bool registered
-    = factory_t::instance().register_image_format(core::auto_ptr_t<format_t>(new png_format_t()));
+static bool registered = factory_t::instance().register_image_format(
+    core::auto_ptr_t<format_t>(new png_format_t()));
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

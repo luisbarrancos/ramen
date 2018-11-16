@@ -22,11 +22,12 @@ namespace
 {
 struct rgb_color_replace_fun
 {
-    rgb_color_replace_fun(const Imath::Color4f& src_color,
-                          const Imath::Color4f& dst_color,
-                          float                 tolerance,
-                          float                 softness,
-                          bool                  alpha_out)
+    rgb_color_replace_fun(
+        const Imath::Color4f& src_color,
+        const Imath::Color4f& dst_color,
+        float                 tolerance,
+        float                 softness,
+        bool                  alpha_out)
     {
         r_range_.center = src_color.r;
         r_range_.tol_lo = r_range_.tol_hi = tolerance;
@@ -40,8 +41,8 @@ struct rgb_color_replace_fun
         b_range_.tol_lo = b_range_.tol_hi = tolerance;
         b_range_.soft_lo = b_range_.soft_hi = softness;
 
-        dst_       = image::pixel_t(dst_color.r, dst_color.g, dst_color.b, 1.0f);
-        dst_lum_   = image::luminance(dst_);
+        dst_ = image::pixel_t(dst_color.r, dst_color.g, dst_color.b, 1.0f);
+        dst_lum_ = image::luminance(dst_);
         alpha_out_ = alpha_out;
     }
 
@@ -49,13 +50,13 @@ struct rgb_color_replace_fun
     {
         using namespace boost::gil;
 
-        float r     = get_color(src, red_t());
+        float r = get_color(src, red_t());
         float rmask = r_range_(r);
 
-        float g     = get_color(src, green_t());
+        float g = get_color(src, green_t());
         float gmask = g_range_(g);
 
-        float b     = get_color(src, blue_t());
+        float b = get_color(src, blue_t());
         float bmask = b_range_(b);
 
         float final_mask = rmask * gmask * bmask;
@@ -69,12 +70,12 @@ struct rgb_color_replace_fun
             lum_factor = 1.0f;
 
         image::pixel_t result;
-        get_color(result, red_t())
-            = Imath::lerp(r, get_color(dst_, red_t()) * lum_factor, final_mask);
-        get_color(result, green_t())
-            = Imath::lerp(g, get_color(dst_, green_t()) * lum_factor, final_mask);
-        get_color(result, blue_t())
-            = Imath::lerp(b, get_color(dst_, blue_t()) * lum_factor, final_mask);
+        get_color(result, red_t()) =
+            Imath::lerp(r, get_color(dst_, red_t()) * lum_factor, final_mask);
+        get_color(result, green_t()) =
+            Imath::lerp(g, get_color(dst_, green_t()) * lum_factor, final_mask);
+        get_color(result, blue_t()) =
+            Imath::lerp(b, get_color(dst_, blue_t()) * lum_factor, final_mask);
 
         if (alpha_out_)
             get_color(result, alpha_t()) = final_mask;
@@ -84,7 +85,7 @@ struct rgb_color_replace_fun
         return result;
     }
 
-private:
+  private:
     image::channel_range_t r_range_, g_range_, b_range_;
     image::pixel_t         dst_;
     float                  dst_lum_;
@@ -93,12 +94,13 @@ private:
 
 struct hsv_color_replace_fun
 {
-    hsv_color_replace_fun(const Imath::Color4f& src_color,
-                          const Imath::Color4f& dst_color,
-                          float                 tolerance,
-                          float                 softness,
-                          bool                  keep_luminance,
-                          bool                  alpha_out)
+    hsv_color_replace_fun(
+        const Imath::Color4f& src_color,
+        const Imath::Color4f& dst_color,
+        float                 tolerance,
+        float                 softness,
+        bool                  keep_luminance,
+        bool                  alpha_out)
     {
         Imath::Color4f hsv_src = image::rgb_to_hsv(src_color);
 
@@ -114,9 +116,10 @@ struct hsv_color_replace_fun
         v_range_.tol_lo = v_range_.tol_hi = tolerance;
         v_range_.soft_lo = v_range_.soft_hi = softness;
 
-        dst_ = image::rgb_to_hsv(image::pixel_t(dst_color.r, dst_color.g, dst_color.b, 1.0f));
+        dst_ = image::rgb_to_hsv(
+            image::pixel_t(dst_color.r, dst_color.g, dst_color.b, 1.0f));
         keep_luminance_ = keep_luminance;
-        alpha_out_      = alpha_out;
+        alpha_out_ = alpha_out;
     }
 
     image::pixel_t operator()(const image::pixel_t& src) const
@@ -125,27 +128,28 @@ struct hsv_color_replace_fun
 
         image::pixel_t hsv_src = image::rgb_to_hsv(src);
 
-        float h     = get_color(hsv_src, red_t());
+        float h = get_color(hsv_src, red_t());
         float hmask = h_range_(h);
 
-        float s     = get_color(hsv_src, green_t());
+        float s = get_color(hsv_src, green_t());
         float smask = s_range_(s);
 
-        float v     = get_color(hsv_src, blue_t());
+        float v = get_color(hsv_src, blue_t());
         float vmask = v_range_(v);
 
         float final_mask = hmask * smask * vmask;
 
         image::pixel_t result;
-        get_color(result, red_t()) = Imath::lerp(h, (float) get_color(dst_, red_t()), final_mask);
-        get_color(result, green_t())
-            = Imath::lerp(s, (float) get_color(dst_, green_t()), final_mask);
+        get_color(result, red_t()) =
+            Imath::lerp(h, (float) get_color(dst_, red_t()), final_mask);
+        get_color(result, green_t()) =
+            Imath::lerp(s, (float) get_color(dst_, green_t()), final_mask);
 
         if (keep_luminance_)
             get_color(result, blue_t()) = v;
         else
-            get_color(result, blue_t())
-                = Imath::lerp(v, (float) get_color(dst_, blue_t()), final_mask);
+            get_color(result, blue_t()) =
+                Imath::lerp(v, (float) get_color(dst_, blue_t()), final_mask);
 
         result = image::hsv_to_rgb(result);
 
@@ -157,17 +161,17 @@ struct hsv_color_replace_fun
         return result;
     }
 
-private:
+  private:
     image::channel_range_t h_range_, s_range_, v_range_;
     image::pixel_t         dst_;
     bool                   alpha_out_;
     bool                   keep_luminance_;
 };
 
-}  // unnamed
+}  // namespace
 
 color_replace_node_t::color_replace_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("col_replace");
 }
@@ -217,32 +221,35 @@ void color_replace_node_t::do_create_params()
     add_param(output_alpha);
 }
 
-void color_replace_node_t::do_process(const image::const_image_view_t& src,
-                                      const image::image_view_t&       dst,
-                                      const render::context_t&         context)
+void color_replace_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     if (get_value<int>(param("colorspace")))
     {
         boost::gil::tbb_transform_pixels(
             src,
             dst,
-            rgb_color_replace_fun(get_value<Imath::Color4f>(param("src_color")),
-                                  get_value<Imath::Color4f>(param("dst_color")),
-                                  get_value<float>(param("tolerance")),
-                                  get_value<float>(param("softness")),
-                                  get_value<bool>(param("alpha_out"))));
+            rgb_color_replace_fun(
+                get_value<Imath::Color4f>(param("src_color")),
+                get_value<Imath::Color4f>(param("dst_color")),
+                get_value<float>(param("tolerance")),
+                get_value<float>(param("softness")),
+                get_value<bool>(param("alpha_out"))));
     }
     else
     {
         boost::gil::tbb_transform_pixels(
             src,
             dst,
-            hsv_color_replace_fun(get_value<Imath::Color4f>(param("src_color")),
-                                  get_value<Imath::Color4f>(param("dst_color")),
-                                  get_value<float>(param("tolerance")),
-                                  get_value<float>(param("softness")),
-                                  get_value<bool>(param("keep_lum")),
-                                  get_value<bool>(param("alpha_out"))));
+            hsv_color_replace_fun(
+                get_value<Imath::Color4f>(param("src_color")),
+                get_value<Imath::Color4f>(param("dst_color")),
+                get_value<float>(param("tolerance")),
+                get_value<float>(param("softness")),
+                get_value<bool>(param("keep_lum")),
+                get_value<bool>(param("alpha_out"))));
     }
 }
 
@@ -261,14 +268,14 @@ const node_metaclass_t& color_replace_node_t::color_replace_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.color_replace";
+        info.id = "image.builtin.color_replace";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Color Replace";
-        info.create        = &create_color_replace_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Color Replace";
+        info.create = &create_color_replace_node;
+        inited = true;
     }
 
     return info;
@@ -277,5 +284,5 @@ const node_metaclass_t& color_replace_node_t::color_replace_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     color_replace_node_t::color_replace_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

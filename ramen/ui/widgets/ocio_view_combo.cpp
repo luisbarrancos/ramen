@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/widgets/ocio_view_combo.hpp>
 
 #include <cassert>
@@ -17,7 +16,7 @@ namespace ramen
 namespace ui
 {
 ocio_view_combo_t::ocio_view_combo_t(QWidget* parent)
-: ocio_combo_t(parent)
+  : ocio_combo_t(parent)
 {
     std::vector<std::string> views;
     int                      default_view;
@@ -30,7 +29,11 @@ ocio_view_combo_t::ocio_view_combo_t(QWidget* parent)
 
     current_view_ = views[default_view];
     setCurrentIndex(default_view);
-    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(combo_index_changed(int)));
+    connect(
+        this,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(combo_index_changed(int)));
 }
 
 void ocio_view_combo_t::set_view(const std::string& v)
@@ -66,7 +69,7 @@ void ocio_view_combo_t::update_views(const std::string& display)
 
     if (new_index == -1)
     {
-        new_index     = default_view;
+        new_index = default_view;
         current_view_ = views[new_index];
     }
 
@@ -79,5 +82,5 @@ void ocio_view_combo_t::combo_index_changed(int indx)
     view_changed(current_view_);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

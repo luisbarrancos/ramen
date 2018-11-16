@@ -14,5 +14,5 @@ std::stringstream& error_log_t::error_stream() { return error_stream_; }
 
 std::string error_log_t::errors() const { return error_stream_.str(); }
 
-}  // util
-}  // ramen
+}  // namespace util
+}  // namespace ramen

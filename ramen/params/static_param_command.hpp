@@ -17,17 +17,16 @@ namespace ramen
 {
 class static_param_command_t : public undo::command_t
 {
-public:
+  public:
     static_param_command_t(param_set_t& pset, const std::string& id);
 
     void undo() override;
     void redo() override;
 
-protected:
+  protected:
     param_set_t&       pset_;
     std::string        id_;
     poly_param_value_t old_value_, new_value_;
 };
 
-}  // namespace
-
+}  // namespace ramen

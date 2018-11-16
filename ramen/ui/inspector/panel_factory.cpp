@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/inspector/panel_factory.hpp>
 
 #include <boost/bind.hpp>
@@ -51,11 +50,11 @@ void panel_factory_t::delete_panel(parameterised_t* p)
 void panel_factory_t::do_create_panel(parameterised_t* p)
 {
     panel_t* panel = new panel_t(p);
-    panels_[p]     = panel;
-    boost::signals2::connection c
-        = p->deleted.connect(boost::bind(&panel_factory_t::delete_panel, this, _1));
+    panels_[p] = panel;
+    boost::signals2::connection c = p->deleted.connect(
+        boost::bind(&panel_factory_t::delete_panel, this, _1));
     panel->set_connection(c);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

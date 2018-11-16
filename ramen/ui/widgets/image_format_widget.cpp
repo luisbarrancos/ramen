@@ -15,7 +15,7 @@ namespace ramen
 namespace ui
 {
 image_format_widget_t::image_format_widget_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     QGridLayout* format_layout = new QGridLayout(this);
     format_layout->setContentsMargins(0, 0, 0, 0);
@@ -31,7 +31,11 @@ image_format_widget_t::image_format_widget_t(QWidget* parent)
         format_combo_->addItem(image::format_t::presets()[i].first.c_str());
 
     format_combo_->addItem("Custom");
-    connect(format_combo_, SIGNAL(currentIndexChanged(int)), this, SLOT(preset_picked(int)));
+    connect(
+        format_combo_,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(preset_picked(int)));
 
     label = new QLabel("Image Size");
     label->setAlignment(Qt::AlignRight | Qt::AlignTrailing | Qt::AlignVCenter);
@@ -44,7 +48,11 @@ image_format_widget_t::image_format_widget_t(QWidget* parent)
     format_width_->setMaximum(8192);
     format_width_->setValue(format.width);
     format_width_->setSuffix(" px");
-    connect(format_width_, SIGNAL(valueChanged(int)), this, SLOT(width_changed(int)));
+    connect(
+        format_width_,
+        SIGNAL(valueChanged(int)),
+        this,
+        SLOT(width_changed(int)));
     format_layout->addWidget(format_width_, 1, 1, 1, 1);
 
     format_height_ = new QSpinBox();
@@ -52,7 +60,11 @@ image_format_widget_t::image_format_widget_t(QWidget* parent)
     format_height_->setMaximum(8192);
     format_height_->setValue(format.height);
     format_height_->setSuffix(" px");
-    connect(format_height_, SIGNAL(valueChanged(int)), this, SLOT(height_changed(int)));
+    connect(
+        format_height_,
+        SIGNAL(valueChanged(int)),
+        this,
+        SLOT(height_changed(int)));
     format_layout->addWidget(format_height_, 1, 2, 1, 1);
 
     label = new QLabel("Aspect");
@@ -63,14 +75,20 @@ image_format_widget_t::image_format_widget_t(QWidget* parent)
     format_aspect_->setRange(0.1, 4);
     format_aspect_->setValue(format.aspect);
     format_aspect_->setSingleStep(0.05);
-    connect(format_aspect_, SIGNAL(valueChanged(double)), this, SLOT(aspect_changed(double)));
+    connect(
+        format_aspect_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(aspect_changed(double)));
     format_layout->addWidget(format_aspect_, 2, 2, 1, 1);
 }
 
 image::format_t image_format_widget_t::value() const
 {
     return image::format_t(
-        format_width_->value(), format_height_->value(), format_aspect_->value());
+        format_width_->value(),
+        format_height_->value(),
+        format_aspect_->value());
 }
 
 void image_format_widget_t::set_value(const image::format_t& format)
@@ -122,5 +140,5 @@ void image_format_widget_t::update_presets_menu()
     format_combo_->blockSignals(false);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

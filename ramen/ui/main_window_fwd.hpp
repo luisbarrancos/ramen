@@ -10,6 +10,5 @@ namespace ui
 {
 class main_window_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

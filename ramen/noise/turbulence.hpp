@@ -8,27 +8,27 @@ namespace ramen
 {
 namespace noise
 {
-template<class NoiseGen>
-class turbulence_t
+template <class NoiseGen> class turbulence_t
 {
-public:
+  public:
     typedef typename NoiseGen::result_type result_type;
 
-    turbulence_t(const NoiseGen& gen,
-                 int             octaves    = 4,
-                 float           gain       = 0.51f,
-                 float           lacunarity = 1.9977f,
-                 bool            turbulent  = true)
-    : gen_(gen)
+    turbulence_t(
+        const NoiseGen& gen,
+        int             octaves = 4,
+        float           gain = 0.51f,
+        float           lacunarity = 1.9977f,
+        bool            turbulent = true)
+      : gen_(gen)
     {
-        octaves_    = octaves;
-        gain_       = gain;
+        octaves_ = octaves;
+        gain_ = gain;
         lacunarity_ = lacunarity;
-        turbulent_  = turbulent;
+        turbulent_ = turbulent;
 
         // find the max possible value
         float max_value = 0;
-        float scale     = 1;
+        float scale = 1;
 
         for (int i = 0; i < octaves_; ++i)
         {
@@ -41,7 +41,7 @@ public:
 
     result_type operator()(float x, float y = 0, float z = 0) const
     {
-        float freq  = 1.0f;
+        float freq = 1.0f;
         float scale = 1.0f;
 
         result_type result = gen_(x, y, z);
@@ -63,13 +63,25 @@ public:
         return result / norm_;
     }
 
-    result_type operator()(const Imath::V2f& v) const { return (*this)(v.x, v.y); }
-    result_type operator()(const Imath::V3f& v) const { return (*this)(v.x, v.y, v.z); }
+    result_type operator()(const Imath::V2f& v) const
+    {
+        return (*this)(v.x, v.y);
+    }
+    result_type operator()(const Imath::V3f& v) const
+    {
+        return (*this)(v.x, v.y, v.z);
+    }
 
-private:
+  private:
     float      abs(float x) const { return (x < 0) ? -x : x; }
-    Imath::V2f abs(const Imath::V2f& v) const { return Imath::V2f(abs(v.x), abs(v.y)); }
-    Imath::V3f abs(const Imath::V3f& v) const { return Imath::V3f(abs(v.x), abs(v.y), abs(v.z)); }
+    Imath::V2f abs(const Imath::V2f& v) const
+    {
+        return Imath::V2f(abs(v.x), abs(v.y));
+    }
+    Imath::V3f abs(const Imath::V3f& v) const
+    {
+        return Imath::V3f(abs(v.x), abs(v.y), abs(v.z));
+    }
 
     const NoiseGen& gen_;
 
@@ -81,6 +93,5 @@ private:
     float norm_;
 };
 
-}  // noise
-}  // ramen
-
+}  // namespace noise
+}  // namespace ramen

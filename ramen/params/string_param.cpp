@@ -18,7 +18,7 @@
 namespace ramen
 {
 string_param_t::string_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(std::string());
     read_only_ = false;
@@ -26,7 +26,7 @@ string_param_t::string_param_t(const std::string& name)
 }
 
 string_param_t::string_param_t(const std::string& name, bool read_only)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(std::string());
     multiline_ = false;
@@ -41,15 +41,18 @@ string_param_t::string_param_t(const std::string& name, bool read_only)
 }
 
 string_param_t::string_param_t(const string_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
-    multiline_   = other.multiline_;
-    read_only_   = other.read_only_;
-    input_       = 0;
+    multiline_ = other.multiline_;
+    read_only_ = other.read_only_;
+    input_ = 0;
     multi_input_ = 0;
 }
 
-void string_param_t::set_default_value(const std::string& x) { value().assign(x); }
+void string_param_t::set_default_value(const std::string& x)
+{
+    value().assign(x);
+}
 
 void string_param_t::set_value(const std::string& x, change_reason reason)
 {
@@ -87,10 +90,10 @@ void string_param_t::do_write(serialization::yaml_oarchive_t& out) const
 
 QWidget* string_param_t::do_create_widgets()
 {
-    QWidget*         top   = new QWidget();
+    QWidget*         top = new QWidget();
     QLabel*          label = new QLabel(top);
-    ui::line_edit_t* tmp   = new ui::line_edit_t();
-    QSize            s     = tmp->sizeHint();
+    ui::line_edit_t* tmp = new ui::line_edit_t();
+    QSize            s = tmp->sizeHint();
     delete tmp;
 
     label->move(0, 0);
@@ -107,12 +110,14 @@ QWidget* string_param_t::do_create_widgets()
         multi_input_ = new ui::text_edit_t(top);
         multi_input_->setReadOnly(read_only_);
         multi_input_->move(app().ui()->inspector().left_margin(), 0);
-        multi_input_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                                 - 10,
-                             s.height() * 7);
+        multi_input_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height() * 7);
         multi_input_->setEnabled(enabled());
         multi_input_->setPlainText(str.c_str());
-        connect(multi_input_, SIGNAL(textHasChanged()), this, SLOT(text_changed()));
+        connect(
+            multi_input_, SIGNAL(textHasChanged()), this, SLOT(text_changed()));
         height = multi_input_->height();
     }
     else
@@ -120,8 +125,10 @@ QWidget* string_param_t::do_create_widgets()
         input_ = new ui::line_edit_t(top);
         input_->setReadOnly(read_only_);
         input_->move(app().ui()->inspector().left_margin(), 0);
-        input_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin() - 10,
-                       s.height());
+        input_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height());
         input_->setEnabled(enabled());
         input_->setText(str.c_str());
         connect(input_, SIGNAL(editingFinished()), this, SLOT(text_changed()));
@@ -180,4 +187,4 @@ void string_param_t::text_changed()
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

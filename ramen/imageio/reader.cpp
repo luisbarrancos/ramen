@@ -13,7 +13,7 @@ namespace ramen
 namespace imageio
 {
 reader_t::reader_t(const boost::filesystem::path& p)
-: path_(p)
+  : path_(p)
 {
 }
 
@@ -38,26 +38,34 @@ float reader_t::aspect_ratio() const
     return aspect;
 }
 
-void reader_t::read_image(const image::image_view_t& view) const { read_image(view, bounds(), 1); }
+void reader_t::read_image(const image::image_view_t& view) const
+{
+    read_image(view, bounds(), 1);
+}
 
-void reader_t::read_image(const image::image_view_t& view,
-                          const math::box2i_t&       crop,
-                          int                        subsample) const
+void reader_t::read_image(
+    const image::image_view_t& view,
+    const math::box2i_t&       crop,
+    int                        subsample) const
 {
     do_read_image(view, crop, subsample);
 }
 
-void reader_t::repeat_scanline_until_end(const image::image_view_t& view, int y) const
+void reader_t::repeat_scanline_until_end(const image::image_view_t& view, int y)
+    const
 {
     int last_scan = y;
-    int yy        = y + 1;
+    int yy = y + 1;
 
     while (yy < view.height())
     {
-        std::copy(view.row_begin(last_scan), view.row_end(last_scan), view.row_begin(yy));
+        std::copy(
+            view.row_begin(last_scan),
+            view.row_end(last_scan),
+            view.row_begin(yy));
         ++yy;
     }
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

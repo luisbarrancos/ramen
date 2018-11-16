@@ -15,29 +15,29 @@ class hue_picker_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     hue_picker_t(QWidget* parent = 0);
 
     QSize sizeHint() const override;
 
     double hue() const;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void hue_changed(double hue);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_hue(double h);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-private:
+  private:
     double pick_hue(int y) const;
 
     void update_background();
@@ -48,6 +48,5 @@ private:
     double hue_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

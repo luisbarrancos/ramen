@@ -11,10 +11,10 @@ namespace ramen
 namespace image
 {
 void make_color_bars(const image_view_t& view);
-void make_color_bars(const image_view_t& view,
-                     const Imath::Box2i& domain,
-                     const Imath::Box2i& defined);
+void make_color_bars(
+    const image_view_t& view,
+    const Imath::Box2i& domain,
+    const Imath::Box2i& defined);
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

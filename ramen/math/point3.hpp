@@ -17,40 +17,42 @@ namespace math
 \ingroup math
 \brief Three dimensional point.
 */
-template<class T>
+template <class T>
 class point3_t
-: boost::addable2<
-      point3_t<T>,
-      vector3_t<T>,
-      boost::subtractable2<
-          point3_t<T>,
-          vector3_t<T>,
-          boost::addable2<point3_t<T>,
-                          normal_t<T>,
-                          boost::subtractable2<point3_t<T>,
-                                               normal_t<T>,
-                                               boost::equality_comparable<point3_t<T>>>>>>
+  : boost::addable2<
+        point3_t<T>,
+        vector3_t<T>,
+        boost::subtractable2<
+            point3_t<T>,
+            vector3_t<T>,
+            boost::addable2<
+                point3_t<T>,
+                normal_t<T>,
+                boost::subtractable2<
+                    point3_t<T>,
+                    normal_t<T>,
+                    boost::equality_comparable<point3_t<T>>>>>>
 {
-public:
+  public:
     typedef T value_type;
 
-    static const unsigned int dimensions    = 3;
+    static const unsigned int dimensions = 3;
     static const bool         is_homogeneus = false;
     static unsigned int       size() { return 3; }
 
     point3_t() {}
 
     explicit point3_t(T xx)
-    : x(xx)
-    , y(xx)
-    , z(xx)
+      : x(xx)
+      , y(xx)
+      , z(xx)
     {
     }
 
     point3_t(T xx, T yy, T zz)
-    : x(xx)
-    , y(yy)
-    , z(zz)
+      : x(xx)
+      , y(yy)
+      , z(zz)
     {
     }
 
@@ -123,6 +125,5 @@ typedef point3_t<double> point3d_t;
 typedef point3_t<int>    point3i_t;
 typedef point3_t<half>   point3h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

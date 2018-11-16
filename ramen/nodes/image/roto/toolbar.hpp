@@ -19,14 +19,14 @@ class toolbar_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     toolbar_t(image::roto_node_t& parent);
     ~toolbar_t() override;
 
     const tool_t& active_tool() const;
     tool_t&       active_tool();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void pick_select_tool(bool b);
     void pick_create_tool(bool b);
@@ -34,7 +34,7 @@ public Q_SLOTS:
     void pick_null_tool(bool b);
     void pick_convert_tool(bool b);
 
-private:
+  private:
     image::roto_node_t& parent_;
 
     tool_t* select_tool_;
@@ -45,6 +45,5 @@ private:
     tool_t* current_tool_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

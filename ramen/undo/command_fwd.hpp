@@ -8,6 +8,5 @@ namespace undo
 {
 class command_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

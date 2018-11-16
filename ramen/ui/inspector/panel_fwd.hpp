@@ -10,6 +10,5 @@ namespace ui
 {
 class panel_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

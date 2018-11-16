@@ -16,8 +16,8 @@ namespace
 struct clamp_rgba_colors_fun
 {
     clamp_rgba_colors_fun(float lo, float hi)
-    : lo_(lo)
-    , hi_(hi)
+      : lo_(lo)
+      , hi_(hi)
     {
     }
 
@@ -55,8 +55,8 @@ struct clamp_rgba_colors_fun
 struct clamp_rgb_colors_fun
 {
     clamp_rgb_colors_fun(float lo, float hi)
-    : lo_(lo)
-    , hi_(hi)
+      : lo_(lo)
+      , hi_(hi)
     {
     }
 
@@ -80,7 +80,8 @@ struct clamp_rgb_colors_fun
         if (b > hi_)
             b = hi_;
 
-        return image::pixel_t(r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
+        return image::pixel_t(
+            r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
     }
 
     float lo_, hi_;
@@ -89,8 +90,8 @@ struct clamp_rgb_colors_fun
 struct clamp_alpha_colors_fun
 {
     clamp_alpha_colors_fun(float lo, float hi)
-    : lo_(lo)
-    , hi_(hi)
+      : lo_(lo)
+      , hi_(hi)
     {
     }
 
@@ -112,10 +113,10 @@ struct clamp_alpha_colors_fun
     float lo_, hi_;
 };
 
-}  // unnamed
+}  // namespace
 
 clamp_colors_node_t::clamp_colors_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("clamp");
 }
@@ -143,32 +144,38 @@ void clamp_colors_node_t::do_create_params()
     add_param(p);
 }
 
-void clamp_colors_node_t::do_process(const image::const_image_view_t& src,
-                                     const image::image_view_t&       dst,
-                                     const render::context_t&         context)
+void clamp_colors_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     switch (get_value<int>(param("channels")))
     {
         case 0:
-            boost::gil::tbb_transform_pixels(src,
-                                             dst,
-                                             clamp_rgba_colors_fun(get_value<float>(param("min")),
-                                                                   get_value<float>(param("max"))));
+            boost::gil::tbb_transform_pixels(
+                src,
+                dst,
+                clamp_rgba_colors_fun(
+                    get_value<float>(param("min")),
+                    get_value<float>(param("max"))));
             break;
 
         case 1:
-            boost::gil::tbb_transform_pixels(src,
-                                             dst,
-                                             clamp_rgb_colors_fun(get_value<float>(param("min")),
-                                                                  get_value<float>(param("max"))));
+            boost::gil::tbb_transform_pixels(
+                src,
+                dst,
+                clamp_rgb_colors_fun(
+                    get_value<float>(param("min")),
+                    get_value<float>(param("max"))));
             break;
 
         case 2:
             boost::gil::tbb_transform_pixels(
                 src,
                 dst,
-                clamp_alpha_colors_fun(get_value<float>(param("min")),
-                                       get_value<float>(param("max"))));
+                clamp_alpha_colors_fun(
+                    get_value<float>(param("min")),
+                    get_value<float>(param("max"))));
             break;
     }
 }
@@ -188,22 +195,22 @@ const node_metaclass_t& clamp_colors_node_t::clamp_colors_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.clamp_colors";
+        info.id = "image.builtin.clamp_colors";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Clamp";
-        info.help          = "Clamps pixel components to specified range";
-        info.create        = &create_clamp_colors_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Clamp";
+        info.help = "Clamps pixel components to specified range";
+        info.create = &create_clamp_colors_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(clamp_colors_node_t::clamp_colors_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    clamp_colors_node_t::clamp_colors_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

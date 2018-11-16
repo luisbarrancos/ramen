@@ -12,6 +12,5 @@ namespace core
 {
 class string_t;
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

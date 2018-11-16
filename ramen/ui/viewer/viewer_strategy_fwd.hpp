@@ -12,7 +12,6 @@ namespace viewer
 {
 class viewer_strategy_t;
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

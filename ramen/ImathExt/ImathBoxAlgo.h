@@ -16,28 +16,33 @@ namespace ramen
 {
 namespace ImathExt
 {
-template<class T>
-bool isInside(const Imath::Box<Imath::Vec2<T>>& bounds, const Imath::Box<Imath::Vec2<T>>& box)
+template <class T>
+bool isInside(
+    const Imath::Box<Imath::Vec2<T>>& bounds,
+    const Imath::Box<Imath::Vec2<T>>& box)
 {
     return bounds.intersects(box.min) && bounds.intersects(box.max);
 }
 
-template<class T>
-Imath::Box<Imath::Vec2<T>> intersect(const Imath::Box<Imath::Vec2<T>>& a,
-                                     const Imath::Box<Imath::Vec2<T>>& b)
+template <class T>
+Imath::Box<Imath::Vec2<T>> intersect(
+    const Imath::Box<Imath::Vec2<T>>& a,
+    const Imath::Box<Imath::Vec2<T>>& b)
 {
-    if (!(a.min.x > b.max.x || a.max.x < b.min.x || a.min.y > b.max.y || a.max.y < b.min.y))
+    if (!(a.min.x > b.max.x || a.max.x < b.min.x || a.min.y > b.max.y ||
+          a.max.y < b.min.y))
     {
         return Imath::Box<Imath::Vec2<T>>(
-            Imath::Vec2<T>(std::max(a.min.x, b.min.x), std::max(a.min.y, b.min.y)),
-            Imath::Vec2<T>(std::min(a.max.x, b.max.x), std::min(a.max.y, b.max.y)));
+            Imath::Vec2<T>(
+                std::max(a.min.x, b.min.x), std::max(a.min.y, b.min.y)),
+            Imath::Vec2<T>(
+                std::min(a.max.x, b.max.x), std::min(a.max.y, b.max.y)));
     }
     else
         return Imath::Box<Imath::Vec2<T>>();
 }
 
-template<class T>
-Imath::Box<T> offsetBy(const Imath::Box<T>& box, const T& d)
+template <class T> Imath::Box<T> offsetBy(const Imath::Box<T>& box, const T& d)
 {
     Imath::Box<T> newbox(box);
     newbox.min += d;
@@ -45,8 +50,10 @@ Imath::Box<T> offsetBy(const Imath::Box<T>& box, const T& d)
     return newbox;
 }
 
-template<class T>
-Imath::Box2i roundBox(const Imath::Box<Imath::Vec2<T>>& b, bool round_up = false)
+template <class T>
+Imath::Box2i roundBox(
+    const Imath::Box<Imath::Vec2<T>>& b,
+    bool                              round_up = false)
 {
     if (b.isEmpty())
         return Imath::Box2i();
@@ -54,20 +61,26 @@ Imath::Box2i roundBox(const Imath::Box<Imath::Vec2<T>>& b, bool round_up = false
     if (round_up)
     {
         return Imath::Box2i(
-            Imath::V2i(Imath::Math<T>::floor(b.min.x), Imath::Math<T>::floor(b.min.y)),
-            Imath::V2i(Imath::Math<T>::ceil(b.max.x), Imath::Math<T>::ceil(b.max.y)));
+            Imath::V2i(
+                Imath::Math<T>::floor(b.min.x), Imath::Math<T>::floor(b.min.y)),
+            Imath::V2i(
+                Imath::Math<T>::ceil(b.max.x), Imath::Math<T>::ceil(b.max.y)));
     }
     else
     {
         return Imath::Box2i(
-            Imath::V2i(Imath::Math<T>::ceil(b.min.x), Imath::Math<T>::ceil(b.min.y)),
-            Imath::V2i(Imath::Math<T>::floor(b.max.x), Imath::Math<T>::floor(b.max.y)));
+            Imath::V2i(
+                Imath::Math<T>::ceil(b.min.x), Imath::Math<T>::ceil(b.min.y)),
+            Imath::V2i(
+                Imath::Math<T>::floor(b.max.x),
+                Imath::Math<T>::floor(b.max.y)));
     }
 }
 
-template<class T>
-Imath::Box<Imath::Vec2<T>> transform(const Imath::Box<Imath::Vec2<T>>& box,
-                                     const Imath::Matrix33<T>&         m)
+template <class T>
+Imath::Box<Imath::Vec2<T>> transform(
+    const Imath::Box<Imath::Vec2<T>>& box,
+    const Imath::Matrix33<T>&         m)
 {
     if (box.isEmpty())
         return box;
@@ -119,23 +132,34 @@ Imath::Box<Imath::Vec2<T>> transform(const Imath::Box<Imath::Vec2<T>>& box,
     return newBox;
 }
 
-RAMEN_API Imath::Box2i transform(const Imath::Box2i& box,
-                                 const Imath::M33f&  m,
-                                 bool                round_up = false);
-RAMEN_API Imath::Box2i transform(const Imath::Box2i& box,
-                                 const Imath::M33d&  m,
-                                 bool                round_up = false);
+RAMEN_API Imath::Box2i transform(
+    const Imath::Box2i& box,
+    const Imath::M33f&  m,
+    bool                round_up = false);
+RAMEN_API Imath::Box2i transform(
+    const Imath::Box2i& box,
+    const Imath::M33d&  m,
+    bool                round_up = false);
 
 RAMEN_API Imath::Box2i scale(const Imath::Box2i& b, float s);
 RAMEN_API Imath::Box2i scale(const Imath::Box2i& b, float sx, float sy);
-RAMEN_API Imath::Box2i scale(const Imath::Box2i& b, float sx, float sy, int xcenter, int ycenter);
+RAMEN_API Imath::Box2i scale(
+    const Imath::Box2i& b,
+    float               sx,
+    float               sy,
+    int                 xcenter,
+    int                 ycenter);
 
 RAMEN_API Imath::Box2f scale(const Imath::Box2f& b, float s);
 RAMEN_API Imath::Box2f scale(const Imath::Box2f& b, float sx, float sy);
 RAMEN_API Imath::Box2f scale(
-    const Imath::Box2f& b, float sx, float sy, float xcenter, float ycenter);
+    const Imath::Box2f& b,
+    float               sx,
+    float               sy,
+    float               xcenter,
+    float               ycenter);
 
-template<class F>  // -> Imath::V2f F::operator()( const Imath::V2f& p)
+template <class F>  // -> Imath::V2f F::operator()( const Imath::V2f& p)
 Imath::Box2f warpBox(const Imath::Box2f& b, F f)
 {
     Imath::Box2f box;
@@ -156,7 +180,7 @@ Imath::Box2f warpBox(const Imath::Box2f& b, F f)
     return box;
 }
 
-template<class F>  // -> Imath::V2f F::operator()( const Imath::V2f& p)
+template <class F>  // -> Imath::V2f F::operator()( const Imath::V2f& p)
 Imath::Box2i warpBox(const Imath::Box2i& b, F f, bool round_up = false)
 {
     Imath::Box2f box(Imath::V2f(b.min), Imath::V2f(b.max));
@@ -168,13 +192,12 @@ Imath::Box2i warpBox(const Imath::Box2i& b, F f, bool round_up = false)
     return roundBox(box, round_up);
 }
 
-}  // ImathExt
-}  // ramen
+}  // namespace ImathExt
+}  // namespace ramen
 
-template<class T>
+template <class T>
 inline std::ostream& operator<<(std::ostream& os, const Imath::Box<T>& b)
 {
     os << "[ " << b.min << "; " << b.max << "]";
     return os;
 }
-

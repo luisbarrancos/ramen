@@ -25,30 +25,37 @@ struct pool_t::implementation_t
     struct mem_block_t : public bi::list_base_hook<bi::link_mode<bi::safe_link>>
     {
         mem_block_t(std::size_t s)
-        : size(s)
-        , free(true)
+          : size(s)
+          , free(true)
         {
         }
 
         mem_block_t* split(std::size_t s)
         {
             // preconditions
-            assert(free && "mem_block_t::split : trying to split a non free block");
-            assert((size - s > sizeof(mem_block_t)) && "mem_block_t::split : block can't be split");
+            assert(
+                free &&
+                "mem_block_t::split : trying to split a non free block");
+            assert(
+                (size - s > sizeof(mem_block_t)) &&
+                "mem_block_t::split : block can't be split");
 
             std::size_t old_size = size;
 
             unsigned char* p = reinterpret_cast<unsigned char*>(this);
             p += (sizeof(mem_block_t) + s);
 
-            mem_block_t* new_block = new (p) mem_block_t(size - s - sizeof(mem_block_t));
-            size                   = s;
+            mem_block_t* new_block =
+                new (p) mem_block_t(size - s - sizeof(mem_block_t));
+            size = s;
 
             // postconditions
-            assert(old_size == (size + new_block->size + sizeof(mem_block_t))
-                   && "mem_block_t::split : block sizes don't match");
-            assert(is_contiguous(*new_block)
-                   && "mem_block_t::split : non contiguous resulting blocks");
+            assert(
+                old_size == (size + new_block->size + sizeof(mem_block_t)) &&
+                "mem_block_t::split : block sizes don't match");
+            assert(
+                is_contiguous(*new_block) &&
+                "mem_block_t::split : non contiguous resulting blocks");
 
             return new_block;
         }
@@ -71,7 +78,7 @@ struct pool_t::implementation_t
         {
             unsigned char* p0 = reinterpret_cast<unsigned char*>(this);
             unsigned char* p1 = p0 + sizeof(mem_block_t) + size;
-            unsigned char* q  = reinterpret_cast<unsigned char*>(&other);
+            unsigned char* q = reinterpret_cast<unsigned char*>(&other);
             return p1 == q;
         }
 
@@ -98,19 +105,20 @@ struct pool_t::implementation_t
         std::size_t size;
         bool        free;
 
-    private:
+      private:
         // non-copyable
         mem_block_t(const mem_block_t&);
         mem_block_t& operator=(const mem_block_t&);
     };
 
     implementation_t(std::size_t size_in_bytes)
-    : pool_size(size_in_bytes)
+      : pool_size(size_in_bytes)
     {
         pool.reset(new unsigned char[pool_size]);
 
         // create our first block and add it to the list
-        mem_block_t* block = new (pool.get()) mem_block_t(size_in_bytes - sizeof(mem_block_t));
+        mem_block_t* block =
+            new (pool.get()) mem_block_t(size_in_bytes - sizeof(mem_block_t));
         free_list_.push_back(*block);
     }
 
@@ -128,7 +136,9 @@ struct pool_t::implementation_t
         if (it == end())
             return 0;
 
-        assert(it->size >= size && "find best block: block smaller than size requested\n");
+        assert(
+            it->size >= size &&
+            "find best block: block smaller than size requested\n");
 
         mem_block_t* m = 0;
 
@@ -140,9 +150,12 @@ struct pool_t::implementation_t
         m->free = false;
 
         // post conditions
-        assert(m->size >= size && "allocate: returning a block smaller than size");
+        assert(
+            m->size >= size && "allocate: returning a block smaller than size");
         assert(list_is_sorted() && "allocate: list not sorted");
-        assert(!overlaps_free_block(m) && "allocate: block overlaps with free blocks");
+        assert(
+            !overlaps_free_block(m) &&
+            "allocate: block overlaps with free blocks");
         assert(block_in_pool(m) && "allocate: returning block not in pool");
 
         return reinterpret_cast<unsigned char*>(m + 1);
@@ -156,7 +169,9 @@ struct pool_t::implementation_t
         assert(block_in_pool(m) && "deallocate: block not in pool");
         assert(!m->is_linked() && "deallocate: block is already linked");
         assert(!m->free && "deallocate: trying to free an already freed block");
-        assert(!overlaps_free_block(m) && "deallocate: block overlaps with free blocks");
+        assert(
+            !overlaps_free_block(m) &&
+            "deallocate: block overlaps with free blocks");
 
         insert_free_block_sorted(m);
         assert(list_is_sorted() && "insert free block sorted: list not sorted");
@@ -168,7 +183,7 @@ struct pool_t::implementation_t
 
     void insert_free_block_sorted(mem_block_t* m)
     {
-        m->free     = true;
+        m->free = true;
         iterator it = begin();
 
         if ((it == end()) || (m < &*it))
@@ -198,7 +213,7 @@ struct pool_t::implementation_t
     iterator find_best_block(std::size_t s)
     {
         iterator    first_fit = end();
-        iterator    best_fit  = end();
+        iterator    best_fit = end();
         std::size_t best_size = std::numeric_limits<std::size_t>::max();
 
         for (iterator it(begin()); it != end(); ++it)
@@ -214,7 +229,7 @@ struct pool_t::implementation_t
                 {
                     if (it->size < best_size)
                     {
-                        best_fit  = it;
+                        best_fit = it;
                         best_size = it->size;
                     }
                 }
@@ -395,5 +410,5 @@ void pool_t::deallocate(unsigned char* p, std::size_t size)
     allocated_ -= size;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace memory
+}  // namespace ramen

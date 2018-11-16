@@ -12,8 +12,12 @@ namespace ramen
 {
 namespace bezier
 {
-template<class P>
-void split_curve(const curve_t<P, 3>& c, double t, curve_t<P, 3>& a, curve_t<P, 3>& b)
+template <class P>
+void split_curve(
+    const curve_t<P, 3>& c,
+    double               t,
+    curve_t<P, 3>&       a,
+    curve_t<P, 3>&       b)
 {
     typedef typename curve_t<P, 3>::point_type point_type;
 
@@ -43,7 +47,7 @@ void split_curve(const curve_t<P, 3>& c, double t, curve_t<P, 3>& a, curve_t<P, 
 }
 
 // Optimized for t = 0.5. It's a very common case.
-template<class P>
+template <class P>
 void split_curve(const curve_t<P, 3>& c, curve_t<P, 3>& a, curve_t<P, 3>& b)
 {
     typedef typename curve_t<P, 3>::point_type point_type;
@@ -73,9 +77,13 @@ void split_curve(const curve_t<P, 3>& c, curve_t<P, 3>& a, curve_t<P, 3>& b)
     b[3] = c[3];
 }
 
-Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f, 3>& c, const Imath::V2f& p, float& t);
-Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f, 3>& c, const Imath::V2f& p);
+Imath::V2f nearest_point_on_curve(
+    const curve_t<Imath::V2f, 3>& c,
+    const Imath::V2f&             p,
+    float&                        t);
+Imath::V2f nearest_point_on_curve(
+    const curve_t<Imath::V2f, 3>& c,
+    const Imath::V2f&             p);
 
-}  // bezier
-}  // ramen
-
+}  // namespace bezier
+}  // namespace ramen

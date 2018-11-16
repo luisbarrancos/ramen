@@ -15,16 +15,16 @@ namespace image
 std::vector<format_t::preset_type> format_t::presets_;
 
 format_t::format_t()
-: width(768)
-, height(576)
-, aspect(1.0f)
+  : width(768)
+  , height(576)
+  , aspect(1.0f)
 {
 }
 
 format_t::format_t(int w, int h, float asp)
-: width(w)
-, height(h)
-, aspect(asp)
+  : width(w)
+  , height(h)
+  , aspect(asp)
 {
 }
 
@@ -65,25 +65,39 @@ void format_t::init_presets()
     if (!inited)
     {
         // make a small list of presets inline.
-        add_preset(preset_type("PAL Square: 768 x 576", format_t(768, 576, 1.0f)));
-        add_preset(preset_type("PAL D1: 720 x 576 x 1.067", format_t(720, 576, 1.067f)));
-        add_preset(preset_type("PAL 16:9: 720 x 576 x 1.422", format_t(720, 576, 1.422f)));
+        add_preset(
+            preset_type("PAL Square: 768 x 576", format_t(768, 576, 1.0f)));
+        add_preset(preset_type(
+            "PAL D1: 720 x 576 x 1.067", format_t(720, 576, 1.067f)));
+        add_preset(preset_type(
+            "PAL 16:9: 720 x 576 x 1.422", format_t(720, 576, 1.422f)));
 
-        add_preset(preset_type("NTSC Square: 640 x 486", format_t(640, 486, 1.0f)));
-        add_preset(preset_type("NTSC D1: 720 x 486 x 0.9", format_t(720, 486, 0.9f)));
-        add_preset(preset_type("NTSC 16:9: 720 x 486 x 1.21", format_t(720, 486, 1.21f)));
+        add_preset(
+            preset_type("NTSC Square: 640 x 486", format_t(640, 486, 1.0f)));
+        add_preset(
+            preset_type("NTSC D1: 720 x 486 x 0.9", format_t(720, 486, 0.9f)));
+        add_preset(preset_type(
+            "NTSC 16:9: 720 x 486 x 1.21", format_t(720, 486, 1.21f)));
 
-        add_preset(preset_type("HD 720: 1280 x 720", format_t(1280, 720, 1.0f)));
-        add_preset(preset_type("HD 1080: 1440 x 1080", format_t(1440, 1080, 1.33f)));
-        add_preset(preset_type("HD 1080: 1920 x 1080", format_t(1920, 1080, 1.0f)));
+        add_preset(
+            preset_type("HD 720: 1280 x 720", format_t(1280, 720, 1.0f)));
+        add_preset(
+            preset_type("HD 1080: 1440 x 1080", format_t(1440, 1080, 1.33f)));
+        add_preset(
+            preset_type("HD 1080: 1920 x 1080", format_t(1920, 1080, 1.0f)));
 
-        add_preset(preset_type("2K Super35: 2048 x 1556", format_t(2048, 1556, 1.0f)));
-        add_preset(preset_type("2K Cinemascope: 1828 x 1556 x 2.0", format_t(1828, 1556, 2.0f)));
+        add_preset(
+            preset_type("2K Super35: 2048 x 1556", format_t(2048, 1556, 1.0f)));
+        add_preset(preset_type(
+            "2K Cinemascope: 1828 x 1556 x 2.0", format_t(1828, 1556, 2.0f)));
 
-        add_preset(preset_type("4K Super35: 4096 x 3112", format_t(4096, 3112, 1.0f)));
-        add_preset(preset_type("4K Cinemascope: 3656 x 3112 x 2.0", format_t(3656, 3112, 2.0f)));
+        add_preset(
+            preset_type("4K Super35: 4096 x 3112", format_t(4096, 3112, 1.0f)));
+        add_preset(preset_type(
+            "4K Cinemascope: 3656 x 3112 x 2.0", format_t(3656, 3112, 2.0f)));
 
-        add_preset(preset_type("Cineon Full: 3656 x 2664", format_t(3656, 2664, 1.0f)));
+        add_preset(preset_type(
+            "Cineon Full: 3656 x 2664", format_t(3656, 2664, 1.0f)));
         inited = true;
     }
 }
@@ -107,12 +121,14 @@ void format_t::add_preset(const preset_type& p)
 
 bool format_t::operator==(const format_t& other) const
 {
-    return width == other.width && height == other.height && aspect == other.aspect;
+    return width == other.width && height == other.height &&
+           aspect == other.aspect;
 }
 
 bool format_t::operator!=(const format_t& other) const
 {
-    return width != other.width || height != other.height || aspect != other.aspect;
+    return width != other.width || height != other.height ||
+           aspect != other.aspect;
 }
 
 // input & output
@@ -136,5 +152,5 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const format_t& f)
     return out;
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

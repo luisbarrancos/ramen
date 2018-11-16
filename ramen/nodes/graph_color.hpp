@@ -15,5 +15,4 @@ enum graph_color_t
     blue
 };
 
-}  // namespace
-
+}  // namespace ramen

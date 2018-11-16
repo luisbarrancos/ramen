@@ -10,14 +10,12 @@ namespace ramen
 {
 namespace util
 {
-template<class T, class Bit>
-bool test_flag(T flags, Bit bit)
+template <class T, class Bit> bool test_flag(T flags, Bit bit)
 {
     return flags & bit;
 }
 
-template<class T, class Bit>
-void set_flag(T& flags, Bit bit, bool value)
+template <class T, class Bit> void set_flag(T& flags, Bit bit, bool value)
 {
     if (value)
         flags |= bit;
@@ -25,6 +23,5 @@ void set_flag(T& flags, Bit bit, bool value)
         flags &= ~bit;
 }
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

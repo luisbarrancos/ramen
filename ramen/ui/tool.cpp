@@ -25,14 +25,18 @@ void tool_t::mouse_move_event(const mouse_move_event_t& event) {}
 void tool_t::mouse_drag_event(const mouse_drag_event_t& event) {}
 void tool_t::mouse_release_event(const mouse_release_event_t& event) {}
 
-bool tool_t::inside_pick_distance(const Imath::V2f& p, const mouse_event_t& event) const
+bool tool_t::inside_pick_distance(
+    const Imath::V2f&    p,
+    const mouse_event_t& event) const
 {
     Imath::V2f q(p);
     q.x /= event.aspect_ratio;
     return inside_pick_distance(q, event.wpos, event.pixel_scale);
 }
 
-bool tool_t::inside_pick_distance(const Imath::Box2f& b, const mouse_event_t& event) const
+bool tool_t::inside_pick_distance(
+    const Imath::Box2f&  b,
+    const mouse_event_t& event) const
 {
     if (b.isEmpty())
         return false;
@@ -47,15 +51,19 @@ bool tool_t::inside_pick_distance(const Imath::Box2f& b, const mouse_event_t& ev
     return bb.intersects(event.wpos);
 }
 
-bool tool_t::inside_pick_distance(const Imath::V2f& p, const Imath::V2f& q, float pixel_scale) const
+bool tool_t::inside_pick_distance(
+    const Imath::V2f& p,
+    const Imath::V2f& q,
+    float             pixel_scale) const
 {
     float d = (p - q).length() * pixel_scale;
     return d <= 5;
 }
 
-bool tool_t::inside_pick_distance(const Imath::Box2f& b,
-                                  const Imath::V2f&   p,
-                                  float               pixel_scale) const
+bool tool_t::inside_pick_distance(
+    const Imath::Box2f& b,
+    const Imath::V2f&   p,
+    float               pixel_scale) const
 {
     float        dtol = 5 * pixel_scale;
     Imath::Box2f bb(b);
@@ -66,5 +74,5 @@ bool tool_t::inside_pick_distance(const Imath::Box2f& b,
     return bb.intersects(p);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

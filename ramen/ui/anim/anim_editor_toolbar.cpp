@@ -40,7 +40,7 @@ namespace ramen
 namespace ui
 {
 anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     setMinimumSize(0, 35);
     setMaximumSize(QWIDGETSIZE_MAX, 35);
@@ -55,7 +55,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     select_->setCheckable(true);
     select_->setChecked(true);
     select_->setToolTip("Select / Move tool");
-    // connect( select_, SIGNAL( toggled( bool)), this, SLOT( pick_select_tool( bool)));
+    // connect( select_, SIGNAL( toggled( bool)), this, SLOT( pick_select_tool(
+    // bool)));
     layout->addWidget(select_);
 
     /*
@@ -66,9 +67,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     scale_->setCheckable( true);
     scale_->setChecked( false);
     scale_->setToolTip( "Scale tool");
-    //connect( scale_, SIGNAL( toggled( bool)), this, SLOT( pick_scale_tool( bool)));
-    scale_->setEnabled( false);
-    layout->addWidget( scale_);
+    //connect( scale_, SIGNAL( toggled( bool)), this, SLOT( pick_scale_tool(
+    bool))); scale_->setEnabled( false); layout->addWidget( scale_);
     */
 
     QFrame* separator = new QFrame();
@@ -81,7 +81,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     smooth_tangents_->setIcon(QIcon(":icons/smooth_tan.png"));
     smooth_tangents_->setFocusPolicy(Qt::NoFocus);
     smooth_tangents_->setToolTip("Smooth tangents");
-    connect(smooth_tangents_, SIGNAL(pressed()), this, SLOT(set_tangents_smooth()));
+    connect(
+        smooth_tangents_, SIGNAL(pressed()), this, SLOT(set_tangents_smooth()));
     layout->addWidget(smooth_tangents_);
 
     flat_tangents_ = new QToolButton(this);
@@ -95,7 +96,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     linear_tangents_->setIcon(QIcon(":icons/linear_tan.png"));
     linear_tangents_->setFocusPolicy(Qt::NoFocus);
     linear_tangents_->setToolTip("Linear tangents");
-    connect(linear_tangents_, SIGNAL(pressed()), this, SLOT(set_tangents_linear()));
+    connect(
+        linear_tangents_, SIGNAL(pressed()), this, SLOT(set_tangents_linear()));
     layout->addWidget(linear_tangents_);
 
     step_tangents_ = new QToolButton(this);
@@ -118,9 +120,14 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     QSize size = time_->sizeHint();
     time_->setMaximumSize(size);
     time_->resize(time_->sizeHint());
-    connect(time_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        time_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
     connect(time_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(time_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        time_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(time_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     layout->addWidget(time_);
 
@@ -130,9 +137,14 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     val_ = new double_spinbox_t();
     val_->setMaximumSize(size);
     val_->setEnabled(false);
-    connect(val_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        val_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
     connect(val_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(val_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        val_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(val_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     layout->addWidget(val_);
 
@@ -159,7 +171,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
 
     high_pass_ = new QAction("High Pass...", this);
     high_pass_->setEnabled(false);
-    connect(high_pass_, SIGNAL(triggered()), this, SLOT(high_pass_selected_keys()));
+    connect(
+        high_pass_, SIGNAL(triggered()), this, SLOT(high_pass_selected_keys()));
 
     ops_menu_ = new QMenu(this);
     ops_menu_->addAction(reverse_);
@@ -173,7 +186,8 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     ops_button_->setMenu(ops_menu_);
     layout->addWidget(ops_button_);
 
-    QSpacerItem* s = new QSpacerItem(30, 30, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* s =
+        new QSpacerItem(30, 30, QSizePolicy::Expanding, QSizePolicy::Minimum);
     layout->addItem(s);
 
     setLayout(layout);
@@ -184,9 +198,9 @@ anim_editor_toolbar_t::anim_editor_toolbar_t(QWidget* parent)
     bgroup_->addButton(select_);
     // bgroup_->addButton( scale_);
 
-    selected_track_     = 0;
+    selected_track_ = 0;
     selected_key_index_ = -1;
-    drag_command_       = 0;
+    drag_command_ = 0;
 }
 
 anim_editor_toolbar_t::~anim_editor_toolbar_t() { delete select_tool_; }
@@ -222,7 +236,8 @@ void anim_editor_toolbar_t::selection_changed()
         }
     }
 
-    app().ui()->anim_editor().get_selected_keyframe(selected_track_, selected_key_index_);
+    app().ui()->anim_editor().get_selected_keyframe(
+        selected_track_, selected_key_index_);
 
     if (selected_track_)
     {
@@ -245,22 +260,26 @@ void anim_editor_toolbar_t::selection_changed()
 
 void anim_editor_toolbar_t::set_tangents_smooth()
 {
-    app().ui()->anim_editor().set_autotangents(anim::keyframe_t::tangent_smooth, true);
+    app().ui()->anim_editor().set_autotangents(
+        anim::keyframe_t::tangent_smooth, true);
 }
 
 void anim_editor_toolbar_t::set_tangents_flat()
 {
-    app().ui()->anim_editor().set_autotangents(anim::keyframe_t::tangent_flat, true);
+    app().ui()->anim_editor().set_autotangents(
+        anim::keyframe_t::tangent_flat, true);
 }
 
 void anim_editor_toolbar_t::set_tangents_linear()
 {
-    app().ui()->anim_editor().set_autotangents(anim::keyframe_t::tangent_linear, true);
+    app().ui()->anim_editor().set_autotangents(
+        anim::keyframe_t::tangent_linear, true);
 }
 
 void anim_editor_toolbar_t::set_tangents_step()
 {
-    app().ui()->anim_editor().set_autotangents(anim::keyframe_t::tangent_step, true);
+    app().ui()->anim_editor().set_autotangents(
+        anim::keyframe_t::tangent_step, true);
 }
 
 void anim_editor_toolbar_t::value_changed(double value)
@@ -278,7 +297,8 @@ void anim_editor_toolbar_t::spinbox_pressed()
     node_t* n = app().ui()->active_node();
     assert(n);
 
-    drag_command_ = new undo::drag_keys_command_t(n, app().ui()->anim_editor().track_model());
+    drag_command_ = new undo::drag_keys_command_t(
+        n, app().ui()->anim_editor().track_model());
     app().ui()->anim_editor().set_command(drag_command_);
 }
 
@@ -317,16 +337,23 @@ void anim_editor_toolbar_t::reverse_selected_keys()
     app().ui()->anim_editor().reverse_keyframes();
 }
 
-void anim_editor_toolbar_t::negate_selected_keys() { app().ui()->anim_editor().negate_keyframes(); }
+void anim_editor_toolbar_t::negate_selected_keys()
+{
+    app().ui()->anim_editor().negate_keyframes();
+}
 
-void anim_editor_toolbar_t::sample_selected_keys() { app().ui()->anim_editor().sample_keyframes(); }
+void anim_editor_toolbar_t::sample_selected_keys()
+{
+    app().ui()->anim_editor().sample_keyframes();
+}
 
 void anim_editor_toolbar_t::smooth_selected_keys()
 {
     float filter_size;
     bool  resample;
 
-    if (smooth_anim_curves_dialog_t::instance().exec(false, filter_size, resample))
+    if (smooth_anim_curves_dialog_t::instance()
+            .exec(false, filter_size, resample))
         app().ui()->anim_editor().smooth_keyframes(filter_size, resample);
 }
 
@@ -335,9 +362,10 @@ void anim_editor_toolbar_t::high_pass_selected_keys()
     float filter_size;
     bool  resample;
 
-    if (smooth_anim_curves_dialog_t::instance().exec(true, filter_size, resample))
+    if (smooth_anim_curves_dialog_t::instance()
+            .exec(true, filter_size, resample))
         app().ui()->anim_editor().high_pass_keyframes(filter_size, resample);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

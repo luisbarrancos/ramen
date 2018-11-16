@@ -17,14 +17,14 @@ namespace anim
 track_t::track_t() { init(); }
 
 track_t::track_t(const std::string& name)
-: name_(name)
+  : name_(name)
 {
     init();
 }
 
 track_t::track_t(const std::string& name, const any_curve_ptr_t& curve)
-: name_(name)
-, curve_(curve)
+  : name_(name)
+  , curve_(curve)
 {
     init();
 }
@@ -32,7 +32,7 @@ track_t::track_t(const std::string& name, const any_curve_ptr_t& curve)
 void track_t::init()
 {
     parent_ = 0;
-    color_  = Imath::Color3c(255, 255, 255);
+    color_ = Imath::Color3c(255, 255, 255);
 }
 
 track_t* track_t::child(int i)
@@ -83,7 +83,8 @@ void track_t::make_full_names()
     for (int i = 0; i < num_children(); ++i)
         child(i)->do_make_full_names();
 
-    for_each_track_depth_first(this, boost::bind(&track_t::make_curve_name, _1));
+    for_each_track_depth_first(
+        this, boost::bind(&track_t::make_curve_name, _1));
 }
 
 void track_t::do_make_full_names()
@@ -104,7 +105,8 @@ void track_t::make_curve_name()
     std::string::size_type pos = full_name_.find_first_of('.');
 
     if (pos != std::string::npos)
-        curve_name_ = std::string(full_name_, pos + 1, full_name_.size() - pos + 1);
+        curve_name_ =
+            std::string(full_name_, pos + 1, full_name_.size() - pos + 1);
 }
 
 void track_t::set_color(const Imath::Color3c& col) { color_ = col; }
@@ -115,5 +117,5 @@ void track_t::notify()
     changed(curve().get());
 }
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

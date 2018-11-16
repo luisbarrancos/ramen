@@ -27,7 +27,7 @@ namespace ramen
 */
 class preferences_t : boost::noncopyable
 {
-public:
+  public:
     // memory
     int  max_image_memory() const { return max_image_memory_; }
     void set_max_image_memory(int m) { max_image_memory_ = m; }
@@ -48,7 +48,7 @@ public:
 
     void save();
 
-private:
+  private:
     friend class application_t;
 
     preferences_t();
@@ -57,7 +57,7 @@ private:
 
     void load();
 
-    template<class T>
+    template <class T>
     bool get_value(const YAML::Node& doc, const std::string& key, T& value)
     {
         if (const YAML::Node* n = doc.FindValue(key))
@@ -75,5 +75,4 @@ private:
     int             pick_distance_;
 };
 
-}  // ramen
-
+}  // namespace ramen

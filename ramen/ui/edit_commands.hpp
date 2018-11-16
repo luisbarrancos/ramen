@@ -16,7 +16,7 @@ namespace undo
 {
 struct extract_command_t : public command_t
 {
-public:
+  public:
     extract_command_t();
 
     void add_edge_to_remove(const edge_t& e);
@@ -31,9 +31,12 @@ public:
     static bool edge_less(const edge_t& a, const edge_t& b);
     static bool edge_compare(const edge_t& a, const edge_t& b);
 
-    static void add_candidate_edge(const edge_t& e, node_t* src, std::vector<edge_t>& edges);
+    static void add_candidate_edge(
+        const edge_t&        e,
+        node_t*              src,
+        std::vector<edge_t>& edges);
 
-protected:
+  protected:
     std::vector<edge_t> edges_to_remove_;
     std::vector<edge_t> edges_to_add_;
 
@@ -49,7 +52,7 @@ struct delete_command_t : public extract_command_t
     void undo() override;
     void redo() override;
 
-private:
+  private:
     std::vector<node_t*>      nodes_;
     boost::ptr_vector<node_t> node_storage_;
 };
@@ -64,7 +67,7 @@ struct duplicate_command_t : public command_t
     void undo() override;
     void redo() override;
 
-private:
+  private:
     std::vector<node_t*>      nodes_;
     std::vector<edge_t>       edges_;
     boost::ptr_vector<node_t> node_storage_;
@@ -79,10 +82,9 @@ struct ignore_nodes_command_t : public command_t
     void undo() override;
     void redo() override;
 
-private:
+  private:
     std::vector<node_t*> nodes_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

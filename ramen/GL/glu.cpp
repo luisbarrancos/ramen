@@ -11,4 +11,4 @@ void glu_ortho2d(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top)
     gluOrtho2D(left, right, bottom, top);
 }
 
-}  // ramen
+}  // namespace ramen

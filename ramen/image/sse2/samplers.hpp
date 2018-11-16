@@ -16,13 +16,18 @@ namespace sse2
 
 class bilinear_sampler_t : public generic::sampler_t
 {
-public:
+  public:
     bilinear_sampler_t() {}
     bilinear_sampler_t(const const_image_view_t& src);
-    bilinear_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src);
+    bilinear_sampler_t(
+        const Imath::Box2i&       src_area,
+        const const_image_view_t& src);
 
     pixel_t operator()(const vector2_t& p) const;
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return (*this)(p);
     }
@@ -32,18 +37,23 @@ public:
 
 class catrom_sampler_t : public generic::sampler_t
 {
-public:
+  public:
     catrom_sampler_t() {}
     catrom_sampler_t(const const_image_view_t& src);
-    catrom_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src);
+    catrom_sampler_t(
+        const Imath::Box2i&       src_area,
+        const const_image_view_t& src);
 
     pixel_t operator()(const vector2_t& p) const;
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return (*this)(p);
     }
 
-protected:
+  protected:
     void weights(float t, float w[4]) const;
 };
 
@@ -51,13 +61,18 @@ protected:
 
 class lanczos3_sampler_t : public generic::sampler_t
 {
-public:
+  public:
     lanczos3_sampler_t() {}
     lanczos3_sampler_t(const const_image_view_t& src);
-    lanczos3_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src);
+    lanczos3_sampler_t(
+        const Imath::Box2i&       src_area,
+        const const_image_view_t& src);
 
     pixel_t operator()(const vector2_t& p) const;
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return (*this)(p);
     }
@@ -65,7 +80,6 @@ public:
     void weights(int c, float t, float w[10]) const;
 };
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

@@ -8,5 +8,4 @@ namespace ramen
 {
 class parameterised_t;
 
-}  // ramen
-
+}  // namespace ramen

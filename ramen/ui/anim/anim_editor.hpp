@@ -41,7 +41,7 @@ class anim_editor_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     anim_editor_t();
 
     void set_active_node(node_t* n);
@@ -51,8 +51,11 @@ public:
     std::shared_ptr<track_model_t> track_model() { return current_; }
     void                           recreate_tracks(node_t* n);
 
-    const std::set<anim::track_t*>& active_tracks() const { return active_tracks_; }
-    std::set<anim::track_t*>&       active_tracks() { return active_tracks_; }
+    const std::set<anim::track_t*>& active_tracks() const
+    {
+        return active_tracks_;
+    }
+    std::set<anim::track_t*>& active_tracks() { return active_tracks_; }
 
     void node_renamed(node_t* n);
 
@@ -66,15 +69,17 @@ public:
     void get_selected_keyframe(anim::track_t*& track, int& key_index);
 
     // undo
-    void                         create_command();
-    void                         set_command(undo::anim_editor_command_t* command);
+    void create_command();
+    void set_command(undo::anim_editor_command_t* command);
     undo::anim_editor_command_t* command() { return command_.get(); }
     void                         push_command();
     void                         clear_command();
 
     // edit
     void delete_selected_keyframes();
-    void set_autotangents(anim::keyframe_t::auto_tangent_method m, bool selected_only);
+    void set_autotangents(
+        anim::keyframe_t::auto_tangent_method m,
+        bool                                  selected_only);
     void set_extrapolation(anim::extrapolation_method m);
 
     // operations
@@ -88,9 +93,11 @@ public:
     anim_curves_view_t&    curves_view() { return *view_; }
     anim_editor_toolbar_t& toolbar() { return *toolbar_; }
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
-    void update_selection(const QItemSelection& selected, const QItemSelection& deselected);
+    void update_selection(
+        const QItemSelection& selected,
+        const QItemSelection& deselected);
 
     void item_collapsed(const QModelIndex& index);
     void item_expanded(const QModelIndex& index);
@@ -115,7 +122,7 @@ private Q_SLOTS:
     void import_curves();
     void export_curves();
 
-private:
+  private:
     void insert_in_active_tracks(anim::track_t* t);
 
     std::shared_ptr<track_model_t> current_;
@@ -138,6 +145,5 @@ private:
     QAction *import_, *export_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

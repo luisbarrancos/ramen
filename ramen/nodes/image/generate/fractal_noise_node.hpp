@@ -10,29 +10,34 @@ namespace image
 {
 class fractal_noise_node_t : public generator_node_t
 {
-public:
+  public:
     static const node_metaclass_t& fractal_noise_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     fractal_noise_node_t();
 
-    bool use_cache(const render::context_t& context) const override { return true; }
+    bool use_cache(const render::context_t& context) const override
+    {
+        return true;
+    }
 
-protected:
+  protected:
     fractal_noise_node_t(const fractal_noise_node_t& other)
-    : generator_node_t(other)
+      : generator_node_t(other)
     {
     }
     void operator=(const fractal_noise_node_t&);
 
-private:
-    node_t* do_clone() const override { return new fractal_noise_node_t(*this); }
+  private:
+    node_t* do_clone() const override
+    {
+        return new fractal_noise_node_t(*this);
+    }
 
     void do_create_params() override;
 
     void do_process(const render::context_t& context) override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

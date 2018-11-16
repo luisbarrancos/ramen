@@ -20,8 +20,11 @@ namespace serialization
 {
 class RAMEN_API yaml_node_t
 {
-public:
-    yaml_node_t(yaml_iarchive_t* parent, const YAML::Node* node, int version = 1);
+  public:
+    yaml_node_t(
+        yaml_iarchive_t*  parent,
+        const YAML::Node* node,
+        int               version = 1);
     yaml_node_t(const yaml_node_t& parent, const YAML::Node* node);
 
     int version() const { return version_; }
@@ -41,21 +44,19 @@ public:
     }
 
     // stream
-    template<class T>
-    void operator>>(T& value) const
+    template <class T> void operator>>(T& value) const
     {
         // TODO: check for errors here!
         (*node_) >> value;
     }
 
     // values
-    template<class T>
-    void get_value(const std::string& key, T& value) const
+    template <class T> void get_value(const std::string& key, T& value) const
     {
         (*node_)[key] >> value;
     }
 
-    template<class T>
+    template <class T>
     bool get_optional_value(const std::string& key, T& value) const
     {
         if (const YAML::Node* n = node_->FindValue(key))
@@ -75,14 +76,15 @@ public:
 
     // nodes
     yaml_node_t                  get_node(const std::string& key) const;
-    boost::optional<yaml_node_t> get_optional_node(const std::string& key) const;
+    boost::optional<yaml_node_t> get_optional_node(
+        const std::string& key) const;
 
     const YAML::Node* yaml_node() const { return node_; }
 
     // errors
     std::stringstream& error_stream() const;
 
-private:
+  private:
     friend class yaml_iarchive_t;
 
     void set_version(int v) const;
@@ -94,6 +96,5 @@ private:
 
 typedef boost::optional<yaml_node_t> optional_yaml_node_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace serialization
+}  // namespace ramen

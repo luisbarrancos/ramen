@@ -10,21 +10,24 @@ namespace image
 {
 class percentile_filter_node_t : public areaop_node_t
 {
-public:
+  public:
     static const node_metaclass_t& percentile_filter_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     percentile_filter_node_t();
 
-protected:
+  protected:
     percentile_filter_node_t(const percentile_filter_node_t& other)
-    : areaop_node_t(other)
+      : areaop_node_t(other)
     {
     }
     void operator=(const percentile_filter_node_t&);
 
-private:
-    node_t* do_clone() const override { return new percentile_filter_node_t(*this); }
+  private:
+    node_t* do_clone() const override
+    {
+        return new percentile_filter_node_t(*this);
+    }
 
     void do_create_params() override;
 
@@ -33,6 +36,5 @@ private:
     void get_expand_radius(int& hradius, int& vradius) const override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

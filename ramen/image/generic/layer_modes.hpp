@@ -19,13 +19,13 @@ struct screen_layer_mode_fun
     screen_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
 struct overlay_layer_mode_base_fun
 {
-protected:
+  protected:
     inline float overlay(float front, float back) const
     {
         const float mid_value = 0.5f;
@@ -38,7 +38,7 @@ protected:
         else
         {
             float result = 1.0f - (2.0f * (1.0f - front) * (1.0f - back));
-            result       = std::max(result, back);
+            result = std::max(result, back);
             return result;
         }
     }
@@ -49,7 +49,7 @@ struct overlay_layer_mode_fun : public overlay_layer_mode_base_fun
     overlay_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -58,7 +58,7 @@ struct zero_overlay_layer_mode_fun : public overlay_layer_mode_base_fun
     zero_overlay_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& p) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -67,7 +67,7 @@ struct diff_layer_mode_fun
     diff_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     inline float abs(float x) const
     {
         if (x < 0)
@@ -79,7 +79,6 @@ private:
     float opacity_;
 };
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

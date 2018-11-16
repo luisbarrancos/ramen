@@ -29,13 +29,13 @@
 namespace ramen
 {
 float3_param_t::float3_param_t(const std::string& name)
-: proportional_param_t(name)
+  : proportional_param_t(name)
 {
     private_init();
 }
 
 float3_param_t::float3_param_t(const float3_param_t& other)
-: proportional_param_t(other)
+  : proportional_param_t(other)
 {
     input0_ = input1_ = input2_ = 0;
 }
@@ -74,7 +74,10 @@ void float3_param_t::set_value(const Imath::V3f& x, change_reason reason)
     set_value_at_frame(x, frame, reason);
 }
 
-void float3_param_t::set_value_at_frame(const Imath::V3f& x, float frame, change_reason reason)
+void float3_param_t::set_value_at_frame(
+    const Imath::V3f& x,
+    float             frame,
+    change_reason     reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -118,9 +121,9 @@ Imath::V3f float3_param_t::derive(float time) const
 Imath::V3f float3_param_t::integrate(float time1, float time2) const
 {
     Imath::V3f result = get_value<Imath::V3f>(*this);
-    result.x          = (time2 - time1) * result.x;
-    result.y          = (time2 - time1) * result.y;
-    result.z          = (time2 - time1) * result.z;
+    result.x = (time2 - time1) * result.x;
+    result.y = (time2 - time1) * result.y;
+    result.z = (time2 - time1) * result.z;
 
     if (!curve(0).empty())
         result.x = curve(0).integrate(time1, time2);
@@ -136,25 +139,28 @@ Imath::V3f float3_param_t::integrate(float time1, float time2) const
 
 void float3_param_t::set_component_value_from_slot()
 {
-    Imath::V3f v(round(input0_->value()), round(input1_->value()), round(input2_->value()));
-    int        index;
-    float      comp_value;
+    Imath::V3f v(
+        round(input0_->value()),
+        round(input1_->value()),
+        round(input2_->value()));
+    int   index;
+    float comp_value;
 
     if (QObject::sender() == input0_)
     {
-        index      = 0;
+        index = 0;
         comp_value = v.x;
     }
     else
     {
         if (QObject::sender() == input1_)
         {
-            index      = 1;
+            index = 1;
             comp_value = v.y;
         }
         else
         {
-            index      = 2;
+            index = 2;
             comp_value = v.z;
         }
     }
@@ -165,7 +171,7 @@ void float3_param_t::set_component_value_from_slot()
 void float3_param_t::calc_proportional_factors()
 {
     proportional_factor = Imath::V3f(1, 1, 1);
-    Imath::V3f v        = get_value<Imath::V3f>(*this);
+    Imath::V3f v = get_value<Imath::V3f>(*this);
 
     if (sender() == input0_)
     {
@@ -217,21 +223,22 @@ void float3_param_t::do_read(const serialization::yaml_node_t& node)
 void float3_param_t::do_write(serialization::yaml_oarchive_t& out) const
 {
     write_curves(out);
-    bool one   = curve(0).empty();  // && expression( 0).empty();
-    bool two   = curve(1).empty();  // && expression( 1).empty();
+    bool one = curve(0).empty();    // && expression( 0).empty();
+    bool two = curve(1).empty();    // && expression( 1).empty();
     bool three = curve(2).empty();  // && expression( 2).empty();
 
     if (one || two || three)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::V3f>(*this);
+        out << YAML::Key << "value" << YAML::Value
+            << get_value<Imath::V3f>(*this);
 }
 
 QWidget* float3_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    input0_        = new ui::param_spinbox_t(*this, 0, top);
-    input1_        = new ui::param_spinbox_t(*this, 1, top);
-    input2_        = new ui::param_spinbox_t(*this, 2, top);
+    input0_ = new ui::param_spinbox_t(*this, 0, top);
+    input1_ = new ui::param_spinbox_t(*this, 1, top);
+    input2_ = new ui::param_spinbox_t(*this, 2, top);
 
     QSize s = input0_->sizeHint();
 
@@ -255,9 +262,17 @@ QWidget* float3_param_t::do_create_widgets()
     input0_->setEnabled(enabled());
     if (round_to_int())
         input0_->setDecimals(0);
-    connect(input0_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input0_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input0_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input0_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input0_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input0_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += (s.width() + 5);
 
@@ -269,9 +284,17 @@ QWidget* float3_param_t::do_create_widgets()
     input1_->setEnabled(enabled());
     if (round_to_int())
         input1_->setDecimals(0);
-    connect(input1_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input1_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input1_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input1_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input1_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input1_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += (s.width() + 5);
 
@@ -283,9 +306,17 @@ QWidget* float3_param_t::do_create_widgets()
     input2_->setEnabled(enabled());
     if (round_to_int())
         input2_->setDecimals(0);
-    connect(input2_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input2_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input2_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input2_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input2_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input2_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += (s.width() + 2);
 
@@ -347,25 +378,25 @@ void float3_param_t::value_changed(double value)
         if (sender() == input0_)
         {
             float inc = value - v.x;
-            v.x       = value;
-            v.y       = clamp(v.y + (inc * proportional_factor.y));
-            v.z       = clamp(v.z + (inc * proportional_factor.z));
+            v.x = value;
+            v.y = clamp(v.y + (inc * proportional_factor.y));
+            v.z = clamp(v.z + (inc * proportional_factor.z));
         }
         else
         {
             if (sender() == input1_)
             {
                 float inc = value - v.y;
-                v.x       = clamp(v.x + (inc * proportional_factor.x));
-                v.y       = value;
-                v.z       = clamp(v.z + (inc * proportional_factor.z));
+                v.x = clamp(v.x + (inc * proportional_factor.x));
+                v.y = value;
+                v.z = clamp(v.z + (inc * proportional_factor.z));
             }
             else
             {
                 float inc = value - v.z;
-                v.x       = clamp(v.x + (inc * proportional_factor.x));
-                v.y       = clamp(v.y + (inc * proportional_factor.y));
-                v.z       = value;
+                v.x = clamp(v.x + (inc * proportional_factor.x));
+                v.y = clamp(v.y + (inc * proportional_factor.y));
+                v.z = value;
             }
         }
 
@@ -398,25 +429,31 @@ void float3_param_t::spinbox_dragged(double value)
         if (sender() == input0_)
         {
             float inc = value - v.x;
-            v.x       = value;
-            v.y       = ramen::clamp(v.y + (inc * proportional_factor.y), get_min(), get_max());
-            v.z       = ramen::clamp(v.z + (inc * proportional_factor.z), get_min(), get_max());
+            v.x = value;
+            v.y = ramen::clamp(
+                v.y + (inc * proportional_factor.y), get_min(), get_max());
+            v.z = ramen::clamp(
+                v.z + (inc * proportional_factor.z), get_min(), get_max());
         }
         else
         {
             if (sender() == input1_)
             {
                 float inc = value - v.y;
-                v.x       = ramen::clamp(v.x + (inc * proportional_factor.x), get_min(), get_max());
-                v.y       = value;
-                v.z       = ramen::clamp(v.z + (inc * proportional_factor.z), get_min(), get_max());
+                v.x = ramen::clamp(
+                    v.x + (inc * proportional_factor.x), get_min(), get_max());
+                v.y = value;
+                v.z = ramen::clamp(
+                    v.z + (inc * proportional_factor.z), get_min(), get_max());
             }
             else
             {
                 float inc = value - v.z;
-                v.x       = ramen::clamp(v.x + (inc * proportional_factor.x), get_min(), get_max());
-                v.y       = ramen::clamp(v.y + (inc * proportional_factor.y), get_min(), get_max());
-                v.z       = value;
+                v.x = ramen::clamp(
+                    v.x + (inc * proportional_factor.x), get_min(), get_max());
+                v.y = ramen::clamp(
+                    v.y + (inc * proportional_factor.y), get_min(), get_max());
+                v.z = value;
             }
         }
 
@@ -442,4 +479,4 @@ void float3_param_t::spinbox_released()
         app().ui()->end_interaction();
 }
 
-}  // namespace
+}  // namespace ramen

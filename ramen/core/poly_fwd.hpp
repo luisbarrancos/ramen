@@ -11,9 +11,7 @@ namespace ramen
 {
 namespace core
 {
-template<class F>
-class poly;
+template <class F> class poly;
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

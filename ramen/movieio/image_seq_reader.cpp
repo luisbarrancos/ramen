@@ -18,14 +18,16 @@ namespace ramen
 namespace movieio
 {
 image_seq_reader_t::image_seq_reader_t(const filesystem::path_sequence_t& seq)
-: seq_(seq)
+  : seq_(seq)
 {
     assert(seq_.directory().is_absolute());
 
     init();
 }
 
-image_seq_reader_t::image_seq_reader_t(const boost::filesystem::path& p, bool sequence)
+image_seq_reader_t::image_seq_reader_t(
+    const boost::filesystem::path& p,
+    bool                           sequence)
 {
     assert(p.is_absolute());
 
@@ -42,7 +44,7 @@ image_seq_reader_t::image_seq_reader_t(const boost::filesystem::path& p, bool se
 
 void image_seq_reader_t::init()
 {
-    frame_              = seq_.start();
+    frame_ = seq_.start();
     has_extra_channels_ = false;
     get_sequence_info();
 }
@@ -75,9 +77,10 @@ std::string image_seq_reader_t::string_for_current_frame() const
 
 void image_seq_reader_t::do_set_frame(int frame) { create_reader(); }
 
-void image_seq_reader_t::do_read_frame(const image::image_view_t& view,
-                                       const math::box2i_t&       crop,
-                                       int                        subsample) const
+void image_seq_reader_t::do_read_frame(
+    const image::image_view_t& view,
+    const math::box2i_t&       crop,
+    int                        subsample) const
 {
     if (!reader_)
         throw movieio::unknown_movie_format();
@@ -101,16 +104,17 @@ void image_seq_reader_t::do_read_frame(const image::image_view_t& view,
     }
 }
 
-void image_seq_reader_t::do_read_frame(const image::image_view_t&              view,
-                                       const math::box2i_t&                    crop,
-                                       int                                     subsample,
-                                       const boost::tuple<int, int, int, int>& channels) const
+void image_seq_reader_t::do_read_frame(
+    const image::image_view_t&              view,
+    const math::box2i_t&                    crop,
+    int                                     subsample,
+    const boost::tuple<int, int, int, int>& channels) const
 {
     if (!reader_)
         throw movieio::unknown_movie_format();
 
-    imageio::multichannel_reader_t* r
-        = dynamic_cast<imageio::multichannel_reader_t*>(reader_.get());
+    imageio::multichannel_reader_t* r =
+        dynamic_cast<imageio::multichannel_reader_t*>(reader_.get());
     assert(r);
 
     try
@@ -168,10 +172,10 @@ void image_seq_reader_t::get_sequence_info()
     {
         info_ = reader_->image_info();
 
-        if (imageio::multichannel_reader_t* mreader
-            = dynamic_cast<imageio::multichannel_reader_t*>(reader_.get()))
+        if (imageio::multichannel_reader_t* mreader =
+                dynamic_cast<imageio::multichannel_reader_t*>(reader_.get()))
         {
-            channels_           = mreader->channel_list();
+            channels_ = mreader->channel_list();
             has_extra_channels_ = mreader->has_extra_channels();
         }
     }
@@ -201,14 +205,14 @@ void image_seq_reader_t::create_reader()
     {
         info_ = reader_->image_info();
 
-        if (imageio::multichannel_reader_t* mreader
-            = dynamic_cast<imageio::multichannel_reader_t*>(reader_.get()))
+        if (imageio::multichannel_reader_t* mreader =
+                dynamic_cast<imageio::multichannel_reader_t*>(reader_.get()))
         {
-            channels_           = mreader->channel_list();
+            channels_ = mreader->channel_list();
             has_extra_channels_ = mreader->has_extra_channels();
         }
     }
 }
 
-}  // movieio
-}  // ramen
+}  // namespace movieio
+}  // namespace ramen

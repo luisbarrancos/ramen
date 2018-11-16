@@ -37,7 +37,7 @@ class viewer_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     viewer_t();
     ~viewer_t() override;
 
@@ -76,7 +76,7 @@ public:
     void begin_interaction();
     void end_interaction();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void autoupdate_toggle(bool state);
     void change_active_context_view(int index);
@@ -87,7 +87,7 @@ public Q_SLOTS:
     void change_exposure(double d);
     void change_gamma(double d);
 
-private:
+  private:
     void get_display_devices();
     void get_display_transforms();
 
@@ -118,6 +118,5 @@ private:
     std::string              display_transform_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -10,20 +10,20 @@ namespace image
 {
 class layer_node_t : public base_layer_node_t
 {
-public:
+  public:
     static const node_metaclass_t& layer_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     layer_node_t();
 
-protected:
+  protected:
     layer_node_t(const layer_node_t& other)
-    : base_layer_node_t(other)
+      : base_layer_node_t(other)
     {
     }
     void operator=(const layer_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new layer_node_t(*this); }
 
     void do_create_params() override;
@@ -31,9 +31,9 @@ private:
     void do_calc_bounds(const render::context_t& context) override;
 
     void         do_process(const render::context_t& context) override;
-    virtual void do_process_mult_min_overlay_mix(const render::context_t& context);
+    virtual void do_process_mult_min_overlay_mix(
+        const render::context_t& context);
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

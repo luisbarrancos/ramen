@@ -52,29 +52,30 @@ namespace
 {
 application_t* g_app = 0;
 
-}  // unnamed
+}  // namespace
 
 application_t::application_t(int argc, char** argv)
-: system_()
-, preferences_()
+  : system_()
+  , preferences_()
 {
     assert(g_app == 0);
     g_app = this;
 
-    max_threads_    = 0;
+    max_threads_ = 0;
     img_cache_size_ = 0;
-    command_line_   = false;
-    render_mode_    = false;
-    quitting_       = false;
+    command_line_ = false;
+    render_mode_ = false;
+    quitting_ = false;
     cmd_parser_.reset(new util::command_line_parser_t(argc, argv));
 
     // Create QApplication
-    QApplication* q_app = new QApplication(cmd_parser_->argc, cmd_parser_->argv);
+    QApplication* q_app =
+        new QApplication(cmd_parser_->argc, cmd_parser_->argv);
     // TODO: re-eanble this...
     // boost::filesystem::path bundle_path( system().app_bundle_path());
     // bundle_path /= "lib/Qt_plugins";
-    // qApp->setLibraryPaths( QStringList( QString( ramen::filesystem::file_cstring(
-    // bundle_path))));
+    // qApp->setLibraryPaths( QStringList( QString(
+    // ramen::filesystem::file_cstring( bundle_path))));
 
     // create the application user path, if needed
     boost::filesystem::create_directories(system().application_user_path());
@@ -100,9 +101,9 @@ application_t::application_t(int argc, char** argv)
     // init memory manager
     if (img_cache_size_ == 0)
     {
-        boost::uint64_t percent  = preferences().max_image_memory();
+        boost::uint64_t percent = preferences().max_image_memory();
         boost::uint64_t ram_size = system().ram_size();
-        img_cache_size_          = ram_size / (boost::uint64_t) 100 * percent;
+        img_cache_size_ = ram_size / (boost::uint64_t) 100 * percent;
     }
 
     mem_manager_.reset(new memory::manager_t(img_cache_size_));
@@ -178,13 +179,14 @@ int application_t::run()
             if (!mb_shutter_factor_)
                 mb_shutter_factor_ = 1.0f;
 
-            render::render_sequence(document().composition(),
-                                    start_frame_.get(),
-                                    end_frame_.get(),
-                                    proxy_level_.get(),
-                                    subsample_.get(),
-                                    mb_extra_samples_.get(),
-                                    mb_shutter_factor_.get());
+            render::render_sequence(
+                document().composition(),
+                start_frame_.get(),
+                end_frame_.get(),
+                proxy_level_.get(),
+                subsample_.get(),
+                mb_extra_samples_.get(),
+                mb_shutter_factor_.get());
         }
     }
 
@@ -200,7 +202,8 @@ bool application_t::matches_option(char* arg, const char* opt) const
     return false;
 }
 
-boost::optional<int> application_t::parse_int(int num, int argc, char** argv) const
+boost::optional<int> application_t::parse_int(int num, int argc, char** argv)
+    const
 {
     assert(num > 0);
     assert(argc > 0);
@@ -221,7 +224,10 @@ boost::optional<int> application_t::parse_int(int num, int argc, char** argv) co
     return result;
 }
 
-boost::optional<float> application_t::parse_float(int num, int argc, char** argv) const
+boost::optional<float> application_t::parse_float(
+    int    num,
+    int    argc,
+    char** argv) const
 {
     assert(num > 0);
     assert(argc > 0);
@@ -262,7 +268,9 @@ bool application_t::parse_common_option(int argc, char** argv, int& num)
             if (op.get() > 0)
                 max_threads_ = op.get();
             else
-                error("threads should be equal or greater than 1. Ignoring", true);
+                error(
+                    "threads should be equal or greater than 1. Ignoring",
+                    true);
         }
         else
         {
@@ -292,7 +300,8 @@ void application_t::parse_command_line(int argc, char** argv)
 
     if (matches_option(argv[1], "-version"))
     {
-        std::cout << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << std::endl;
+        std::cout << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__
+                  << std::endl;
         std::exit(EXIT_SUCCESS);
     }
 
@@ -302,7 +311,7 @@ void application_t::parse_command_line(int argc, char** argv)
         if (matches_option(argv[i], "-render"))
         {
             command_line_ = true;
-            render_mode_  = true;
+            render_mode_ = true;
             ++i;
             parse_render_command_line(argc, argv, i);
             return;
@@ -327,7 +336,7 @@ void application_t::parse_render_command_line(int argc, char** argv, int num)
         else if (matches_option(argv[i], "-frames"))
         {
             start_frame_ = parse_int(i + 1, argc, argv);
-            end_frame_   = parse_int(i + 2, argc, argv);
+            end_frame_ = parse_int(i + 2, argc, argv);
 
             if (!start_frame_ || !end_frame_)
                 render_usage();
@@ -353,15 +362,15 @@ void application_t::parse_render_command_line(int argc, char** argv, int num)
 
 void application_t::usage()
 {
-    std::cout
-        << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << "\n"
-        << "Usage: ramen [options] file...\n\n"
-           "Options:\n"
-           "-help, -h:       Print help message and exit.\n"
-           "-version:        Print version number and exit.\n"
-           "-threads n:      Use n threads.\n\n"
-           "-render:         Render composition. Run ramen -render -help for more information.\n"
-        << std::endl;
+    std::cout << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << "\n"
+              << "Usage: ramen [options] file...\n\n"
+                 "Options:\n"
+                 "-help, -h:       Print help message and exit.\n"
+                 "-version:        Print version number and exit.\n"
+                 "-threads n:      Use n threads.\n\n"
+                 "-render:         Render composition. Run ramen -render -help "
+                 "for more information.\n"
+              << std::endl;
     std::exit(EXIT_SUCCESS);
 }
 
@@ -381,12 +390,17 @@ void application_t::print_app_info()
 {
     std::cout << RAMEN_NAME_FULL_VERSION_STR << ", " << __DATE__ << std::endl;
     std::cout << "System = " << system().system_name() << std::endl;
-    std::cout << "Executable = " << system().executable_path().c_str() << std::endl;
-    std::cout << "App dir = " << system().application_path().c_str() << std::endl;
-    std::cout << "App user dir = " << system().application_user_path().c_str() << std::endl;
+    std::cout << "Executable = " << system().executable_path().c_str()
+              << std::endl;
+    std::cout << "App dir = " << system().application_path().c_str()
+              << std::endl;
+    std::cout << "App user dir = " << system().application_user_path().c_str()
+              << std::endl;
     std::cout << "Using " << max_threads_ << " threads" << std::endl;
-    std::cout << "Ram Size = " << system().ram_size() / 1024 / 1024 << " Mb" << std::endl;
-    std::cout << "Image Cache Memory = " << mem_manager_->image_allocator().max_size() / 1024 / 1024
+    std::cout << "Ram Size = " << system().ram_size() / 1024 / 1024 << " Mb"
+              << std::endl;
+    std::cout << "Image Cache Memory = "
+              << mem_manager_->image_allocator().max_size() / 1024 / 1024
               << " Mb" << std::endl;
 }
 
@@ -400,18 +414,21 @@ void application_t::create_new_document()
 void application_t::open_document(const boost::filesystem::path& p)
 {
     create_new_document();
-    boost::filesystem::ifstream ifs(p, serialization::yaml_iarchive_t::file_open_mode());
+    boost::filesystem::ifstream ifs(
+        p, serialization::yaml_iarchive_t::file_open_mode());
 
     if (!ifs.is_open() || !ifs.good())
-        throw std::runtime_error(std::string("Couldn't open input file ")
-                                 + filesystem::file_string(p));
+        throw std::runtime_error(
+            std::string("Couldn't open input file ") +
+            filesystem::file_string(p));
 
     core::auto_ptr_t<serialization::yaml_iarchive_t> in;
     in.reset(new serialization::yaml_iarchive_t(ifs));
 
     if (!in->read_composition_header())
-        throw std::runtime_error(std::string("Couldn't read file header ")
-                                 + filesystem::file_string(p));
+        throw std::runtime_error(
+            std::string("Couldn't read file header ") +
+            filesystem::file_string(p));
 
     document().set_file(p);
     document().load(*in);
@@ -421,7 +438,8 @@ void application_t::open_document(const boost::filesystem::path& p)
     if (!err.empty())
     {
         // TODO: display errors here
-        // multiline_alert_t::Instance().show_alert( "Errors during file open", err);
+        // multiline_alert_t::Instance().show_alert( "Errors during file open",
+        // err);
     }
 }
 
@@ -467,9 +485,11 @@ bool application_t::question(const std::string& what, bool default_answer) const
     else
     {
         if (default_answer)
-            std::cout << "Ramen, question: " << what << ", replying yes by default\n";
+            std::cout << "Ramen, question: " << what
+                      << ", replying yes by default\n";
         else
-            std::cout << "Ramen, question: " << what << ", replying no by default\n";
+            std::cout << "Ramen, question: " << what
+                      << ", replying no by default\n";
     }
 
     return default_answer;
@@ -481,4 +501,4 @@ application_t& app()
     return *g_app;
 }
 
-}  // ramen
+}  // namespace ramen

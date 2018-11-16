@@ -31,35 +31,36 @@ enum
     simplex_noise,
 };
 
-template<class TurbGen>
-struct fractal_noise_fun
+template <class TurbGen> struct fractal_noise_fun
 {
-    fractal_noise_fun(const TurbGen&    tgen,
-                      const Imath::V2f& size,
-                      const Imath::V2f& translate,
-                      float             t,
-                      float             contrast,
-                      float             brightness,
-                      bool              invert,
-                      float             aspect = 1.0f)
-    : tgen_(tgen)
+    fractal_noise_fun(
+        const TurbGen&    tgen,
+        const Imath::V2f& size,
+        const Imath::V2f& translate,
+        float             t,
+        float             contrast,
+        float             brightness,
+        bool              invert,
+        float             aspect = 1.0f)
+      : tgen_(tgen)
     {
         assert(aspect > 0.0f);
 
-        size_       = size;
-        translate_  = translate;
-        time_       = t;
-        contrast_   = contrast;
+        size_ = size;
+        translate_ = translate;
+        time_ = t;
+        contrast_ = contrast;
         brightness_ = brightness;
-        invert_     = invert;
-        aspect_     = aspect;
+        invert_ = invert;
+        aspect_ = aspect;
     }
 
     image::pixel_t operator()(const Imath::V2i& p) const
     {
-        float val = tgen_((p.x * aspect_ / size_.x) + (translate_.x / aspect_),
-                          (p.y / size_.y) + translate_.y,
-                          time_);
+        float val = tgen_(
+            (p.x * aspect_ / size_.x) + (translate_.x / aspect_),
+            (p.y / size_.y) + translate_.y,
+            time_);
 
         val = (val + 1.0f) * 0.5f;
         val = Imath::lerp(0.5f, val, contrast_);
@@ -69,7 +70,7 @@ struct fractal_noise_fun
         return image::pixel_t(val, val, val, val);
     }
 
-private:
+  private:
     const TurbGen& tgen_;
     Imath::V2f     size_, translate_;
     float          time_, contrast_;
@@ -81,7 +82,7 @@ private:
 }  // namespace
 
 fractal_noise_node_t::fractal_noise_node_t()
-: generator_node_t()
+  : generator_node_t()
 {
     set_name("fractal_noise");
 }
@@ -92,12 +93,12 @@ void fractal_noise_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> type(new popup_param_t("Noise"));
     type->set_id("noise_type");
-    type->menu_items() = std::vector<std::string>({ "Classic", "Simplex" });
+    type->menu_items() = std::vector<std::string>({"Classic", "Simplex"});
     add_param(type);
 
     type.reset(new popup_param_t("Type"));
     type->set_id("type");
-    type->menu_items() = std::vector<std::string>({ "Fbm", "Turbulence" });
+    type->menu_items() = std::vector<std::string>({"Fbm", "Turbulence"});
     add_param(type);
 
     std::auto_ptr<float2_param_t> p2(new float2_param_t("Size"));
@@ -170,21 +171,23 @@ void fractal_noise_node_t::do_process(const render::context_t& context)
         {
             noise::perlin_t ngen;
 
-            noise::turbulence_t<noise::perlin_t> tgen(ngen,
-                                                      get_value<float>(param("octaves")),
-                                                      get_value<float>(param("gain")),
-                                                      get_value<float>(param("lacunarity")),
-                                                      get_value<int>(param("type")));
+            noise::turbulence_t<noise::perlin_t> tgen(
+                ngen,
+                get_value<float>(param("octaves")),
+                get_value<float>(param("gain")),
+                get_value<float>(param("lacunarity")),
+                get_value<int>(param("type")));
 
-            fractal_noise_fun<noise::turbulence_t<noise::perlin_t>> f(
-                tgen,
-                get_absolute_value<Imath::V2f>(param("size")) / context.subsample,
-                get_absolute_value<Imath::V2f>(param("translate")) / context.subsample,
-                get_value<float>(param("time")),
-                get_value<float>(param("contrast")),
-                get_value<float>(param("brightness")),
-                get_value<bool>(param("invert")),
-                aspect_ratio());
+            fractal_noise_fun<noise::turbulence_t<noise::perlin_t>>
+            f(tgen,
+              get_absolute_value<Imath::V2f>(param("size")) / context.subsample,
+              get_absolute_value<Imath::V2f>(param("translate")) /
+                  context.subsample,
+              get_value<float>(param("time")),
+              get_value<float>(param("contrast")),
+              get_value<float>(param("brightness")),
+              get_value<bool>(param("invert")),
+              aspect_ratio());
             generate_pixels(f);
         }
         break;
@@ -193,21 +196,23 @@ void fractal_noise_node_t::do_process(const render::context_t& context)
         {
             noise::simplex_noise_t ngen;
 
-            noise::turbulence_t<noise::simplex_noise_t> tgen(ngen,
-                                                             get_value<float>(param("octaves")),
-                                                             get_value<float>(param("gain")),
-                                                             get_value<float>(param("lacunarity")),
-                                                             get_value<int>(param("type")));
+            noise::turbulence_t<noise::simplex_noise_t> tgen(
+                ngen,
+                get_value<float>(param("octaves")),
+                get_value<float>(param("gain")),
+                get_value<float>(param("lacunarity")),
+                get_value<int>(param("type")));
 
-            fractal_noise_fun<noise::turbulence_t<noise::simplex_noise_t>> f(
-                tgen,
-                get_absolute_value<Imath::V2f>(param("size")) / context.subsample,
-                get_absolute_value<Imath::V2f>(param("translate")) / context.subsample,
-                get_value<float>(param("time")),
-                get_value<float>(param("contrast")),
-                get_value<float>(param("brightness")),
-                get_value<bool>(param("invert")),
-                aspect_ratio());
+            fractal_noise_fun<noise::turbulence_t<noise::simplex_noise_t>>
+            f(tgen,
+              get_absolute_value<Imath::V2f>(param("size")) / context.subsample,
+              get_absolute_value<Imath::V2f>(param("translate")) /
+                  context.subsample,
+              get_value<float>(param("time")),
+              get_value<float>(param("contrast")),
+              get_value<float>(param("brightness")),
+              get_value<bool>(param("invert")),
+              aspect_ratio());
             generate_pixels(f);
         }
         break;
@@ -229,14 +234,14 @@ const node_metaclass_t& fractal_noise_node_t::fractal_noise_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.fractal_noise";
+        info.id = "image.builtin.fractal_noise";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Fractal Noise";
-        info.create        = &create_fractal_noise_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Fractal Noise";
+        info.create = &create_fractal_noise_node;
+        inited = true;
     }
 
     return info;
@@ -245,5 +250,5 @@ const node_metaclass_t& fractal_noise_node_t::fractal_noise_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     fractal_noise_node_t::fractal_noise_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

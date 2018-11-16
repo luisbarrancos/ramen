@@ -22,7 +22,7 @@ namespace
 struct multiplies_scalar
 {
     multiplies_scalar(float s)
-    : s_(s)
+      : s_(s)
     {
         ssss_ = _mm_set_ps(s_, s_, s_, s_);
     }
@@ -30,18 +30,17 @@ struct multiplies_scalar
     __m128 operator()(__m128 a) const { return _mm_mul_ps(a, ssss_); }
     float  operator()(float a) const { return a * s_; }
 
-private:
+  private:
     float  s_;
     __m128 ssss_;
 };
 
-template<class ConstGrayView, class GrayView, class Fun>
-struct unary_gray_fn
+template <class ConstGrayView, class GrayView, class Fun> struct unary_gray_fn
 {
     unary_gray_fn(const ConstGrayView& src, const GrayView& dst, Fun f)
-    : src_(src)
-    , dst_(dst)
-    , f_(f)
+      : src_(src)
+      , dst_(dst)
+      , f_(f)
     {
         assert(src_.dimensions() == dst_.dimensions());
     }
@@ -60,10 +59,11 @@ struct unary_gray_fn
             {
                 for (i = 0; i < e; i += 4)
                 {
-                    __m128 a = _mm_set_ps(src_it[0][0], src_it[1][0], src_it[2][0], src_it[3][0]);
-                    a        = f_(a);
+                    __m128 a = _mm_set_ps(
+                        src_it[0][0], src_it[1][0], src_it[2][0], src_it[3][0]);
+                    a = f_(a);
 
-                    float* p     = reinterpret_cast<float*>(&a);
+                    float* p = reinterpret_cast<float*>(&a);
                     dst_it[0][0] = p[0];
                     dst_it[1][0] = p[1];
                     dst_it[2][0] = p[2];
@@ -86,7 +86,7 @@ struct unary_gray_fn
         }
     }
 
-private:
+  private:
     ConstGrayView src_;
     GrayView      dst_;
     Fun           f_;
@@ -110,14 +110,17 @@ struct multiplies
     float  operator()(float a, float b) const { return a * b; }
 };
 
-template<class ConstGrayView, class GrayView, class Fun>
-struct binary_gray_fn
+template <class ConstGrayView, class GrayView, class Fun> struct binary_gray_fn
 {
-    binary_gray_fn(const ConstGrayView& src1, const ConstGrayView& src2, const GrayView& dst, Fun f)
-    : src1_(src1)
-    , src2_(src2)
-    , dst_(dst)
-    , f_(f)
+    binary_gray_fn(
+        const ConstGrayView& src1,
+        const ConstGrayView& src2,
+        const GrayView&      dst,
+        Fun                  f)
+      : src1_(src1)
+      , src2_(src2)
+      , dst_(dst)
+      , f_(f)
     {
         assert(src1_.dimensions() == src2_.dimensions());
         assert(src1_.dimensions() == dst_.dimensions());
@@ -138,13 +141,19 @@ struct binary_gray_fn
             {
                 for (i = 0; i < e; i += 4)
                 {
-                    __m128 a
-                        = _mm_set_ps(src1_it[0][0], src1_it[1][0], src1_it[2][0], src1_it[3][0]);
-                    __m128 b
-                        = _mm_set_ps(src2_it[0][0], src2_it[1][0], src2_it[2][0], src2_it[3][0]);
+                    __m128 a = _mm_set_ps(
+                        src1_it[0][0],
+                        src1_it[1][0],
+                        src1_it[2][0],
+                        src1_it[3][0]);
+                    __m128 b = _mm_set_ps(
+                        src2_it[0][0],
+                        src2_it[1][0],
+                        src2_it[2][0],
+                        src2_it[3][0]);
                     b = f_(a, b);
 
-                    float* p     = reinterpret_cast<float*>(&b);
+                    float* p = reinterpret_cast<float*>(&b);
                     dst_it[0][0] = p[0];
                     dst_it[1][0] = p[1];
                     dst_it[2][0] = p[2];
@@ -169,7 +178,7 @@ struct binary_gray_fn
         }
     }
 
-private:
+  private:
     ConstGrayView src1_, src2_;
     GrayView      dst_;
     Fun           f_;
@@ -177,30 +186,35 @@ private:
 
 }  // namespace
 
-
 // gray images
-void add_gray_images(const const_gray_image_view_t& a,
-                     const const_gray_image_view_t& b,
-                     const gray_image_view_t&       result)
+void add_gray_images(
+    const const_gray_image_view_t& a,
+    const const_gray_image_view_t& b,
+    const gray_image_view_t&       result)
 {
     tbb::parallel_for(
         tbb::blocked_range<std::size_t>(0, a.height()),
-        binary_gray_fn<const_gray_image_view_t, gray_image_view_t, plus>(a, b, result, plus()),
+        binary_gray_fn<const_gray_image_view_t, gray_image_view_t, plus>(
+            a, b, result, plus()),
         tbb::auto_partitioner());
 }
 
-void mul_gray_image_scalar(const const_gray_image_view_t& a,
-                           float                          f,
-                           const gray_image_view_t&       result)
+void mul_gray_image_scalar(
+    const const_gray_image_view_t& a,
+    float                          f,
+    const gray_image_view_t&       result)
 {
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, a.height()),
-                      unary_gray_fn<const_gray_image_view_t, gray_image_view_t, multiplies_scalar>(
-                          a, result, multiplies_scalar(f)),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, a.height()),
+        unary_gray_fn<
+            const_gray_image_view_t,
+            gray_image_view_t,
+            multiplies_scalar>(a, result, multiplies_scalar(f)),
+        tbb::auto_partitioner());
 }
 
 // channels
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

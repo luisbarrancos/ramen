@@ -17,7 +17,7 @@ class string_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit string_param_t(const std::string& name);
     string_param_t(const std::string& name, bool read_only);
 
@@ -30,11 +30,11 @@ public:
 
     void set_value(const std::string& x, change_reason reason = user_edited);
 
-protected:
+  protected:
     string_param_t(const string_param_t& other);
     void operator=(const string_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new string_param_t(*this); }
 
     void do_add_to_hash(hash::generator_t& hash_gen) const override;
@@ -51,10 +51,9 @@ private:
     bool                      read_only_;
     bool                      multiline_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void text_changed();
 };
 
-}  // namespace
-
+}  // namespace ramen

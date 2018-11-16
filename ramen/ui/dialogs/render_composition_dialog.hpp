@@ -16,7 +16,7 @@ class render_composition_dialog_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     static render_composition_dialog_t& instance();
 
     int start_frame() const;
@@ -32,12 +32,11 @@ public:
     void set_any_output_selected(bool b);
     void set_mblur_settings(int samples, float factor);
 
-private:
+  private:
     render_composition_dialog_t();
 
     Ui::render_composition ui_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

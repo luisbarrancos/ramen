@@ -10,6 +10,5 @@ namespace ui
 {
 class track_model_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

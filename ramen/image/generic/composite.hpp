@@ -14,30 +14,36 @@ namespace image
 {
 namespace generic
 {
-template<class LayerModeFun>
-void composite(const const_image_view_t& back,
-               const const_image_view_t& front,
-               const image_view_t&       dst,
-               LayerModeFun              f)
+template <class LayerModeFun>
+void composite(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    LayerModeFun              f)
 {
     boost::gil::tbb_transform2_pixels(back, front, dst, f);
 }
 
-void composite_screen(const const_image_view_t& back,
-                      const const_image_view_t& front,
-                      const image_view_t&       dst,
-                      float                     opacity);
-void composite_overlay(const const_image_view_t& back,
-                       const const_image_view_t& front,
-                       const image_view_t&       dst,
-                       float                     opacity);
-void composite_zero_overlay(const const_image_view_t& back, const image_view_t& dst, float opacity);
-void composite_diff(const const_image_view_t& back,
-                    const const_image_view_t& front,
-                    const image_view_t&       dst,
-                    float                     opacity);
+void composite_screen(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void composite_overlay(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void composite_zero_overlay(
+    const const_image_view_t& back,
+    const image_view_t&       dst,
+    float                     opacity);
+void composite_diff(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

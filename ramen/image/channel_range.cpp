@@ -48,5 +48,5 @@ float channel_range_t::operator()(float x) const
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

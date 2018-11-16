@@ -21,14 +21,15 @@ namespace sse2
 {
 namespace
 {
-__m128 bicubic_sample(int                              x,
-                      int                              y,
-                      const image::const_image_view_t& src,
-                      const Imath::Box2i&              src_area,
-                      float                            xweights[4],
-                      float                            yweights[4])
+__m128 bicubic_sample(
+    int                              x,
+    int                              y,
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_area,
+    float                            xweights[4],
+    float                            yweights[4])
 {
-    int width  = src.width();
+    int width = src.width();
     int height = src.height();
 
     __m128 result = _mm_setzero_ps();
@@ -39,15 +40,16 @@ __m128 bicubic_sample(int                              x,
             src.row_begin(clamp(y - src_area.min.y + j, 0, height - 1)));
         int sx = x - src_area.min.x - 1;
 
-        __m128 yw  = _mm_set_ps(yweights[j + 1], yweights[j + 1], yweights[j + 1], yweights[j + 1]);
+        __m128 yw = _mm_set_ps(
+            yweights[j + 1], yweights[j + 1], yweights[j + 1], yweights[j + 1]);
         __m128 row = _mm_setzero_ps();
 
         for (int i = 0; i < 4; ++i)
         {
-            __m128 pix = _mm_load_ps(
-                reinterpret_cast<const float*>(&(src_it[clamp(sx + i, 0, width - 1)])));
+            __m128 pix = _mm_load_ps(reinterpret_cast<const float*>(
+                &(src_it[clamp(sx + i, 0, width - 1)])));
             __m128 xw = _mm_set1_ps(xweights[i]);
-            row       = _mm_add_ps(row, _mm_mul_ps(pix, xw));
+            row = _mm_add_ps(row, _mm_mul_ps(pix, xw));
         }
 
         result = _mm_add_ps(result, _mm_mul_ps(row, yw));
@@ -56,14 +58,15 @@ __m128 bicubic_sample(int                              x,
     return result;
 }
 
-__m128 lanczos3_sample(int                              x,
-                       int                              y,
-                       const image::const_image_view_t& src,
-                       const Imath::Box2i&              src_area,
-                       float                            xweights[10],
-                       float                            yweights[10])
+__m128 lanczos3_sample(
+    int                              x,
+    int                              y,
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_area,
+    float                            xweights[10],
+    float                            yweights[10])
 {
-    int width  = src.width();
+    int width = src.width();
     int height = src.height();
 
     __m128 result = _mm_setzero_ps();
@@ -74,15 +77,16 @@ __m128 lanczos3_sample(int                              x,
             src.row_begin(clamp(y - src_area.min.y + j, 0, height - 1)));
         int sx = x - src_area.min.x - 1;
 
-        __m128 yw  = _mm_set_ps(yweights[j + 5], yweights[j + 1], yweights[j + 5], yweights[j + 5]);
+        __m128 yw = _mm_set_ps(
+            yweights[j + 5], yweights[j + 1], yweights[j + 5], yweights[j + 5]);
         __m128 row = _mm_setzero_ps();
 
         for (int i = 0; i < 10; ++i)
         {
-            __m128 pix = _mm_load_ps(
-                reinterpret_cast<const float*>(&(src_it[clamp(sx + i, 0, width - 1)])));
+            __m128 pix = _mm_load_ps(reinterpret_cast<const float*>(
+                &(src_it[clamp(sx + i, 0, width - 1)])));
             __m128 xw = _mm_set1_ps(xweights[i]);
-            row       = _mm_add_ps(row, _mm_mul_ps(pix, xw));
+            row = _mm_add_ps(row, _mm_mul_ps(pix, xw));
         }
 
         result = _mm_add_ps(result, _mm_mul_ps(row, yw));
@@ -91,16 +95,18 @@ __m128 lanczos3_sample(int                              x,
     return result;
 }
 
-}  // unnamed
+}  // namespace
 
 /**********************************************************************************/
 
 bilinear_sampler_t::bilinear_sampler_t(const const_image_view_t& src)
-: generic::sampler_t(src)
+  : generic::sampler_t(src)
 {
 }
-bilinear_sampler_t::bilinear_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src)
-: generic::sampler_t(src_area, src)
+bilinear_sampler_t::bilinear_sampler_t(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src)
+  : generic::sampler_t(src_area, src)
 {
 }
 
@@ -130,20 +136,24 @@ pixel_t bilinear_sampler_t::operator()(const vector2_t& p) const
     else
         bot_it = top_it;
 
-    __m128 a = _mm_load_ps(reinterpret_cast<const float*>(&(top_it[x - src_area_.min.x])));
+    __m128 a = _mm_load_ps(
+        reinterpret_cast<const float*>(&(top_it[x - src_area_.min.x])));
     __m128 b;
 
     if (x != src_area_.max.x)
-        b = _mm_load_ps(reinterpret_cast<const float*>(&(top_it[x + 1 - src_area_.min.x])));
+        b = _mm_load_ps(
+            reinterpret_cast<const float*>(&(top_it[x + 1 - src_area_.min.x])));
     else
         b = a;
 
     __m128 top = _mm_add_ps(_mm_mul_ps(a, ix), _mm_mul_ps(b, tx));
 
-    a = _mm_load_ps(reinterpret_cast<const float*>(&(bot_it[x - src_area_.min.x])));
+    a = _mm_load_ps(
+        reinterpret_cast<const float*>(&(bot_it[x - src_area_.min.x])));
 
     if (x != src_area_.max.x)
-        b = _mm_load_ps(reinterpret_cast<const float*>(&(bot_it[x + 1 - src_area_.min.x])));
+        b = _mm_load_ps(
+            reinterpret_cast<const float*>(&(bot_it[x + 1 - src_area_.min.x])));
     else
         b = a;
 
@@ -151,7 +161,7 @@ pixel_t bilinear_sampler_t::operator()(const vector2_t& p) const
 
     tx = _mm_set1_ps(s);
     ix = _mm_set1_ps(1.0f - s);
-    a  = _mm_add_ps(_mm_mul_ps(top, ix), _mm_mul_ps(bot, tx));
+    a = _mm_add_ps(_mm_mul_ps(top, ix), _mm_mul_ps(bot, tx));
 
     float* q = reinterpret_cast<float*>(&a);
     return pixel_t(q[0], q[1], q[2], q[3]);
@@ -160,11 +170,13 @@ pixel_t bilinear_sampler_t::operator()(const vector2_t& p) const
 /**********************************************************************************/
 
 catrom_sampler_t::catrom_sampler_t(const const_image_view_t& src)
-: generic::sampler_t(src)
+  : generic::sampler_t(src)
 {
 }
-catrom_sampler_t::catrom_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src)
-: generic::sampler_t(src_area, src)
+catrom_sampler_t::catrom_sampler_t(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src)
+  : generic::sampler_t(src_area, src)
 {
 }
 
@@ -189,7 +201,7 @@ pixel_t catrom_sampler_t::operator()(const vector2_t& p) const
     weights(fracty, yweights);
 
     __m128 result = bicubic_sample(x, y, src_, src_area_, xweights, yweights);
-    float* q      = reinterpret_cast<float*>(&result);
+    float* q = reinterpret_cast<float*>(&result);
     return pixel_t(q[0], q[1], q[2], Imath::clamp(q[3], 0.0f, 1.0f));
 }
 
@@ -205,11 +217,13 @@ void catrom_sampler_t::weights(float t, float w[4]) const
 /**********************************************************************************/
 
 lanczos3_sampler_t::lanczos3_sampler_t(const const_image_view_t& src)
-: generic::sampler_t(src)
+  : generic::sampler_t(src)
 {
 }
-lanczos3_sampler_t::lanczos3_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src)
-: generic::sampler_t(src_area, src)
+lanczos3_sampler_t::lanczos3_sampler_t(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src)
+  : generic::sampler_t(src_area, src)
 {
 }
 
@@ -234,7 +248,7 @@ pixel_t lanczos3_sampler_t::operator()(const vector2_t& p) const
     weights(y, fracty, yweights);
 
     __m128 result = lanczos3_sample(x, y, src_, src_area_, xweights, yweights);
-    float* q      = reinterpret_cast<float*>(&result);
+    float* q = reinterpret_cast<float*>(&result);
     return pixel_t(q[0], q[1], q[2], Imath::clamp(q[3], 0.0f, 1.0f));
 }
 
@@ -246,6 +260,6 @@ void lanczos3_sampler_t::weights(int c, float t, float w[10]) const
         w[i] = filter(dx - t);
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

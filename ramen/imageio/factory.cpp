@@ -22,8 +22,8 @@ factory_t& factory_t::instance()
 }
 
 factory_t::factory_t()
-: detect_size_(0)
-, detect_buffer_(0)
+  : detect_size_(0)
+  , detect_buffer_(0)
 {
 }
 factory_t::~factory_t() { delete detect_buffer_; }
@@ -56,7 +56,8 @@ bool factory_t::is_image_format_tag(const std::string& tag) const
     return format_for_tag(tag) != formats_.end();
 }
 
-core::auto_ptr_t<reader_t> factory_t::reader_for_image(const boost::filesystem::path& p) const
+core::auto_ptr_t<reader_t> factory_t::reader_for_image(
+    const boost::filesystem::path& p) const
 {
     const_iterator it = format_for_extension(p);
 
@@ -72,7 +73,8 @@ core::auto_ptr_t<reader_t> factory_t::reader_for_image(const boost::filesystem::
     return core::auto_ptr_t<reader_t>();
 }
 
-core::auto_ptr_t<writer_t> factory_t::writer_for_tag(const std::string& tag) const
+core::auto_ptr_t<writer_t> factory_t::writer_for_tag(
+    const std::string& tag) const
 {
     const_iterator it = format_for_tag(tag);
 
@@ -83,7 +85,8 @@ core::auto_ptr_t<writer_t> factory_t::writer_for_tag(const std::string& tag) con
     return core::auto_ptr_t<writer_t>();
 }
 
-factory_t::const_iterator factory_t::format_for_extension(const boost::filesystem::path& p) const
+factory_t::const_iterator factory_t::format_for_extension(
+    const boost::filesystem::path& p) const
 {
     std::string ext(p.extension().string());
 
@@ -121,7 +124,8 @@ factory_t::const_iterator factory_t::format_for_file_contents(
     return formats_.end();
 }
 
-factory_t::const_iterator factory_t::format_for_tag(const std::string& tag) const
+factory_t::const_iterator factory_t::format_for_tag(
+    const std::string& tag) const
 {
     for (const_iterator it(formats_.begin()); it != formats_.end(); ++it)
     {
@@ -132,5 +136,5 @@ factory_t::const_iterator factory_t::format_for_tag(const std::string& tag) cons
     return formats_.end();
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

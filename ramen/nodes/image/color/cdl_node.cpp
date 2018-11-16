@@ -28,13 +28,13 @@ namespace ramen
 namespace image
 {
 cdl_node_t::cdl_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("cdl");
 }
 
 cdl_node_t::cdl_node_t(const cdl_node_t& other)
-: pointop_node_t(other)
+  : pointop_node_t(other)
 {
 }
 
@@ -83,15 +83,16 @@ void cdl_node_t::do_create_params()
     add_param(b);
 }
 
-void cdl_node_t::do_process(const image::const_image_view_t& src,
-                            const image::image_view_t&       dst,
-                            const render::context_t&         context)
+void cdl_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     boost::gil::copy_pixels(src, dst);
 
     try
     {
-        OCIO::ConstConfigRcPtr    config    = app().ocio_manager().config();
+        OCIO::ConstConfigRcPtr    config = app().ocio_manager().config();
         OCIO::CDLTransformRcPtr   transform = cdl_transform();
         OCIO::ConstProcessorRcPtr proc;
 
@@ -112,9 +113,9 @@ void cdl_node_t::do_process(const image::const_image_view_t& src,
 
 OCIO::CDLTransformRcPtr cdl_node_t::cdl_transform() const
 {
-    Imath::V3f slope  = get_value<Imath::V3f>(param("slope"));
+    Imath::V3f slope = get_value<Imath::V3f>(param("slope"));
     Imath::V3f offset = get_value<Imath::V3f>(param("offset"));
-    Imath::V3f power  = get_value<Imath::V3f>(param("power"));
+    Imath::V3f power = get_value<Imath::V3f>(param("power"));
 
     OCIO::CDLTransformRcPtr transform = OCIO::CDLTransform::Create();
     transform->setSlope(reinterpret_cast<const float*>(&slope));
@@ -130,14 +131,16 @@ void cdl_node_t::read_from_file(const boost::filesystem::path& p)
     boost::filesystem::ifstream ifs(p);
 
     if (!ifs.is_open() || !ifs.good())
-        throw std::runtime_error("Can't read file " + filesystem::file_string(p));
+        throw std::runtime_error(
+            "Can't read file " + filesystem::file_string(p));
 
     ifs >> std::noskipws;
 
     std::string contents;
-    std::copy(std::istream_iterator<char>(ifs),
-              std::istream_iterator<char>(),
-              std::back_inserter(contents));
+    std::copy(
+        std::istream_iterator<char>(ifs),
+        std::istream_iterator<char>(),
+        std::back_inserter(contents));
 
     OCIO::CDLTransformRcPtr transform = OCIO::CDLTransform::Create();
     transform->setXML(contents.c_str());
@@ -192,7 +195,10 @@ void cdl_node_t::write_to_file(const boost::filesystem::path& p) const
 // factory
 node_t* create_cdl_node() { return new cdl_node_t(); }
 
-const node_metaclass_t* cdl_node_t::metaclass() const { return &cdl_node_metaclass(); }
+const node_metaclass_t* cdl_node_t::metaclass() const
+{
+    return &cdl_node_metaclass();
+}
 
 const node_metaclass_t& cdl_node_t::cdl_node_metaclass()
 {
@@ -201,20 +207,21 @@ const node_metaclass_t& cdl_node_t::cdl_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.cdl";
+        info.id = "image.builtin.cdl";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "CDL";
-        info.create        = &create_cdl_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "CDL";
+        info.create = &create_cdl_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered = node_factory_t::instance().register_node(cdl_node_t::cdl_node_metaclass());
+static bool registered =
+    node_factory_t::instance().register_node(cdl_node_t::cdl_node_metaclass());
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

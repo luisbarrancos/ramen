@@ -15,20 +15,22 @@ namespace ramen
 {
 namespace core
 {
-template<typename T>
-struct poly_copyable_instance : optimized_storage_type<T, poly_copyable_interface>::type
+template <typename T>
+struct poly_copyable_instance
+  : optimized_storage_type<T, poly_copyable_interface>::type
 {
     BOOST_CONCEPT_ASSERT((boost::CopyConstructibleConcept<T>) );
 
-    typedef typename optimized_storage_type<T, poly_copyable_interface>::type base_type;
+    typedef typename optimized_storage_type<T, poly_copyable_interface>::type
+        base_type;
 
     explicit poly_copyable_instance(const T& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
     explicit poly_copyable_instance(T&& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
@@ -37,17 +39,18 @@ struct poly_copyable_instance : optimized_storage_type<T, poly_copyable_interfac
 
 struct copyable : poly_base<poly_copyable_interface, poly_copyable_instance>
 {
-    typedef poly_base<poly_copyable_interface, poly_copyable_instance> base_type;
+    typedef poly_base<poly_copyable_interface, poly_copyable_instance>
+        base_type;
 
-    template<typename T>
+    template <typename T>
     explicit copyable(const T& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
-    template<typename T>
+    template <typename T>
     explicit copyable(T&& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
@@ -56,6 +59,5 @@ struct copyable : poly_base<poly_copyable_interface, poly_copyable_instance>
 
 typedef poly<copyable> poly_copyable_t;
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

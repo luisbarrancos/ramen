@@ -21,21 +21,23 @@ struct poly_regular_interface : poly_copyable_interface
     virtual bool equals(const poly_regular_interface& new_value) const = 0;
 };
 
-template<typename T>
-class poly_regular_instance : public optimized_storage_type<T, poly_regular_interface>::type
+template <typename T>
+class poly_regular_instance
+  : public optimized_storage_type<T, poly_regular_interface>::type
 {
     BOOST_CONCEPT_ASSERT((RegularConcept<T>) );
 
-public:
-    typedef typename optimized_storage_type<T, poly_regular_interface>::type base_type;
+  public:
+    typedef typename optimized_storage_type<T, poly_regular_interface>::type
+        base_type;
 
     explicit poly_regular_instance(const T& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
     explicit poly_regular_instance(T&& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
@@ -43,30 +45,30 @@ public:
 
     bool equals(const poly_regular_interface& x) const
     {
-        return this->type_info() == x.type_info()
-               && this->get() == *static_cast<const T*>(x.cast());
+        return this->type_info() == x.type_info() &&
+               this->get() == *static_cast<const T*>(x.cast());
     }
 };
 
 class regular : public poly_base<poly_regular_interface, poly_regular_instance>
 {
-public:
+  public:
     typedef poly_base<poly_regular_interface, poly_regular_instance> base_type;
 
     regular()
-    : base_type(empty_t())
+      : base_type(empty_t())
     {
     }
 
-    template<typename T>
+    template <typename T>
     explicit regular(const T& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
-    template<typename T>
+    template <typename T>
     explicit regular(T&& x)
-    : base_type(x)
+      : base_type(x)
     {
     }
 
@@ -77,6 +79,5 @@ public:
 
 typedef poly<regular> poly_regular_t;
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

@@ -20,7 +20,7 @@ namespace ramen
 namespace roto
 {
 convert_tool_t::convert_tool_t(image::roto_node_t& parent)
-: tool_t(parent)
+  : tool_t(parent)
 {
     box_pick_mode_ = false;
 }
@@ -69,7 +69,8 @@ void convert_tool_t::mouse_press_event(const ui::mouse_press_event_t& event)
                 return;
         }
 
-        std::auto_ptr<undo::command_t> cmd(new undo::modify_shape_command_t(parent(), selected));
+        std::auto_ptr<undo::command_t> cmd(
+            new undo::modify_shape_command_t(parent(), selected));
         selected->toggle_corner_curve_selected_points();
         parent().notify();
 
@@ -108,5 +109,5 @@ void convert_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
     event.view->update();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

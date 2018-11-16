@@ -23,18 +23,20 @@ namespace ramen
 namespace ui
 {
 color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
-: QDialog(parent)
+  : QDialog(parent)
 {
     prev_color_ = c;
-    color_      = c;
+    color_ = c;
 
     double h, s, v, e;
     color_.to_hsv(h, s, v);
 
-    for (int i = 0, ie = static_cast<int>(exposure_picker_t::max_exposure()); i < ie; ++i)
+    for (int i = 0, ie = static_cast<int>(exposure_picker_t::max_exposure());
+         i < ie;
+         ++i)
     {
         double ex = std::pow(2.0, (double) i);
-        double x  = v / ex;
+        double x = v / ex;
 
         if (x <= 1.0)
         {
@@ -51,16 +53,22 @@ color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
     sv_picker_ = new saturation_value_picker_t();
     sv_picker_->set_hue(h);
     sv_picker_->set_saturation_value(s, v);
-    connect(sv_picker_,
-            SIGNAL(saturation_value_changed(double, double)),
-            this,
-            SLOT(set_saturation_value(double, double)));
+    connect(
+        sv_picker_,
+        SIGNAL(saturation_value_changed(double, double)),
+        this,
+        SLOT(set_saturation_value(double, double)));
     hlayout->addWidget(sv_picker_);
 
     hue_picker_ = new hue_picker_t();
     hue_picker_->set_hue(h);
-    connect(hue_picker_, SIGNAL(hue_changed(double)), sv_picker_, SLOT(set_hue(double)));
-    connect(hue_picker_, SIGNAL(hue_changed(double)), this, SLOT(set_hue(double)));
+    connect(
+        hue_picker_,
+        SIGNAL(hue_changed(double)),
+        sv_picker_,
+        SLOT(set_hue(double)));
+    connect(
+        hue_picker_, SIGNAL(hue_changed(double)), this, SLOT(set_hue(double)));
     hlayout->addWidget(hue_picker_);
 
     // color swatches
@@ -71,10 +79,11 @@ color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
         vlayout2->addWidget(old_color_);
 
         color_swatch_t* new_color_ = new color_swatch_t(0, color_);
-        connect(this,
-                SIGNAL(color_changed(const ramen::ui::color_t&)),
-                new_color_,
-                SLOT(set_color(const ramen::ui::color_t&)));
+        connect(
+            this,
+            SIGNAL(color_changed(const ramen::ui::color_t&)),
+            new_color_,
+            SLOT(set_color(const ramen::ui::color_t&)));
         vlayout2->addWidget(new_color_);
 
         hlayout->addLayout(vlayout2);
@@ -98,16 +107,28 @@ color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
     exp_spinbox_->setValue(e);
     hlayout->addWidget(exp_spinbox_);
 
-    connect(exp_spinbox_, SIGNAL(valueChanged(double)), exp_picker_, SLOT(set_exposure(double)));
-    connect(exp_picker_, SIGNAL(exposure_changed(double)), exp_spinbox_, SLOT(setValue(double)));
-    connect(exp_spinbox_, SIGNAL(valueChanged(double)), this, SLOT(set_exposure(double)));
+    connect(
+        exp_spinbox_,
+        SIGNAL(valueChanged(double)),
+        exp_picker_,
+        SLOT(set_exposure(double)));
+    connect(
+        exp_picker_,
+        SIGNAL(exposure_changed(double)),
+        exp_spinbox_,
+        SLOT(setValue(double)));
+    connect(
+        exp_spinbox_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(set_exposure(double)));
     vlayout->addLayout(hlayout);
 
     // dialog buttons
     hlayout = new QHBoxLayout();
 
-    QSpacerItem* horizontal_spacer
-        = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* horizontal_spacer =
+        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     hlayout->addItem(horizontal_spacer);
 
     // button rows
@@ -118,7 +139,8 @@ color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
     sizePolicy1.setHeightForWidth(button_box->sizePolicy().hasHeightForWidth());
     button_box->setSizePolicy(sizePolicy1);
     button_box->setOrientation(Qt::Horizontal);
-    button_box->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+    button_box->setStandardButtons(
+        QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     button_box->setCenterButtons(false);
     hlayout->addWidget(button_box);
 
@@ -130,15 +152,18 @@ color_picker_t::color_picker_t(QWidget* parent, const color_t& c)
 
 void color_picker_t::set_hue(double h) { update_color(); }
 void color_picker_t::set_exposure(double e) { update_color(); }
-void color_picker_t::set_saturation_value(double s, double v) { update_color(); }
+void color_picker_t::set_saturation_value(double s, double v)
+{
+    update_color();
+}
 
 void color_picker_t::update_color()
 {
     double e = std::pow(2, exp_picker_->exposure());
-    color_
-        = color_t::from_hsv(sv_picker_->hue(), sv_picker_->saturation(), sv_picker_->value() * e);
+    color_ = color_t::from_hsv(
+        sv_picker_->hue(), sv_picker_->saturation(), sv_picker_->value() * e);
     color_changed(color_);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

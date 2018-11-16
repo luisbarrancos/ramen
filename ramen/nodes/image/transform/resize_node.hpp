@@ -10,17 +10,17 @@ namespace image
 {
 class resize_node_t : public image_node_t
 {
-public:
+  public:
     static const node_metaclass_t& resize_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     resize_node_t();
 
-protected:
+  protected:
     resize_node_t(const resize_node_t& other);
     void operator=(const resize_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new resize_node_t(*this); }
 
     void do_create_params() override;
@@ -36,6 +36,5 @@ private:
     Imath::V2f scale_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

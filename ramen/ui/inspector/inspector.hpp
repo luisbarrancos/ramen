@@ -26,7 +26,7 @@ class inspector_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     inspector_t();
     ~inspector_t() override;
 
@@ -42,12 +42,12 @@ public:
 
     panel_factory_t& panel_factory() { return factory_; }
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void rename_node();
     void show_help();
 
-private:
+  private:
     inspector_t(const inspector_t& other);
     void operator=(const inspector_t& other);
 
@@ -74,6 +74,5 @@ private:
     panel_factory_t::iterator current_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

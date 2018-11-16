@@ -17,21 +17,21 @@ class color_swatch_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     color_swatch_t(QWidget* parent, const color_t& c);
 
     QSize sizeHint() const override;
     int   heightForWidth(int w) const override { return w; }
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_color(const ramen::ui::color_t& c);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-private:
+  private:
     void update_background();
 
     inline double clamp(double x) const
@@ -48,6 +48,5 @@ private:
     color_t color_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

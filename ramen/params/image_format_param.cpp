@@ -18,20 +18,22 @@
 namespace ramen
 {
 image_format_param_t::image_format_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
 }
 
 image_format_param_t::image_format_param_t(const image_format_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
-    width_input_  = 0;
+    width_input_ = 0;
     height_input_ = 0;
     aspect_input_ = 0;
-    menu_         = 0;
+    menu_ = 0;
 }
 
-void image_format_param_t::set_value(const image::format_t& format, change_reason reason)
+void image_format_param_t::set_value(
+    const image::format_t& format,
+    change_reason          reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -40,7 +42,10 @@ void image_format_param_t::set_value(const image::format_t& format, change_reaso
     emit_param_changed(reason);
 }
 
-param_t* image_format_param_t::do_clone() const { return new image_format_param_t(*this); }
+param_t* image_format_param_t::do_clone() const
+{
+    return new image_format_param_t(*this);
+}
 
 void image_format_param_t::do_init()
 {
@@ -73,7 +78,7 @@ QWidget* image_format_param_t::do_create_widgets()
 {
     QWidget* top = new QWidget();
 
-    menu_   = new QComboBox(top);
+    menu_ = new QComboBox(top);
     QSize s = menu_->sizeHint();
 
     QLabel* label = new QLabel(top);
@@ -94,7 +99,11 @@ QWidget* image_format_param_t::do_create_widgets()
     menu_->move(app().ui()->inspector().left_margin(), 0);
     menu_->setCurrentIndex(format.preset_index());
     menu_->setEnabled(enabled());
-    connect(menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(preset_picked(int)));
+    connect(
+        menu_,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(preset_picked(int)));
     int h = s.height() + 5;
 
     width_input_ = new ui::double_spinbox_t(top);
@@ -106,7 +115,11 @@ QWidget* image_format_param_t::do_create_widgets()
     width_input_->setMinimum(16);
     width_input_->setValue(format.width);
     width_input_->setEnabled(enabled());
-    connect(width_input_, SIGNAL(valueChanged(double)), this, SLOT(set_new_format(double)));
+    connect(
+        width_input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(set_new_format(double)));
     s = width_input_->sizeHint();
 
     height_input_ = new ui::double_spinbox_t(top);
@@ -115,10 +128,15 @@ QWidget* image_format_param_t::do_create_widgets()
     height_input_->setValue(value().cast<image::format_t>().height);
     height_input_->setTrackMouse(false);
     height_input_->setEnabled(enabled());
-    height_input_->move(app().ui()->inspector().left_margin() + s.width() + 5, h);
+    height_input_
+        ->move(app().ui()->inspector().left_margin() + s.width() + 5, h);
     height_input_->setMinimum(16);
     height_input_->setValue(format.height);
-    connect(height_input_, SIGNAL(valueChanged(double)), this, SLOT(set_new_format(double)));
+    connect(
+        height_input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(set_new_format(double)));
 
     aspect_input_ = new ui::double_spinbox_t(top);
     aspect_input_->setValue(1);
@@ -128,11 +146,17 @@ QWidget* image_format_param_t::do_create_widgets()
     aspect_input_->setDecimals(3);
     aspect_input_->setMinimum(0.1);
     aspect_input_->setSingleStep(0.05);
-    aspect_input_->move(app().ui()->inspector().left_margin() + (2 * s.width()) + 10, h);
-    connect(aspect_input_, SIGNAL(valueChanged(double)), this, SLOT(set_new_format(double)));
+    aspect_input_
+        ->move(app().ui()->inspector().left_margin() + (2 * s.width()) + 10, h);
+    connect(
+        aspect_input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(set_new_format(double)));
     h += s.height() + 5;
 
-    int w = (width_input_->sizeHint().width() * 2) + aspect_input_->sizeHint().width() + 10;
+    int w = (width_input_->sizeHint().width() * 2) +
+            aspect_input_->sizeHint().width() + 10;
     menu_->resize(w, menu_->sizeHint().height());
 
     top->setMinimumSize(app().ui()->inspector().width(), h);
@@ -206,4 +230,4 @@ void image_format_param_t::set_new_format(double unused)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

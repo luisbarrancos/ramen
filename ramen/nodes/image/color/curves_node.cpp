@@ -16,14 +16,15 @@ namespace image
 {
 struct apply_curves_fun
 {
-    apply_curves_fun(const halfFunction<half>& r_lut,
-                     const halfFunction<half>& g_lut,
-                     const halfFunction<half>& b_lut,
-                     const halfFunction<half>& v_lut)
-    : r_lut_(r_lut)
-    , g_lut_(g_lut)
-    , b_lut_(b_lut)
-    , v_lut_(v_lut)
+    apply_curves_fun(
+        const halfFunction<half>& r_lut,
+        const halfFunction<half>& g_lut,
+        const halfFunction<half>& b_lut,
+        const halfFunction<half>& v_lut)
+      : r_lut_(r_lut)
+      , g_lut_(g_lut)
+      , b_lut_(b_lut)
+      , v_lut_(v_lut)
     {
     }
 
@@ -41,14 +42,14 @@ struct apply_curves_fun
         b = b_lut_(v_lut_(b));
 
         image::pixel_t dst;
-        get_color(dst, red_t())   = r;
+        get_color(dst, red_t()) = r;
         get_color(dst, green_t()) = g;
-        get_color(dst, blue_t())  = b;
+        get_color(dst, blue_t()) = b;
         get_color(dst, alpha_t()) = a;
         return dst;
     }
 
-private:
+  private:
     const halfFunction<half>& r_lut_;
     const halfFunction<half>& g_lut_;
     const halfFunction<half>& b_lut_;
@@ -56,14 +57,15 @@ private:
 };
 
 curves_node_t::curves_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("curves");
 }
 
-void curves_node_t::add_curve_param(const std::string&   name,
-                                    const std::string&   id,
-                                    const Imath::Color3c col)
+void curves_node_t::add_curve_param(
+    const std::string&   name,
+    const std::string&   id,
+    const Imath::Color3c col)
 {
     std::auto_ptr<curve_param_t> p(new curve_param_t(name));
     p->set_id(id);
@@ -87,9 +89,10 @@ void curves_node_t::do_create_params()
     add_curve_param("Blue", "blue", Imath::Color3c(0, 0, 255));
 }
 
-void curves_node_t::do_process(const image::const_image_view_t& src,
-                               const image::image_view_t&       dst,
-                               const render::context_t&         context)
+void curves_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     const curve_param_t* c = dynamic_cast<const curve_param_t*>(&param("rgb"));
     halfFunction<half>   v_lut(anim::eval_float_curve(c->curve()));
@@ -103,13 +106,17 @@ void curves_node_t::do_process(const image::const_image_view_t& src,
     c = dynamic_cast<const curve_param_t*>(&param("blue"));
     halfFunction<half> b_lut(anim::eval_float_curve(c->curve()));
 
-    boost::gil::tbb_transform_pixels(src, dst, apply_curves_fun(r_lut, g_lut, b_lut, v_lut));
+    boost::gil::tbb_transform_pixels(
+        src, dst, apply_curves_fun(r_lut, g_lut, b_lut, v_lut));
 }
 
 // factory
 node_t* create_curves_node() { return new curves_node_t(); }
 
-const node_metaclass_t* curves_node_t::metaclass() const { return &curves_node_metaclass(); }
+const node_metaclass_t* curves_node_t::metaclass() const
+{
+    return &curves_node_metaclass();
+}
 
 const node_metaclass_t& curves_node_t::curves_node_metaclass()
 {
@@ -118,21 +125,21 @@ const node_metaclass_t& curves_node_t::curves_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.curves";
+        info.id = "image.builtin.curves";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Curves";
-        info.create        = &create_curves_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Curves";
+        info.create = &create_curves_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(curves_node_t::curves_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    curves_node_t::curves_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

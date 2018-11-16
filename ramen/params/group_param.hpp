@@ -18,17 +18,17 @@ class RAMEN_API group_param_t : public composite_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit group_param_t(const std::string& name);
 
     bool can_collapse() const { return can_collapse_; }
     void set_can_collapse(bool b) { can_collapse_ = b; }
 
-protected:
+  protected:
     group_param_t(const group_param_t& other);
     void operator=(const group_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new group_param_t(*this); }
 
     QWidget* do_create_widgets() override;
@@ -38,5 +38,4 @@ private:
     bool                can_collapse_;
 };
 
-}  // ramen
-
+}  // namespace ramen

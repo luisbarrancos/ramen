@@ -23,7 +23,7 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 
-namespace qi    = boost::spirit::qi;
+namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 
 namespace ramen
@@ -32,27 +32,28 @@ namespace util
 {
 struct calculator_t::impl
 {
-    template<typename Iterator>
+    template <typename Iterator>
     struct calc_grammar : qi::grammar<Iterator, double(), ascii::space_type>
     {
         calc_grammar()
-        : calc_grammar::base_type(expression)
+          : calc_grammar::base_type(expression)
         {
             using qi::_1;
             using qi::_val;
             using qi::double_;
 
-            expression
-                = term[_val = _1] >> *(('+' >> term[_val += _1]) | ('-' >> term[_val -= _1]));
+            expression = term[_val = _1] >> *(('+' >> term[_val += _1]) |
+                                              ('-' >> term[_val -= _1]));
 
-            term
-                = factor[_val = _1] >> *(('*' >> factor[_val *= _1]) | ('/' >> factor[_val /= _1]));
+            term = factor[_val = _1] >>
+                   *(('*' >> factor[_val *= _1]) | ('/' >> factor[_val /= _1]));
 
-            factor = double_[_val = _1] | '(' >> expression[_val = _1] >> ')'
-                     | ('-' >> factor[_val = -_1]) | ('+' >> factor[_val = _1]);
+            factor = double_[_val = _1] | '(' >> expression[_val = _1] >> ')' |
+                     ('-' >> factor[_val = -_1]) | ('+' >> factor[_val = _1]);
         }
 
-        qi::rule<Iterator, double(), ascii::space_type> expression, term, factor;
+        qi::rule<Iterator, double(), ascii::space_type> expression, term,
+            factor;
     };
 
     boost::optional<double> parse_and_eval(const std::string& s) const
@@ -60,7 +61,7 @@ struct calculator_t::impl
         using boost::spirit::ascii::space;
 
         std::string::const_iterator iter = s.begin();
-        std::string::const_iterator end  = s.end();
+        std::string::const_iterator end = s.end();
         double                      result;
 
         bool r = phrase_parse(iter, end, calc, space, result);
@@ -82,5 +83,5 @@ boost::optional<double> calculator_t::operator()(const std::string& s) const
     return m_pimpl->parse_and_eval(s);
 }
 
-}  // util
-}  // ramen
+}  // namespace util
+}  // namespace ramen

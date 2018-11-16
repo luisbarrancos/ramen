@@ -25,30 +25,32 @@ namespace
 {
 struct gradient_fun
 {
-    gradient_fun(const Imath::V2f&     p1,
-                 const Imath::V2f&     p2,
-                 const Imath::Color4f& c1,
-                 const Imath::Color4f& c2,
-                 float                 gamma,
-                 float                 aspect = 1.0f)
+    gradient_fun(
+        const Imath::V2f&     p1,
+        const Imath::V2f&     p2,
+        const Imath::Color4f& c1,
+        const Imath::Color4f& c2,
+        float                 gamma,
+        float                 aspect = 1.0f)
     {
         assert(aspect > 0.0f);
 
-        p1_      = p1;
-        p2_      = p2;
-        c1_      = c1;
-        c2_      = c2;
-        gamma_   = gamma;
-        aspect_  = aspect;
+        p1_ = p1;
+        p2_ = p2;
+        c1_ = c1;
+        c2_ = c2;
+        gamma_ = gamma;
+        aspect_ = aspect;
         length2_ = (p2_ - p1_).length2();
     }
 
     image::pixel_t operator()(const Imath::V2i& p) const
     {
         Imath::V2f q(p.x * aspect_, p.y);
-        float      t = ((q.x - p1_.x) * (p2_.x - p1_.x)) + ((q.y - p1_.y) * (p2_.y - p1_.y));
-        t            = clamp(t / length2_, 0.0f, 1.0f);
-        float tg     = pow_h(t, gamma_);
+        float      t = ((q.x - p1_.x) * (p2_.x - p1_.x)) +
+                  ((q.y - p1_.y) * (p2_.y - p1_.y));
+        t = clamp(t / length2_, 0.0f, 1.0f);
+        float tg = pow_h(t, gamma_);
 
         float r = c1_.r * (1.0f - tg) + c2_.r * tg;
         float g = c1_.g * (1.0f - tg) + c2_.g * tg;
@@ -57,7 +59,7 @@ struct gradient_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     Imath::V2f     p1_, p2_;
     float          length2_;
     Imath::Color4f c1_, c2_;
@@ -68,7 +70,7 @@ private:
 }  // namespace
 
 gradient_node_t::gradient_node_t()
-: generator_node_t()
+  : generator_node_t()
 {
     set_name("gradient");
 }
@@ -116,22 +118,24 @@ void gradient_node_t::do_create_params()
 
 void gradient_node_t::do_create_manipulators()
 {
-    std::auto_ptr<point2_manipulator_t> m(
-        new point2_manipulator_t(dynamic_cast<float2_param_t*>(&param("start"))));
+    std::auto_ptr<point2_manipulator_t> m(new point2_manipulator_t(
+        dynamic_cast<float2_param_t*>(&param("start"))));
     add_manipulator(m);
 
-    m.reset(new point2_manipulator_t(dynamic_cast<float2_param_t*>(&param("end"))));
+    m.reset(
+        new point2_manipulator_t(dynamic_cast<float2_param_t*>(&param("end"))));
     add_manipulator(m);
 }
 
 void gradient_node_t::do_process(const render::context_t& context)
 {
-    gradient_fun grad(get_absolute_value<Imath::V2f>(param("start")) / context.subsample,
-                      get_absolute_value<Imath::V2f>(param("end")) / context.subsample,
-                      get_value<Imath::Color4f>(param("startcol")),
-                      get_value<Imath::Color4f>(param("endcol")),
-                      get_value<float>(param("gamma")),
-                      aspect_ratio());
+    gradient_fun grad(
+        get_absolute_value<Imath::V2f>(param("start")) / context.subsample,
+        get_absolute_value<Imath::V2f>(param("end")) / context.subsample,
+        get_value<Imath::Color4f>(param("startcol")),
+        get_value<Imath::Color4f>(param("endcol")),
+        get_value<float>(param("gamma")),
+        aspect_ratio());
 
     generate_pixels(grad);
 
@@ -142,7 +146,10 @@ void gradient_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_gradient_node() { return new gradient_node_t(); }
 
-const node_metaclass_t* gradient_node_t::metaclass() const { return &gradient_node_metaclass(); }
+const node_metaclass_t* gradient_node_t::metaclass() const
+{
+    return &gradient_node_metaclass();
+}
 
 const node_metaclass_t& gradient_node_t::gradient_node_metaclass()
 {
@@ -151,21 +158,21 @@ const node_metaclass_t& gradient_node_t::gradient_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.gradient";
+        info.id = "image.builtin.gradient";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Gradient";
-        info.create        = &create_gradient_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Gradient";
+        info.create = &create_gradient_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(gradient_node_t::gradient_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    gradient_node_t::gradient_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

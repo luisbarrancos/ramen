@@ -26,6 +26,5 @@ struct RAMEN_API empty_t : private boost::totally_ordered<empty_t>
 
 inline void swap(empty_t&, empty_t&) {}
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

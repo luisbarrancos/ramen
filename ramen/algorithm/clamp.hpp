@@ -10,8 +10,7 @@
 
 namespace ramen
 {
-template<class T>
-inline T clamp(T x, T lo, T hi)
+template <class T> inline T clamp(T x, T lo, T hi)
 {
     assert(lo <= hi);
 
@@ -24,5 +23,4 @@ inline T clamp(T x, T lo, T hi)
     return x;
 }
 
-}  // algorithm
-
+}  // namespace ramen

@@ -23,8 +23,8 @@ struct system_t::impl
 
         // user name & home path
         struct passwd* p = getpwuid(geteuid());
-        self.user_name_  = p->pw_name;
-        self.home_path_  = boost::filesystem::path(p->pw_dir);
+        self.user_name_ = p->pw_name;
+        self.home_path_ = boost::filesystem::path(p->pw_dir);
 
         // app user path
         {
@@ -36,10 +36,10 @@ struct system_t::impl
         // ram size
         {
             int mib[2];
-            mib[0]       = CTL_HW;
-            mib[1]       = HW_MEMSIZE;
+            mib[0] = CTL_HW;
+            mib[1] = HW_MEMSIZE;
             int64_t size = 0;
-            size_t  len  = sizeof(size);
+            size_t  len = sizeof(size);
 
             if (sysctl(mib, 2, &size, &len, NULL, 0) == 0)
                 self.ram_size_ = size;
@@ -54,5 +54,5 @@ struct system_t::impl
     }
 };
 
-}  // system
-}  // ramen
+}  // namespace system
+}  // namespace ramen

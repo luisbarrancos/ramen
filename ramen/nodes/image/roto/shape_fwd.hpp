@@ -10,6 +10,5 @@ namespace roto
 {
 class shape_t;
 
-}  // roto
-}  // ramen
-
+}  // namespace roto
+}  // namespace ramen

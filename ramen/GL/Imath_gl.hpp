@@ -25,5 +25,4 @@ void gl_load_matrix(const Imath::M33f& m);
 void gl_mult_matrix(const Imath::M44f& m);
 void gl_load_matrix(const Imath::M44f& m);
 
-}  // ramen
-
+}  // namespace ramen

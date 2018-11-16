@@ -23,13 +23,13 @@ namespace ramen
 namespace anim
 {
 float_curve_t::float_curve_t()
-: curve_t<float_key_t>()
+  : curve_t<float_key_t>()
 {
     default_auto_tan_ = float_key_t::tangent_smooth;
-    min_              = -std::numeric_limits<float>::max();
-    max_              = std::numeric_limits<float>::max();
-    scale_            = 1.0f;
-    offset_           = 0.0f;
+    min_ = -std::numeric_limits<float>::max();
+    max_ = std::numeric_limits<float>::max();
+    scale_ = 1.0f;
+    offset_ = 0.0f;
 }
 
 void float_curve_t::copy(const float_curve_t& other, time_type offset)
@@ -46,10 +46,11 @@ void float_curve_t::copy(const float_curve_t& other, time_type offset)
     recalc_tangents_and_coefficients();
 }
 
-void float_curve_t::copy(const float_curve_t& other,
-                         time_type            offset,
-                         time_type            start,
-                         time_type            end)
+void float_curve_t::copy(
+    const float_curve_t& other,
+    time_type            offset,
+    time_type            start,
+    time_type            end)
 {
     clear();
 
@@ -76,7 +77,10 @@ void float_curve_t::swap(float_curve_t& other)
     // we don't swap scale and offset.
 }
 
-float_curve_t::iterator float_curve_t::insert(time_type time, value_type value, bool recalc)
+float_curve_t::iterator float_curve_t::insert(
+    time_type  time,
+    value_type value,
+    bool       recalc)
 {
     float_key_t k(time, value);
     iterator    it(superclass::insert(k));
@@ -134,7 +138,8 @@ float_curve_t::value_type float_curve_t::do_evaluate(time_type time) const
             case extrapolate_linear:
             {
                 value_type dir = keys().front().v1();
-                return keys().front().value() + ((time - keys().front().time()) * dir);
+                return keys().front().value() +
+                       ((time - keys().front().time()) * dir);
             }
 
             case extrapolate_repeat:
@@ -152,7 +157,8 @@ float_curve_t::value_type float_curve_t::do_evaluate(time_type time) const
             case extrapolate_linear:
             {
                 value_type dir = keys().back().v0();
-                return keys().back().value() + ((time - keys().back().time()) * dir);
+                return keys().back().value() +
+                       ((time - keys().back().time()) * dir);
             }
 
             case extrapolate_repeat:
@@ -194,7 +200,9 @@ float_curve_t::value_type float_curve_t::derive(time_type time) const
     return it->evaluate_derivative(t);
 }
 
-float_curve_t::value_type float_curve_t::integrate(time_type time1, time_type time2) const
+float_curve_t::value_type float_curve_t::integrate(
+    time_type time1,
+    time_type time2) const
 {
     // TODO: we could do better
     value_type sum = 0.0f;
@@ -217,7 +225,7 @@ void float_curve_t::recalc_coefficients()
 void float_curve_t::recalc_tangents_and_coefficients(iterator it)
 {
     // not the best code I've ever written
-    float_key_t* ptr[5] = { 0, 0, 0, 0, 0 };
+    float_key_t* ptr[5] = {0, 0, 0, 0, 0};
 
     if ((it - 2) >= begin())
         ptr[0] = &*(it - 2);
@@ -326,5 +334,5 @@ void float_curve_t::write(serialization::yaml_oarchive_t& out) const
     out.end_map();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

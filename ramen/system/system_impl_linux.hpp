@@ -27,8 +27,8 @@ struct system_t::impl
 
         // user name & home path
         struct passwd* p = getpwuid(geteuid());
-        self.user_name_  = p->pw_name;
-        self.home_path_  = boost::filesystem::path(p->pw_dir);
+        self.user_name_ = p->pw_name;
+        self.home_path_ = boost::filesystem::path(p->pw_dir);
 
         // app user path
         {
@@ -47,13 +47,14 @@ struct system_t::impl
         // executable location
         {
             char linkname[128];
-            if (snprintf(linkname, sizeof(linkname), "/proc/%i/exe", getpid()) >= 0)
+            if (snprintf(
+                    linkname, sizeof(linkname), "/proc/%i/exe", getpid()) >= 0)
             {
                 char buf[1024];
                 int  ret = readlink(linkname, buf, sizeof(buf));
                 if (ret < sizeof(buf))
                 {
-                    buf[ret]              = 0;
+                    buf[ret] = 0;
                     self.executable_path_ = boost::filesystem::path(buf);
                 }
             }
@@ -61,5 +62,5 @@ struct system_t::impl
     }
 };
 
-}  // system
-}  // ramen
+}  // namespace system
+}  // namespace ramen

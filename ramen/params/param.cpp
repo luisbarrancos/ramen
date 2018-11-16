@@ -16,27 +16,27 @@
 namespace ramen
 {
 param_t::param_t()
-: QObject()
-, param_set_(0)
+  : QObject()
+  , param_set_(0)
 {
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
 
 param_t::param_t(const std::string& name)
-: QObject()
-, param_set_(0)
-, name_(name)
+  : QObject()
+  , param_set_(0)
+  , name_(name)
 {
     flags_ = persist_bit | can_undo_bit | enabled_bit | include_in_hash_bit;
 }
 
 param_t::param_t(const param_t& other)
-: QObject()
-, param_set_(0)
-, id_(other.id_)
-, name_(other.name_)
-, value_(other.value_)
-, flags_(other.flags_)
+  : QObject()
+  , param_set_(0)
+  , id_(other.id_)
+  , name_(other.name_)
+  , value_(other.value_)
+  , flags_(other.flags_)
 {
 }
 
@@ -119,9 +119,15 @@ bool param_t::can_undo() const { return util::test_flag(flags_, can_undo_bit); }
 
 void param_t::set_can_undo(bool b) { util::set_flag(flags_, can_undo_bit, b); }
 
-bool param_t::include_in_hash() const { return util::test_flag(flags_, include_in_hash_bit); }
+bool param_t::include_in_hash() const
+{
+    return util::test_flag(flags_, include_in_hash_bit);
+}
 
-void param_t::set_include_in_hash(bool b) { util::set_flag(flags_, include_in_hash_bit, b); }
+void param_t::set_include_in_hash(bool b)
+{
+    util::set_flag(flags_, include_in_hash_bit, b);
+}
 
 bool param_t::track_mouse() const
 {
@@ -134,7 +140,10 @@ bool param_t::track_mouse() const
     return !(flags_ & dont_track_mouse_bit);
 }
 
-void param_t::set_track_mouse(bool b) { util::set_flag(flags_, dont_track_mouse_bit, b); }
+void param_t::set_track_mouse(bool b)
+{
+    util::set_flag(flags_, dont_track_mouse_bit, b);
+}
 
 void param_t::emit_param_changed(change_reason reason)
 {
@@ -145,20 +154,25 @@ void param_t::emit_param_changed(change_reason reason)
     }
 }
 
-void param_t::format_changed(const Imath::Box2i& new_format,
-                             float               aspect,
-                             const Imath::V2f&   proxy_scale)
+void param_t::format_changed(
+    const Imath::Box2i& new_format,
+    float               aspect,
+    const Imath::V2f&   proxy_scale)
 {
     do_format_changed(new_format, aspect, proxy_scale);
 }
 
-void param_t::do_format_changed(const Imath::Box2i& new_format,
-                                float               aspect,
-                                const Imath::V2f&   proxy_scale)
+void param_t::do_format_changed(
+    const Imath::Box2i& new_format,
+    float               aspect,
+    const Imath::V2f&   proxy_scale)
 {
 }
 
-void param_t::add_to_hash(hash::generator_t& hash_gen) const { do_add_to_hash(hash_gen); }
+void param_t::add_to_hash(hash::generator_t& hash_gen) const
+{
+    do_add_to_hash(hash_gen);
+}
 
 void param_t::do_add_to_hash(hash::generator_t& hash_gen) const {}
 
@@ -183,7 +197,10 @@ void param_t::evaluate(float frame) { do_evaluate(frame); }
 void param_t::do_evaluate(float frame) {}
 
 // undo
-std::auto_ptr<undo::command_t> param_t::create_command() { return do_create_command(); }
+std::auto_ptr<undo::command_t> param_t::create_command()
+{
+    return do_create_command();
+}
 
 std::auto_ptr<undo::command_t> param_t::do_create_command()
 {
@@ -191,14 +208,16 @@ std::auto_ptr<undo::command_t> param_t::do_create_command()
 }
 
 // paths
-void param_t::convert_relative_paths(const boost::filesystem::path& old_base,
-                                     const boost::filesystem::path& new_base)
+void param_t::convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     do_convert_relative_paths(old_base, new_base);
 }
 
-void param_t::do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                        const boost::filesystem::path& new_base)
+void param_t::do_convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
 }
 
@@ -259,4 +278,4 @@ void param_t::do_enable_widgets(bool e) {}
 
 param_t* new_clone(const param_t& other) { return other.clone(); }
 
-}  // namespace
+}  // namespace ramen

@@ -24,12 +24,12 @@ namespace ramen
 namespace ui
 {
 class anim_curves_view_t
-: public QWidget
-, boost::noncopyable
+  : public QWidget
+  , boost::noncopyable
 {
     Q_OBJECT
 
-public:
+  public:
     anim_curves_view_t(QWidget* parent = 0);
 
     float time_scale() const;
@@ -56,8 +56,14 @@ public:
     Imath::V2f left_tangent_dir(float tangent, float yscale = 1.0f) const;
     Imath::V2f right_tangent_dir(float tangent, float yscale = 1.0f) const;
 
-    Imath::V2i left_tangent_pos(const Imath::V2i& p, float tangent, float yscale = 1.0f) const;
-    Imath::V2i right_tangent_pos(const Imath::V2i& p, float tangent, float yscale = 1.0f) const;
+    Imath::V2i left_tangent_pos(
+        const Imath::V2i& p,
+        float             tangent,
+        float             yscale = 1.0f) const;
+    Imath::V2i right_tangent_pos(
+        const Imath::V2i& p,
+        float             tangent,
+        float             yscale = 1.0f) const;
 
     // draw & pick util
     int pick_distance() const;
@@ -65,7 +71,7 @@ public:
 
     bool inside_pick_distance(const Imath::V2i& p, const Imath::V2i& q) const;
 
-protected:
+  protected:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
@@ -75,17 +81,17 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void frame_all();
     void frame_selection();
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void set_snap_frames(bool b);
     void set_show_tangents(bool b);
 
-private:
+  private:
     void reset_view();
 
     void draw_grid() const;
@@ -126,6 +132,5 @@ private:
     QPainter* painter_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

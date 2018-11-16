@@ -10,27 +10,29 @@ namespace image
 {
 class nop_node_t : public image_node_t
 {
-public:
+  public:
     static const node_metaclass_t& nop_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     nop_node_t();
 
-    bool use_cache(const render::context_t& context) const override { return false; }
+    bool use_cache(const render::context_t& context) const override
+    {
+        return false;
+    }
 
-protected:
+  protected:
     nop_node_t(const nop_node_t& other)
-    : image_node_t(other)
+      : image_node_t(other)
     {
     }
     void operator=(const nop_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new nop_node_t(*this); }
 
     bool do_is_identity() const override { return true; }
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

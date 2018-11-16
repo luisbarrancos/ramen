@@ -12,15 +12,15 @@ namespace imageio
 {
 class jpg_reader_t : public reader_t
 {
-public:
+  public:
     jpg_reader_t(const boost::filesystem::path& p);
 
-private:
-    void do_read_image(const image::image_view_t& view,
-                       const math::box2i_t&       crop,
-                       int                        subsample) const override;
+  private:
+    void do_read_image(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const override;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

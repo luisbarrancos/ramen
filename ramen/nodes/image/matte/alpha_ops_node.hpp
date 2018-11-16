@@ -10,22 +10,22 @@ namespace image
 {
 class alpha_ops_node_t : public areaop_node_t
 {
-public:
+  public:
     static const node_metaclass_t& alpha_ops_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     alpha_ops_node_t();
 
-protected:
+  protected:
     alpha_ops_node_t(const alpha_ops_node_t& other)
-    : areaop_node_t(other)
+      : areaop_node_t(other)
     {
     }
     void operator=(const alpha_ops_node_t&);
 
     bool expand_defined() const override;
 
-private:
+  private:
     node_t* do_clone() const override { return new alpha_ops_node_t(*this); }
 
     void do_create_params() override;
@@ -35,6 +35,5 @@ private:
     void get_expand_radius(int& hradius, int& vradius) const override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

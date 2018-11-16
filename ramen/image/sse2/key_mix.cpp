@@ -18,14 +18,15 @@ namespace
 {
 struct key_mix_fun
 {
-    image::pixel_t operator()(const image::pixel_t&         bg,
-                              const image::pixel_t&         fg,
-                              const image::channel_pixel_t& key) const
+    image::pixel_t operator()(
+        const image::pixel_t&         bg,
+        const image::pixel_t&         fg,
+        const image::channel_pixel_t& key) const
     {
         __m128 b = _mm_load_ps(reinterpret_cast<const float*>(&bg));
         __m128 f = _mm_load_ps(reinterpret_cast<const float*>(&fg));
 
-        __m128 a  = _mm_set1_ps(key[0]);
+        __m128 a = _mm_set1_ps(key[0]);
         __m128 ai = _mm_set1_ps(1.0f - key[0]);
 
         f = _mm_mul_ps(f, a);
@@ -37,16 +38,17 @@ struct key_mix_fun
     }
 };
 
-}  // unnamed
+}  // namespace
 
-void key_mix(const const_image_view_t&   bg,
-             const const_image_view_t&   fg,
-             const const_channel_view_t& key,
-             const image_view_t&         dst)
+void key_mix(
+    const const_image_view_t&   bg,
+    const const_image_view_t&   fg,
+    const const_channel_view_t& key,
+    const image_view_t&         dst)
 {
     boost::gil::tbb_transform3_pixels(bg, fg, key, dst, key_mix_fun());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

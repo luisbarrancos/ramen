@@ -70,17 +70,15 @@ enum type_t
     num_types_k
 };
 
-template<class T>
-struct type_traits
+template <class T> struct type_traits
 {
 };
 
-#define RAMEN_CORE_TYPE_TRAITS_SPECIALIZATION(type_name, type_enum_k)                              \
-    template<>                                                                                     \
-    struct type_traits<type_name>                                                                  \
-    {                                                                                              \
-        static type_t    type() { return type_enum_k; }                                            \
-        static type_name default_value() { return type_name(0); }                                  \
+#define RAMEN_CORE_TYPE_TRAITS_SPECIALIZATION(type_name, type_enum_k) \
+    template <> struct type_traits<type_name>                         \
+    {                                                                 \
+        static type_t    type() { return type_enum_k; }               \
+        static type_name default_value() { return type_name(0); }     \
     }
 
 RAMEN_CORE_TYPE_TRAITS_SPECIALIZATION(bool, bool_k);
@@ -125,16 +123,14 @@ RAMEN_CORE_TYPE_TRAITS_SPECIALIZATION(color::color4f_t, color4f_k);
 #undef RAMEN_CORE_TYPE_TRAITS_SPECIALIZATION
 
 // special cases for boxes
-template<>
-struct type_traits<math::box2i_t>
+template <> struct type_traits<math::box2i_t>
 {
     static type_t        type() { return box2i_k; }
     static math::box2i_t default_value() { return math::box2i_t(); }
 };
 
 // special cases for strings
-template<>
-struct type_traits<string_t>
+template <> struct type_traits<string_t>
 {
     static type_t   type() { return string_k; }
     static string_t default_value() { return string_t(); }
@@ -142,6 +138,5 @@ struct type_traits<string_t>
 
 RAMEN_API const char* type_to_string(type_t t);
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

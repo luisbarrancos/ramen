@@ -15,7 +15,7 @@ namespace ui
 {
 class anim_editor_tool_t
 {
-public:
+  public:
     anim_editor_tool_t();
 
     virtual void draw_overlay(anim_curves_view_t& view) const;
@@ -23,12 +23,15 @@ public:
     virtual void key_press_event(anim_curves_view_t& view, QKeyEvent* event);
     virtual void key_release_event(anim_curves_view_t& view, QKeyEvent* event);
 
-    virtual void mouse_press_event(anim_curves_view_t& view, QMouseEvent* event);
+    virtual void mouse_press_event(
+        anim_curves_view_t& view,
+        QMouseEvent*        event);
     virtual void mouse_move_event(anim_curves_view_t& view, QMouseEvent* event);
     virtual void mouse_drag_event(anim_curves_view_t& view, QMouseEvent* event);
-    virtual void mouse_release_event(anim_curves_view_t& view, QMouseEvent* event);
+    virtual void mouse_release_event(
+        anim_curves_view_t& view,
+        QMouseEvent*        event);
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

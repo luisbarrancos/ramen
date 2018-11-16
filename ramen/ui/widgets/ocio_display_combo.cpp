@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/widgets/ocio_display_combo.hpp>
 
 #include <cassert>
@@ -15,7 +14,7 @@ namespace ramen
 namespace ui
 {
 ocio_display_combo_t::ocio_display_combo_t(QWidget* parent)
-: ocio_combo_t(parent)
+  : ocio_combo_t(parent)
 {
     ocio::manager_t& manager(app().ocio_manager());
 
@@ -25,7 +24,11 @@ ocio_display_combo_t::ocio_display_combo_t(QWidget* parent)
         addItem(manager.displays()[i].c_str());
 
     set_default();
-    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(combo_index_changed(int)));
+    connect(
+        this,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(combo_index_changed(int)));
 }
 
 void ocio_display_combo_t::set_display(const std::string& cs)
@@ -50,5 +53,5 @@ void ocio_display_combo_t::combo_index_changed(int indx)
     display_changed(current_display_);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

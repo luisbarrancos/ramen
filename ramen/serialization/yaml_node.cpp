@@ -9,22 +9,25 @@ namespace ramen
 {
 namespace serialization
 {
-yaml_node_t::yaml_node_t(yaml_iarchive_t* parent, const YAML::Node* node, int version)
+yaml_node_t::yaml_node_t(
+    yaml_iarchive_t*  parent,
+    const YAML::Node* node,
+    int               version)
 {
     assert(parent);
     assert(node);
     assert(version >= 0);
 
-    parent_  = parent;
-    node_    = node;
+    parent_ = parent;
+    node_ = node;
     version_ = version;
 }
 
 yaml_node_t::yaml_node_t(const yaml_node_t& parent, const YAML::Node* node)
 {
     assert(node);
-    parent_  = parent.parent_;
-    node_    = node;
+    parent_ = parent.parent_;
+    node_ = node;
     version_ = parent.version_;
 }
 
@@ -39,7 +42,8 @@ yaml_node_t yaml_node_t::get_node(const std::string& key) const
     return yaml_node_t(parent_, &(*node_)[key], version());
 }
 
-boost::optional<yaml_node_t> yaml_node_t::get_optional_node(const std::string& key) const
+boost::optional<yaml_node_t> yaml_node_t::get_optional_node(
+    const std::string& key) const
 {
     if (const YAML::Node* n = node_->FindValue(key))
         return yaml_node_t(parent_, n, version());
@@ -53,5 +57,5 @@ std::stringstream& yaml_node_t::error_stream() const
     return parent_->error_stream();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace serialization
+}  // namespace ramen

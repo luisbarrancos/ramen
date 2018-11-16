@@ -10,8 +10,10 @@ namespace ramen
 {
 namespace image
 {
-void denan(const const_image_view_t& src, const image_view_t& dst, float replacement = 0.0f);
+void denan(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     replacement = 0.0f);
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

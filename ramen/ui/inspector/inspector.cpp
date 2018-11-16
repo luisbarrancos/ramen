@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/inspector/inspector.hpp>
 
 #include <boost/bind.hpp>
@@ -39,13 +38,16 @@ namespace
 {
 class rename_node_command_t : public undo::command_t
 {
-public:
-    rename_node_command_t(node_t* n, const std::string& new_name, ui::line_edit_t* name_edit)
-    : undo::command_t("Rename Node")
+  public:
+    rename_node_command_t(
+        node_t*            n,
+        const std::string& new_name,
+        ui::line_edit_t*   name_edit)
+      : undo::command_t("Rename Node")
     {
-        n_         = n;
-        old_name_  = n_->name();
-        new_name_  = new_name;
+        n_ = n;
+        old_name_ = n_->name();
+        new_name_ = new_name;
         name_edit_ = name_edit;
     }
 
@@ -61,7 +63,7 @@ public:
         undo::command_t::redo();
     }
 
-private:
+  private:
     void rename(const std::string& name)
     {
         name_edit_->blockSignals(true);
@@ -85,12 +87,12 @@ private:
     ui::line_edit_t* name_edit_;
 };
 
-}  // unnamed
+}  // namespace
 
 inspector_t::inspector_t()
-: window_(0)
-, left_margin_(0)
-, width_(0)
+  : window_(0)
+  , left_margin_(0)
+  , width_(0)
 {
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
@@ -143,7 +145,7 @@ int inspector_t::left_margin() const
         delete tmp;
 
         const int max_label_lenght = 16;
-        left_margin_               = s.width() * max_label_lenght;
+        left_margin_ = s.width() * max_label_lenght;
     }
 
     return left_margin_;
@@ -154,7 +156,7 @@ int inspector_t::width() const
     if (!width_)
     {
         double_spinbox_t* tmp = new double_spinbox_t();
-        QSize             s   = tmp->sizeHint();
+        QSize             s = tmp->sizeHint();
         delete tmp;
 
         width_ = left_margin() + 5 + (3 * s.height()) + (3 * s.width()) + 30;
@@ -173,7 +175,7 @@ void inspector_t::create_header()
     help_->setText("Help");
     QSize s = help_->sizeHint();
 
-    int hpos  = left_margin() / 2;
+    int hpos = left_margin() / 2;
     int vsize = name_edit_->sizeHint().height();
 
     QLabel* label = new QLabel(header_);
@@ -291,5 +293,5 @@ void inspector_t::show_help()
     msg_box.exec();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

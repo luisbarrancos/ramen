@@ -28,7 +28,7 @@ class param_set_command_t;
 */
 class RAMEN_API param_set_t
 {
-public:
+  public:
     param_set_t(parameterised_t* p = 0);
     param_set_t(const param_set_t& other);
 
@@ -55,8 +55,7 @@ public:
     iterator begin() { return params_.begin(); }
     iterator end() { return params_.end(); }
 
-    template<class T>
-    void add_param(std::auto_ptr<T> p)
+    template <class T> void add_param(std::auto_ptr<T> p)
     {
         do_add_param(p.release());
     }
@@ -64,8 +63,9 @@ public:
     const param_t& find(const std::string& id) const;
     param_t&       find(const std::string& id);
 
-    boost::signals2::signal<void(param_t*, param_t::change_reason)> param_changed;
-    void                                                            notify_parent();
+    boost::signals2::signal<void(param_t*, param_t::change_reason)>
+         param_changed;
+    void notify_parent();
 
     void begin_edit();
     void end_edit(bool notify = true);
@@ -92,7 +92,7 @@ public:
 
     void read_param(const serialization::yaml_node_t& node);
 
-private:
+  private:
     void do_add_param(param_t* p);
 
     parameterised_t*                   parent_;
@@ -100,5 +100,4 @@ private:
     std::auto_ptr<param_set_command_t> command_;
 };
 
-}  // namespace
-
+}  // namespace ramen

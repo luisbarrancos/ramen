@@ -22,8 +22,8 @@ namespace ramen
 namespace roto
 {
 null_tool_t::null_tool_t(image::roto_node_t& parent)
-: tool_t(parent)
-, creating_(false)
+  : tool_t(parent)
+  , creating_(false)
 {
 }
 
@@ -33,19 +33,21 @@ void null_tool_t::draw_overlay(const ui::paint_event_t& event) const
     {
         Imath::Color3c col(255, 0, 0);
         gl_line_width(manipulator_t::default_line_width());
-        manipulators::draw_cross(p_,
-                                 3 / event.pixel_scale / event.aspect_ratio,
-                                 3 / event.pixel_scale,
-                                 col,
-                                 event.pixel_scale);
-        manipulators::draw_ellipse(p_, 7 / event.pixel_scale, 7 / event.pixel_scale, col, 20);
+        manipulators::draw_cross(
+            p_,
+            3 / event.pixel_scale / event.aspect_ratio,
+            3 / event.pixel_scale,
+            col,
+            event.pixel_scale);
+        manipulators::draw_ellipse(
+            p_, 7 / event.pixel_scale, 7 / event.pixel_scale, col, 20);
     }
 }
 
 void null_tool_t::mouse_press_event(const ui::mouse_press_event_t& event)
 {
     creating_ = true;
-    p_        = event.wpos;
+    p_ = event.wpos;
     event.view->update();
 }
 
@@ -59,7 +61,7 @@ void null_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
 {
     if (creating_)
     {
-        creating_                      = false;
+        creating_ = false;
         std::auto_ptr<roto::shape_t> s = parent().create_null();
 
         p_ = event.wpos;
@@ -67,12 +69,13 @@ void null_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
         s->set_center(p_, false);
         s->set_translation(Imath::V2f(0, 0));
 
-        std::auto_ptr<undo::add_roto_command_t> cmd(new undo::add_roto_command_t(parent(), s));
+        std::auto_ptr<undo::add_roto_command_t> cmd(
+            new undo::add_roto_command_t(parent(), s));
         cmd->redo();
         app().document().undo_stack().push_back(cmd);
         app().ui()->update();
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

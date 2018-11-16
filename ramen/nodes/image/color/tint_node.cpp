@@ -19,11 +19,14 @@ namespace
 {
 struct tint_fun
 {
-    tint_fun(const Imath::Color4f& black, const Imath::Color4f& white, float tint)
+    tint_fun(
+        const Imath::Color4f& black,
+        const Imath::Color4f& white,
+        float                 tint)
     {
         black_ = black;
         white_ = white;
-        tint_  = tint;
+        tint_ = tint;
     }
 
     image::pixel_t operator()(const image::pixel_t& src) const
@@ -35,17 +38,19 @@ struct tint_fun
 
         float l = image::luminance(src);
 
-        Imath::Color4f c(Imath::lerp(black_.r, white_.r, l),
-                         Imath::lerp(black_.g, white_.g, l),
-                         Imath::lerp(black_.b, white_.b, l),
-                         Imath::lerp(black_.a, white_.a, get_color(src, alpha_t())));
+        Imath::Color4f c(
+            Imath::lerp(black_.r, white_.r, l),
+            Imath::lerp(black_.g, white_.g, l),
+            Imath::lerp(black_.b, white_.b, l),
+            Imath::lerp(black_.a, white_.a, get_color(src, alpha_t())));
 
         if (tint_ != 1.0f)
         {
-            Imath::Color4f s(get_color(src, red_t()),
-                             get_color(src, green_t()),
-                             get_color(src, blue_t()),
-                             get_color(src, alpha_t()));
+            Imath::Color4f s(
+                get_color(src, red_t()),
+                get_color(src, green_t()),
+                get_color(src, blue_t()),
+                get_color(src, alpha_t()));
 
             c = Imath::lerp(s, c, tint_);
         }
@@ -53,16 +58,16 @@ struct tint_fun
         return image::pixel_t(c.r, c.g, c.b, c.a);
     }
 
-private:
+  private:
     Imath::Color4f black_;
     Imath::Color4f white_;
     float          tint_;
 };
 
-}  // unnamed
+}  // namespace
 
 tint_node_t::tint_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("tint");
 }
@@ -89,21 +94,27 @@ void tint_node_t::do_create_params()
     add_param(p);
 }
 
-void tint_node_t::do_process(const image::const_image_view_t& src,
-                             const image::image_view_t&       dst,
-                             const render::context_t&         context)
+void tint_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
-    boost::gil::tbb_transform_pixels(src,
-                                     dst,
-                                     tint_fun(get_value<Imath::Color4f>(param("black")),
-                                              get_value<Imath::Color4f>(param("white")),
-                                              get_value<float>(param("tint"))));
+    boost::gil::tbb_transform_pixels(
+        src,
+        dst,
+        tint_fun(
+            get_value<Imath::Color4f>(param("black")),
+            get_value<Imath::Color4f>(param("white")),
+            get_value<float>(param("tint"))));
 }
 
 // factory
 node_t* create_tint_node() { return new tint_node_t(); }
 
-const node_metaclass_t* tint_node_t::metaclass() const { return &tint_node_metaclass(); }
+const node_metaclass_t* tint_node_t::metaclass() const
+{
+    return &tint_node_metaclass();
+}
 
 const node_metaclass_t& tint_node_t::tint_node_metaclass()
 {
@@ -112,21 +123,21 @@ const node_metaclass_t& tint_node_t::tint_node_metaclass()
 
     if (!inited)
     {
-        m.id            = "image.builtin.tint";
+        m.id = "image.builtin.tint";
         m.major_version = 1;
         m.minor_version = 0;
-        m.menu          = "Image";
-        m.submenu       = "Color";
-        m.menu_item     = "Tint";
-        m.create        = &create_tint_node;
-        inited          = true;
+        m.menu = "Image";
+        m.submenu = "Color";
+        m.menu_item = "Tint";
+        m.create = &create_tint_node;
+        inited = true;
     }
 
     return m;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(tint_node_t::tint_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    tint_node_t::tint_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -35,7 +35,7 @@ struct twirl_fun
     {
         center_ = center;
         radius_ = radius;
-        angle_  = angle;
+        angle_ = angle;
         aspect_ = aspect;
 
         radius2_ = radius_ * radius_;
@@ -54,16 +54,18 @@ struct twirl_fun
 
         float d = Imath::Math<float>::sqrt(d2);
         float a = angle_ * (1.0f - (d / radius_));
-        q       = rotate_point(q, a);
+        q = rotate_point(q, a);
         q.x /= aspect_;
         return q;
     }
 
-private:
+  private:
     Imath::V2f rotate_point(const Imath::V2f& p, float angle) const
     {
-        float cs = Imath::Math<float>::cos(math::constants<float>::deg2rad() * angle);
-        float ss = Imath::Math<float>::sin(math::constants<float>::deg2rad() * angle);
+        float cs =
+            Imath::Math<float>::cos(math::constants<float>::deg2rad() * angle);
+        float ss =
+            Imath::Math<float>::sin(math::constants<float>::deg2rad() * angle);
 
         Imath::V2f q(p - center_);
         Imath::V2f r;
@@ -79,10 +81,10 @@ private:
     float      aspect_;
 };
 
-}  // unnamed
+}  // namespace
 
 twirl_node_t::twirl_node_t()
-: distort_node_t()
+  : distort_node_t()
 {
     set_name("twirl");
 }
@@ -108,19 +110,23 @@ void twirl_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> q(new popup_param_t("Borders"));
     q->set_id("borders");
-    q->menu_items() = std::vector<std::string>({ "Black", "Tile", "Mirror" });
+    q->menu_items() = std::vector<std::string>({"Black", "Tile", "Mirror"});
     add_param(q);
 }
 
 void twirl_node_t::do_create_manipulators()
 {
-    float_param_t*                      radius = dynamic_cast<float_param_t*>(&param("radius"));
-    float2_param_t*                     center = dynamic_cast<float2_param_t*>(&param("center"));
-    std::auto_ptr<circle_manipulator_t> m(new circle_manipulator_t(radius, center));
+    float_param_t*  radius = dynamic_cast<float_param_t*>(&param("radius"));
+    float2_param_t* center = dynamic_cast<float2_param_t*>(&param("center"));
+    std::auto_ptr<circle_manipulator_t> m(
+        new circle_manipulator_t(radius, center));
     add_manipulator(m);
 }
 
-bool twirl_node_t::do_is_identity() const { return get_value<float>(param("angle")) == 0.0f; }
+bool twirl_node_t::do_is_identity() const
+{
+    return get_value<float>(param("angle")) == 0.0f;
+}
 
 void twirl_node_t::do_calc_bounds(const render::context_t& context)
 {
@@ -129,10 +135,12 @@ void twirl_node_t::do_calc_bounds(const render::context_t& context)
     Imath::V2f c = get_absolute_value<Imath::V2f>(param("center"));
     float      r = get_absolute_value<float>(param("radius"));
 
-    Imath::Box2f box(Imath::V2f(c.x - r, c.y - r), Imath::V2f(c.x + r, c.y + r));
+    Imath::Box2f box(
+        Imath::V2f(c.x - r, c.y - r), Imath::V2f(c.x + r, c.y + r));
 
-    box = ImathExt::intersect(box,
-                              Imath::Box2f(Imath::V2f(in_bounds.min), Imath::V2f(in_bounds.max)));
+    box = ImathExt::intersect(
+        box,
+        Imath::Box2f(Imath::V2f(in_bounds.min), Imath::V2f(in_bounds.max)));
     twirl_fun    f(c, r, get_value<float>(param("angle")), aspect_ratio());
     Imath::Box2i ibox = ImathExt::roundBox(ImathExt::warpBox(box, f));
     ibox.extendBy(in_bounds);
@@ -149,9 +157,11 @@ void twirl_node_t::do_calc_inputs_interest(const render::context_t& context)
         Imath::V2f c = get_absolute_value<Imath::V2f>(param("center"));
         float      r = get_absolute_value<float>(param("radius"));
 
-        Imath::Box2f box(Imath::V2f(c.x - r, c.y - r), Imath::V2f(c.x + r, c.y + r));
+        Imath::Box2f box(
+            Imath::V2f(c.x - r, c.y - r), Imath::V2f(c.x + r, c.y + r));
 
-        box = ImathExt::intersect(box, Imath::Box2f(Imath::V2f(roi.min), Imath::V2f(roi.max)));
+        box = ImathExt::intersect(
+            box, Imath::Box2f(Imath::V2f(roi.min), Imath::V2f(roi.max)));
 
         if (box.isEmpty())
         {
@@ -178,26 +188,45 @@ void twirl_node_t::do_process(const render::context_t& context)
 {
     image_node_t* in = input_as<image_node_t>();
 
-    twirl_fun f(get_absolute_value<Imath::V2f>(param("center")) / context.subsample,
-                get_absolute_value<float>(param("radius")) / context.subsample,
-                get_value<float>(param("angle")),
-                aspect_ratio());
+    twirl_fun f(
+        get_absolute_value<Imath::V2f>(param("center")) / context.subsample,
+        get_absolute_value<float>(param("radius")) / context.subsample,
+        get_value<float>(param("angle")),
+        aspect_ratio());
 
     switch (get_value<int>(param("borders")))
     {
         case border_black:
             image::warp_bilinear(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
 
         case border_tile:
             image::warp_bilinear_tile(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
 
         case border_mirror:
             image::warp_bilinear_mirror(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
     }
 }
@@ -205,7 +234,10 @@ void twirl_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_twirl_node() { return new twirl_node_t(); }
 
-const node_metaclass_t* twirl_node_t::metaclass() const { return &twirl_node_metaclass(); }
+const node_metaclass_t* twirl_node_t::metaclass() const
+{
+    return &twirl_node_metaclass();
+}
 
 const node_metaclass_t& twirl_node_t::twirl_node_metaclass()
 {
@@ -214,21 +246,21 @@ const node_metaclass_t& twirl_node_t::twirl_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.twirl";
+        info.id = "image.builtin.twirl";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Distort";
-        info.menu_item     = "Twirl";
-        info.create        = &create_twirl_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Distort";
+        info.menu_item = "Twirl";
+        info.create = &create_twirl_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(twirl_node_t::twirl_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    twirl_node_t::twirl_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

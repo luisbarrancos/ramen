@@ -22,10 +22,9 @@ namespace color
 \ingroup color
 \brief A RGBA color.
 */
-template<class T>
-class color4_t : boost::equality_comparable<color4_t<T>>
+template <class T> class color4_t : boost::equality_comparable<color4_t<T>>
 {
-public:
+  public:
     typedef T value_type;
 
     static unsigned int dimensions() { return 4; }
@@ -33,18 +32,18 @@ public:
     color4_t() {}
 
     explicit color4_t(T x)
-    : r(x)
-    , g(x)
-    , b(x)
-    , a(x)
+      : r(x)
+      , g(x)
+      , b(x)
+      , a(x)
     {
     }
 
     color4_t(T rr, T gg, T bb, T aa = T(1))
-    : r(rr)
-    , g(gg)
-    , b(bb)
-    , a(aa)
+      : r(rr)
+      , g(gg)
+      , b(bb)
+      , a(aa)
     {
     }
 
@@ -76,6 +75,5 @@ typedef color4_t<float>  color4f_t;
 typedef color4_t<double> color4d_t;
 typedef color4_t<half>   color4h_t;
 
-}  // color
-}  // ramen
-
+}  // namespace color
+}  // namespace ramen

@@ -14,19 +14,20 @@ namespace viewer
 {
 class empty_image_strategy_t : public image_strategy_t
 {
-public:
+  public:
     empty_image_strategy_t(const Imath::Box2i& display_window);
 
-    bool update_pixels(const image::buffer_t& pixels,
-                       const Imath::Box2i&    display_window,
-                       const Imath::Box2i&    data_window) override;
+    bool update_pixels(
+        const image::buffer_t& pixels,
+        const Imath::Box2i&    display_window,
+        const Imath::Box2i&    data_window) override;
 
     void draw() const override;
 
-    boost::optional<Imath::Color4f> color_at(const Imath::V2i& p) const override;
+    boost::optional<Imath::Color4f> color_at(
+        const Imath::V2i& p) const override;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

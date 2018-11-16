@@ -21,7 +21,7 @@ namespace
 struct apply_gamma_fun
 {
     apply_gamma_fun(float f)
-    : g_(f)
+      : g_(f)
     {
     }
 
@@ -30,24 +30,27 @@ struct apply_gamma_fun
         pixel_t result;
         half    h;
 
-        h = std::max((float) boost::gil::get_color(src, boost::gil::red_t()), 0.0f);
+        h = std::max(
+            (float) boost::gil::get_color(src, boost::gil::red_t()), 0.0f);
         h = pow_h(h, g_);
         boost::gil::get_color(result, boost::gil::red_t()) = h;
 
-        h = std::max((float) boost::gil::get_color(src, boost::gil::green_t()), 0.0f);
+        h = std::max(
+            (float) boost::gil::get_color(src, boost::gil::green_t()), 0.0f);
         h = pow_h(h, g_);
         boost::gil::get_color(result, boost::gil::green_t()) = h;
 
-        h = std::max((float) boost::gil::get_color(src, boost::gil::blue_t()), 0.0f);
+        h = std::max(
+            (float) boost::gil::get_color(src, boost::gil::blue_t()), 0.0f);
         h = pow_h(h, g_);
         boost::gil::get_color(result, boost::gil::blue_t()) = h;
 
-        boost::gil::get_color(result, boost::gil::alpha_t())
-            = boost::gil::get_color(src, boost::gil::alpha_t());
+        boost::gil::get_color(result, boost::gil::alpha_t()) =
+            boost::gil::get_color(src, boost::gil::alpha_t());
         return result;
     }
 
-private:
+  private:
     float g_;
 };
 
@@ -57,18 +60,22 @@ struct apply_log_fun
 
     pixel_t operator()(const pixel_t& src) const
     {
-        float r
-            = std::max((float) boost::gil::get_color(src, boost::gil::red_t()), (float) HALF_MIN);
-        float g
-            = std::max((float) boost::gil::get_color(src, boost::gil::green_t()), (float) HALF_MIN);
-        float b
-            = std::max((float) boost::gil::get_color(src, boost::gil::blue_t()), (float) HALF_MIN);
+        float r = std::max(
+            (float) boost::gil::get_color(src, boost::gil::red_t()),
+            (float) HALF_MIN);
+        float g = std::max(
+            (float) boost::gil::get_color(src, boost::gil::green_t()),
+            (float) HALF_MIN);
+        float b = std::max(
+            (float) boost::gil::get_color(src, boost::gil::blue_t()),
+            (float) HALF_MIN);
 
         r = log10_h(r);
         g = log10_h(g);
         b = log10_h(b);
 
-        return pixel_t(r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
+        return pixel_t(
+            r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
     }
 };
 
@@ -86,13 +93,17 @@ struct apply_pow10_fun
         g = pow10_h(g);
         b = pow10_h(b);
 
-        return pixel_t(r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
+        return pixel_t(
+            r, g, b, boost::gil::get_color(src, boost::gil::alpha_t()));
     }
 };
 
-}  // unnamed
+}  // namespace
 
-void apply_gamma(const const_image_view_t& src, const image_view_t& dst, float gamma)
+void apply_gamma(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     gamma)
 {
     boost::gil::tbb_transform_pixels(src, dst, apply_gamma_fun(gamma));
 }
@@ -107,6 +118,6 @@ void apply_pow10(const const_image_view_t& src, const image_view_t& dst)
     boost::gil::tbb_transform_pixels(src, dst, apply_pow10_fun());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

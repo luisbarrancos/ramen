@@ -14,7 +14,7 @@ namespace anim
 {
 class keyframe_t
 {
-public:
+  public:
     typedef float time_type;
 
     enum auto_tangent_method
@@ -40,16 +40,19 @@ public:
     void toggle_selection() const { selected_ = !selected_; }
 
     auto_tangent_method v0_auto_tangent() const { return auto_v0_; }
-    void                set_v0_auto_tangent(auto_tangent_method m) { auto_v0_ = m; }
+    void set_v0_auto_tangent(auto_tangent_method m) { auto_v0_ = m; }
 
     auto_tangent_method v1_auto_tangent() const { return auto_v1_; }
-    void                set_v1_auto_tangent(auto_tangent_method m) { auto_v1_ = m; }
+    void set_v1_auto_tangent(auto_tangent_method m) { auto_v1_ = m; }
 
-    bool operator<(const keyframe_t& other) const { return time_ < other.time_; }
+    bool operator<(const keyframe_t& other) const
+    {
+        return time_ < other.time_;
+    }
 
     static time_type time_tolerance();
 
-protected:
+  protected:
     std::string         auto_tangent_to_string(auto_tangent_method t) const;
     auto_tangent_method string_to_auto_tangent(const std::string& s) const;
 
@@ -60,6 +63,5 @@ protected:
     mutable bool selected_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

@@ -12,22 +12,21 @@ namespace image
 {
 class RAMEN_API base_layer_node_t : public image_node_t
 {
-public:
+  public:
     base_layer_node_t();
 
-protected:
+  protected:
     base_layer_node_t(const base_layer_node_t& other);
     void operator=(const base_layer_node_t&);
 
     void render_input(std::size_t i, const render::context_t& context);
     void release_input_image(std::size_t i);
 
-private:
+  private:
     void do_calc_format(const render::context_t& context) override;
 
     void do_recursive_process(const render::context_t& context) override;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

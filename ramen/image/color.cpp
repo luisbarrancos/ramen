@@ -13,18 +13,19 @@ namespace image
 // rgb to hsv and back
 pixel_t rgb_to_hsv(const pixel_t& src)
 {
-    Imath::Color3f c(boost::gil::get_color(src, boost::gil::red_t()),
-                     boost::gil::get_color(src, boost::gil::green_t()),
-                     boost::gil::get_color(src, boost::gil::blue_t()));
+    Imath::Color3f c(
+        boost::gil::get_color(src, boost::gil::red_t()),
+        boost::gil::get_color(src, boost::gil::green_t()),
+        boost::gil::get_color(src, boost::gil::blue_t()));
 
     c = rgb_to_hsv(c);
 
     pixel_t result;
-    boost::gil::get_color(result, boost::gil::red_t())   = c.x;
+    boost::gil::get_color(result, boost::gil::red_t()) = c.x;
     boost::gil::get_color(result, boost::gil::green_t()) = c.y;
-    boost::gil::get_color(result, boost::gil::blue_t())  = c.z;
-    boost::gil::get_color(result, boost::gil::alpha_t())
-        = boost::gil::get_color(src, boost::gil::alpha_t());
+    boost::gil::get_color(result, boost::gil::blue_t()) = c.z;
+    boost::gil::get_color(result, boost::gil::alpha_t()) =
+        boost::gil::get_color(src, boost::gil::alpha_t());
     return result;
 }
 
@@ -65,7 +66,8 @@ Imath::Color3f rgb_to_hsv(const Imath::Color3f& src)
 
     if (maxv != minv)
     {
-        const float f = (r == minv) ? (g - b) : ((g == minv) ? (b - r) : (r - g)),
+        const float f = (r == minv) ? (g - b)
+                                    : ((g == minv) ? (b - r) : (r - g)),
                     i = (r == minv) ? 3.0f : ((g == minv) ? 5.0f : 1.0f);
 
         h = (i - f / (maxv - minv));
@@ -82,18 +84,19 @@ Imath::Color3f rgb_to_hsv(const Imath::Color3f& src)
 
 pixel_t hsv_to_rgb(const pixel_t& src)
 {
-    Imath::Color3f c(boost::gil::get_color(src, boost::gil::red_t()),
-                     boost::gil::get_color(src, boost::gil::green_t()),
-                     boost::gil::get_color(src, boost::gil::blue_t()));
+    Imath::Color3f c(
+        boost::gil::get_color(src, boost::gil::red_t()),
+        boost::gil::get_color(src, boost::gil::green_t()),
+        boost::gil::get_color(src, boost::gil::blue_t()));
 
     c = hsv_to_rgb(c);
 
     pixel_t result;
-    boost::gil::get_color(result, boost::gil::red_t())   = c.x;
+    boost::gil::get_color(result, boost::gil::red_t()) = c.x;
     boost::gil::get_color(result, boost::gil::green_t()) = c.y;
-    boost::gil::get_color(result, boost::gil::blue_t())  = c.z;
-    boost::gil::get_color(result, boost::gil::alpha_t())
-        = boost::gil::get_color(src, boost::gil::alpha_t());
+    boost::gil::get_color(result, boost::gil::blue_t()) = c.z;
+    boost::gil::get_color(result, boost::gil::alpha_t()) =
+        boost::gil::get_color(src, boost::gil::alpha_t());
     return result;
 }
 
@@ -165,5 +168,5 @@ Imath::Color3f hsv_to_rgb(const Imath::Color3f& src)
     return Imath::Color3f(r, g, b);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

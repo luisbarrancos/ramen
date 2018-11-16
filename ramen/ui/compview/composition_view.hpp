@@ -30,7 +30,7 @@ class composition_view_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     composition_view_t(QWidget* parent = 0);
     ~composition_view_t() override;
 
@@ -46,10 +46,16 @@ public:
     void place_node_near_node(node_t* n, node_t* other) const;
 
     // bezier edges
-    bool pick_bezier_edge(const Imath::V2f& p0, const Imath::V2f& p1, const Imath::V2f& q) const;
-    void draw_bezier_edge(QPainter& painter, const Imath::V2f& p0, const Imath::V2f& p1) const;
+    bool pick_bezier_edge(
+        const Imath::V2f& p0,
+        const Imath::V2f& p1,
+        const Imath::V2f& q) const;
+    void draw_bezier_edge(
+        QPainter&         painter,
+        const Imath::V2f& p0,
+        const Imath::V2f& p1) const;
 
-protected:
+  protected:
     bool event(QEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
@@ -62,7 +68,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-private:
+  private:
     void scroll_drag_handler(QMouseEvent* event);
     void zoom_drag_handler(QMouseEvent* event);
     void scroll_zoom_release_handler(QMouseEvent* event);
@@ -84,12 +90,14 @@ private:
     // pick
     void pick_node(const Imath::V2f& p, pick_result_t& result) const;
     bool box_pick_node(node_t* n, const Imath::Box2f& b) const;
-    bool pick_edge(const Imath::V2f& p, node_t*& src, node_t*& dst, int& port) const;
+    bool pick_edge(const Imath::V2f& p, node_t*& src, node_t*& dst, int& port)
+        const;
 
     // util
-    void bezier_edge(const Imath::V2f&            p0,
-                     const Imath::V2f&            p1,
-                     bezier::curve_t<Imath::V2f>& c) const;
+    void bezier_edge(
+        const Imath::V2f&            p0,
+        const Imath::V2f&            p1,
+        bezier::curve_t<Imath::V2f>& c) const;
 
     void delete_selected_nodes();
 
@@ -117,6 +125,5 @@ private:
     composition_view_layout_t layout_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

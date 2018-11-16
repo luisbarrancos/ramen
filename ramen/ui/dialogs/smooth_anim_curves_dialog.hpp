@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 #include <QDialog>
 
 #include "ui_smooth_anim_curves.h"
@@ -17,17 +16,16 @@ class smooth_anim_curves_dialog_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     static smooth_anim_curves_dialog_t& instance();
 
     bool exec(bool high_pass, float& filter_size, bool& resample);
 
-private:
+  private:
     smooth_anim_curves_dialog_t();
 
     Ui::smooth_anim_curves ui_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

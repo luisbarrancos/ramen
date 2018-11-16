@@ -54,10 +54,9 @@ struct RAMEN_API context_t
     std::function<bool()> cancel;
     util::error_log_t*    error_log;
 
-private:
+  private:
     static bool default_cancel();
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace render
+}  // namespace ramen

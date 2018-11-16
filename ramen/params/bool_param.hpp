@@ -15,18 +15,18 @@ class RAMEN_API bool_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit bool_param_t(const std::string& name);
 
     void set_default_value(bool x);
 
     void set_value(bool x, change_reason reason = user_edited);
 
-protected:
+  protected:
     bool_param_t(const bool_param_t& other);
     void operator=(const bool_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override;
 
     void do_add_to_hash(hash::generator_t& hash_gen) const override;
@@ -41,10 +41,9 @@ private:
 
     QPointer<QCheckBox> button_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void button_checked(int state);
 };
 
-}  // namespace
-
+}  // namespace ramen

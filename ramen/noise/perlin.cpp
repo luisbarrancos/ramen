@@ -34,11 +34,11 @@ float perlin_t::operator()(float x, float y, float z) const
 
 float perlin_t::remap(float x) const { return x; }
 
-#define setup(i, b0, b1, r0, r1)                                                                   \
-    t  = vec[i] + N;                                                                               \
-    b0 = ((int) t) & BM;                                                                           \
-    b1 = (b0 + 1) & BM;                                                                            \
-    r0 = t - (int) t;                                                                              \
+#define setup(i, b0, b1, r0, r1) \
+    t = vec[i] + N;              \
+    b0 = ((int) t) & BM;         \
+    b1 = (b0 + 1) & BM;          \
+    r0 = t - (int) t;            \
     r1 = r0 - 1.;
 
 float perlin_t::do_noise1(float arg) const
@@ -115,7 +115,7 @@ float perlin_t::do_noise3(float vec[3]) const
     b01 = p[i + by1];
     b11 = p[j + by1];
 
-    t  = smooth_step(rx0);
+    t = smooth_step(rx0);
     sy = smooth_step(ry0);
     sz = smooth_step(rz0);
 
@@ -155,16 +155,16 @@ float perlin_t::do_noise3(float vec[3]) const
 void perlin_t::normalize2(float v[2]) const
 {
     float s = std::sqrt((double) v[0] * v[0] + v[1] * v[1]);
-    v[0]    = v[0] / s;
-    v[1]    = v[1] / s;
+    v[0] = v[0] / s;
+    v[1] = v[1] / s;
 }
 
 void perlin_t::normalize3(float v[3]) const
 {
     float s = std::sqrt((double) v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-    v[0]    = v[0] / s;
-    v[1]    = v[1] / s;
-    v[2]    = v[2] / s;
+    v[0] = v[0] / s;
+    v[1] = v[1] / s;
+    v[2] = v[2] / s;
 }
 
 void perlin_t::init(int seed)
@@ -192,14 +192,14 @@ void perlin_t::init(int seed)
 
     while (--i)
     {
-        k    = p[i];
+        k = p[i];
         p[i] = p[j = rng.nexti() % B];
         p[j] = k;
     }
 
     for (i = 0; i < B + 2; i++)
     {
-        p[B + i]  = p[i];
+        p[B + i] = p[i];
         g1[B + i] = g1[i];
 
         for (j = 0; j < 2; j++)
@@ -210,5 +210,5 @@ void perlin_t::init(int seed)
     }
 }
 
-}  // noise
-}  // ramen
+}  // namespace noise
+}  // namespace ramen

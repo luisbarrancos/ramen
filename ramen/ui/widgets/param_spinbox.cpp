@@ -21,8 +21,7 @@ namespace ui
 {
 namespace
 {
-template<class T>
-T clamp(T x, T lo, T hi)
+template <class T> T clamp(T x, T lo, T hi)
 {
     if (x < lo)
         return lo;
@@ -33,17 +32,20 @@ T clamp(T x, T lo, T hi)
     return x;
 }
 
-}  // unnamed
+}  // namespace
 
-param_spinbox_t::param_spinbox_t(param_t& param, int comp_index, QWidget* parent)
-: spinbox_t(parent)
-, param_(param)
+param_spinbox_t::param_spinbox_t(
+    param_t& param,
+    int      comp_index,
+    QWidget* parent)
+  : spinbox_t(parent)
+  , param_(param)
 {
     aparam_ = dynamic_cast<animated_param_t*>(&param_);
 
     comp_index_ = comp_index;
     setText("0");
-    value_          = 0;
+    value_ = 0;
     previous_value_ = 0;
     connect(this, SIGNAL(editingFinished()), this, SLOT(textChanged()));
 
@@ -87,14 +89,14 @@ bool param_spinbox_t::setValue(double v)
     }
 
     previous_value_ = new_val;
-    value_          = new_val;
+    value_ = new_val;
     return true;
 }
 
 void param_spinbox_t::setValue(const std::string& s)
 {
     previous_value_ = s;
-    value_          = s;
+    value_ = s;
     setLineEditContents(s);
 }
 
@@ -125,7 +127,8 @@ void param_spinbox_t::keyPressEvent(QKeyEvent* event)
 
 void param_spinbox_t::keyReleaseEvent(QKeyEvent* event)
 {
-    if (value_.which() == 0 && (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down))
+    if (value_.which() == 0 &&
+        (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down))
         spinBoxReleased();
     else
         QLineEdit::keyReleaseEvent(event);
@@ -133,15 +136,16 @@ void param_spinbox_t::keyReleaseEvent(QKeyEvent* event)
 
 void param_spinbox_t::mousePressEvent(QMouseEvent* event)
 {
-    drag_       = false;
-    dragged_    = false;
+    drag_ = false;
+    dragged_ = false;
     first_drag_ = true;
 
     if (value_.which() == 0)
     {
-        if ((event->button() == Qt::LeftButton) && (event->modifiers() & Qt::AltModifier))
+        if ((event->button() == Qt::LeftButton) &&
+            (event->modifiers() & Qt::AltModifier))
         {
-            drag_   = true;
+            drag_ = true;
             push_x_ = event->x();
             last_x_ = push_x_;
             event->accept();
@@ -167,7 +171,7 @@ void param_spinbox_t::mouseMoveEvent(QMouseEvent* event)
                         spinBoxPressed();
 
                     first_drag_ = false;
-                    dragged_    = true;
+                    dragged_ = true;
                 }
                 else
                     return;
@@ -194,8 +198,8 @@ void param_spinbox_t::mouseReleaseEvent(QMouseEvent* event)
                 valueChanged(value());
         }
 
-        dragged_    = false;
-        drag_       = false;
+        dragged_ = false;
+        drag_ = false;
         first_drag_ = true;
     }
     else
@@ -209,7 +213,7 @@ void param_spinbox_t::contextMenuEvent(QContextMenuEvent* event)
     if (!param_.is_static())
     {
         bool has_anim = false;
-        bool has_key  = false;
+        bool has_key = false;
 
         if (aparam_)
             has_anim = !aparam_->curve(comp_index_).empty();
@@ -217,7 +221,7 @@ void param_spinbox_t::contextMenuEvent(QContextMenuEvent* event)
         if (has_anim)
         {
             float frame = app().document().composition().frame();
-            has_key     = aparam_->curve(comp_index_).has_keyframe_at(frame);
+            has_key = aparam_->curve(comp_index_).has_keyframe_at(frame);
         }
 
         // enable or disable items
@@ -319,5 +323,5 @@ void param_spinbox_t::delete_anim()
     aparam_->delete_all_keys(comp_index_);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

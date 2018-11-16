@@ -14,17 +14,17 @@ class RAMEN_API curve_param_t : public animated_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit curve_param_t(const std::string& name);
 
     const Imath::Color3c& color() const { return color_; }
     void                  set_color(const Imath::Color3c& c) { color_ = c; }
 
-protected:
+  protected:
     curve_param_t(const curve_param_t& other);
     void operator=(const curve_param_t& other);
 
-private:
+  private:
     void private_init();
 
     param_t* do_clone() const override { return new curve_param_t(*this); }
@@ -39,5 +39,4 @@ private:
     Imath::Color3c color_;
 };
 
-}  // namespace
-
+}  // namespace ramen

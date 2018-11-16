@@ -25,19 +25,22 @@ bool image_t::valid() const
 
 void image_t::reset() { strategy_.reset(); }
 
-void image_t::reset(image::buffer_t     pixels,
-                    const Imath::Box2i& display_window,
-                    const Imath::Box2i& data_window)
+void image_t::reset(
+    image::buffer_t     pixels,
+    const Imath::Box2i& display_window,
+    const Imath::Box2i& data_window)
 {
-    if (strategy_.get() && strategy_->update_pixels(pixels, display_window, data_window))
+    if (strategy_.get() &&
+        strategy_->update_pixels(pixels, display_window, data_window))
         return;
 
     create_strategy(pixels, display_window, data_window);
 }
 
-void image_t::create_strategy(const image::buffer_t& pixels,
-                              const Imath::Box2i&    display_window,
-                              const Imath::Box2i&    data_window)
+void image_t::create_strategy(
+    const image::buffer_t& pixels,
+    const Imath::Box2i&    display_window,
+    const Imath::Box2i&    data_window)
 {
     if (display_window.isEmpty())
     {
@@ -52,7 +55,8 @@ void image_t::create_strategy(const image::buffer_t& pixels,
     }
 
     // by default, create a tiled gl texture.
-    strategy_.reset(new tiled_image_strategy_t(pixels, display_window, data_window));
+    strategy_.reset(
+        new tiled_image_strategy_t(pixels, display_window, data_window));
 }
 
 Imath::Box2i image_t::display_window() const
@@ -131,6 +135,6 @@ void image_t::gl_vertices_for_box(const Imath::Box2i& b) const
     gl_vertex2i(b.min.x, b.max.y + 1);
 }
 
-}  // viewer
-}  // ui
-}  // ramen
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

@@ -19,7 +19,7 @@ namespace ramen
 */
 class RAMEN_API node_metaclass_t
 {
-public:
+  public:
     node_metaclass_t();
 
     /// Unique id for this node
@@ -51,13 +51,15 @@ public:
 
     /*!
         \brief Called before the first instance of this node is created.
-        Use this function to allocate resources shared by all nodes of this class
+        Use this function to allocate resources shared by all nodes of this
+       class
     */
     void (*init)();
 
     /*!
-        \brief Called at application exit if an instance of this node was created.
-        Use this function to deallocate resources shared by all nodes of this class
+        \brief Called at application exit if an instance of this node was
+       created. Use this function to deallocate resources shared by all nodes of
+       this class
     */
     void (*cleanup)();
 
@@ -74,8 +76,8 @@ public:
         \brief Creates a new node
 
         This function is called to create an instance of this node, when
-        the user interface is active. It can show dialog boxes, file dialogs, ...
-        It can also return a null pointer, or even better, throw an exception
+        the user interface is active. It can show dialog boxes, file dialogs,
+       ... It can also return a null pointer, or even better, throw an exception
         derived from std::exception if the node couldn't be created.
     */
     node_t* (*create_gui)();
@@ -85,5 +87,4 @@ public:
     bool first_time_;
 };
 
-}  // ramen
-
+}  // namespace ramen

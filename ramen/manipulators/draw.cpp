@@ -30,22 +30,27 @@ void draw_arrow(const Imath::V2f& p, const Imath::V2f& q, float offset = 0)
     d.normalize();
     d *= l;
 
-    float cs = Imath::Math<float>::cos(30.0f * math::constants<double>::deg2rad());
-    float ss = Imath::Math<float>::sin(30.0f * math::constants<double>::deg2rad());
+    float cs =
+        Imath::Math<float>::cos(30.0f * math::constants<double>::deg2rad());
+    float ss =
+        Imath::Math<float>::sin(30.0f * math::constants<double>::deg2rad());
 
     gl_vertex2f(q.x + offset, q.y + offset);
-    gl_vertex2f(q.x + (d.x * cs - d.y * ss) + offset, q.y + (d.x * ss + d.y * cs) + offset);
+    gl_vertex2f(
+        q.x + (d.x * cs - d.y * ss) + offset,
+        q.y + (d.x * ss + d.y * cs) + offset);
 
     cs = Imath::Math<float>::cos(-30.0 * math::constants<double>::deg2rad());
     ss = Imath::Math<float>::sin(-30.0 * math::constants<double>::deg2rad());
 
     gl_vertex2f(q.x + offset, q.y + offset);
-    gl_vertex2f(q.x + (d.x * cs - d.y * ss) + offset, q.y + (d.x * ss + d.y * cs) + offset);
+    gl_vertex2f(
+        q.x + (d.x * cs - d.y * ss) + offset,
+        q.y + (d.x * ss + d.y * cs) + offset);
     gl_end();
 }
 
-template<class V>
-void box_vertices(const Imath::Box<V>& box, float offset = 0)
+template <class V> void box_vertices(const Imath::Box<V>& box, float offset = 0)
 {
     gl_vertex2f(box.min.x + offset, box.min.y + offset);
     gl_vertex2f(box.max.x + offset, box.min.y + offset);
@@ -53,7 +58,7 @@ void box_vertices(const Imath::Box<V>& box, float offset = 0)
     gl_vertex2f(box.min.x + offset, box.max.y + offset);
 }
 
-}  // unnamed
+}  // namespace
 
 void draw_small_box(const Imath::V2f& p, float size)
 {
@@ -66,7 +71,11 @@ void draw_small_box(const Imath::V2f& p, float size)
 }
 
 void draw_cross(
-    const Imath::V2f& p, float xsize, float ysize, const Imath::Color3c& color, float pixel_scale)
+    const Imath::V2f&     p,
+    float                 xsize,
+    float                 ysize,
+    const Imath::Color3c& color,
+    float                 pixel_scale)
 {
     float off = shadow_offset(pixel_scale);
 
@@ -85,32 +94,38 @@ void draw_cross(
     gl_end();
 }
 
-void draw_ellipse(const Imath::V2f&     center,
-                  float                 xradius,
-                  float                 yradius,
-                  const Imath::Color3c& color,
-                  float                 pixel_scale,
-                  int                   steps)
+void draw_ellipse(
+    const Imath::V2f&     center,
+    float                 xradius,
+    float                 yradius,
+    const Imath::Color3c& color,
+    float                 pixel_scale,
+    int                   steps)
 {
     float ang_inc = 360.0f / steps * math::constants<float>::deg2rad();
-    float off     = shadow_offset(pixel_scale);
+    float off = shadow_offset(pixel_scale);
 
     gl_color3ub(0, 0, 0);
     gl_begin(GL_LINE_LOOP);
     for (float i = 0; i < steps; ++i)
-        gl_vertex2f(center.x + off + Imath::Math<float>::cos(i * ang_inc) * xradius,
-                    center.y + off + Imath::Math<float>::sin(i * ang_inc) * yradius);
+        gl_vertex2f(
+            center.x + off + Imath::Math<float>::cos(i * ang_inc) * xradius,
+            center.y + off + Imath::Math<float>::sin(i * ang_inc) * yradius);
     gl_end();
 
     gl_color(color);
     gl_begin(GL_LINE_LOOP);
     for (float i = 0; i < steps; ++i)
-        gl_vertex2f(center.x + Imath::Math<float>::cos(i * ang_inc) * xradius,
-                    center.y + Imath::Math<float>::sin(i * ang_inc) * yradius);
+        gl_vertex2f(
+            center.x + Imath::Math<float>::cos(i * ang_inc) * xradius,
+            center.y + Imath::Math<float>::sin(i * ang_inc) * yradius);
     gl_end();
 }
 
-void gl_transformed_box(const Imath::Box2i& box, const Imath::M33d& m, float offset)
+void gl_transformed_box(
+    const Imath::Box2i& box,
+    const Imath::M33d&  m,
+    float               offset)
 {
     Imath::V2d p = Imath::V2d(box.min.x, box.min.y) * m;
     gl_vertex2f(p.x + offset, p.y + offset);
@@ -125,13 +140,14 @@ void gl_transformed_box(const Imath::Box2i& box, const Imath::M33d& m, float off
     gl_vertex2f(p.x + offset, p.y + offset);
 }
 
-void draw_bezier_curve(const Imath::V2f&     a,
-                       const Imath::V2f&     b,
-                       const Imath::V2f&     c,
-                       const Imath::V2f&     d,
-                       const Imath::Color3c& color,
-                       float                 pixel_scale,
-                       int                   steps)
+void draw_bezier_curve(
+    const Imath::V2f&     a,
+    const Imath::V2f&     b,
+    const Imath::V2f&     c,
+    const Imath::V2f&     d,
+    const Imath::Color3c& color,
+    float                 pixel_scale,
+    int                   steps)
 {
     float off = shadow_offset(pixel_scale);
 
@@ -188,13 +204,14 @@ void draw_bezier_curve(const Imath::V2f&     a,
 }
 
 // axes
-void draw_xy_axes(const Imath::V2f&     c,
-                  const Imath::V2f&     x,
-                  const Imath::V2f&     y,
-                  float                 xscale,
-                  const Imath::Color3c& xcol,
-                  const Imath::Color3c& ycol,
-                  float                 pixel_scale)
+void draw_xy_axes(
+    const Imath::V2f&     c,
+    const Imath::V2f&     x,
+    const Imath::V2f&     y,
+    float                 xscale,
+    const Imath::Color3c& xcol,
+    const Imath::Color3c& ycol,
+    float                 pixel_scale)
 {
     Imath::V2f xx(x.x * xscale + c.x, x.y + c.y);
     Imath::V2f yy(y.x * xscale + c.x, y.y + c.y);
@@ -211,42 +228,48 @@ void draw_xy_axes(const Imath::V2f&     c,
     draw_arrow(c, yy);
 }
 
-void draw_xy_axes(const Imath::V2f&     c,
-                  float                 xsize,
-                  float                 ysize,
-                  float                 angle,
-                  float                 xscale,
-                  const Imath::Color3c& xcol,
-                  const Imath::Color3c& ycol,
-                  float                 pixel_scale)
+void draw_xy_axes(
+    const Imath::V2f&     c,
+    float                 xsize,
+    float                 ysize,
+    float                 angle,
+    float                 xscale,
+    const Imath::Color3c& xcol,
+    const Imath::Color3c& ycol,
+    float                 pixel_scale)
 {
-    float cs = Imath::Math<float>::cos((double) angle * math::constants<double>::deg2rad());
-    float ss = Imath::Math<float>::sin((double) angle * math::constants<double>::deg2rad());
-    draw_xy_axes(c,
-                 Imath::V2f(cs, ss) * xsize,
-                 Imath::V2f(ss, -cs) * ysize,
-                 xscale,
-                 xcol,
-                 ycol,
-                 pixel_scale);
+    float cs = Imath::Math<float>::cos(
+        (double) angle * math::constants<double>::deg2rad());
+    float ss = Imath::Math<float>::sin(
+        (double) angle * math::constants<double>::deg2rad());
+    draw_xy_axes(
+        c,
+        Imath::V2f(cs, ss) * xsize,
+        Imath::V2f(ss, -cs) * ysize,
+        xscale,
+        xcol,
+        ycol,
+        pixel_scale);
 }
 
 // util
 float shadow_offset(float pixel_scale) { return 2.0f / pixel_scale; }
 
-void draw_box(const Imath::Box2i&   box,
-              const Imath::Color3c& color,
-              float                 pixel_scale,
-              bool                  draw_corners)
+void draw_box(
+    const Imath::Box2i&   box,
+    const Imath::Color3c& color,
+    float                 pixel_scale,
+    bool                  draw_corners)
 {
     Imath::Box2f box2(Imath::V2f(box.min), Imath::V2f(box.max));
     draw_box(box2, color, pixel_scale, draw_corners);
 }
 
-void draw_box(const Imath::Box2f&   box,
-              const Imath::Color3c& color,
-              float                 pixel_scale,
-              bool                  draw_corners)
+void draw_box(
+    const Imath::Box2f&   box,
+    const Imath::Color3c& color,
+    float                 pixel_scale,
+    bool                  draw_corners)
 {
     float off = shadow_offset(pixel_scale);
 
@@ -277,5 +300,5 @@ void draw_box(const Imath::Box2f&   box,
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace manipulators
+}  // namespace ramen

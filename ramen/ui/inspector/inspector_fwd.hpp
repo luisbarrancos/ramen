@@ -10,6 +10,5 @@ namespace ui
 {
 class inspector_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

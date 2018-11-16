@@ -44,7 +44,6 @@ Vector2* V2Normalize(v) Vector2* v;
     return (v);
 }
 
-
 /* scales the input vector to the new length and returns it */
 Vector2* V2Scale(v, newlen) Vector2* v;
 double   newlen;
@@ -91,7 +90,6 @@ double   alpha;
     return (result);
 }
 
-
 /* make a linear combination of two vectors and return the result. */
 /* result = (a * ascl) + (b * bscl) */
 Vector2 *V2Combine(a, b, result, ascl, bscl) Vector2 *a, *b, *result;
@@ -130,18 +128,17 @@ Vector2 *V2MakePerpendicular(a, ap) Vector2 *a, *ap;
 Vector2 *V2New(x, y) double x, y;
 {
     Vector2* v = NEWTYPE(Vector2);
-    v->x       = x;
-    v->y       = y;
+    v->x = x;
+    v->y = y;
     return (v);
 }
-
 
 /* create, initialize, and return a duplicate vector */
 Vector2* V2Duplicate(a) Vector2* a;
 {
     Vector2* v = NEWTYPE(Vector2);
-    v->x       = a->x;
-    v->y       = a->y;
+    v->x = a->x;
+    v->y = a->y;
     return (v);
 }
 
@@ -151,9 +148,12 @@ Matrix3* m;
 {
     double w;
     Point2 ptmp;
-    ptmp.x = (p->x * m->element[0][0]) + (p->y * m->element[1][0]) + m->element[2][0];
-    ptmp.y = (p->x * m->element[0][1]) + (p->y * m->element[1][1]) + m->element[2][1];
-    w      = (p->x * m->element[0][2]) + (p->y * m->element[1][2]) + m->element[2][2];
+    ptmp.x = (p->x * m->element[0][0]) + (p->y * m->element[1][0]) +
+             m->element[2][0];
+    ptmp.y = (p->x * m->element[0][1]) + (p->y * m->element[1][1]) +
+             m->element[2][1];
+    w = (p->x * m->element[0][2]) + (p->y * m->element[1][2]) +
+        m->element[2][2];
     if (w != 0.0)
     {
         ptmp.x /= w;
@@ -179,7 +179,6 @@ Matrix3 *V2MatMul(a, b, c) Matrix3 *a, *b, *c;
     }
     return (c);
 }
-
 
 /******************/
 /*   3d Library   */
@@ -233,7 +232,6 @@ double   newlen;
     return (v);
 }
 
-
 /* return vector sum c = a+b */
 Vector3 *V3Add(a, b, c) Vector3 *a, *b, *c;
 {
@@ -281,7 +279,6 @@ double   ascl, bscl;
     return (result);
 }
 
-
 /* multiply two vectors together component-wise and return the result */
 Vector3 *V3Mul(a, b, result) Vector3 *a, *b, *result;
 {
@@ -313,9 +310,9 @@ Vector3 *V3Cross(a, b, c) Vector3 *a, *b, *c;
 Vector3 *V3New(x, y, z) double x, y, z;
 {
     Vector3* v = NEWTYPE(Vector3);
-    v->x       = x;
-    v->y       = y;
-    v->z       = z;
+    v->x = x;
+    v->y = y;
+    v->z = z;
     return (v);
 }
 
@@ -323,12 +320,11 @@ Vector3 *V3New(x, y, z) double x, y, z;
 Vector3* V3Duplicate(a) Vector3* a;
 {
     Vector3* v = NEWTYPE(Vector3);
-    v->x       = a->x;
-    v->y       = a->y;
-    v->z       = a->z;
+    v->x = a->x;
+    v->y = a->y;
+    v->z = a->z;
     return (v);
 }
-
 
 /* multiply a point by a matrix and return the transformed point */
 Point3*  V3MulPointByMatrix(p, m) Point3* p;
@@ -336,14 +332,14 @@ Matrix4* m;
 {
     double w;
     Point3 ptmp;
-    ptmp.x = (p->x * m->element[0][0]) + (p->y * m->element[1][0]) + (p->z * m->element[2][0])
-             + m->element[3][0];
-    ptmp.y = (p->x * m->element[0][1]) + (p->y * m->element[1][1]) + (p->z * m->element[2][1])
-             + m->element[3][1];
-    ptmp.z = (p->x * m->element[0][2]) + (p->y * m->element[1][2]) + (p->z * m->element[2][2])
-             + m->element[3][2];
-    w = (p->x * m->element[0][3]) + (p->y * m->element[1][3]) + (p->z * m->element[2][3])
-        + m->element[3][3];
+    ptmp.x = (p->x * m->element[0][0]) + (p->y * m->element[1][0]) +
+             (p->z * m->element[2][0]) + m->element[3][0];
+    ptmp.y = (p->x * m->element[0][1]) + (p->y * m->element[1][1]) +
+             (p->z * m->element[2][1]) + m->element[3][1];
+    ptmp.z = (p->x * m->element[0][2]) + (p->y * m->element[1][2]) +
+             (p->z * m->element[2][2]) + m->element[3][2];
+    w = (p->x * m->element[0][3]) + (p->y * m->element[1][3]) +
+        (p->z * m->element[2][3]) + m->element[3][3];
     if (w != 0.0)
     {
         ptmp.x /= w;
@@ -425,7 +421,7 @@ int quadraticRoots(a, b, c, roots) double a, b, c, *roots;
 {
     double d, q;
     int    count = 0;
-    d            = (b * b) - (4 * a * c);
+    d = (b * b) - (4 * a * c);
     if (d < 0.0)
     {
         *roots = *(roots + 1) = 0.0;
@@ -444,7 +440,6 @@ int quadraticRoots(a, b, c, roots) double a, b, c, *roots;
     }
     return (count);
 }
-
 
 /* generic 1d regula-falsi step.  f is function to evaluate */
 /* interval known to contain root is given in left, right */
@@ -466,7 +461,6 @@ double NewtonRaphson(f, df, x) double (*f)(), (*df)(), x;
         return (x - ((*f)(x) / d));
     return (x - 1.0);
 }
-
 
 /* hybrid 1d Newton-Raphson/Regula Falsi root finder. */
 /* input function f and its derivative df, an interval */

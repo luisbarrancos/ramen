@@ -14,7 +14,7 @@ namespace serialization
 {
 class RAMEN_API yaml_oarchive_t : boost::noncopyable
 {
-public:
+  public:
     yaml_oarchive_t();
 
     void write_composition_header();
@@ -31,8 +31,7 @@ public:
 
     int map_level() const { return map_level_; }
 
-    template<class T>
-    yaml_oarchive_t& operator<<(const T& x)
+    template <class T> yaml_oarchive_t& operator<<(const T& x)
     {
         out_ << x;
         check_errors();
@@ -43,10 +42,9 @@ public:
 
     void check_errors() const;
 
-private:
+  private:
     bool              good() const;
     const std::string last_error() const;
-
 
     YAML::Emitter out_;
     bool          header_written_;
@@ -55,6 +53,5 @@ private:
     static const int version;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace serialization
+}  // namespace ramen

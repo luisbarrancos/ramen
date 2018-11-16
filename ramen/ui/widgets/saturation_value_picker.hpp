@@ -15,7 +15,7 @@ class saturation_value_picker_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     saturation_value_picker_t(QWidget* parent = 0);
 
     QSize sizeHint() const override;
@@ -24,23 +24,23 @@ public:
     double saturation() const { return saturation_; }
     double value() const { return value_; }
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void saturation_value_changed(double sat, double val);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_hue(double h);
     void set_saturation_value(double s, double v);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-private:
+  private:
     void pick_sat_val(QMouseEvent* event);
 
     void update_background();
@@ -53,6 +53,5 @@ private:
     double value_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

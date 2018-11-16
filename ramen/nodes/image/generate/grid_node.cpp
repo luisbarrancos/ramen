@@ -23,7 +23,7 @@ namespace ramen
 namespace image
 {
 grid_node_t::grid_node_t()
-: generator_node_t()
+  : generator_node_t()
 {
     set_name("grid");
 }
@@ -70,7 +70,8 @@ void grid_node_t::do_create_params()
 void grid_node_t::do_process(const render::context_t& context)
 {
     Imath::Color4f color(get_value<Imath::Color4f>(param("bgcol")));
-    boost::gil::fill_pixels(image_view(), image::pixel_t(color.r, color.g, color.b, color.a));
+    boost::gil::fill_pixels(
+        image_view(), image::pixel_t(color.r, color.g, color.b, color.a));
 
     Imath::V2f size(get_absolute_value<Imath::V2f>(param("size")));
     Imath::V2f translate(get_absolute_value<Imath::V2f>(param("translate")));
@@ -149,7 +150,10 @@ void grid_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_grid_node() { return new grid_node_t(); }
 
-const node_metaclass_t* grid_node_t::metaclass() const { return &grid_node_metaclass(); }
+const node_metaclass_t* grid_node_t::metaclass() const
+{
+    return &grid_node_metaclass();
+}
 
 const node_metaclass_t& grid_node_t::grid_node_metaclass()
 {
@@ -158,21 +162,21 @@ const node_metaclass_t& grid_node_t::grid_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.grid";
+        info.id = "image.builtin.grid";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Grid";
-        info.create        = &create_grid_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Grid";
+        info.create = &create_grid_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(grid_node_t::grid_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    grid_node_t::grid_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

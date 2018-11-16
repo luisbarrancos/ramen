@@ -12,10 +12,15 @@ namespace ramen
 {
 namespace manipulators
 {
-Imath::V2f rotate_point(const Imath::V2f& center, const Imath::V2f& p, float angle_in_degrees)
+Imath::V2f rotate_point(
+    const Imath::V2f& center,
+    const Imath::V2f& p,
+    float             angle_in_degrees)
 {
-    float cs = Imath::Math<float>::cos(math::constants<float>::deg2rad() * angle_in_degrees);
-    float ss = Imath::Math<float>::sin(math::constants<float>::deg2rad() * angle_in_degrees);
+    float cs = Imath::Math<float>::cos(
+        math::constants<float>::deg2rad() * angle_in_degrees);
+    float ss = Imath::Math<float>::sin(
+        math::constants<float>::deg2rad() * angle_in_degrees);
 
     Imath::V2f q(p - center);
     Imath::V2f r;
@@ -24,5 +29,5 @@ Imath::V2f rotate_point(const Imath::V2f& center, const Imath::V2f& p, float ang
     return r + center;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace manipulators
+}  // namespace ramen

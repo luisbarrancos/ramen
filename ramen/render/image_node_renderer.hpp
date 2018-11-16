@@ -17,7 +17,7 @@ namespace render
 {
 class RAMEN_API image_node_renderer_t : boost::noncopyable
 {
-public:
+  public:
     image_node_renderer_t();
     explicit image_node_renderer_t(const context_t& new_context);
 
@@ -34,16 +34,15 @@ public:
     image::buffer_t           image();
     image::const_image_view_t format_image_view() const;
 
-private:
+  private:
     context_t     new_context_;
     bool          has_context_;
     image_node_t* n_;
     bool          render_done_;
 
-public:
+  public:
     static bool do_log;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace render
+}  // namespace ramen

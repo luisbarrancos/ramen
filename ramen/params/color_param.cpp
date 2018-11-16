@@ -33,13 +33,13 @@
 namespace ramen
 {
 color_param_t::color_param_t(const std::string& name)
-: animated_param_t(name)
+  : animated_param_t(name)
 {
     private_init();
 }
 
 color_param_t::color_param_t(const color_param_t& other)
-: animated_param_t(other)
+  : animated_param_t(other)
 {
     is_rgba_ = other.is_rgba_;
     input0_ = input1_ = input2_ = input3_ = 0;
@@ -96,7 +96,10 @@ void color_param_t::set_value(const Imath::Color4f& x, change_reason reason)
     set_value_at_frame(x, frame, reason);
 }
 
-void color_param_t::set_value_at_frame(const Imath::Color4f& x, float frame, change_reason reason)
+void color_param_t::set_value_at_frame(
+    const Imath::Color4f& x,
+    float                 frame,
+    change_reason         reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -129,21 +132,25 @@ void color_param_t::do_create_tracks(anim::track_t* parent)
     std::auto_ptr<anim::track_t> t(new anim::track_t(name()));
 
     std::auto_ptr<anim::track_t> tr(new anim::track_t("R", &(curve(0))));
-    tr->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+    tr->changed.connect(
+        boost::bind(&animated_param_t::anim_curve_changed, this, _1));
     t->add_child(tr);
 
     std::auto_ptr<anim::track_t> tg(new anim::track_t("G", &(curve(1))));
-    tg->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+    tg->changed.connect(
+        boost::bind(&animated_param_t::anim_curve_changed, this, _1));
     t->add_child(tg);
 
     std::auto_ptr<anim::track_t> tb(new anim::track_t("B", &(curve(2))));
-    tb->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+    tb->changed.connect(
+        boost::bind(&animated_param_t::anim_curve_changed, this, _1));
     t->add_child(tb);
 
     if (is_rgba())
     {
         std::auto_ptr<anim::track_t> ta(new anim::track_t("A", &(curve(3))));
-        ta->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+        ta->changed.connect(
+            boost::bind(&animated_param_t::anim_curve_changed, this, _1));
         t->add_child(ta);
     }
 
@@ -174,13 +181,14 @@ void color_param_t::do_read(const serialization::yaml_node_t& node)
 void color_param_t::do_write(serialization::yaml_oarchive_t& out) const
 {
     write_curves(out);
-    bool one   = curve(0).empty();               // && expression( 0).empty()
-    bool two   = curve(1).empty();               // && expression( 1).empty()
-    bool three = curve(2).empty();               // && expression( 2).empty()
-    bool four  = curve(3).empty() && is_rgba();  // && expression( 3).empty()
+    bool one = curve(0).empty();                // && expression( 0).empty()
+    bool two = curve(1).empty();                // && expression( 1).empty()
+    bool three = curve(2).empty();              // && expression( 2).empty()
+    bool four = curve(3).empty() && is_rgba();  // && expression( 3).empty()
 
     if (one || two || three || four)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::Color4f>(*this);
+        out << YAML::Key << "value" << YAML::Value
+            << get_value<Imath::Color4f>(*this);
 }
 
 void color_param_t::do_update_widgets()
@@ -237,9 +245,9 @@ void color_param_t::do_enable_widgets(bool e)
 
 QWidget* color_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    button_        = new ui::color_button_t(top);
+    button_ = new ui::color_button_t(top);
 
     input0_ = new ui::param_spinbox_t(*this, 0, top);
     input1_ = new ui::param_spinbox_t(*this, 1, top);
@@ -261,9 +269,10 @@ QWidget* color_param_t::do_create_widgets()
 
     button_->move(xpos, 0);
     button_->resize(s.height(), s.height());
-    button_->set_value(ui::color_t(std::pow((double) col.r, 1.0 / 2.2),
-                                   std::pow((double) col.g, 1.0 / 2.2),
-                                   std::pow((double) col.b, 1.0 / 2.2)));
+    button_->set_value(ui::color_t(
+        std::pow((double) col.r, 1.0 / 2.2),
+        std::pow((double) col.g, 1.0 / 2.2),
+        std::pow((double) col.b, 1.0 / 2.2)));
 
     button_->setEnabled(enabled());
     connect(button_, SIGNAL(pressed()), this, SLOT(color_button_pressed()));
@@ -273,10 +282,11 @@ QWidget* color_param_t::do_create_widgets()
     eyedropper_->move(xpos, 0);
     eyedropper_->resize(s.height(), s.height());
     eyedropper_->setEnabled(enabled());
-    connect(eyedropper_,
-            SIGNAL(color_picked(const ramen::ui::color_t&)),
-            this,
-            SLOT(eyedropper_color_picked(const ramen::ui::color_t&)));
+    connect(
+        eyedropper_,
+        SIGNAL(color_picked(const ramen::ui::color_t&)),
+        this,
+        SLOT(eyedropper_color_picked(const ramen::ui::color_t&)));
     xpos += s.height() + 3;
 
     // make spinboxes a bit smaller
@@ -289,10 +299,19 @@ QWidget* color_param_t::do_create_widgets()
     input0_->setValue(col.r);
     input0_->setSingleStep(step());
     input0_->setEnabled(enabled());
-    connect(input0_, SIGNAL(valueChanged(double)), button_, SLOT(set_red(double)));
-    connect(input0_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input0_, SIGNAL(valueChanged(double)), button_, SLOT(set_red(double)));
+    connect(
+        input0_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input0_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input0_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input0_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input0_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += s.width() + 3;
 
@@ -303,10 +322,22 @@ QWidget* color_param_t::do_create_widgets()
     input1_->setValue(col.g);
     input1_->setSingleStep(step());
     input1_->setEnabled(enabled());
-    connect(input1_, SIGNAL(valueChanged(double)), button_, SLOT(set_green(double)));
-    connect(input1_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input1_,
+        SIGNAL(valueChanged(double)),
+        button_,
+        SLOT(set_green(double)));
+    connect(
+        input1_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input1_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input1_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input1_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input1_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += s.width() + 3;
 
@@ -317,10 +348,19 @@ QWidget* color_param_t::do_create_widgets()
     input2_->setValue(col.b);
     input2_->setSingleStep(step());
     input2_->setEnabled(enabled());
-    connect(input2_, SIGNAL(valueChanged(double)), button_, SLOT(set_blue(double)));
-    connect(input2_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input2_, SIGNAL(valueChanged(double)), button_, SLOT(set_blue(double)));
+    connect(
+        input2_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input2_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input2_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input2_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input2_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += s.width() + 3;
 
@@ -332,10 +372,20 @@ QWidget* color_param_t::do_create_widgets()
         input3_->setRange(0, 1);
         input3_->setSingleStep(step());
         input3_->setEnabled(enabled());
-        connect(input3_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
-        connect(input3_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-        connect(input3_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
-        connect(input3_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
+        connect(
+            input3_,
+            SIGNAL(valueChanged(double)),
+            this,
+            SLOT(value_changed(double)));
+        connect(
+            input3_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
+        connect(
+            input3_,
+            SIGNAL(spinBoxDragged(double)),
+            this,
+            SLOT(spinbox_dragged(double)));
+        connect(
+            input3_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
         xpos += s.width() + 3;
     }
 
@@ -347,7 +397,8 @@ QWidget* color_param_t::do_create_widgets()
 
 void color_param_t::set_component_value_from_slot()
 {
-    Imath::Color4f v(input0_->value(), input1_->value(), input2_->value(), 1.0f);
+    Imath::Color4f v(
+        input0_->value(), input1_->value(), input2_->value(), 1.0f);
 
     if (is_rgba())
         v.a = input3_->value();
@@ -357,28 +408,28 @@ void color_param_t::set_component_value_from_slot()
 
     if (QObject::sender() == input0_)
     {
-        index      = 0;
+        index = 0;
         comp_value = v.r;
     }
     else
     {
         if (QObject::sender() == input1_)
         {
-            index      = 1;
+            index = 1;
             comp_value = v.g;
         }
         else
         {
             if (QObject::sender() == input2_)
             {
-                index      = 2;
+                index = 2;
                 comp_value = v.b;
             }
             else
             {
                 assert(is_rgba());
 
-                index      = 3;
+                index = 3;
                 comp_value = v.a;
             }
         }
@@ -437,7 +488,8 @@ void color_param_t::color_button_pressed()
 {
     Imath::Color4f      col = get_value<Imath::Color4f>(*this);
     ui::color_t         c(col.r, col.g, col.b);
-    ui::color_picker_t* picker = new ui::color_picker_t(app().ui()->main_window(), c);
+    ui::color_picker_t* picker =
+        new ui::color_picker_t(app().ui()->main_window(), c);
 
     if (picker->exec() == QDialog::Accepted)
     {
@@ -457,4 +509,4 @@ void color_param_t::color_button_pressed()
     delete picker;
 }
 
-}  // namespace
+}  // namespace ramen

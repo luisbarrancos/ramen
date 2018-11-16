@@ -22,7 +22,7 @@ namespace movieio
 {
 class RAMEN_API factory_t
 {
-public:
+  public:
     static factory_t& instance();
 
     ~factory_t();
@@ -30,20 +30,22 @@ public:
     const boost::ptr_vector<format_t>& formats() const { return formats_; }
 
     typedef boost::ptr_vector<format_t>::const_iterator const_iterator;
-    const_iterator                                      begin() const { return formats_.begin(); }
-    const_iterator                                      end() const { return formats_.end(); }
+    const_iterator begin() const { return formats_.begin(); }
+    const_iterator end() const { return formats_.end(); }
 
     bool register_movie_format(core::auto_ptr_t<format_t> format);
 
     const std::vector<std::string>& extensions() const;
 
-    core::auto_ptr_t<reader_t> create_reader(const boost::filesystem::path& p,
-                                             bool                           sequence = true) const;
-    core::auto_ptr_t<reader_t> create_reader(const filesystem::path_sequence_t& seq) const;
+    core::auto_ptr_t<reader_t> create_reader(
+        const boost::filesystem::path& p,
+        bool                           sequence = true) const;
+    core::auto_ptr_t<reader_t> create_reader(
+        const filesystem::path_sequence_t& seq) const;
 
     core::auto_ptr_t<writer_t> writer_for_tag(const std::string& tag) const;
 
-private:
+  private:
     factory_t();
 
     // non-copyable
@@ -51,7 +53,8 @@ private:
     factory_t& operator=(const factory_t&);
 
     const_iterator format_for_extension(const boost::filesystem::path& p) const;
-    const_iterator format_for_file_contents(const boost::filesystem::path& p) const;
+    const_iterator format_for_file_contents(
+        const boost::filesystem::path& p) const;
     const_iterator format_for_tag(const std::string& tag) const;
 
     boost::ptr_vector<format_t> formats_;
@@ -63,6 +66,5 @@ private:
     mutable char* detect_buffer_;
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

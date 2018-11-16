@@ -11,14 +11,16 @@ namespace ramen
 {
 namespace imageio
 {
-void tga_writer_t::do_write_image(const boost::filesystem::path&   p,
-                                  const image::const_image_view_t& view,
-                                  const core::dictionary_t&        params) const
+void tga_writer_t::do_write_image(
+    const boost::filesystem::path&   p,
+    const image::const_image_view_t& view,
+    const core::dictionary_t&        params) const
 {
     int channels = core::get<int>(params, core::name_t("channels"));
     int compress = core::get<int>(params, core::name_t("compress"));
 
-    std::auto_ptr<OIIO::ImageOutput> out(OIIO::ImageOutput::create(filesystem::file_string(p)));
+    std::auto_ptr<OIIO::ImageOutput> out(
+        OIIO::ImageOutput::create(filesystem::file_string(p)));
 
     if (!out.get())
         throw exception("Write TGA: Can't open output file");
@@ -28,7 +30,8 @@ void tga_writer_t::do_write_image(const boost::filesystem::path&   p,
     else
         channels = 4;
 
-    OIIO::ImageSpec spec(view.width(), view.height(), channels, OIIO::TypeDesc::UINT8);
+    OIIO::ImageSpec spec(
+        view.width(), view.height(), channels, OIIO::TypeDesc::UINT8);
     add_common_attributes(spec);
 
     switch (compress)
@@ -55,7 +58,11 @@ void tga_writer_t::do_write_image(const boost::filesystem::path&   p,
         clamp(scanline.begin(), scanline.end());
 
         if (!out->write_scanline(
-                y, 0, OIIO::TypeDesc::FLOAT, (void*) &(*scanline.begin()), sizeof(image::pixel_t)))
+                y,
+                0,
+                OIIO::TypeDesc::FLOAT,
+                (void*) &(*scanline.begin()),
+                sizeof(image::pixel_t)))
             throw exception("Write image: Can't write pixels");
     }
 
@@ -63,5 +70,5 @@ void tga_writer_t::do_write_image(const boost::filesystem::path&   p,
         throw exception("Write image: Can't close file");
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

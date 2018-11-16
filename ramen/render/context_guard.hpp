@@ -18,11 +18,11 @@ namespace render
 {
 class RAMEN_API context_guard_t : boost::noncopyable
 {
-public:
+  public:
     explicit context_guard_t(const context_t& context, node_t* n = 0);
     ~context_guard_t();
 
-private:
+  private:
     void save(const node_t* n);
     void restore(node_t* n);
 
@@ -37,6 +37,5 @@ private:
     std::map<const node_t*, saved_info_t> saved_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace render
+}  // namespace ramen

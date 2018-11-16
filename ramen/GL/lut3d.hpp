@@ -17,7 +17,7 @@ namespace gl
 {
 class lut3d_t : boost::noncopyable
 {
-public:
+  public:
     lut3d_t(int lut_size = 32, GLenum texture_unit = GL_TEXTURE1);
     ~lut3d_t();
 
@@ -29,7 +29,7 @@ public:
     void bind();
     void unbind();
 
-private:
+  private:
     void create_gl_texture();
 
     GLenum texture_unit_;
@@ -40,6 +40,5 @@ private:
     GLuint texture_id_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace gl
+}  // namespace ramen

@@ -26,18 +26,18 @@ class roto_shape_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     roto_shape_param_t(const std::string& id);
 
     void set_active_shape(roto::shape_t* s);
 
     void shape_list_changed();
 
-protected:
+  protected:
     roto_shape_param_t(const roto_shape_param_t& other);
     void operator=(const roto_shape_param_t& other);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void rename_shape();
     void set_autokey(bool b);
@@ -47,7 +47,7 @@ private Q_SLOTS:
     void move_shape_order_up();
     void move_shape_order_down();
 
-private:
+  private:
     param_t* do_clone() const override;
 
     QWidget* do_create_widgets() override;
@@ -67,5 +67,4 @@ private:
     roto::shape_t*               selected_;
 };
 
-}  // namespace
-
+}  // namespace ramen

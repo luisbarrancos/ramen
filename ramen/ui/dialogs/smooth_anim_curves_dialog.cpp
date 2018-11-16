@@ -20,12 +20,15 @@ smooth_anim_curves_dialog_t& smooth_anim_curves_dialog_t::instance()
 }
 
 smooth_anim_curves_dialog_t::smooth_anim_curves_dialog_t()
-: QDialog(app().ui()->main_window())
+  : QDialog(app().ui()->main_window())
 {
     ui_.setupUi(this);
 }
 
-bool smooth_anim_curves_dialog_t::exec(bool high_pass, float& filter_size, bool& resample)
+bool smooth_anim_curves_dialog_t::exec(
+    bool   high_pass,
+    float& filter_size,
+    bool&  resample)
 {
     if (high_pass)
         setWindowTitle("High Pass");
@@ -37,12 +40,12 @@ bool smooth_anim_curves_dialog_t::exec(bool high_pass, float& filter_size, bool&
     if (result == QDialog::Accepted)
     {
         filter_size = ui_.filter_size_->value();
-        resample    = ui_.resample_->isChecked();
+        resample = ui_.resample_->isChecked();
         return true;
     }
 
     return false;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

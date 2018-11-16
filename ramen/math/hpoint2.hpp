@@ -16,36 +16,35 @@ namespace math
 \ingroup math
 \brief Homogeneus two dimensional point.
 */
-template<class T>
-class hpoint2_t : boost::equality_comparable<hpoint2_t<T>>
+template <class T> class hpoint2_t : boost::equality_comparable<hpoint2_t<T>>
 {
-public:
+  public:
     typedef T value_type;
 
-    static const unsigned int dimensions    = 2;
+    static const unsigned int dimensions = 2;
     static const bool         is_homogeneus = true;
     static unsigned int       size() { return 3; }
 
     hpoint2_t() {}
 
     explicit hpoint2_t(T xx)
-    : x(xx)
-    , y(xx)
-    , w(1)
+      : x(xx)
+      , y(xx)
+      , w(1)
     {
     }
 
     hpoint2_t(T xx, T yy, T ww = T(1))
-    : x(xx)
-    , y(yy)
-    , w(ww)
+      : x(xx)
+      , y(yy)
+      , w(ww)
     {
     }
 
     explicit hpoint2_t(const point2_t<T>& p)
-    : x(p.x)
-    , y(p.y)
-    , w(T(1))
+      : x(p.x)
+      , y(p.y)
+      , w(T(1))
     {
     }
 
@@ -71,8 +70,7 @@ public:
     T x, y, w;
 };
 
-template<class T>
-point2_t<T> project(const hpoint2_t<T>& p)
+template <class T> point2_t<T> project(const hpoint2_t<T>& p)
 {
     assert(p.w != T(0));
 
@@ -84,6 +82,5 @@ typedef hpoint2_t<float>  hpoint2f_t;
 typedef hpoint2_t<double> hpoint2d_t;
 typedef hpoint2_t<half>   hpoint2h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

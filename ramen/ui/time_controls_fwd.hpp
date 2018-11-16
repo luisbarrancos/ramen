@@ -10,6 +10,5 @@ namespace ui
 {
 class time_controls_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -12,8 +12,8 @@ namespace ramen
 namespace undo
 {
 command_t::command_t(const std::string& name)
-: name_(name)
-, was_dirty_(app().document().dirty())
+  : name_(name)
+  , was_dirty_(app().document().dirty())
 {
 }
 command_t::~command_t() {}
@@ -40,12 +40,13 @@ void command_t::redo()
     done_ = true;
 }
 
-generic_command_t::generic_command_t(const std::string&   name,
-                                     const function_type& undo_fun,
-                                     const function_type& redo_fun)
-: command_t(name)
-, undo_(undo_fun)
-, redo_(redo_fun)
+generic_command_t::generic_command_t(
+    const std::string&   name,
+    const function_type& undo_fun,
+    const function_type& redo_fun)
+  : command_t(name)
+  , undo_(undo_fun)
+  , redo_(redo_fun)
 {
 }
 
@@ -62,7 +63,7 @@ void generic_command_t::redo()
 }
 
 composite_command_t::composite_command_t(const std::string& name)
-: command_t(name)
+  : command_t(name)
 {
 }
 
@@ -85,5 +86,5 @@ void composite_command_t::push_back(std::unique_ptr<command_t> c)
     commands_.push_back(std::move(c));
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

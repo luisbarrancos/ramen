@@ -8,5 +8,4 @@ namespace ramen
 {
 class param_set_t;
 
-}  // namespace
-
+}  // namespace ramen

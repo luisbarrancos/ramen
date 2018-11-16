@@ -15,14 +15,14 @@ namespace imageio
 {
 class RAMEN_API exception : public std::exception
 {
-public:
+  public:
     exception();
     explicit exception(const std::string& msg);
     virtual ~exception() throw() {}
 
     virtual const char* what() const throw();
 
-private:
+  private:
     std::string what_;
 };
 
@@ -37,6 +37,5 @@ struct RAMEN_API unsupported_image : public exception
     explicit unsupported_image(const std::string& msg);
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

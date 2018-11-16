@@ -12,17 +12,16 @@ class text_edit_t : public QPlainTextEdit
 {
     Q_OBJECT
 
-public:
+  public:
     text_edit_t(QWidget* parent = 0);
 
-protected:
+  protected:
     void focusOutEvent(QFocusEvent* e) override;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void textHasChanged();
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

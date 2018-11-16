@@ -11,7 +11,7 @@ namespace ramen
 namespace image
 {
 premult_node_t::premult_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("premult");
 }
@@ -25,9 +25,10 @@ void premult_node_t::do_create_params()
     add_param(std::auto_ptr<param_t>(p.release()));
 }
 
-void premult_node_t::do_process(const image::const_image_view_t& src,
-                                const image::image_view_t&       dst,
-                                const render::context_t&         context)
+void premult_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     int div = get_value<int>(param("mode"));
 
@@ -40,7 +41,10 @@ void premult_node_t::do_process(const image::const_image_view_t& src,
 // factory
 node_t* create_premult_node() { return new premult_node_t(); }
 
-const node_metaclass_t* premult_node_t::metaclass() const { return &premult_node_metaclass(); }
+const node_metaclass_t* premult_node_t::metaclass() const
+{
+    return &premult_node_metaclass();
+}
 
 const node_metaclass_t& premult_node_t::premult_node_metaclass()
 {
@@ -49,22 +53,23 @@ const node_metaclass_t& premult_node_t::premult_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.premult";
+        info.id = "image.builtin.premult";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Channel";
-        info.menu_item     = "Premult";
-        info.help          = "Multiplies or divides the RGB channels by the alpha channel.";
-        info.create        = &create_premult_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Channel";
+        info.menu_item = "Premult";
+        info.help =
+            "Multiplies or divides the RGB channels by the alpha channel.";
+        info.create = &create_premult_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(premult_node_t::premult_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    premult_node_t::premult_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

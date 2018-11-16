@@ -16,31 +16,34 @@ namespace math
 \ingroup math
 \brief Two dimensional point.
 */
-template<class T>
+template <class T>
 class point2_t
-: boost::addable2<
-      point2_t<T>,
-      vector2_t<T>,
-      boost::subtractable2<point2_t<T>, vector2_t<T>, boost::equality_comparable<point2_t<T>>>>
+  : boost::addable2<
+        point2_t<T>,
+        vector2_t<T>,
+        boost::subtractable2<
+            point2_t<T>,
+            vector2_t<T>,
+            boost::equality_comparable<point2_t<T>>>>
 {
-public:
+  public:
     typedef T value_type;
 
-    static const unsigned int dimensions    = 2;
+    static const unsigned int dimensions = 2;
     static const bool         is_homogeneus = false;
     static unsigned int       size() { return 2; }
 
     point2_t() {}
 
     explicit point2_t(T xx)
-    : x(xx)
-    , y(xx)
+      : x(xx)
+      , y(xx)
     {
     }
 
     point2_t(T xx, T yy)
-    : x(xx)
-    , y(yy)
+      : x(xx)
+      , y(yy)
     {
     }
 
@@ -79,7 +82,10 @@ public:
         return vector2_t<T>(x - other.x, y - other.y);
     }
 
-    bool operator==(const point2_t<T>& other) const { return x == other.x && y == other.y; }
+    bool operator==(const point2_t<T>& other) const
+    {
+        return x == other.x && y == other.y;
+    }
 
     static point2_t<T> origin() { return point2_t<T>(0); }
 
@@ -92,6 +98,5 @@ typedef point2_t<float>  point2f_t;
 typedef point2_t<double> point2d_t;
 typedef point2_t<half>   point2h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

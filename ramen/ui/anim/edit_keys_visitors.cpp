@@ -24,7 +24,7 @@ void delete_selected_keys_visitor::operator()(anim::float_curve_t* c)
 }
 
 can_drag_keys_visitor::can_drag_keys_visitor(const Imath::V2f& offset)
-: offset_(offset)
+  : offset_(offset)
 {
 }
 void can_drag_keys_visitor::operator()(const anim::float_curve_t* c)
@@ -38,8 +38,8 @@ void can_drag_keys_visitor::operator()(const anim::shape_curve2f_t* c)
 }
 
 drag_keys_visitor::drag_keys_visitor(const Imath::V2f& offset, bool snap_frames)
-: offset_(offset)
-, snap_frames_(snap_frames)
+  : offset_(offset)
+  , snap_frames_(snap_frames)
 {
 }
 void drag_keys_visitor::operator()(anim::float_curve_t* c)
@@ -67,29 +67,30 @@ void drag_keys_visitor::operator()(anim::shape_curve2f_t* c)
 }
 
 get_keyframe_value_visitor::get_keyframe_value_visitor(int index)
-: index_(index)
-, value(0)
-, can_edit(false)
+  : index_(index)
+  , value(0)
+  , can_edit(false)
 {
 }
 void get_keyframe_value_visitor::operator()(const anim::float_curve_t* c)
 {
-    value    = c->relative_to_absolute((*c)[index_].value());
+    value = c->relative_to_absolute((*c)[index_].value());
     can_edit = true;
 }
 
-can_insert_keyframe_visitor::can_insert_keyframe_visitor(const anim_curves_view_t& view,
-                                                         const Imath::V2i&         p,
-                                                         bool                      snap)
-: view_(view)
-, p_(p)
+can_insert_keyframe_visitor::can_insert_keyframe_visitor(
+    const anim_curves_view_t& view,
+    const Imath::V2i&         p,
+    bool                      snap)
+  : view_(view)
+  , p_(p)
 {
     snap_ = snap;
 
     if (snap_)
     {
         Imath::V2f q(view_.screen_to_world(p_));
-        q.x   = (int) q.x;
+        q.x = (int) q.x;
         time_ = q.x;
 
         p_ = view_.world_to_screen(q);
@@ -101,23 +102,24 @@ can_insert_keyframe_visitor::can_insert_keyframe_visitor(const anim_curves_view_
 void can_insert_keyframe_visitor::operator()(const anim::float_curve_t* c)
 {
     float val = c->evaluate(time_);
-    val       = c->relative_to_absolute(val);
+    val = c->relative_to_absolute(val);
     Imath::V2i qi(view_.world_to_screen(Imath::V2f(time_, val)));
     can_insert = view_.inside_pick_distance(p_, qi);
 }
 
-insert_keyframe_visitor::insert_keyframe_visitor(const anim_curves_view_t& view,
-                                                 const Imath::V2i&         p,
-                                                 bool                      snap)
-: view_(view)
-, p_(p)
+insert_keyframe_visitor::insert_keyframe_visitor(
+    const anim_curves_view_t& view,
+    const Imath::V2i&         p,
+    bool                      snap)
+  : view_(view)
+  , p_(p)
 {
     snap_ = snap;
 
     if (snap_)
     {
         Imath::V2f q(view_.screen_to_world(p_));
-        q.x   = (int) q.x;
+        q.x = (int) q.x;
         time_ = q.x;
 
         p_ = view_.world_to_screen(q);
@@ -160,5 +162,5 @@ void high_pass_selected_keys_visitor::operator()(anim::float_curve_t* c)
     anim::highpass_keyframes(*c, filter_size_, true);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

@@ -45,7 +45,7 @@ namespace noise
 {
 class simplex_noise_generator_t
 {
-public:
+  public:
     simplex_noise_generator_t() {}
 
     static float noise(float x);
@@ -53,10 +53,10 @@ public:
     static float noise(float x, float y, float z);
     static float noise(float x, float y, float z, float w);
 
-private:
+  private:
     static inline float grad1(int hash, float x)
     {
-        int   h    = hash & 15;
+        int   h = hash & 15;
         float grad = 1.0f + (h & 7); /* Gradient value 1.0, 2.0, ..., 8.0 */
         if (h & 8)
             grad = -grad;  /* Set a random sign for the gradient */
@@ -73,21 +73,25 @@ private:
 
     static inline float grad3(int hash, float x, float y, float z)
     {
-        int   h = hash & 15;     /* Convert low 4 bits of hash code into 12 simple */
-        float u = h < 8 ? x : y; /* gradient directions, and compute dot product. */
-        float v = h < 4 ? y : h == 12 || h == 14 ? x : z; /* Fix repeats at h = 12 to 15 */
+        int h = hash & 15; /* Convert low 4 bits of hash code into 12 simple */
+        float u =
+            h < 8 ? x : y; /* gradient directions, and compute dot product. */
+        float v =
+            h < 4
+                ? y
+                : h == 12 || h == 14 ? x : z; /* Fix repeats at h = 12 to 15 */
         return ((h & 1) ? -u : u) + ((h & 2) ? -v : v);
     }
 
     static inline float grad4(int hash, float x, float y, float z, float t)
     {
-        int   h = hash & 31;      /* Convert low 5 bits of hash code into 32 simple */
-        float u = h < 24 ? x : y; /* gradient directions, and compute dot product. */
+        int h = hash & 31; /* Convert low 5 bits of hash code into 32 simple */
+        float u =
+            h < 24 ? x : y; /* gradient directions, and compute dot product. */
         float v = h < 16 ? y : z;
         float w = h < 8 ? z : t;
         return ((h & 1) ? -u : u) + ((h & 2) ? -v : v) + ((h & 4) ? -w : w);
     }
-
 
     static float smoothstep(float v0, float v1, float v)
     {
@@ -108,6 +112,5 @@ private:
     static unsigned char simplex[64][4];
 };
 
-}  // noise
-}  // ramen
-
+}  // namespace noise
+}  // namespace ramen

@@ -16,15 +16,14 @@ class composition_view_toolbar_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     composition_view_toolbar_t(composition_view_t* comp_view);
 
-private:
+  private:
     int toolbar_height() const;
 
     composition_view_t* comp_view_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

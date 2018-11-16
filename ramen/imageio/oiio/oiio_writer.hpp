@@ -17,20 +17,20 @@ namespace imageio
 {
 class oiio_writer_t : public writer_t
 {
-public:
+  public:
     oiio_writer_t()
-    : writer_t()
+      : writer_t()
     {
     }
 
-protected:
-    void do_write(const boost::filesystem::path&   p,
-                  const OIIO::ImageSpec&           spec,
-                  const image::const_image_view_t& view);
+  protected:
+    void do_write(
+        const boost::filesystem::path&   p,
+        const OIIO::ImageSpec&           spec,
+        const image::const_image_view_t& view);
 
     void add_common_attributes(OIIO::ImageSpec& spec) const;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

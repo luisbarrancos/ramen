@@ -17,14 +17,15 @@ class ocio_display_widget_t : public QWidget
 {
     Q_OBJECT
 
-public:
-    ocio_display_widget_t(Qt::Orientation orient = Qt::Horizontal, QWidget* parent = 0);
+  public:
+    ocio_display_widget_t(
+        Qt::Orientation orient = Qt::Horizontal,
+        QWidget*        parent = 0);
 
-private:
+  private:
     ocio_display_combo_t* display_;
     ocio_view_combo_t*    view_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -16,15 +16,17 @@ namespace ui
 {
 namespace
 {
-bool pick_tangent(const anim_curves_view_t&  view,
-                  const anim::float_curve_t& c,
-                  const anim::float_key_t&   k,
-                  const anim::float_key_t*   prev,
-                  const anim::float_key_t*   next,
-                  const Imath::V2i&          p,
-                  bool&                      left)
+bool pick_tangent(
+    const anim_curves_view_t&  view,
+    const anim::float_curve_t& c,
+    const anim::float_key_t&   k,
+    const anim::float_key_t*   prev,
+    const anim::float_key_t*   next,
+    const Imath::V2i&          p,
+    bool&                      left)
 {
-    Imath::V2i q(view.world_to_screen(Imath::V2f(k.time(), c.relative_to_absolute(k.value()))));
+    Imath::V2i q(view.world_to_screen(
+        Imath::V2f(k.time(), c.relative_to_absolute(k.value()))));
 
     bool pick_left_tan;
     bool pick_right_tan;
@@ -54,10 +56,11 @@ bool pick_tangent(const anim_curves_view_t&  view,
     return false;
 }
 
-int pick_tangent(const anim_curves_view_t&  view,
-                 const anim::float_curve_t& curve,
-                 const Imath::V2i&          p,
-                 bool&                      left)
+int pick_tangent(
+    const anim_curves_view_t&  view,
+    const anim::float_curve_t& curve,
+    const Imath::V2i&          p,
+    bool&                      left)
 {
     if (curve.size() >= 2)
     {
@@ -66,26 +69,41 @@ int pick_tangent(const anim_curves_view_t&  view,
 
         for (int i = 1; i < curve.size() - 1; ++i)
         {
-            if (pick_tangent(view, curve, curve[i], &(curve[i - 1]), &(curve[i + 1]), p, left))
+            if (pick_tangent(
+                    view,
+                    curve,
+                    curve[i],
+                    &(curve[i - 1]),
+                    &(curve[i + 1]),
+                    p,
+                    left))
                 return i;
         }
 
         if (pick_tangent(
-                view, curve, curve[curve.size() - 1], &(curve[curve.size() - 2]), 0, p, left))
+                view,
+                curve,
+                curve[curve.size() - 1],
+                &(curve[curve.size() - 2]),
+                0,
+                p,
+                left))
             return curve.size() - 1;
     }
 
     return -1;
 }
 
-}  // unnamed
+}  // namespace
 
-pick_tangents_visitor::pick_tangents_visitor(const anim_curves_view_t& view, const Imath::V2i& p)
-: view_(view)
+pick_tangents_visitor::pick_tangents_visitor(
+    const anim_curves_view_t& view,
+    const Imath::V2i&         p)
+  : view_(view)
 {
-    p_        = p;
+    p_ = p;
     key_index = -1;
-    left      = false;
+    left = false;
 }
 
 void pick_tangents_visitor::operator()(const anim::float_curve_t* c)
@@ -95,10 +113,12 @@ void pick_tangents_visitor::operator()(const anim::float_curve_t* c)
     key_index = pick_tangent(view_, *c, p_, left);
 }
 
-pick_keyframe_visitor::pick_keyframe_visitor(const anim_curves_view_t& view, const Imath::V2i& p)
-: view_(view)
+pick_keyframe_visitor::pick_keyframe_visitor(
+    const anim_curves_view_t& view,
+    const Imath::V2i&         p)
+  : view_(view)
 {
-    p_        = p;
+    p_ = p;
     key_index = -1;
 }
 
@@ -136,10 +156,11 @@ void pick_keyframe_visitor::operator()(const anim::shape_curve2f_t* c)
     }
 }
 
-box_pick_keyframes_visitor::box_pick_keyframes_visitor(const anim_curves_view_t& view,
-                                                       const Imath::Box2i&       box)
-: view_(view)
-, box_(box)
+box_pick_keyframes_visitor::box_pick_keyframes_visitor(
+    const anim_curves_view_t& view,
+    const Imath::Box2i&       box)
+  : view_(view)
+  , box_(box)
 {
 }
 
@@ -173,5 +194,5 @@ void box_pick_keyframes_visitor::operator()(const anim::shape_curve2f_t* c)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

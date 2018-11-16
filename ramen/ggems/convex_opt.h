@@ -9,14 +9,21 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum { NotConvex, NotConvexDegenerate, ConvexDegenerate, ConvexCCW, ConvexCW } PolygonClass;
+    typedef enum
+    {
+        NotConvex,
+        NotConvexDegenerate,
+        ConvexDegenerate,
+        ConvexCCW,
+        ConvexCW
+    } PolygonClass;
 
-PolygonClass classifyPolygon2(int nvert, float pVert[][2]);
+    PolygonClass classifyPolygon2(int nvert, float pVert[][2]);
 
 #ifdef __cplusplus
 }
 #endif
-

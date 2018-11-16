@@ -18,23 +18,22 @@ class eyedropper_button_t : public QPushButton
 {
     Q_OBJECT
 
-public:
+  public:
     eyedropper_button_t(QWidget* parent = 0);
 
     bool eventFilter(QObject* watched, QEvent* event) override;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void color_picked(const ramen::ui::color_t&);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void tool_selected(bool b);
 
-private:
+  private:
     color_t value_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

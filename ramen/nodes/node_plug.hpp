@@ -29,20 +29,23 @@ namespace ramen
 */
 class RAMEN_API node_plug_t
 {
-public:
+  public:
     /// Constructor.
-    node_plug_t(const std::string& id, const Imath::Color3c& color, const std::string& tooltip)
+    node_plug_t(
+        const std::string&    id,
+        const Imath::Color3c& color,
+        const std::string&    tooltip)
     {
-        id_      = core::name_t(id.c_str());
-        color_   = color;
+        id_ = core::name_t(id.c_str());
+        color_ = color;
         tooltip_ = core::name_t(tooltip.c_str());
     }
 
     /// Copy constructor.
     node_plug_t(const node_plug_t& other)
-    : tooltip_(other.tooltip_)
-    , color_(other.color_)
-    , id_(other.id_)
+      : tooltip_(other.tooltip_)
+      , color_(other.color_)
+      , id_(other.id_)
     {
     }
 
@@ -62,7 +65,7 @@ public:
         return id().c_str() < other.id().c_str();
     }
 
-private:
+  private:
     core::name_t   id_;
     Imath::Color3c color_;
     core::name_t   tooltip_;
@@ -74,25 +77,26 @@ private:
 */
 class RAMEN_API node_input_plug_t : public node_plug_t
 {
-public:
+  public:
     typedef std::pair<node_t*, core::name_t> connection_t;
 
-    node_input_plug_t(const std::string&    id,
-                      bool                  optional,
-                      const Imath::Color3c& color,
-                      const std::string&    tooltip)
-    : node_plug_t(id, color, tooltip)
+    node_input_plug_t(
+        const std::string&    id,
+        bool                  optional,
+        const Imath::Color3c& color,
+        const std::string&    tooltip)
+      : node_plug_t(id, color, tooltip)
     {
         input_.first = 0;
-        optional_    = optional;
+        optional_ = optional;
     }
 
     /// Copy constructor.
     node_input_plug_t(const node_input_plug_t& other)
-    : node_plug_t(other)
+      : node_plug_t(other)
     {
         input_.first = 0;
-        optional_    = other.optional();
+        optional_ = other.optional();
     }
 
     /// Returns if this plug is optional.
@@ -113,21 +117,21 @@ public:
     /// Sets the node and plug this plug is connected to.
     void set_input(node_t* n)
     {
-        input_.first  = n;
+        input_.first = n;
         input_.second = core::name_t("unused");
     }
 
     /// Sets the node and plug this plug is connected to.
     void set_input(node_t* n, const core::name_t& plug)
     {
-        input_.first  = n;
+        input_.first = n;
         input_.second = plug;
     }
 
     /// Clear this plug connection.
     void clear_input() { input_.first = 0; }
 
-private:
+  private:
     connection_t input_;
     bool         optional_;
 };
@@ -138,14 +142,15 @@ private:
 */
 class RAMEN_API node_output_plug_t : public node_plug_t
 {
-public:
+  public:
     typedef boost::tuples::tuple<node_t*, core::name_t, int> connection_t;
 
     /// Constructor.
-    node_output_plug_t(node_t*               parent,
-                       const std::string&    id,
-                       const Imath::Color3c& color,
-                       const std::string&    tooltip);
+    node_output_plug_t(
+        node_t*               parent,
+        const std::string&    id,
+        const Imath::Color3c& color,
+        const std::string&    tooltip);
 
     virtual ~node_output_plug_t();
 
@@ -177,15 +182,18 @@ public:
     typedef std::vector<connection_t>::iterator       iterator;
 
     /// Returns a vector of connections from this plug.
-    const std::vector<connection_t>& connections() const { return connections_; }
+    const std::vector<connection_t>& connections() const
+    {
+        return connections_;
+    }
 
     /// Returns a vector of connections from this plug.
     std::vector<connection_t>& connections() { return connections_; }
 
-protected:
+  protected:
     node_output_plug_t(const node_output_plug_t& other);
 
-private:
+  private:
     node_output_plug_t* do_clone() const;
 
     node_t*                   parent_;
@@ -194,5 +202,4 @@ private:
 
 RAMEN_API node_output_plug_t* new_clone(const node_output_plug_t& other);
 
-}  // ramen
-
+}  // namespace ramen

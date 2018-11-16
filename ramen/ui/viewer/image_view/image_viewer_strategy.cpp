@@ -33,21 +33,21 @@ namespace ui
 namespace viewer
 {
 image_viewer_strategy_t::image_viewer_strategy_t(viewer_context_t* p)
-: viewer_strategy_t(p)
+  : viewer_strategy_t(p)
 {
     first_image_loaded_ = true;
-    pending_update_     = false;
+    pending_update_ = false;
 
-    subsample_   = 1;
+    subsample_ = 1;
     proxy_level_ = 0;
-    checks_      = false;
-    overlay_     = true;
-    mblur_       = false;
-    aspect_      = true;
+    checks_ = false;
+    overlay_ = true;
+    mblur_ = false;
+    aspect_ = true;
     set_aspect_ratio(1.0f);
 
     event_accepted_by_node_ = false;
-    scroll_mode_            = false;
+    scroll_mode_ = false;
 }
 
 image_viewer_strategy_t::~image_viewer_strategy_t()
@@ -79,18 +79,18 @@ void image_viewer_strategy_t::do_begin_active_view()
 
     if (node_t* n = app().ui()->active_node())
     {
-        active_connection_
-            = n->changed.connect(boost::bind(&image_viewer_strategy_t::active_node_changed, this));
-        active_overlay_connection_ = n->overlay_changed.connect(
-            boost::bind(&image_viewer_strategy_t::active_overlay_changed, this));
+        active_connection_ = n->changed.connect(
+            boost::bind(&image_viewer_strategy_t::active_node_changed, this));
+        active_overlay_connection_ = n->overlay_changed.connect(boost::bind(
+            &image_viewer_strategy_t::active_overlay_changed, this));
     }
 
     if (node_t* n = app().ui()->context_node())
     {
-        context_connection_
-            = n->changed.connect(boost::bind(&image_viewer_strategy_t::context_node_changed, this));
-        context_overlay_connection_ = n->overlay_changed.connect(
-            boost::bind(&image_viewer_strategy_t::context_overlay_changed, this));
+        context_connection_ = n->changed.connect(
+            boost::bind(&image_viewer_strategy_t::context_node_changed, this));
+        context_overlay_connection_ = n->overlay_changed.connect(boost::bind(
+            &image_viewer_strategy_t::context_overlay_changed, this));
     }
 
     if (toolbar_.get())
@@ -118,10 +118,10 @@ void image_viewer_strategy_t::set_active_node(node_t* n, bool process)
 
     if (n)
     {
-        active_connection_
-            = n->changed.connect(boost::bind(&image_viewer_strategy_t::active_node_changed, this));
-        active_overlay_connection_ = n->overlay_changed.connect(
-            boost::bind(&image_viewer_strategy_t::active_overlay_changed, this));
+        active_connection_ = n->changed.connect(
+            boost::bind(&image_viewer_strategy_t::active_node_changed, this));
+        active_overlay_connection_ = n->overlay_changed.connect(boost::bind(
+            &image_viewer_strategy_t::active_overlay_changed, this));
 
         if (process)
             active_node_changed();
@@ -166,10 +166,10 @@ void image_viewer_strategy_t::set_context_node(node_t* n, bool process)
 
     if (n)
     {
-        context_connection_
-            = n->changed.connect(boost::bind(&image_viewer_strategy_t::context_node_changed, this));
-        context_overlay_connection_ = n->overlay_changed.connect(
-            boost::bind(&image_viewer_strategy_t::context_overlay_changed, this));
+        context_connection_ = n->changed.connect(
+            boost::bind(&image_viewer_strategy_t::context_node_changed, this));
+        context_overlay_connection_ = n->overlay_changed.connect(boost::bind(
+            &image_viewer_strategy_t::context_overlay_changed, this));
 
         if (process)
             context_node_changed();
@@ -222,26 +222,28 @@ node_t* image_viewer_strategy_t::visible_node()
 
 void image_viewer_strategy_t::render_visible_node()
 {
-    render::context_t context
-        = app().document().composition().current_context(render::interface_render);
+    render::context_t context = app().document().composition().current_context(
+        render::interface_render);
     context.result_node = visible_node();
 
     render::context_guard_t guard(context, context.result_node);
 
     context.proxy_level = proxy_level();
-    context.subsample   = subsample();
+    context.subsample = subsample();
 
     if (!mblur_)
         context.motion_blur_shutter_factor = 0;
 
     render::image_node_renderer_t renderer;
-    boost::unique_future<bool>&   future(app().ui()->render_image(context, renderer));
+    boost::unique_future<bool>&   future(
+        app().ui()->render_image(context, renderer));
 
     if (future.has_value())
     {
         if (future.get())
         {
-            image_node_t* inode = dynamic_cast<image_node_t*>(context.result_node);
+            image_node_t* inode =
+                dynamic_cast<image_node_t*>(context.result_node);
             load_texture(inode);
             parent()->update();
             pending_update_ = false;
@@ -301,7 +303,8 @@ void image_viewer_strategy_t::frame_changed() { call_node_changed(); }
 void image_viewer_strategy_t::display_transform_changed()
 {
     parent()->makeCurrent();
-    display_->set_display_transform(parent()->ocio_config(), parent()->ocio_transform());
+    display_->set_display_transform(
+        parent()->ocio_config(), parent()->ocio_transform());
     display_->set_exposure(parent()->exposure());
     parent()->update();
 }
@@ -357,7 +360,8 @@ void image_viewer_strategy_t::overlay_toggle(bool state)
 
 void image_viewer_strategy_t::change_channels(int index)
 {
-    display_->set_view_channels((ocio::gl_display_manager_t::view_channels_t) index);
+    display_->set_view_channels(
+        (ocio::gl_display_manager_t::view_channels_t) index);
     parent()->update();
 }
 
@@ -379,7 +383,10 @@ void image_viewer_strategy_t::set_aspect_ratio(float asp)
     aspect_ratio_ = asp;
 }
 
-float image_viewer_strategy_t::pixel_scale() const { return viewport_.zoom_x(); }
+float image_viewer_strategy_t::pixel_scale() const
+{
+    return viewport_.zoom_x();
+}
 
 Imath::V2f image_viewer_strategy_t::screen_to_world(const Imath::V2i& p) const
 {
@@ -389,31 +396,40 @@ Imath::V2i image_viewer_strategy_t::world_to_screen(const Imath::V2f& p) const
 {
     return viewport_.world_to_screen(p);
 }
-Imath::Box2f image_viewer_strategy_t::screen_to_world(const Imath::Box2i& b) const
+Imath::Box2f image_viewer_strategy_t::screen_to_world(
+    const Imath::Box2i& b) const
 {
     return viewport_.screen_to_world(b);
 }
-Imath::Box2i image_viewer_strategy_t::world_to_screen(const Imath::Box2f& b) const
+Imath::Box2i image_viewer_strategy_t::world_to_screen(
+    const Imath::Box2f& b) const
 {
     return viewport_.world_to_screen(b);
 }
-Imath::V2f image_viewer_strategy_t::screen_to_world_dir(const Imath::V2f& v) const
+Imath::V2f image_viewer_strategy_t::screen_to_world_dir(
+    const Imath::V2f& v) const
 {
     return viewport_.screen_to_world_dir(v);
 }
 
 void image_viewer_strategy_t::save_projection() { parent()->save_projection(); }
-void image_viewer_strategy_t::restore_projection() { parent()->restore_projection(); }
-void image_viewer_strategy_t::set_screen_projection() { parent()->set_screen_projection(); }
+void image_viewer_strategy_t::restore_projection()
+{
+    parent()->restore_projection();
+}
+void image_viewer_strategy_t::set_screen_projection()
+{
+    parent()->set_screen_projection();
+}
 
 void image_viewer_strategy_t::resize(int w, int h) { viewport_.resize(w, h); }
 
 void image_viewer_strategy_t::paint()
 {
-    paint_event_.view         = this;
+    paint_event_.view = this;
     paint_event_.aspect_ratio = aspect_ratio();
-    paint_event_.pixel_scale  = pixel_scale();
-    paint_event_.subsample    = subsample();
+    paint_event_.pixel_scale = pixel_scale();
+    paint_event_.subsample = subsample();
 
     // start clean
     clear_gl_errors();
@@ -424,8 +440,9 @@ void image_viewer_strategy_t::paint()
     gl_disable(GL_TEXTURE_2D);
     gl_disable(GL_TEXTURE_3D);
 
-    bool use_blend
-        = (checks_ && display_->view_channels() == ocio::gl_display_manager_t::view_rgb_channels);
+    bool use_blend =
+        (checks_ && display_->view_channels() ==
+                        ocio::gl_display_manager_t::view_rgb_channels);
 
     if (use_blend)
     {
@@ -437,10 +454,11 @@ void image_viewer_strategy_t::paint()
     gl_matrix_mode(GL_PROJECTION);
     gl_load_identity();
     gl_viewport(0, 0, parent()->width(), parent()->height());
-    glu_ortho2d(viewport_.world().min.x,
-                viewport_.world().max.x,
-                viewport_.world().max.y,
-                viewport_.world().min.y);
+    glu_ortho2d(
+        viewport_.world().min.x,
+        viewport_.world().max.x,
+        viewport_.world().max.y,
+        viewport_.world().min.y);
 
     gl_matrix_mode(GL_MODELVIEW);
     gl_load_identity();
@@ -530,10 +548,10 @@ void image_viewer_strategy_t::paint()
 
 void image_viewer_strategy_t::enter_event(QEvent* event)
 {
-    enter_event_.view         = this;
+    enter_event_.view = this;
     enter_event_.aspect_ratio = aspect_ratio();
-    enter_event_.pixel_scale  = pixel_scale();
-    enter_event_.subsample    = subsample();
+    enter_event_.pixel_scale = pixel_scale();
+    enter_event_.subsample = subsample();
 
     if (overlay_)
     {
@@ -548,10 +566,10 @@ void image_viewer_strategy_t::enter_event(QEvent* event)
 
 void image_viewer_strategy_t::leave_event(QEvent* event)
 {
-    leave_event_.view         = this;
+    leave_event_.view = this;
     leave_event_.aspect_ratio = aspect_ratio();
-    leave_event_.pixel_scale  = pixel_scale();
-    leave_event_.subsample    = subsample();
+    leave_event_.pixel_scale = pixel_scale();
+    leave_event_.subsample = subsample();
 
     if (overlay_)
     {
@@ -580,7 +598,8 @@ void image_viewer_strategy_t::key_press_event(QKeyEvent* event)
 
         case Qt::Key_Comma:
         {
-            Imath::V2f p(viewport_.screen_to_world(viewport_.device().center()));
+            Imath::V2f p(
+                viewport_.screen_to_world(viewport_.device().center()));
             viewport_.zoom(p, 2.0f);
             update();
             event->accept();
@@ -589,7 +608,8 @@ void image_viewer_strategy_t::key_press_event(QKeyEvent* event)
 
         case Qt::Key_Period:
         {
-            Imath::V2f p(viewport_.screen_to_world(viewport_.device().center()));
+            Imath::V2f p(
+                viewport_.screen_to_world(viewport_.device().center()));
             viewport_.zoom(p, 0.5f);
             update();
             event->accept();
@@ -614,20 +634,21 @@ void image_viewer_strategy_t::key_press_event(QKeyEvent* event)
 
         default:
         {
-            key_press_event_.view         = this;
+            key_press_event_.view = this;
             key_press_event_.aspect_ratio = aspect_ratio();
-            key_press_event_.pixel_scale  = pixel_scale();
-            key_press_event_.subsample    = subsample();
-            key_press_event_.modifiers    = translate_modifiers(event);
-            key_press_event_.key          = translate_keys(event);
+            key_press_event_.pixel_scale = pixel_scale();
+            key_press_event_.subsample = subsample();
+            key_press_event_.modifiers = translate_modifiers(event);
+            key_press_event_.key = translate_keys(event);
 
             if (overlay_)
             {
-                node_t* active_node     = app().ui()->active_node();
+                node_t* active_node = app().ui()->active_node();
                 event_accepted_by_node_ = false;
 
                 if (active_node)
-                    event_accepted_by_node_ = active_node->key_press_event(key_press_event_);
+                    event_accepted_by_node_ =
+                        active_node->key_press_event(key_press_event_);
             }
 
             if (event_accepted_by_node_)
@@ -652,12 +673,12 @@ void image_viewer_strategy_t::key_release_event(QKeyEvent* event)
 
         default:
         {
-            key_release_event_.view         = this;
+            key_release_event_.view = this;
             key_release_event_.aspect_ratio = aspect_ratio();
-            key_release_event_.pixel_scale  = pixel_scale();
-            key_release_event_.subsample    = subsample();
-            key_release_event_.modifiers    = translate_modifiers(event);
-            key_release_event_.key          = translate_keys(event);
+            key_release_event_.pixel_scale = pixel_scale();
+            key_release_event_.subsample = subsample();
+            key_release_event_.modifiers = translate_modifiers(event);
+            key_release_event_.key = translate_keys(event);
 
             if (overlay_)
             {
@@ -682,39 +703,39 @@ void image_viewer_strategy_t::mouse_press_event(QMouseEvent* event)
         Imath::V2i p(event->x(), event->y());
         Imath::V2f q(screen_to_world(p));
 
-        press_event_.view         = this;
+        press_event_.view = this;
         press_event_.aspect_ratio = aspect_ratio();
-        press_event_.pixel_scale  = pixel_scale();
-        press_event_.subsample    = subsample();
-        press_event_.pos          = p;
-        press_event_.wpos         = q;
-        press_event_.modifiers    = translate_modifiers(event);
-        press_event_.button       = translate_mouse_buttons(event);
+        press_event_.pixel_scale = pixel_scale();
+        press_event_.subsample = subsample();
+        press_event_.pos = p;
+        press_event_.wpos = q;
+        press_event_.modifiers = translate_modifiers(event);
+        press_event_.button = translate_mouse_buttons(event);
 
         drag_event_.first_drag = true;
-        drag_event_.click_pos  = p;
-        drag_event_.last_pos   = p;
+        drag_event_.click_pos = p;
+        drag_event_.last_pos = p;
         drag_event_.click_wpos = q;
-        drag_event_.last_wpos  = q;
-        drag_event_.modifiers  = press_event_.modifiers;
-        drag_event_.button     = press_event_.button;
+        drag_event_.last_wpos = q;
+        drag_event_.modifiers = press_event_.modifiers;
+        drag_event_.button = press_event_.button;
 
-        release_event_.dragged    = false;
-        release_event_.click_pos  = p;
-        release_event_.pos        = p;
+        release_event_.dragged = false;
+        release_event_.click_pos = p;
+        release_event_.pos = p;
         release_event_.click_wpos = q;
-        release_event_.wpos       = q;
-        release_event_.modifiers  = press_event_.modifiers;
-        release_event_.button     = press_event_.button;
+        release_event_.wpos = q;
+        release_event_.modifiers = press_event_.modifiers;
+        release_event_.button = press_event_.button;
 
         scroll_mode_ = false;
-        zoom_mode_   = false;
+        zoom_mode_ = false;
 
         if (event->modifiers() & Qt::AltModifier)
         {
             if (event->modifiers() & Qt::ShiftModifier)
             {
-                zoom_mode_   = true;
+                zoom_mode_ = true;
                 zoom_center_ = press_event_.wpos;
             }
             else
@@ -727,11 +748,12 @@ void image_viewer_strategy_t::mouse_press_event(QMouseEvent* event)
         {
             if (overlay_)
             {
-                node_t* active_node     = app().ui()->active_node();
+                node_t* active_node = app().ui()->active_node();
                 event_accepted_by_node_ = false;
 
                 if (active_node)
-                    event_accepted_by_node_ = active_node->mouse_press_event(press_event_);
+                    event_accepted_by_node_ =
+                        active_node->mouse_press_event(press_event_);
 
                 if (event_accepted_by_node_)
                 {
@@ -761,19 +783,20 @@ void image_viewer_strategy_t::mouse_move_event(QMouseEvent* event)
 
         std::stringstream s;
         s << "X = " << (int) pw.x << " Y = " << (int) pw.y;
-        s << " Color = " << col.r << ", " << col.g << ", " << col.b << ", " << col.a;
+        s << " Color = " << col.r << ", " << col.g << ", " << col.b << ", "
+          << col.a;
 
         app().ui()->viewer().set_status(s.str());
 
         if (parent()->view_mode() == viewer_context_t::view_active_node)
         {
-            move_event_.view         = this;
+            move_event_.view = this;
             move_event_.aspect_ratio = aspect_ratio();
-            move_event_.pixel_scale  = pixel_scale();
-            move_event_.subsample    = subsample();
-            move_event_.pos          = Imath::V2i(event->x(), event->y());
-            move_event_.wpos         = pw;
-            move_event_.modifiers    = translate_modifiers(event);
+            move_event_.pixel_scale = pixel_scale();
+            move_event_.subsample = subsample();
+            move_event_.pos = Imath::V2i(event->x(), event->y());
+            move_event_.wpos = pw;
+            move_event_.modifiers = translate_modifiers(event);
 
             node_t* active_node = app().ui()->active_node();
 
@@ -785,16 +808,17 @@ void image_viewer_strategy_t::mouse_move_event(QMouseEvent* event)
     }
     else
     {
-        if ((event->x() != drag_event_.last_pos.x) || (event->y() != drag_event_.last_pos.y))
+        if ((event->x() != drag_event_.last_pos.x) ||
+            (event->y() != drag_event_.last_pos.y))
         {
-            drag_event_.view         = this;
+            drag_event_.view = this;
             drag_event_.aspect_ratio = aspect_ratio();
-            drag_event_.pixel_scale  = pixel_scale();
-            drag_event_.subsample    = subsample();
-            drag_event_.pos          = Imath::V2i(event->x(), event->y());
-            drag_event_.wpos         = screen_to_world(drag_event_.pos);
-            drag_event_.modifiers    = translate_modifiers(event);
-            drag_event_.button       = translate_mouse_buttons(event);
+            drag_event_.pixel_scale = pixel_scale();
+            drag_event_.subsample = subsample();
+            drag_event_.pos = Imath::V2i(event->x(), event->y());
+            drag_event_.wpos = screen_to_world(drag_event_.pos);
+            drag_event_.modifiers = translate_modifiers(event);
+            drag_event_.button = translate_mouse_buttons(event);
 
             if (scroll_mode_)
             {
@@ -807,7 +831,8 @@ void image_viewer_strategy_t::mouse_move_event(QMouseEvent* event)
                 if (zoom_mode_)
                 {
                     const float zoom_speed = 0.05f;
-                    float zoom = 1.0f + (zoom_speed * (drag_event_.pos.x - drag_event_.last_pos.x));
+                    float       zoom = 1.0f + (zoom_speed * (drag_event_.pos.x -
+                                                       drag_event_.last_pos.x));
                     viewport_.zoom(zoom_center_, zoom, zoom);
                     event->accept();
                     update();
@@ -835,7 +860,7 @@ void image_viewer_strategy_t::mouse_move_event(QMouseEvent* event)
                 release_event_.dragged = true;
             }
 
-            drag_event_.last_pos  = drag_event_.pos;
+            drag_event_.last_pos = drag_event_.pos;
             drag_event_.last_wpos = drag_event_.wpos;
         }
     }
@@ -843,14 +868,14 @@ void image_viewer_strategy_t::mouse_move_event(QMouseEvent* event)
 
 void image_viewer_strategy_t::mouse_release_event(QMouseEvent* event)
 {
-    release_event_.view         = this;
+    release_event_.view = this;
     release_event_.aspect_ratio = aspect_ratio();
-    release_event_.pixel_scale  = pixel_scale();
-    release_event_.subsample    = subsample();
-    release_event_.pos          = Imath::V2i(event->x(), event->y());
-    release_event_.wpos         = screen_to_world(release_event_.pos);
-    release_event_.modifiers    = translate_modifiers(event);
-    release_event_.button       = translate_mouse_buttons(event);
+    release_event_.pixel_scale = pixel_scale();
+    release_event_.subsample = subsample();
+    release_event_.pos = Imath::V2i(event->x(), event->y());
+    release_event_.wpos = screen_to_world(release_event_.pos);
+    release_event_.modifiers = translate_modifiers(event);
+    release_event_.button = translate_mouse_buttons(event);
 
     if (scroll_mode_ || zoom_mode_)
         event->accept();
@@ -871,8 +896,8 @@ void image_viewer_strategy_t::mouse_release_event(QMouseEvent* event)
         }
     }
 
-    scroll_mode_            = false;
-    zoom_mode_              = false;
+    scroll_mode_ = false;
+    zoom_mode_ = false;
     event_accepted_by_node_ = false;
 }
 
@@ -901,16 +926,17 @@ Imath::Color4f image_viewer_strategy_t::color_at(int x, int y) const
     return Imath::Color4f(0, 0, 0, 0);
 }
 
-void image_viewer_strategy_t::pick_colors_in_box(const Imath::Box2i&                        b,
-                                                 std::function<void(const Imath::Color4f&)> f) const
+void image_viewer_strategy_t::pick_colors_in_box(
+    const Imath::Box2i&                        b,
+    std::function<void(const Imath::Color4f&)> f) const
 {
     Imath::Box2i xbox;
     Imath::V2f   wpos = screen_to_world(b.min);
     Imath::V2i   p(wpos.x / aspect_ratio() / subsample(), wpos.y / subsample());
     xbox.min = p;
 
-    wpos     = screen_to_world(b.max);
-    p        = Imath::V2i(wpos.x / aspect_ratio() / subsample(), wpos.y / subsample());
+    wpos = screen_to_world(b.max);
+    p = Imath::V2i(wpos.x / aspect_ratio() / subsample(), wpos.y / subsample());
     xbox.max = p;
 
     for (p.y = b.min.y; p.y <= b.max.y; ++p.y)
@@ -942,11 +968,11 @@ void image_viewer_strategy_t::frame_image()
         center_image();
         float xzf = viewport_.world().size().x / image_.data_window().size().x;
         float yzf = viewport_.world().size().y / image_.data_window().size().y;
-        float zf  = xzf < yzf ? xzf : yzf;
+        float zf = xzf < yzf ? xzf : yzf;
         viewport_.zoom(viewport_.world().center(), 1.0f / zf);
     }
 }
 
-}  // viewer
-}  // ui
-}  // ramen
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

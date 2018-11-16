@@ -17,16 +17,18 @@ namespace ramen
 {
 namespace image
 {
-template<class Sampler, class TopLevelSampler = Sampler>
-class mipmap_sampler_t
+template <class Sampler, class TopLevelSampler = Sampler> class mipmap_sampler_t
 {
-public:
+  public:
     mipmap_sampler_t()
-    : has_top_sampler_(false)
+      : has_top_sampler_(false)
     {
     }
 
-    explicit mipmap_sampler_t(const TopLevelSampler& sampler) { set_top_level(sampler); }
+    explicit mipmap_sampler_t(const TopLevelSampler& sampler)
+    {
+        set_top_level(sampler);
+    }
 
     int min_size() const { return 32; }
 
@@ -36,7 +38,7 @@ public:
     {
         assert(!has_top_sampler_);
 
-        top_sampler_     = sampler;
+        top_sampler_ = sampler;
         has_top_sampler_ = true;
 
         scales_.push_back(1.0f);
@@ -68,7 +70,10 @@ public:
         return top_sampler_(p);
     }
 
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         assert(has_top_sampler_);
 
@@ -84,13 +89,16 @@ public:
 
         float max_width = std::max(
             Imath::Math<float>::fabs(du.x),
-            std::max(Imath::Math<float>::fabs(du.y),
-                     std::max(Imath::Math<float>::fabs(dv.x), Imath::Math<float>::fabs(dv.y))));
+            std::max(
+                Imath::Math<float>::fabs(du.y),
+                std::max(
+                    Imath::Math<float>::fabs(dv.x),
+                    Imath::Math<float>::fabs(dv.y))));
 
         float width = 2.0f * max_width;
 
         float          fract;
-        int            level  = find_level_and_fract(width, fract);
+        int            level = find_level_and_fract(width, fract);
         image::pixel_t result = sample_level(level, p);
 
         if (fract != 0.0f)
@@ -98,13 +106,13 @@ public:
             assert(level < num_levels() - 1);
 
             image::pixel_t tmp = sample_level(level + 1, p);
-            result             = lerp_pixels(tmp, result, fract);
+            result = lerp_pixels(tmp, result, fract);
         }
 
         return result;
     }
 
-public:
+  public:
     int find_level_and_fract(float width, float& fract) const
     {
         if (width <= 1.0f)
@@ -147,14 +155,15 @@ public:
     pixel_t lerp_pixels(const pixel_t& p, const pixel_t& q, float t) const
     {
         float it = 1.0f - t;
-        return pixel_t(boost::gil::get_color(p, boost::gil::red_t()) * t
-                           + boost::gil::get_color(q, boost::gil::red_t()) * it,
-                       boost::gil::get_color(p, boost::gil::green_t()) * t
-                           + boost::gil::get_color(q, boost::gil::green_t()) * it,
-                       boost::gil::get_color(p, boost::gil::blue_t()) * t
-                           + boost::gil::get_color(q, boost::gil::blue_t()) * it,
-                       boost::gil::get_color(p, boost::gil::alpha_t()) * t
-                           + boost::gil::get_color(q, boost::gil::alpha_t()) * it);
+        return pixel_t(
+            boost::gil::get_color(p, boost::gil::red_t()) * t +
+                boost::gil::get_color(q, boost::gil::red_t()) * it,
+            boost::gil::get_color(p, boost::gil::green_t()) * t +
+                boost::gil::get_color(q, boost::gil::green_t()) * it,
+            boost::gil::get_color(p, boost::gil::blue_t()) * t +
+                boost::gil::get_color(q, boost::gil::blue_t()) * it,
+            boost::gil::get_color(p, boost::gil::alpha_t()) * t +
+                boost::gil::get_color(q, boost::gil::alpha_t()) * it);
     }
 
     bool                 has_top_sampler_;
@@ -164,6 +173,5 @@ public:
     std::vector<float>   iscales_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

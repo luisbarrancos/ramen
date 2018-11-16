@@ -10,21 +10,12 @@ namespace ramen
 {
 struct always_one
 {
-    template<class T>
-    T operator()(T x) const
-    {
-        return T(1);
-    }
+    template <class T> T operator()(T x) const { return T(1); }
 };
 
 struct always_zero
 {
-    template<class T>
-    T operator()(T x) const
-    {
-        return T(0);
-    }
+    template <class T> T operator()(T x) const { return T(0); }
 };
 
-}  // namespace
-
+}  // namespace ramen

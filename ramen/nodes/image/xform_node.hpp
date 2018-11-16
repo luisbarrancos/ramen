@@ -18,9 +18,8 @@ namespace image
 {
 class RAMEN_API xform_node_t : public base_warp_node_t
 {
-public:
-    template<class XFormNode>
-    image_node_t* get_img_source()
+  public:
+    template <class XFormNode> image_node_t* get_img_source()
     {
         image_node_t* source = input_as<image_node_t>();
 
@@ -40,8 +39,7 @@ public:
         return source;
     }
 
-    template<class XFormNode>
-    const image_node_t* get_img_source() const
+    template <class XFormNode> const image_node_t* get_img_source() const
     {
         const image_node_t* source = input_as<const image_node_t>();
 
@@ -61,8 +59,9 @@ public:
         return source;
     }
 
-    template<class XFormNode>
-    const image_node_t* get_img_source_and_xform_list(std::vector<const XFormNode*>& xforms) const
+    template <class XFormNode>
+    const image_node_t* get_img_source_and_xform_list(
+        std::vector<const XFormNode*>& xforms) const
     {
         const XFormNode* self = dynamic_cast<const XFormNode*>(this);
         assert(self);
@@ -89,7 +88,7 @@ public:
         return source;
     }
 
-protected:
+  protected:
     xform_node_t();
     xform_node_t(const xform_node_t& other);
 
@@ -97,19 +96,19 @@ protected:
 
     void create_motion_blur_param();
 
-    motion_blur_info_t::loop_data_t motion_blur_loop_data(float time,
-                                                          int   extra_samples,
-                                                          float shutter_factor) const;
+    motion_blur_info_t::loop_data_t motion_blur_loop_data(
+        float time,
+        int   extra_samples,
+        float shutter_factor) const;
 
     void do_calc_hash_str(const render::context_t& context) override;
 
-private:
+  private:
     bool do_is_valid() const override;
 
     // interaction
     void do_begin_interaction() override;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

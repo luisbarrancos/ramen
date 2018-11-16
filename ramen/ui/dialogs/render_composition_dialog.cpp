@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/dialogs/render_composition_dialog.hpp>
 
 #include <cassert>
@@ -23,19 +22,28 @@ render_composition_dialog_t& render_composition_dialog_t::instance()
 }
 
 render_composition_dialog_t::render_composition_dialog_t()
-: QDialog(app().ui()->main_window())
+  : QDialog(app().ui()->main_window())
 {
     setWindowTitle("Render Composition");
     ui_.setupUi(this);
 }
 
-int render_composition_dialog_t::start_frame() const { return ui_.range_start_->value(); }
-int render_composition_dialog_t::end_frame() const { return ui_.range_end_->value(); }
+int render_composition_dialog_t::start_frame() const
+{
+    return ui_.range_start_->value();
+}
+int render_composition_dialog_t::end_frame() const
+{
+    return ui_.range_end_->value();
+}
 int render_composition_dialog_t::resolution() const
 {
     return ui_.resolution_popup_->currentIndex() + 1;
 }
-int render_composition_dialog_t::proxy_level() const { return ui_.proxy_popup_->currentIndex(); }
+int render_composition_dialog_t::proxy_level() const
+{
+    return ui_.proxy_popup_->currentIndex();
+}
 
 bool render_composition_dialog_t::selected_only() const
 {
@@ -76,5 +84,5 @@ void render_composition_dialog_t::set_mblur_settings(int samples, float factor)
     ui_.mblur_shutter_factor_->setValue(factor);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

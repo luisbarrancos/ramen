@@ -23,12 +23,12 @@ namespace ramen
 namespace roto
 {
 scene_t::scene_t(image::roto_node_t* p)
-: parent_(p)
+  : parent_(p)
 {
 }
 
 scene_t::scene_t(const scene_t& other)
-: parent_(0)
+  : parent_(0)
 {
     std::map<shape_t*, const shape_t*> relation;
 
@@ -44,7 +44,7 @@ scene_t::scene_t(const scene_t& other)
 
     for (shape_t& s : shapes())
     {
-        const shape_t* old_s       = relation[&s];
+        const shape_t* old_s = relation[&s];
         std::string    parent_name = old_s->parent_name();
 
         if (!parent_name.empty())
@@ -103,7 +103,10 @@ std::auto_ptr<shape_t> scene_t::release_shape(shape_t* s)
     return result;
 }
 
-shape_t* scene_t::find_shape(const std::string& name) { return names_.find(name); }
+shape_t* scene_t::find_shape(const std::string& name)
+{
+    return names_.find(name);
+}
 
 void scene_t::rename_shape(shape_t* s, const std::string& new_name)
 {
@@ -170,7 +173,9 @@ void scene_t::add_to_hash_str(hash::generator_t& hash_gen) const
         s.add_to_hash_str(hash_gen);
 }
 
-void scene_t::add_to_hash_str(const std::vector<float>& frames, hash::generator_t& hash_gen) const
+void scene_t::add_to_hash_str(
+    const std::vector<float>& frames,
+    hash::generator_t&        hash_gen) const
 {
     float current_frame = parent().composition()->frame();
 
@@ -313,5 +318,5 @@ void scene_t::write(serialization::yaml_oarchive_t& out) const
     out.end_seq();
 }
 
-}  // roto
-}  // ramen
+}  // namespace roto
+}  // namespace ramen

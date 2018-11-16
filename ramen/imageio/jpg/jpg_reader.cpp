@@ -30,23 +30,24 @@ struct FILE_deleter
     }
 };
 
-}  // unamed
+}  // namespace
 
 jpg_reader_t::jpg_reader_t(const boost::filesystem::path& p)
-: reader_t(p)
+  : reader_t(p)
 {
     int width, height;
 
     if (!get_jpeg_size(filesystem::file_cstring(p), width, height))
         throw unknown_image_format();
 
-    info_[core::name_t("format")] = core::variant_t(
-        math::box2i_t(math::point2i_t(0, 0), math::point2i_t(width - 1, height - 1)));
+    info_[core::name_t("format")] = core::variant_t(math::box2i_t(
+        math::point2i_t(0, 0), math::point2i_t(width - 1, height - 1)));
 }
 
-void jpg_reader_t::do_read_image(const image::image_view_t& view,
-                                 const math::box2i_t&       crop,
-                                 int                        subsample) const
+void jpg_reader_t::do_read_image(
+    const image::image_view_t& view,
+    const math::box2i_t&       crop,
+    int                        subsample) const
 {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr         jerr;
@@ -54,7 +55,8 @@ void jpg_reader_t::do_read_image(const image::image_view_t& view,
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_decompress(&cinfo);
 
-    std::shared_ptr<FILE> fp(fopen(filesystem::file_cstring(path_), "rb"), FILE_deleter());
+    std::shared_ptr<FILE> fp(
+        fopen(filesystem::file_cstring(path_), "rb"), FILE_deleter());
 
     if (!fp)
     {
@@ -74,7 +76,7 @@ void jpg_reader_t::do_read_image(const image::image_view_t& view,
         throw unsupported_image();
     }
 
-    std::size_t                 stride = cinfo.output_width * cinfo.output_components;
+    std::size_t stride = cinfo.output_width * cinfo.output_components;
     std::vector<boost::uint8_t> scanline_buffer(stride);
 
     std::vector<boost::uint8_t>::iterator first_item(scanline_buffer.begin());
@@ -93,16 +95,20 @@ void jpg_reader_t::do_read_image(const image::image_view_t& view,
 
         // process one scanline
         image::image_view_t::x_iterator dst_it(view.row_begin(yy));
-        unsigned char*                  q     = ptr + (crop.min.x * cinfo.output_components);
-        unsigned char*                  q_end = ptr + ((crop.max.x + 1) * cinfo.output_components);
+        unsigned char* q = ptr + (crop.min.x * cinfo.output_components);
+        unsigned char* q_end =
+            ptr + ((crop.max.x + 1) * cinfo.output_components);
 
         if (cinfo.output_components == 3)
         {
             for (; dst_it != view.row_end(yy); ++dst_it)
             {
-                boost::gil::get_color(*dst_it, boost::gil::red_t())   = q[0] / 255.0f;
-                boost::gil::get_color(*dst_it, boost::gil::green_t()) = q[1] / 255.0f;
-                boost::gil::get_color(*dst_it, boost::gil::blue_t())  = q[2] / 255.0f;
+                boost::gil::get_color(*dst_it, boost::gil::red_t()) =
+                    q[0] / 255.0f;
+                boost::gil::get_color(*dst_it, boost::gil::green_t()) =
+                    q[1] / 255.0f;
+                boost::gil::get_color(*dst_it, boost::gil::blue_t()) =
+                    q[2] / 255.0f;
                 boost::gil::get_color(*dst_it, boost::gil::alpha_t()) = 1.0f;
                 q += (cinfo.output_components * subsample);
 
@@ -114,10 +120,10 @@ void jpg_reader_t::do_read_image(const image::image_view_t& view,
         {
             for (; dst_it != view.row_end(yy); ++dst_it)
             {
-                float x                                               = *q / 255.0f;
-                boost::gil::get_color(*dst_it, boost::gil::red_t())   = x;
+                float x = *q / 255.0f;
+                boost::gil::get_color(*dst_it, boost::gil::red_t()) = x;
                 boost::gil::get_color(*dst_it, boost::gil::green_t()) = x;
-                boost::gil::get_color(*dst_it, boost::gil::blue_t())  = x;
+                boost::gil::get_color(*dst_it, boost::gil::blue_t()) = x;
                 boost::gil::get_color(*dst_it, boost::gil::alpha_t()) = 1.0f;
                 q += (cinfo.output_components * subsample);
 
@@ -150,5 +156,5 @@ void jpg_reader_t::do_read_image(const image::image_view_t& view,
     jpeg_destroy_decompress(&cinfo);
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

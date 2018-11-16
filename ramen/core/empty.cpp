@@ -13,5 +13,5 @@ bool empty_t::operator<(const empty_t&) const { return false; }
 
 void empty_t::swap(empty_t&) {}
 
-}  // core
-}  // ramen
+}  // namespace core
+}  // namespace ramen

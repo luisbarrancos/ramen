@@ -10,8 +10,8 @@ namespace ramen
 namespace ui
 {
 node_menu_t::node_menu_t(const std::string& name)
-: name_(name)
-, menu_(0)
+  : name_(name)
+  , menu_(0)
 {
     menu_ = new QMenu(name.c_str());
 }
@@ -36,7 +36,9 @@ void node_menu_t::add_action(const std::string& submenu, QAction* action)
 
 std::vector<QMenu*>::iterator node_menu_t::find_submenu(const std::string& name)
 {
-    for (std::vector<QMenu*>::iterator it(submenus_.begin()); it != submenus_.end(); ++it)
+    for (std::vector<QMenu*>::iterator it(submenus_.begin());
+         it != submenus_.end();
+         ++it)
     {
         if ((*it)->title().toStdString() == name)
             return it;
@@ -45,5 +47,5 @@ std::vector<QMenu*>::iterator node_menu_t::find_submenu(const std::string& name)
     return submenus_.end();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

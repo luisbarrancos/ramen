@@ -13,7 +13,11 @@ namespace ramen
 namespace image
 {
 void box_blur_rgba(
-    const const_image_view_t& src, const image_view_t& dst, float hradius, float vradius, int iters)
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     hradius,
+    float                     vradius,
+    int                       iters)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -25,12 +29,13 @@ void box_blur_rgba(
     box_blur_rgba_(src, boost::gil::view(buffer), dst, hradius, vradius, iters);
 }
 
-void box_blur_rgba(const const_image_view_t& src,
-                   const image_view_t&       tmp,
-                   const image_view_t&       dst,
-                   float                     hradius,
-                   float                     vradius,
-                   int                       iters)
+void box_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       tmp,
+    const image_view_t&       dst,
+    float                     hradius,
+    float                     vradius,
+    int                       iters)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -44,11 +49,12 @@ void box_blur_rgba(const const_image_view_t& src,
     box_blur_rgba_(src, tmp, dst, hradius, vradius, iters);
 }
 
-void box_blur_channel(const const_channel_view_t& src,
-                      const channel_view_t&       dst,
-                      float                       hradius,
-                      float                       vradius,
-                      int                         iters)
+void box_blur_channel(
+    const const_channel_view_t& src,
+    const channel_view_t&       dst,
+    float                       hradius,
+    float                       vradius,
+    int                         iters)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -57,15 +63,17 @@ void box_blur_channel(const const_channel_view_t& src,
     }
 
     boost::gil::gray32f_image_t buffer(src.height(), src.width());
-    box_blur_channel_(src, boost::gil::view(buffer), dst, hradius, vradius, iters);
+    box_blur_channel_(
+        src, boost::gil::view(buffer), dst, hradius, vradius, iters);
 }
 
-void box_blur_channel(const const_channel_view_t&       src,
-                      const boost::gil::gray32f_view_t& tmp,
-                      const channel_view_t&             dst,
-                      float                             hradius,
-                      float                             vradius,
-                      int                               iters)
+void box_blur_channel(
+    const const_channel_view_t&       src,
+    const boost::gil::gray32f_view_t& tmp,
+    const channel_view_t&             dst,
+    float                             hradius,
+    float                             vradius,
+    int                               iters)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -79,11 +87,12 @@ void box_blur_channel(const const_channel_view_t&       src,
     box_blur_channel_(src, tmp, dst, hradius, vradius, iters);
 }
 
-void box_blur_gray(const boost::gil::gray32fc_view_t& src,
-                   const boost::gil::gray32f_view_t&  dst,
-                   float                              hradius,
-                   float                              vradius,
-                   int                                iters)
+void box_blur_gray(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              hradius,
+    float                              vradius,
+    int                                iters)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -95,12 +104,13 @@ void box_blur_gray(const boost::gil::gray32fc_view_t& src,
     box_blur_gray_(src, boost::gil::view(buffer), dst, hradius, vradius, iters);
 }
 
-void box_blur_gray(const boost::gil::gray32fc_view_t& src,
-                   const boost::gil::gray32f_view_t&  tmp,
-                   const boost::gil::gray32f_view_t&  dst,
-                   float                              hradius,
-                   float                              vradius,
-                   int                                iters)
+void box_blur_gray(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  tmp,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              hradius,
+    float                              vradius,
+    int                                iters)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -114,5 +124,5 @@ void box_blur_gray(const boost::gil::gray32fc_view_t& src,
     box_blur_gray_(src, tmp, dst, hradius, vradius, iters);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

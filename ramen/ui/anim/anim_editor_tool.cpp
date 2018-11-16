@@ -16,30 +16,42 @@ namespace ui
 anim_editor_tool_t::anim_editor_tool_t() {}
 
 void anim_editor_tool_t::draw_overlay(anim_curves_view_t& view) const {}
-void anim_editor_tool_t::key_press_event(anim_curves_view_t& view, QKeyEvent* event)
+void anim_editor_tool_t::key_press_event(
+    anim_curves_view_t& view,
+    QKeyEvent*          event)
 {
     event->ignore();
 }
-void anim_editor_tool_t::key_release_event(anim_curves_view_t& view, QKeyEvent* event)
+void anim_editor_tool_t::key_release_event(
+    anim_curves_view_t& view,
+    QKeyEvent*          event)
 {
     event->ignore();
 }
-void anim_editor_tool_t::mouse_press_event(anim_curves_view_t& view, QMouseEvent* event)
+void anim_editor_tool_t::mouse_press_event(
+    anim_curves_view_t& view,
+    QMouseEvent*        event)
 {
     event->ignore();
 }
-void anim_editor_tool_t::mouse_move_event(anim_curves_view_t& view, QMouseEvent* event)
+void anim_editor_tool_t::mouse_move_event(
+    anim_curves_view_t& view,
+    QMouseEvent*        event)
 {
     event->ignore();
 }
-void anim_editor_tool_t::mouse_drag_event(anim_curves_view_t& view, QMouseEvent* event)
+void anim_editor_tool_t::mouse_drag_event(
+    anim_curves_view_t& view,
+    QMouseEvent*        event)
 {
     event->ignore();
 }
-void anim_editor_tool_t::mouse_release_event(anim_curves_view_t& view, QMouseEvent* event)
+void anim_editor_tool_t::mouse_release_event(
+    anim_curves_view_t& view,
+    QMouseEvent*        event)
 {
     event->ignore();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

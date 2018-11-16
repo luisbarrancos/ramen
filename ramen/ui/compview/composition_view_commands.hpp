@@ -13,13 +13,13 @@ namespace undo
 {
 class connect_command_t : public command_t
 {
-public:
+  public:
     connect_command_t(node_t* src, node_t* dest, int port);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     node_t* src_;
     node_t* dest_;
     node_t* prev_src_;
@@ -28,18 +28,17 @@ private:
 
 class disconnect_command_t : public command_t
 {
-public:
+  public:
     disconnect_command_t(node_t* src, node_t* dest, int port);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     node_t* src_;
     node_t* dest_;
     int     port_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

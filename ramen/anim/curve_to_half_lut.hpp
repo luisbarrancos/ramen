@@ -15,11 +15,11 @@ struct eval_float_curve
     eval_float_curve(const float_curve_t& c);
     half operator()(half x) const;
 
-private:
+  private:
     const float_curve_t& c_;
 };
 
 void curve_to_half_lut(const float_curve_t& c, halfFunction<half>& lut);
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

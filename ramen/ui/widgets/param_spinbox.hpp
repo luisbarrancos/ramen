@@ -24,7 +24,7 @@ class param_spinbox_t : public spinbox_t
 {
     Q_OBJECT
 
-public:
+  public:
     typedef boost::variant<double, std::string> value_type;
 
     param_spinbox_t(param_t& param, int comp_index, QWidget* parent = 0);
@@ -36,7 +36,7 @@ public:
     void setValue(const std::string& s);
     void restorePreviousValue();
 
-protected:
+  protected:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
 
@@ -46,14 +46,14 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void valueChanged(double value);
     void spinBoxPressed();
     void spinBoxDragged(double value);
     void spinBoxReleased();
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void textChanged();
 
@@ -63,7 +63,7 @@ private Q_SLOTS:
     void delete_key();
     void delete_anim();
 
-private:
+  private:
     void setLineEditContents(const std::string& s);
     void stepBy(int steps);
 
@@ -82,6 +82,5 @@ private:
     QAction *copy_ref_, *paste_ref_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

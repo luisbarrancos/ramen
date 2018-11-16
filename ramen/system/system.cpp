@@ -28,7 +28,7 @@ namespace ramen
 namespace system
 {
 system_t::system_t()
-: ram_size_(0)
+  : ram_size_(0)
 {
     m_pimpl = new impl(*this);
 
@@ -51,10 +51,11 @@ system_t::system_t()
     if (application_user_path_.empty())
         throw std::runtime_error("Error creating system class");
 
-    application_path_ = boost::filesystem::canonical(executable_path_.parent_path() / "..");
+    application_path_ =
+        boost::filesystem::canonical(executable_path_.parent_path() / "..");
 }
 
 system_t::~system_t() { delete m_pimpl; }
 
-}  // system
-}  // ramen
+}  // namespace system
+}  // namespace ramen

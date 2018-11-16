@@ -18,7 +18,7 @@ namespace movieio
 {
 class RAMEN_API image_seq_reader_t : public reader_t
 {
-public:
+  public:
     image_seq_reader_t(const boost::filesystem::path& p, bool sequence);
     explicit image_seq_reader_t(const filesystem::path_sequence_t& seq);
 
@@ -32,19 +32,21 @@ public:
     virtual std::string format_string() const;
     virtual std::string string_for_current_frame() const;
 
-private:
+  private:
     void init();
 
     void do_set_frame(int frame) override;
 
-    void do_read_frame(const image::image_view_t& view,
-                       const math::box2i_t&       crop,
-                       int                        subsample) const override;
+    void do_read_frame(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const override;
 
-    virtual void do_read_frame(const image::image_view_t&              view,
-                               const math::box2i_t&                    crop,
-                               int                                     subsample,
-                               const boost::tuple<int, int, int, int>& channels) const;
+    virtual void do_read_frame(
+        const image::image_view_t&              view,
+        const math::box2i_t&                    crop,
+        int                                     subsample,
+        const boost::tuple<int, int, int, int>& channels) const;
 
     void get_sequence_info();
 
@@ -56,6 +58,5 @@ private:
     bool                               has_extra_channels_;
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

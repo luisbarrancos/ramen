@@ -17,7 +17,7 @@ namespace ui
 {
 class composition_view_layout_t
 {
-public:
+  public:
     composition_view_layout_t();
 
     void set_world(const Imath::Box2f& w);
@@ -27,7 +27,7 @@ public:
     void place_node(node_t* n) const;
     void place_node_near_node(node_t* n, node_t* other) const;
 
-private:
+  private:
     Imath::Box2f get_node_bbox(node_t* n) const;
     bool         box_intersects_any_node(const Imath::Box2f& box) const;
 
@@ -39,6 +39,5 @@ private:
     mutable Imath::Rand48 rng_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

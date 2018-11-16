@@ -57,7 +57,7 @@ struct singleton_name_pool_holder_t
     }
 };
 
-}  // unnamed
+}  // namespace
 
 name_t::name_t() { init(""); }
 
@@ -80,7 +80,10 @@ name_t& name_t::operator=(const name_t& other)
     return *this;
 }
 
-bool name_t::empty() const { return c_str() == singleton_name_pool_holder_t::get().g_empty_string; }
+bool name_t::empty() const
+{
+    return c_str() == singleton_name_pool_holder_t::get().g_empty_string;
+}
 
-}  // core
-}  // ramen
+}  // namespace core
+}  // namespace ramen

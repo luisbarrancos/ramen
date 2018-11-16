@@ -19,9 +19,9 @@ struct pick_result_t
     };
 
     pick_result_t()
-    : node(0)
-    , component(no_pick)
-    , plug_num(-1)
+      : node(0)
+      , component(no_pick)
+      , plug_num(-1)
     {
     }
 
@@ -30,6 +30,5 @@ struct pick_result_t
     int         plug_num;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

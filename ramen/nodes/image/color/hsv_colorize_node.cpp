@@ -49,7 +49,8 @@ float get_hue(const Imath::Color4f& c)
 
     if (maxv != minv)
     {
-        const float f = (r == minv) ? (g - b) : ((g == minv) ? (b - r) : (r - g)),
+        const float f = (r == minv) ? (g - b)
+                                    : ((g == minv) ? (b - r) : (r - g)),
                     i = (r == minv) ? 3.0f : ((g == minv) ? 5.0f : 1.0f);
 
         h = (i - f / (maxv - minv));
@@ -75,13 +76,14 @@ struct hsv_colorize_fun
     image::pixel_t operator()(const image::pixel_t& p) const
     {
         using namespace boost::gil;
-        return image::pixel_t(hue_,
-                              get_color(p, green_t()) * sat_,
-                              get_color(p, blue_t()) * val_,
-                              get_color(p, alpha_t()));
+        return image::pixel_t(
+            hue_,
+            get_color(p, green_t()) * sat_,
+            get_color(p, blue_t()) * val_,
+            get_color(p, alpha_t()));
     }
 
-private:
+  private:
     float hue_;
     float sat_;
     float val_;
@@ -92,17 +94,18 @@ struct clamp_blacks_fun
     image::pixel_t operator()(const image::pixel_t& p) const
     {
         using namespace boost::gil;
-        return image::pixel_t(std::max((float) get_color(p, red_t()), 0.0f),
-                              std::max((float) get_color(p, green_t()), 0.0f),
-                              std::max((float) get_color(p, blue_t()), 0.0f),
-                              get_color(p, alpha_t()));
+        return image::pixel_t(
+            std::max((float) get_color(p, red_t()), 0.0f),
+            std::max((float) get_color(p, green_t()), 0.0f),
+            std::max((float) get_color(p, blue_t()), 0.0f),
+            get_color(p, alpha_t()));
     }
 };
 
-}  // unnamed
+}  // namespace
 
 hsv_colorize_node_t::hsv_colorize_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("hsv_colorize");
 }
@@ -136,18 +139,20 @@ void hsv_colorize_node_t::do_create_params()
     add_param(p);
 }
 
-void hsv_colorize_node_t::do_process(const image::const_image_view_t& src,
-                                     const image::image_view_t&       dst,
-                                     const render::context_t&         context)
+void hsv_colorize_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     image::convert_rgb_to_hsv(src, dst);
 
     boost::gil::tbb_transform_pixels(
         dst,
         dst,
-        hsv_colorize_fun(get_hue(get_value<Imath::Color4f>(param("color"))),
-                         get_value<float>(param("sat")),
-                         get_value<float>(param("value"))));
+        hsv_colorize_fun(
+            get_hue(get_value<Imath::Color4f>(param("color"))),
+            get_value<float>(param("sat")),
+            get_value<float>(param("value"))));
 
     image::convert_hsv_to_rgb(dst, dst);
     image::lerp_images(dst, src, get_value<float>(param("strength")), dst);
@@ -169,21 +174,21 @@ const node_metaclass_t& hsv_colorize_node_t::hsv_colorize_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.hsv_colorize";
+        info.id = "image.builtin.hsv_colorize";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "HSV Colorize";
-        info.create        = &create_hsv_colorize_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "HSV Colorize";
+        info.create = &create_hsv_colorize_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(hsv_colorize_node_t::hsv_colorize_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    hsv_colorize_node_t::hsv_colorize_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

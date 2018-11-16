@@ -10,6 +10,5 @@ namespace ui
 {
 class param_spinbox_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

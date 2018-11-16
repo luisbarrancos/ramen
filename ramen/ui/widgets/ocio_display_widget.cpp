@@ -13,8 +13,10 @@ namespace ramen
 {
 namespace ui
 {
-ocio_display_widget_t::ocio_display_widget_t(Qt::Orientation orient, QWidget* parent)
-: QWidget(parent)
+ocio_display_widget_t::ocio_display_widget_t(
+    Qt::Orientation orient,
+    QWidget*        parent)
+  : QWidget(parent)
 {
     QLayout* layout;
 
@@ -32,5 +34,5 @@ ocio_display_widget_t::ocio_display_widget_t(Qt::Orientation orient, QWidget* pa
     setLayout(layout);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

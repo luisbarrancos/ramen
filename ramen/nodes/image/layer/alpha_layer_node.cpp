@@ -28,11 +28,13 @@ enum
 }  // namespace
 
 alpha_layer_node_t::alpha_layer_node_t()
-: base_layer_node_t()
+  : base_layer_node_t()
 {
     set_name("layer");
-    add_input_plug("back", false, ui::palette_t::instance().color("back plug"), "Back");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "back", false, ui::palette_t::instance().color("back plug"), "Back");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -40,7 +42,8 @@ void alpha_layer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p(new popup_param_t("Layer Mode"));
     p->set_id("layer_mode");
-    p->menu_items() = std::vector<std::string>({ "Add", "Mult", "Sub", "Mix", "Max", "Min" });
+    p->menu_items() =
+        std::vector<std::string>({"Add", "Mult", "Sub", "Mix", "Max", "Min"});
     add_param(p);
 
     std::auto_ptr<float_param_t> q(new float_param_t("Opacity"));
@@ -72,8 +75,9 @@ void alpha_layer_node_t::do_calc_bounds(const render::context_t& context)
             case comp_mult:
             case comp_min:
             case comp_mix:
-                bbox = ImathExt::intersect(input_as<image_node_t>(0)->bounds(),
-                                           input_as<image_node_t>(1)->bounds());
+                bbox = ImathExt::intersect(
+                    input_as<image_node_t>(0)->bounds(),
+                    input_as<image_node_t>(1)->bounds());
                 break;
 
             case comp_sub:
@@ -98,7 +102,8 @@ void alpha_layer_node_t::do_process(const render::context_t& context)
 {
     int mode = get_value<int>(param("layer_mode"));
 
-    if (mode == comp_mult || mode == comp_min || mode == comp_mix)  // min, mult and mix are special
+    if (mode == comp_mult || mode == comp_min ||
+        mode == comp_mix)  // min, mult and mix are special
     {
         do_process_mult_min_mix(context);
         return;
@@ -113,7 +118,8 @@ void alpha_layer_node_t::do_process(const render::context_t& context)
     if (!bg_area.isEmpty())
     {
         render_input(0, context);
-        boost::gil::copy_pixels(bg->const_subimage_view(bg_area), subimage_view(bg_area));
+        boost::gil::copy_pixels(
+            bg->const_subimage_view(bg_area), subimage_view(bg_area));
         release_input_image(0);
     }
 
@@ -157,12 +163,13 @@ void alpha_layer_node_t::do_process(const render::context_t& context)
     }
 }
 
-void alpha_layer_node_t::do_process_mult_min_mix(const render::context_t& context)
+void alpha_layer_node_t::do_process_mult_min_mix(
+    const render::context_t& context)
 {
     image_node_t* bg = input_as<image_node_t>(0);
     image_node_t* fg = input_as<image_node_t>(1);
 
-    int   mode    = get_value<int>(param("layer_mode"));
+    int   mode = get_value<int>(param("layer_mode"));
     float opacity = get_value<float>(param("opacity"));
 
     Imath::Box2i bg_area(ImathExt::intersect(bg->defined(), defined()));
@@ -174,24 +181,30 @@ void alpha_layer_node_t::do_process_mult_min_mix(const render::context_t& contex
 
         if (opacity == 0.0f)  // just copy the background and return
         {
-            boost::gil::copy_pixels(bg->const_subimage_view(bg_area), subimage_view(bg_area));
+            boost::gil::copy_pixels(
+                bg->const_subimage_view(bg_area), subimage_view(bg_area));
             return;
         }
 
         if (opacity == 1.0f)  // the normal case, nothing special to do
-            boost::gil::copy_pixels(bg->const_subimage_view(bg_area), subimage_view(bg_area));
-        else  // we need to handle the areas of the bg that don't intersect the fg
+            boost::gil::copy_pixels(
+                bg->const_subimage_view(bg_area), subimage_view(bg_area));
+        else  // we need to handle the areas of the bg that don't intersect the
+              // fg
         {
             image::mul_channel_scalar(
-                boost::gil::nth_channel_view(bg->const_subimage_view(bg_area), 3),
+                boost::gil::nth_channel_view(
+                    bg->const_subimage_view(bg_area), 3),
                 1.0f - opacity,
                 boost::gil::nth_channel_view(subimage_view(bg_area), 3));
 
-            Imath::Box2i common_area(ImathExt::intersect(fg->defined(), bg->defined()));
+            Imath::Box2i common_area(
+                ImathExt::intersect(fg->defined(), bg->defined()));
 
             if (!common_area.isEmpty())
-                boost::gil::copy_pixels(bg->const_subimage_view(common_area),
-                                        subimage_view(common_area));
+                boost::gil::copy_pixels(
+                    bg->const_subimage_view(common_area),
+                    subimage_view(common_area));
         }
 
         // we don't need the bg anymore
@@ -248,21 +261,21 @@ const node_metaclass_t& alpha_layer_node_t::alpha_layer_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.alpha_layer";
+        info.id = "image.builtin.alpha_layer";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Layer";
-        info.menu_item     = "Alpha Layer";
-        info.create        = &create_alpha_layer_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Layer";
+        info.menu_item = "Alpha Layer";
+        info.create = &create_alpha_layer_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(alpha_layer_node_t::alpha_layer_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    alpha_layer_node_t::alpha_layer_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

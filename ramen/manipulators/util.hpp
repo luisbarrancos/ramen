@@ -10,8 +10,10 @@ namespace ramen
 {
 namespace manipulators
 {
-Imath::V2f rotate_point(const Imath::V2f& center, const Imath::V2f& p, float angle_in_degrees);
+Imath::V2f rotate_point(
+    const Imath::V2f& center,
+    const Imath::V2f& p,
+    float             angle_in_degrees);
 
-}  // namespace
-}  // namespace
-
+}  // namespace manipulators
+}  // namespace ramen

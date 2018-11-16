@@ -10,6 +10,5 @@ namespace roto
 {
 class toolbar_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

@@ -14,7 +14,7 @@ namespace roto
 {
 class select_tool_t : public tool_t
 {
-public:
+  public:
     select_tool_t(image::roto_node_t& parent);
 
     void draw_overlay(const ui::paint_event_t& event) const override;
@@ -25,19 +25,27 @@ public:
     void mouse_drag_event(const ui::mouse_drag_event_t& event) override;
     void mouse_release_event(const ui::mouse_release_event_t& event) override;
 
-private:
-    shape_t* pick_nulls(const ui::mouse_press_event_t& event, bool& xaxis, bool& yaxis);
+  private:
+    shape_t* pick_nulls(
+        const ui::mouse_press_event_t& event,
+        bool&                          xaxis,
+        bool&                          yaxis);
     shape_t* pick_shape(const ui::mouse_press_event_t& event);
 
-    bool pick_axes(const shape_t&           s,
-                   const ui::mouse_event_t& event,
-                   bool&                    xaxis,
-                   bool&                    yaxis) const;
-    bool pick_span(const bezier::curve_t<Imath::V2f>& c,
-                   const Imath::V2f&                  p,
-                   float                              pixel_scale) const;
+    bool pick_axes(
+        const shape_t&           s,
+        const ui::mouse_event_t& event,
+        bool&                    xaxis,
+        bool&                    yaxis) const;
+    bool pick_span(
+        const bezier::curve_t<Imath::V2f>& c,
+        const Imath::V2f&                  p,
+        float                              pixel_scale) const;
 
-    triple_t* pick_tangent(shape_t& s, const ui::mouse_event_t& event, bool& left);
+    triple_t* pick_tangent(
+        shape_t&                 s,
+        const ui::mouse_event_t& event,
+        bool&                    left);
 
     // modes
     bool         box_pick_mode_;
@@ -58,6 +66,5 @@ private:
     std::auto_ptr<undo::command_t> cmd_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

@@ -44,12 +44,11 @@ namespace noise
 {
 namespace
 {
-template<typename T>
-class imath_rand_adapter
+template <typename T> class imath_rand_adapter
 {
-public:
+  public:
     imath_rand_adapter(unsigned long int seed)
-    : rand_(seed)
+      : rand_(seed)
     {
     }
 
@@ -59,25 +58,26 @@ public:
         return result;
     }
 
-private:
+  private:
     T rand_;
 };
 
-}  // unnamed
+}  // namespace
 
-unsigned char simplex_noise_t::simplex[64][4] = {
-    { 0, 1, 2, 3 }, { 0, 1, 3, 2 }, { 0, 0, 0, 0 }, { 0, 2, 3, 1 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 0, 0, 0, 0 }, { 1, 2, 3, 0 }, { 0, 2, 1, 3 }, { 0, 0, 0, 0 }, { 0, 3, 1, 2 }, { 0, 3, 2, 1 },
-    { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 1, 3, 2, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 1, 2, 0, 3 }, { 0, 0, 0, 0 }, { 1, 3, 0, 2 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 2, 3, 0, 1 }, { 2, 3, 1, 0 }, { 1, 0, 2, 3 }, { 1, 0, 3, 2 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 0, 0, 0, 0 }, { 2, 0, 3, 1 }, { 0, 0, 0, 0 }, { 2, 1, 3, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 2, 0, 1, 3 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 3, 0, 1, 2 }, { 3, 0, 2, 1 },
-    { 0, 0, 0, 0 }, { 3, 1, 2, 0 }, { 2, 1, 0, 3 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
-    { 3, 1, 0, 2 }, { 0, 0, 0, 0 }, { 3, 2, 0, 1 }, { 3, 2, 1, 0 }
-};
+unsigned char simplex_noise_t::simplex[64][4] =
+    {{0, 1, 2, 3}, {0, 1, 3, 2}, {0, 0, 0, 0}, {0, 2, 3, 1}, {0, 0, 0, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 0}, {0, 2, 1, 3}, {0, 0, 0, 0},
+     {0, 3, 1, 2}, {0, 3, 2, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+     {1, 3, 2, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 0, 3},
+     {0, 0, 0, 0}, {1, 3, 0, 2}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+     {2, 3, 0, 1}, {2, 3, 1, 0}, {1, 0, 2, 3}, {1, 0, 3, 2}, {0, 0, 0, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {2, 0, 3, 1}, {0, 0, 0, 0}, {2, 1, 3, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {2, 0, 1, 3}, {0, 0, 0, 0},
+     {0, 0, 0, 0}, {0, 0, 0, 0}, {3, 0, 1, 2}, {3, 0, 2, 1}, {0, 0, 0, 0},
+     {3, 1, 2, 0}, {2, 1, 0, 3}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+     {3, 1, 0, 2}, {0, 0, 0, 0}, {3, 2, 0, 1}, {3, 2, 1, 0}};
 
 simplex_noise_t::simplex_noise_t(int seed)
 {
@@ -122,13 +122,13 @@ float simplex_noise_t::operator()(float x, float y) const
     float n0, n1, n2; /* Noise contributions from the three corners */
 
     /* Skew the input space to determine which simplex cell we're in */
-    float s  = (x + y) * F2; /* Hairy factor for 2D */
+    float s = (x + y) * F2; /* Hairy factor for 2D */
     float xs = x + s;
     float ys = y + s;
-    int   i  = math::fast_float_floor(xs);
-    int   j  = math::fast_float_floor(ys);
+    int   i = math::fast_float_floor(xs);
+    int   j = math::fast_float_floor(ys);
 
-    float t  = (float) (i + j) * G2;
+    float t = (float) (i + j) * G2;
     float X0 = i - t; /* Unskew the cell origin back to (x,y) space */
     float Y0 = j - t;
     float x0 = x - X0; /* The x,y distances from the cell origin */
@@ -140,7 +140,8 @@ float simplex_noise_t::operator()(float x, float y) const
 
     /* For the 2D case, the simplex shape is an equilateral triangle. */
     /* Determine which simplex we are in. */
-    int i1, j1; /* Offsets for second (middle) corner of simplex in (i,j) coords */
+    int i1,
+        j1; /* Offsets for second (middle) corner of simplex in (i,j) coords */
     if (x0 > y0)
     {
         i1 = 1;
@@ -158,10 +159,12 @@ float simplex_noise_t::operator()(float x, float y) const
 
     x1 = x0 - i1 + G2; /* Offsets for middle corner in (x,y) unskewed coords */
     y1 = y0 - j1 + G2;
-    x2 = x0 - 1.0f + 2.0f * G2; /* Offsets for last corner in (x,y) unskewed coords */
+    x2 = x0 - 1.0f +
+         2.0f * G2; /* Offsets for last corner in (x,y) unskewed coords */
     y2 = y0 - 1.0f + 2.0f * G2;
 
-    /* Wrap the integer indices at 256, to avoid indexing perm[] out of bounds */
+    /* Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
+     */
     ii = i % 256;
     jj = j % 256;
 
@@ -208,15 +211,15 @@ float simplex_noise_t::operator()(float x, float y, float z) const
     float n0, n1, n2, n3; /* Noise contributions from the four corners */
 
     /* Skew the input space to determine which simplex cell we're in */
-    float s  = (x + y + z) * F3; /* Very nice and simple skew factor for 3D */
+    float s = (x + y + z) * F3; /* Very nice and simple skew factor for 3D */
     float xs = x + s;
     float ys = y + s;
     float zs = z + s;
-    int   i  = math::fast_float_floor(xs);
-    int   j  = math::fast_float_floor(ys);
-    int   k  = math::fast_float_floor(zs);
+    int   i = math::fast_float_floor(xs);
+    int   j = math::fast_float_floor(ys);
+    int   k = math::fast_float_floor(zs);
 
-    float t  = (float) (i + j + k) * G3;
+    float t = (float) (i + j + k) * G3;
     float X0 = i - t; /* Unskew the cell origin back to (x,y,z) space */
     float Y0 = j - t;
     float Z0 = k - t;
@@ -228,7 +231,8 @@ float simplex_noise_t::operator()(float x, float y, float z) const
     int   ii, jj, kk;
     float t0, t1, t2, t3;
 
-    /* For the 3D case, the simplex shape is a slightly irregular tetrahedron. */
+    /* For the 3D case, the simplex shape is a slightly irregular tetrahedron.
+     */
     /* Determine which simplex we are in. */
     int i1, j1, k1; /* Offsets for second corner of simplex in (i,j,k) coords */
     int i2, j2, k2; /* Offsets for third corner of simplex in (i,j,k) coords */
@@ -332,7 +336,8 @@ float simplex_noise_t::operator()(float x, float y, float z) const
     else
     {
         t1 *= t1;
-        n1 = t1 * t1 * grad3(perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]], x1, y1, z1);
+        n1 = t1 * t1 *
+             grad3(perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]], x1, y1, z1);
     }
 
     t2 = 0.6f - x2 * x2 - y2 * y2 - z2 * z2;
@@ -341,7 +346,8 @@ float simplex_noise_t::operator()(float x, float y, float z) const
     else
     {
         t2 *= t2;
-        n2 = t2 * t2 * grad3(perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]], x2, y2, z2);
+        n2 = t2 * t2 *
+             grad3(perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]], x2, y2, z2);
     }
 
     t3 = 0.6f - x3 * x3 - y3 * y3 - z3 * z3;
@@ -350,15 +356,16 @@ float simplex_noise_t::operator()(float x, float y, float z) const
     else
     {
         t3 *= t3;
-        n3 = t3 * t3 * grad3(perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]], x3, y3, z3);
+        n3 = t3 * t3 *
+             grad3(perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]], x3, y3, z3);
     }
 
     /* Add contributions from each corner to get the final noise value.
      * The result is scaled to stay just inside [-1,1]
      */
-    return 32.0f * (n0 + n1 + n2 + n3); /* TODO: The scale factor is preliminary! */
+    return 32.0f *
+           (n0 + n1 + n2 + n3); /* TODO: The scale factor is preliminary! */
 }
-
 
 /* 4D simplex noise */
 float simplex_noise_t::operator()(float x, float y, float z, float w) const
@@ -369,19 +376,20 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
 
     float n0, n1, n2, n3, n4; /* Noise contributions from the five corners */
 
-    /* Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in */
-    float s  = (x + y + z + w) * F4; /* Factor for 4D skewing */
+    /* Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
+     */
+    float s = (x + y + z + w) * F4; /* Factor for 4D skewing */
     float xs = x + s;
     float ys = y + s;
     float zs = z + s;
     float ws = w + s;
-    int   i  = math::fast_float_floor(xs);
-    int   j  = math::fast_float_floor(ys);
-    int   k  = math::fast_float_floor(zs);
-    int   l  = math::fast_float_floor(ws);
+    int   i = math::fast_float_floor(xs);
+    int   j = math::fast_float_floor(ys);
+    int   k = math::fast_float_floor(zs);
+    int   l = math::fast_float_floor(ws);
 
-    float t  = (i + j + k + l) * G4; /* Factor for 4D unskewing */
-    float X0 = i - t;                /* Unskew the cell origin back to (x,y,z,w) space */
+    float t = (i + j + k + l) * G4; /* Factor for 4D unskewing */
+    float X0 = i - t; /* Unskew the cell origin back to (x,y,z,w) space */
     float Y0 = j - t;
     float Z0 = k - t;
     float W0 = l - t;
@@ -406,7 +414,7 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     int c4 = (x0 > w0) ? 4 : 0;
     int c5 = (y0 > w0) ? 2 : 0;
     int c6 = (z0 > w0) ? 1 : 0;
-    int c  = c1 + c2 + c3 + c4 + c5 + c6;
+    int c = c1 + c2 + c3 + c4 + c5 + c6;
 
     int i1, j1, k1, l1; /* The integer offsets for the second simplex corner */
     int i2, j2, k2, l2; /* The integer offsets for the third simplex corner */
@@ -429,17 +437,20 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     j1 = simplex[c][1] >= 3 ? 1 : 0;
     k1 = simplex[c][2] >= 3 ? 1 : 0;
     l1 = simplex[c][3] >= 3 ? 1 : 0;
-    /* The number 2 in the "simplex" array is at the second largest coordinate. */
+    /* The number 2 in the "simplex" array is at the second largest coordinate.
+     */
     i2 = simplex[c][0] >= 2 ? 1 : 0;
     j2 = simplex[c][1] >= 2 ? 1 : 0;
     k2 = simplex[c][2] >= 2 ? 1 : 0;
     l2 = simplex[c][3] >= 2 ? 1 : 0;
-    /* The number 1 in the "simplex" array is at the second smallest coordinate. */
+    /* The number 1 in the "simplex" array is at the second smallest coordinate.
+     */
     i3 = simplex[c][0] >= 1 ? 1 : 0;
     j3 = simplex[c][1] >= 1 ? 1 : 0;
     k3 = simplex[c][2] >= 1 ? 1 : 0;
     l3 = simplex[c][3] >= 1 ? 1 : 0;
-    /* The fifth corner has all coordinate offsets = 1, so no need to look that up. */
+    /* The fifth corner has all coordinate offsets = 1, so no need to look that
+     * up. */
 
     x1 = x0 - i1 + G4; /* Offsets for second corner in (x,y,z,w) coords */
     y1 = y0 - j1 + G4;
@@ -449,16 +460,19 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     y2 = y0 - j2 + 2.0f * G4;
     z2 = z0 - k2 + 2.0f * G4;
     w2 = w0 - l2 + 2.0f * G4;
-    x3 = x0 - i3 + 3.0f * G4; /* Offsets for fourth corner in (x,y,z,w) coords */
+    x3 =
+        x0 - i3 + 3.0f * G4; /* Offsets for fourth corner in (x,y,z,w) coords */
     y3 = y0 - j3 + 3.0f * G4;
     z3 = z0 - k3 + 3.0f * G4;
     w3 = w0 - l3 + 3.0f * G4;
-    x4 = x0 - 1.0f + 4.0f * G4; /* Offsets for last corner in (x,y,z,w) coords */
+    x4 =
+        x0 - 1.0f + 4.0f * G4; /* Offsets for last corner in (x,y,z,w) coords */
     y4 = y0 - 1.0f + 4.0f * G4;
     z4 = z0 - 1.0f + 4.0f * G4;
     w4 = w0 - 1.0f + 4.0f * G4;
 
-    /* Wrap the integer indices at 256, to avoid indexing perm[] out of bounds */
+    /* Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
+     */
     ii = i % 256;
     jj = j % 256;
     kk = k % 256;
@@ -471,7 +485,8 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     else
     {
         t0 *= t0;
-        n0 = t0 * t0 * grad4(perm[ii + perm[jj + perm[kk + perm[ll]]]], x0, y0, z0, w0);
+        n0 = t0 * t0 *
+             grad4(perm[ii + perm[jj + perm[kk + perm[ll]]]], x0, y0, z0, w0);
     }
 
     t1 = 0.6f - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
@@ -480,8 +495,13 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     else
     {
         t1 *= t1;
-        n1 = t1 * t1
-             * grad4(perm[ii + i1 + perm[jj + j1 + perm[kk + k1 + perm[ll + l1]]]], x1, y1, z1, w1);
+        n1 = t1 * t1 *
+             grad4(
+                 perm[ii + i1 + perm[jj + j1 + perm[kk + k1 + perm[ll + l1]]]],
+                 x1,
+                 y1,
+                 z1,
+                 w1);
     }
 
     t2 = 0.6f - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
@@ -490,8 +510,13 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     else
     {
         t2 *= t2;
-        n2 = t2 * t2
-             * grad4(perm[ii + i2 + perm[jj + j2 + perm[kk + k2 + perm[ll + l2]]]], x2, y2, z2, w2);
+        n2 = t2 * t2 *
+             grad4(
+                 perm[ii + i2 + perm[jj + j2 + perm[kk + k2 + perm[ll + l2]]]],
+                 x2,
+                 y2,
+                 z2,
+                 w2);
     }
 
     t3 = 0.6f - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
@@ -500,8 +525,13 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     else
     {
         t3 *= t3;
-        n3 = t3 * t3
-             * grad4(perm[ii + i3 + perm[jj + j3 + perm[kk + k3 + perm[ll + l3]]]], x3, y3, z3, w3);
+        n3 = t3 * t3 *
+             grad4(
+                 perm[ii + i3 + perm[jj + j3 + perm[kk + k3 + perm[ll + l3]]]],
+                 x3,
+                 y3,
+                 z3,
+                 w3);
     }
 
     t4 = 0.6f - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
@@ -510,13 +540,19 @@ float simplex_noise_t::operator()(float x, float y, float z, float w) const
     else
     {
         t4 *= t4;
-        n4 = t4 * t4
-             * grad4(perm[ii + 1 + perm[jj + 1 + perm[kk + 1 + perm[ll + 1]]]], x4, y4, z4, w4);
+        n4 = t4 * t4 *
+             grad4(
+                 perm[ii + 1 + perm[jj + 1 + perm[kk + 1 + perm[ll + 1]]]],
+                 x4,
+                 y4,
+                 z4,
+                 w4);
     }
 
     /* Sum up and scale the result to cover the range [-1,1] */
-    return 27.0f * (n0 + n1 + n2 + n3 + n4); /* TODO: The scale factor is preliminary! */
+    return 27.0f * (n0 + n1 + n2 + n3 +
+                    n4); /* TODO: The scale factor is preliminary! */
 }
 
-}  // noise
-}  // ramen
+}  // namespace noise
+}  // namespace ramen

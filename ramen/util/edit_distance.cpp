@@ -14,8 +14,8 @@ namespace ramen
 namespace util
 {
 edit_distance_t::edit_distance_t()
-: rows_(0)
-, cols_(0)
+  : rows_(0)
+  , cols_(0)
 {
 }
 
@@ -54,9 +54,9 @@ int edit_distance_t::operator()(const std::string& src, const std::string& dst)
                 cost = 1;
 
             int above = matrix(i - 1, j);
-            int left  = matrix(i, j - 1);
-            int diag  = matrix(i - 1, j - 1);
-            int cell  = std::min(above + 1, std::min(left + 1, diag + cost));
+            int left = matrix(i, j - 1);
+            int diag = matrix(i - 1, j - 1);
+            int cell = std::min(above + 1, std::min(left + 1, diag + cost));
 
             if (i > 2 && j > 2)
             {
@@ -86,8 +86,8 @@ void edit_distance_t::realloc_matrix(int rows, int cols)
     cols_ = cols;
 }
 
-}  // util
-}  // ramen
+}  // namespace util
+}  // namespace ramen
 
 /*
 int distance(const std::string src, const std::string dst)

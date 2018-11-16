@@ -15,7 +15,7 @@ class exposure_picker_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     exposure_picker_t(QWidget* parent = 0);
 
     QSize sizeHint() const override;
@@ -23,22 +23,22 @@ public:
     static double max_exposure();
     double        exposure() const;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void exposure_changed(double e);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_exposure(double e);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-private:
+  private:
     double pick_exposure(int x) const;
 
     void update_background();
@@ -48,6 +48,5 @@ private:
     double exposure_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -32,7 +32,7 @@ int lanczos3_filter_t::filter_area(float scale) const
 float lanczos3_filter_t::operator()(float x) const
 {
     const int   half_table_size = 4 * 1024;
-    const float faccuracy       = 1024.0f;
+    const float faccuracy = 1024.0f;
     return ftable[math::fast_float_to_int(x * faccuracy) + half_table_size];
 }
 
@@ -47,7 +47,8 @@ void lanczos3_filter_t::init_table()
     {
         float x = (i - size / 2.0f + 0.5f) / faccuracy;
         x *= math::constants<float>::pi();
-        float y = Imath::Math<float>::sin(x) / x * Imath::Math<float>::sin(x / 3.0f) / (x / 3.0f);
+        float y = Imath::Math<float>::sin(x) / x *
+                  Imath::Math<float>::sin(x / 3.0f) / (x / 3.0f);
         ftable.push_back(y);
     }
 }
@@ -65,14 +66,14 @@ int mitchell_filter_t::filter_area(float scale) const
 float mitchell_filter_t::operator()(float x) const
 {
     const int   half_table_size = 3 * 1024;
-    const float faccuracy       = 1024.0f;
+    const float faccuracy = 1024.0f;
     return ftable[math::fast_float_to_int(x * faccuracy) + half_table_size];
 }
 
 void mitchell_filter_t::init_table()
 {
-    float b  = 1.0f / 3.0f;
-    float c  = 1.0f / 3.0f;
+    float b = 1.0f / 3.0f;
+    float c = 1.0f / 3.0f;
     float p0 = (6 - 2 * b) / 6;
     float p2 = (-18 + 12 * b + 6 * c) / 6;
     float p3 = (12 - 9 * b - 6 * c) / 6;
@@ -88,7 +89,8 @@ void mitchell_filter_t::init_table()
 
     for (int i = 0; i < size; ++i)
     {
-        float x = Imath::Math<float>::fabs((i - size / 2.0f + 0.5f) / faccuracy);
+        float x =
+            Imath::Math<float>::fabs((i - size / 2.0f + 0.5f) / faccuracy);
         float y;
 
         if (x < 1.0f)
@@ -118,7 +120,7 @@ int catrom_filter_t::filter_area(float scale) const
 float catrom_filter_t::operator()(float x) const
 {
     const int   half_table_size = 3 * 1024;
-    const float faccuracy       = 1024.0f;
+    const float faccuracy = 1024.0f;
     return ftable[math::fast_float_to_int(x * faccuracy) + half_table_size];
 }
 
@@ -151,5 +153,5 @@ float catrom_filter_t::catrom(float x)
     return 0.0f;
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

@@ -14,29 +14,28 @@ class ocio_view_combo_t : public ocio_combo_t
 {
     Q_OBJECT
 
-public:
+  public:
     ocio_view_combo_t(QWidget* parent = 0);
 
     const std::string& get_current_view() const { return current_view_; }
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_view(const std::string& s);
 
     void update_views(const std::string& display);
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void view_changed(const std::string&);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void combo_index_changed(int indx);
 
-private:
+  private:
     std::string current_view_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

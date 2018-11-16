@@ -9,8 +9,8 @@ namespace ramen
 namespace ui
 {
 color_button_t::color_button_t(QWidget* parent)
-: QPushButton(parent)
-, value_(0, 0, 0, 0)
+  : QPushButton(parent)
+  , value_(0, 0, 0, 0)
 {
     update_button_color();
 }
@@ -50,5 +50,5 @@ void color_button_t::update_button_color()
     setStyleSheet(str.arg(col.red()).arg(col.green()).arg(col.blue()));
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

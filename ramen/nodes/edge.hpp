@@ -17,7 +17,11 @@ struct edge_t
 {
     edge_t();
     edge_t(node_t* s = 0, node_t* d = 0, int p = -1);
-    edge_t(node_t* s, const core::name_t& splug, node_t* d, const core::name_t& dplug);
+    edge_t(
+        node_t*             s,
+        const core::name_t& splug,
+        node_t*             d,
+        const core::name_t& dplug);
 
     bool operator==(const edge_t& other) const;
     bool operator!=(const edge_t& other) const { return !(*this == other); }
@@ -37,5 +41,4 @@ struct edge_t
     mutable graph_color_t graph_color_;
 };
 
-}  // ramen
-
+}  // namespace ramen

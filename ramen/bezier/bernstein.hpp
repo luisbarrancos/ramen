@@ -10,8 +10,7 @@ namespace ramen
 {
 namespace bezier
 {
-template<class T, int Degree>
-T bernstein(int i, T u)
+template <class T, int Degree> T bernstein(int i, T u)
 {
     T tmp[Degree + 1];
 
@@ -19,7 +18,7 @@ T bernstein(int i, T u)
         tmp[j] = T(0);
 
     tmp[Degree - i] = T(1);
-    T u1            = T(1) - u;
+    T u1 = T(1) - u;
 
     for (int k = 1; k <= Degree; ++k)
     {
@@ -30,7 +29,7 @@ T bernstein(int i, T u)
     return tmp[Degree];
 }
 
-template<class T, int Degree>
+template <class T, int Degree>
 void all_bernstein(T u, std::array<T, Degree + 1>& B)
 {
     B[0] = T(1);
@@ -43,14 +42,13 @@ void all_bernstein(T u, std::array<T, Degree + 1>& B)
         for (int k = 0; k < j; ++k)
         {
             T temp = B[k];
-            B[k]   = saved + u1 * temp;
-            saved  = u * temp;
+            B[k] = saved + u1 * temp;
+            saved = u * temp;
         }
 
         B[j] = saved;
     }
 }
 
-}  // bezier
-}  // ramen
-
+}  // namespace bezier
+}  // namespace ramen

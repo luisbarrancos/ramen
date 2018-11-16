@@ -17,10 +17,11 @@ namespace ramen
 namespace image
 {
 flip_node_t::flip_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("flip");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -59,9 +60,9 @@ void flip_node_t::calc_transform_matrix()
             break;
     }
 
-    xform_ = Imath::M33d().setTranslation(Imath::V2d(-cx, -cy))
-             * Imath::M33d().setScale(Imath::V2d(sx, sy))
-             * Imath::M33d().setTranslation(Imath::V2d(cx, cy));
+    xform_ = Imath::M33d().setTranslation(Imath::V2d(-cx, -cy)) *
+             Imath::M33d().setScale(Imath::V2d(sx, sy)) *
+             Imath::M33d().setTranslation(Imath::V2d(cx, cy));
 
     inv_xform_ = xform_.inverse();
 }
@@ -86,18 +87,22 @@ void flip_node_t::do_process(const render::context_t& context)
         return;
 
     calc_transform_matrix();
-    image::affine_warp_nearest(input_as<image_node_t>()->defined(),
-                               input_as<image_node_t>()->const_image_view(),
-                               defined(),
-                               image_view(),
-                               xform_,
-                               inv_xform_);
+    image::affine_warp_nearest(
+        input_as<image_node_t>()->defined(),
+        input_as<image_node_t>()->const_image_view(),
+        defined(),
+        image_view(),
+        xform_,
+        inv_xform_);
 }
 
 // factory
 node_t* create_flip_node() { return new flip_node_t(); }
 
-const node_metaclass_t* flip_node_t::metaclass() const { return &flip_node_metaclass(); }
+const node_metaclass_t* flip_node_t::metaclass() const
+{
+    return &flip_node_metaclass();
+}
 
 const node_metaclass_t& flip_node_t::flip_node_metaclass()
 {
@@ -106,21 +111,21 @@ const node_metaclass_t& flip_node_t::flip_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.flip";
+        info.id = "image.builtin.flip";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Flip";
-        info.create        = &create_flip_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Flip";
+        info.create = &create_flip_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(flip_node_t::flip_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    flip_node_t::flip_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

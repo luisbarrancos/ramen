@@ -15,8 +15,7 @@ struct deselect_all_visitor : public boost::static_visitor<>
 {
     deselect_all_visitor() {}
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         c->select_all_keyframes(false);
     }
@@ -26,8 +25,7 @@ struct select_all_visitor : public boost::static_visitor<>
 {
     select_all_visitor() {}
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         c->select_all_keyframes(true);
     }
@@ -36,12 +34,11 @@ struct select_all_visitor : public boost::static_visitor<>
 struct any_selected_visitor : public boost::static_visitor<>
 {
     any_selected_visitor()
-    : any_selected(false)
+      : any_selected(false)
     {
     }
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         if (any_selected)
             return;
@@ -56,12 +53,13 @@ struct count_selected_visitor : public boost::static_visitor<>
 {
     count_selected_visitor() {}
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         count = 0;
 
-        for (typename anim::curve_t<K>::const_iterator it(c->begin()); it != c->end(); ++it)
+        for (typename anim::curve_t<K>::const_iterator it(c->begin());
+             it != c->end();
+             ++it)
         {
             if (it->selected())
                 ++count;
@@ -73,77 +71,74 @@ struct count_selected_visitor : public boost::static_visitor<>
 
 struct select_keyframe_visitor : public boost::static_visitor<>
 {
-public:
+  public:
     select_keyframe_visitor(int index)
-    : index_(index)
+      : index_(index)
     {
     }
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         (*c)[index_].select(true);
     }
 
-private:
+  private:
     int index_;
 };
 
 struct toggle_select_keyframe_visitor : public boost::static_visitor<>
 {
-public:
+  public:
     toggle_select_keyframe_visitor(int index)
-    : index_(index)
+      : index_(index)
     {
     }
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         (*c)[index_].select(true);
     }
 
-
-private:
+  private:
     int index_;
 };
 
 struct keyframe_is_selected_visitor : public boost::static_visitor<>
 {
-public:
+  public:
     keyframe_is_selected_visitor(int index)
-    : index_(index)
-    , selected(false)
+      : index_(index)
+      , selected(false)
     {
     }
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         selected = (*c)[index_].selected();
     }
 
     bool selected;
 
-private:
+  private:
     int index_;
 };
 
 struct get_selected_keyframe_visitor : public boost::static_visitor<>
 {
-public:
+  public:
     get_selected_keyframe_visitor()
-    : index(-1)
+      : index(-1)
     {
     }
 
-    template<class K>
-    void operator()(const anim::curve_t<K>* c)
+    template <class K> void operator()(const anim::curve_t<K>* c)
     {
         index = -1;
         int i = 0;
 
-        for (typename anim::curve_t<K>::const_iterator it(c->begin()); it != c->end(); ++it, ++i)
+        for (typename anim::curve_t<K>::const_iterator it(c->begin());
+             it != c->end();
+             ++it, ++i)
         {
             if (it->selected())
             {
@@ -161,6 +156,5 @@ public:
     int index;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

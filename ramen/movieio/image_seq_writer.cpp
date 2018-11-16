@@ -10,5 +10,5 @@ namespace movieio
 {
 image_seq_writer_t::image_seq_writer_t() {}
 
-}  // movieio
-}  // ramen
+}  // namespace movieio
+}  // namespace ramen

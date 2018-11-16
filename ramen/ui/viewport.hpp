@@ -12,7 +12,7 @@ namespace ui
 {
 class viewport_t
 {
-public:
+  public:
     viewport_t();
 
     bool y_down() const { return y_down_; }
@@ -49,12 +49,11 @@ public:
     void zoom(const Imath::V2f& center, float factor);
     void zoom(const Imath::V2f& center, float xfactor, float yfactor);
 
-private:
+  private:
     Imath::Box2i device_;
     Imath::Box2f world_;
     bool         y_down_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

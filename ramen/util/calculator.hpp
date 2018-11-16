@@ -13,17 +13,16 @@ namespace util
 {
 class calculator_t : boost::noncopyable
 {
-public:
+  public:
     calculator_t();
     ~calculator_t();
 
     boost::optional<double> operator()(const std::string& str) const;
 
-private:
+  private:
     struct impl;
     impl* m_pimpl;
 };
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

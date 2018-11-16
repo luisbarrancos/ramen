@@ -10,6 +10,5 @@ namespace ui
 {
 class viewer_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

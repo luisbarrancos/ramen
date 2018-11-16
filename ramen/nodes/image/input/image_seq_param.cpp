@@ -21,18 +21,18 @@
 namespace ramen
 {
 image_seq_param_t::image_seq_param_t(const std::string& name, int proxy_level)
-: static_param_t(name)
+  : static_param_t(name)
 {
     proxy_level_ = proxy_level;
 }
 
 image_seq_param_t::image_seq_param_t(const image_seq_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
     proxy_level_ = other.proxy_level_;
-    input_text_  = other.input_text_;
-    input_       = 0;
-    button_      = 0;
+    input_text_ = other.input_text_;
+    input_ = 0;
+    button_ = 0;
 }
 
 void image_seq_param_t::set_input_text(const std::string& str)
@@ -45,10 +45,10 @@ void image_seq_param_t::set_input_text(const std::string& str)
 
 QWidget* image_seq_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    input_         = new ui::line_edit_t(top);
-    button_        = new QPushButton(top);
+    input_ = new ui::line_edit_t(top);
+    button_ = new QPushButton(top);
 
     QSize s = input_->sizeHint();
 
@@ -65,9 +65,10 @@ QWidget* image_seq_param_t::do_create_widgets()
     connect(button_, SIGNAL(clicked()), this, SLOT(select_pushed()));
 
     input_->move(app().ui()->inspector().left_margin(), 0);
-    input_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                       - button_->width() - 10,
-                   s.height());
+    input_->resize(
+        app().ui()->inspector().width() -
+            app().ui()->inspector().left_margin() - button_->width() - 10,
+        s.height());
 
     input_->setReadOnly(true);
     input_->setEnabled(enabled());
@@ -97,4 +98,4 @@ void image_seq_param_t::select_pushed()
         file_picked(p, proxy_level_, sequence, relative);
 }
 
-}  // namespace
+}  // namespace ramen

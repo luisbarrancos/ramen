@@ -14,13 +14,13 @@
 namespace ramen
 {
 bool_param_t::bool_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(false);
 }
 
 bool_param_t::bool_param_t(const bool_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
     button_ = 0;
 }
@@ -89,7 +89,8 @@ QWidget* bool_param_t::do_create_widgets()
     button_->setEnabled(enabled());
     button_->setToolTip(id().c_str());
 
-    connect(button_, SIGNAL(stateChanged(int)), this, SLOT(button_checked(int)));
+    connect(
+        button_, SIGNAL(stateChanged(int)), this, SLOT(button_checked(int)));
     return w;
 }
 
@@ -100,4 +101,4 @@ void bool_param_t::button_checked(int state)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

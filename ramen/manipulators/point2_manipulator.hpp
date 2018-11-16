@@ -12,18 +12,18 @@ class float2_param_t;
 
 class point2_manipulator_t : public manipulator_t
 {
-public:
+  public:
     point2_manipulator_t(float2_param_t* param);
 
-private:
+  private:
     void do_draw_overlay(const ui::paint_event_t& event) const override;
     bool do_mouse_press_event(const ui::mouse_press_event_t& event) override;
     void do_mouse_drag_event(const ui::mouse_drag_event_t& event) override;
-    void do_mouse_release_event(const ui::mouse_release_event_t& event) override;
+    void do_mouse_release_event(
+        const ui::mouse_release_event_t& event) override;
 
     float2_param_t* param_;
     bool            selected_;
 };
 
-}  // namespace
-
+}  // namespace ramen

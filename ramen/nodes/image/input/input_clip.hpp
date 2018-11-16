@@ -14,7 +14,7 @@ namespace image
 {
 class input_clip_t
 {
-public:
+  public:
     input_clip_t();
     explicit input_clip_t(const filesystem::path_sequence_t& seq);
 
@@ -22,23 +22,27 @@ public:
 
     bool valid() const { return sequence_.valid(); }
 
-    const filesystem::path_sequence_t& path_sequence() const { return sequence_; }
+    const filesystem::path_sequence_t& path_sequence() const
+    {
+        return sequence_;
+    }
 
     std::string format_string() const { return sequence_.format_string(); }
 
-    core::auto_ptr_t<movieio::reader_t> reader(const boost::filesystem::path& cwd) const;
+    core::auto_ptr_t<movieio::reader_t> reader(
+        const boost::filesystem::path& cwd) const;
 
     // paths
-    void convert_relative_paths(const boost::filesystem::path& old_base,
-                                const boost::filesystem::path& new_base);
+    void convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base);
 
     void make_paths_absolute(const ::boost::filesystem::path& from_dir);
     void make_paths_relative(const ::boost::filesystem::path& from_dir);
 
-private:
+  private:
     filesystem::path_sequence_t sequence_;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

@@ -15,20 +15,20 @@ namespace ramen
 namespace ui
 {
 color_swatch_t::color_swatch_t(QWidget* parent, const color_t& c)
-: QWidget(parent)
-, background_(sizeHint(), QImage::Format_RGB32)
+  : QWidget(parent)
+  , background_(sizeHint(), QImage::Format_RGB32)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setFocusPolicy(Qt::StrongFocus);
     valid_background_ = false;
-    color_            = c;
+    color_ = c;
 }
 
 QSize color_swatch_t::sizeHint() const { return QSize(100, 100); }
 
 void color_swatch_t::set_color(const ramen::ui::color_t& c)
 {
-    color_            = c;
+    color_ = c;
     valid_background_ = false;
     update();
 }
@@ -58,8 +58,8 @@ void color_swatch_t::resizeEvent(QResizeEvent* event)
 void color_swatch_t::update_background()
 {
     const double soft_start = 0.5;
-    const double soft_end   = 0.85;
-    const double center     = width() / 2;
+    const double soft_end = 0.85;
+    const double center = width() / 2;
 
     background_ = QImage(contentsRect().size(), QImage::Format_RGB32);
 
@@ -74,9 +74,10 @@ void color_swatch_t::update_background()
 
         for (int i = 0; i < background_.width(); ++i)
         {
-            double r
-                = std::sqrt((double) ((i - center) * (i - center)) + ((j - center) * (j - center)))
-                  / center;
+            double r = std::sqrt(
+                           (double) ((i - center) * (i - center)) +
+                           ((j - center) * (j - center))) /
+                       center;
 
             if (r > soft_end)
                 *p = qRgb(0, 0, 0);
@@ -86,7 +87,8 @@ void color_swatch_t::update_background()
                     *p = qRgb(nl_col.red(), nl_col.green(), nl_col.blue());
                 else
                 {
-                    double s = 1.0 - ((r - soft_start) / (soft_end - soft_start));
+                    double s =
+                        1.0 - ((r - soft_start) / (soft_end - soft_start));
 
                     color_t col = color_;
                     col *= s;
@@ -102,5 +104,5 @@ void color_swatch_t::update_background()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

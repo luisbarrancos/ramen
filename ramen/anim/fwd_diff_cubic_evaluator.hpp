@@ -10,15 +10,16 @@ namespace ramen
 {
 namespace anim
 {
-template<class T = float>
-class fwd_diff_cubic_evaluator_t
+template <class T = float> class fwd_diff_cubic_evaluator_t
 {
-public:
+  public:
     typedef T value_type;
 
-    fwd_diff_cubic_evaluator_t(const std::array<value_type, 4>& p, value_type step_size)
+    fwd_diff_cubic_evaluator_t(
+        const std::array<value_type, 4>& p,
+        value_type                       step_size)
     {
-        value_type s  = step_size;
+        value_type s = step_size;
         value_type s2 = s * s;
         value_type s3 = s2 * s;
 
@@ -45,11 +46,10 @@ public:
         return tmp;
     }
 
-private:
+  private:
     value_type value_;
     value_type diff1_, diff2_, diff3_;
 };
 
-}  // anim
-}  // ramen
-
+}  // namespace anim
+}  // namespace ramen

@@ -14,20 +14,19 @@ class group_box_t : public QGroupBox
 {
     Q_OBJECT
 
-public:
+  public:
     group_box_t(QWidget* parent = 0);
 
-protected:
+  protected:
     void mousePressEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
 
-private:
+  private:
     void collapse(bool b);
 
     bool collapsed_;
     bool clicked_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

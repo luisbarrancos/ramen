@@ -22,11 +22,11 @@ struct event_t
 {
     enum modifiers_t
     {
-        no_modifier      = 1 << 0,
+        no_modifier = 1 << 0,
         control_modifier = 1 << 1,
-        shift_modifier   = 1 << 2,
-        alt_modifier     = 1 << 3,
-        meta_modifier    = 1 << 4
+        shift_modifier = 1 << 2,
+        alt_modifier = 1 << 3,
+        meta_modifier = 1 << 4
     };
 
     event_t();
@@ -129,10 +129,10 @@ struct mouse_event_t : public event_t
 {
     enum mouse_button_t
     {
-        no_button     = 0,
-        left_button   = 1 << 0,
+        no_button = 0,
+        left_button = 1 << 0,
         middle_button = 1 << 1,
-        right_button  = 1 << 2
+        right_button = 1 << 2
     };
 
     mouse_event_t();
@@ -195,6 +195,5 @@ struct paint_event_t
     int                              subsample;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

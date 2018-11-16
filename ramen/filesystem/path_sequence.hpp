@@ -17,7 +17,7 @@ namespace filesystem
 {
 class path_sequence_t
 {
-public:
+  public:
     path_sequence_t();
     path_sequence_t(const boost::filesystem::path& p, bool sequence = true);
     path_sequence_t(const std::string& format, int start, int end);
@@ -35,7 +35,7 @@ public:
     void add_paths(boost::filesystem::directory_iterator it);
 
     const boost::filesystem::path& directory() const { return dir_; }
-    void                           set_directory(const boost::filesystem::path& p) { dir_ = p; }
+    void set_directory(const boost::filesystem::path& p) { dir_ = p; }
 
     bool is_sequence() const { return is_seq_; }
 
@@ -44,16 +44,19 @@ public:
     int pad() const { return pad_; }
 
     // paths
-    void convert_relative_paths(const boost::filesystem::path& old_base,
-                                const boost::filesystem::path& new_base);
+    void convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base);
     void make_paths_absolute(const boost::filesystem::path& from_dir);
     void make_paths_relative(const boost::filesystem::path& from_dir);
 
     // serialization
-    friend void           operator>>(const YAML::Node& in, path_sequence_t& seq);
-    friend YAML::Emitter& operator<<(YAML::Emitter& out, const path_sequence_t& seq);
+    friend void operator>>(const YAML::Node& in, path_sequence_t& seq);
+    friend YAML::Emitter& operator<<(
+        YAML::Emitter&         out,
+        const path_sequence_t& seq);
 
-private:
+  private:
     std::string get_extension(const std::string& s) const;
     std::string get_frame_number(const std::string& s) const;
     int         get_pad(const std::string& str) const;
@@ -69,6 +72,5 @@ private:
     bool                    is_seq_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace filesystem
+}  // namespace ramen

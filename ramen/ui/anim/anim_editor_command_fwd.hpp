@@ -10,6 +10,5 @@ namespace undo
 {
 class anim_editor_command_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

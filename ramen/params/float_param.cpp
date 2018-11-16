@@ -28,12 +28,12 @@
 namespace ramen
 {
 float_param_t::float_param_t(const std::string& name)
-: numeric_param_t(name)
+  : numeric_param_t(name)
 {
     private_init();
 }
 float_param_t::float_param_t(const float_param_t& other)
-: numeric_param_t(other)
+  : numeric_param_t(other)
 {
     input_ = 0;
 }
@@ -63,7 +63,10 @@ void float_param_t::set_value(float x, change_reason reason)
     set_value_at_frame(x, frame, reason);
 }
 
-void float_param_t::set_value_at_frame(float x, float frame, change_reason reason)
+void float_param_t::set_value_at_frame(
+    float         x,
+    float         frame,
+    change_reason reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -86,7 +89,10 @@ void float_param_t::set_absolute_value(float x, change_reason reason)
     set_value(absolute_to_relative(round(x)), reason);
 }
 
-void float_param_t::set_absolute_value_at_frame(float x, float frame, change_reason reason)
+void float_param_t::set_absolute_value_at_frame(
+    float         x,
+    float         frame,
+    change_reason reason)
 {
     set_value_at_frame(absolute_to_relative(round(x)), frame, reason);
 }
@@ -110,9 +116,10 @@ float float_param_t::integrate(float time1, float time2) const
     }
 }
 
-void float_param_t::do_format_changed(const Imath::Box2i& new_domain,
-                                      float               aspect,
-                                      const Imath::V2f&   proxy_scale)
+void float_param_t::do_format_changed(
+    const Imath::Box2i& new_domain,
+    float               aspect,
+    const Imath::V2f&   proxy_scale)
 {
     if (num_curves())
     {
@@ -161,7 +168,8 @@ void float_param_t::do_write(serialization::yaml_oarchive_t& out) const
             curve().write(out);
         }
         else
-            out << YAML::Key << "value" << YAML::Value << get_value<float>(*this);
+            out << YAML::Key << "value" << YAML::Value
+                << get_value<float>(*this);
     }
 }
 
@@ -183,9 +191,9 @@ void float_param_t::do_enable_widgets(bool e)
 
 QWidget* float_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    input_         = new ui::param_spinbox_t(*this, 0, top);
+    input_ = new ui::param_spinbox_t(*this, 0, top);
 
     QSize s = input_->sizeHint();
 
@@ -195,7 +203,7 @@ QWidget* float_param_t::do_create_widgets()
     label->setText(name().c_str());
     label->setToolTip(id().c_str());
 
-    float low  = absolute_min();
+    float low = absolute_min();
     float high = absolute_max();
 
     input_->setRange(low, high);
@@ -210,9 +218,17 @@ QWidget* float_param_t::do_create_widgets()
     if (round_to_int())
         input_->setDecimals(0);
 
-    connect(input_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
 
     top->setMinimumSize(app().ui()->inspector().width(), s.height());
@@ -256,4 +272,4 @@ void float_param_t::spinbox_released()
         app().ui()->end_interaction();
 }
 
-}  // namespace
+}  // namespace ramen

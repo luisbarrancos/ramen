@@ -34,7 +34,6 @@ void convert_hsv_to_rgb(const const_image_view_t& src, const image_view_t& dst)
     boost::gil::tbb_transform_pixels(src, dst, hsv_to_rgb_fun);
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

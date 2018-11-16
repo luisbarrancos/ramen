@@ -19,8 +19,11 @@ namespace detail
 {
 int round(double x);
 
-template<class K>
-void move_selected_keys_time_left(curve_t<K>& c, float offset, bool do_round = false)
+template <class K>
+void move_selected_keys_time_left(
+    curve_t<K>& c,
+    float       offset,
+    bool        do_round = false)
 {
     typedef typename curve_t<K>::iterator iterator;
     iterator                              it(c.begin()), prev(c.begin());
@@ -48,13 +51,17 @@ void move_selected_keys_time_left(curve_t<K>& c, float offset, bool do_round = f
             if (do_round)
                 new_time = round(new_time);
 
-            it->set_time(std::max(new_time, prev->time() + keyframe_t::time_tolerance()));
+            it->set_time(std::max(
+                new_time, prev->time() + keyframe_t::time_tolerance()));
         }
     }
 }
 
-template<class K>
-void move_selected_keys_time_right(curve_t<K>& c, float offset, bool do_round = false)
+template <class K>
+void move_selected_keys_time_right(
+    curve_t<K>& c,
+    float       offset,
+    bool        do_round = false)
 {
     typedef typename curve_t<K>::reverse_iterator reverse_iterator;
 
@@ -82,13 +89,13 @@ void move_selected_keys_time_right(curve_t<K>& c, float offset, bool do_round = 
             if (do_round)
                 new_time = round(new_time);
 
-            it->set_time(std::min(new_time, prev->time() - keyframe_t::time_tolerance()));
+            it->set_time(std::min(
+                new_time, prev->time() - keyframe_t::time_tolerance()));
         }
     }
 }
 
-template<class Iter>
-Iter move_to_next_selected(Iter it, Iter e_it, Iter end)
+template <class Iter> Iter move_to_next_selected(Iter it, Iter e_it, Iter end)
 {
     while (it < e_it && it != end)
     {
@@ -101,8 +108,7 @@ Iter move_to_next_selected(Iter it, Iter e_it, Iter end)
     return end;
 }
 
-template<class Iter>
-Iter move_to_prev_selected(Iter it, Iter s_it, Iter start)
+template <class Iter> Iter move_to_prev_selected(Iter it, Iter s_it, Iter start)
 {
     while (it > s_it && it != start)
     {
@@ -115,8 +121,7 @@ Iter move_to_prev_selected(Iter it, Iter s_it, Iter start)
     return start;
 }
 
-template<class K>
-void do_reverse_selected_keyframes(curve_t<K>& c)
+template <class K> void do_reverse_selected_keyframes(curve_t<K>& c)
 {
     typedef typename curve_t<K>::iterator iterator;
 
@@ -149,8 +154,7 @@ void do_reverse_selected_keyframes(curve_t<K>& c)
     }
 }
 
-template<class K>
-void do_reverse_keyframes(curve_t<K>& c)
+template <class K> void do_reverse_keyframes(curve_t<K>& c)
 {
     typedef typename curve_t<K>::iterator iterator;
 
@@ -165,9 +169,9 @@ void do_reverse_keyframes(curve_t<K>& c)
     }
 }
 
-}  // detail
+}  // namespace detail
 
-template<class K>
+template <class K>
 void move_selected_keyframes_time(curve_t<K>& c, float d, bool do_round = false)
 {
     if (d < 0.0f)
@@ -176,14 +180,12 @@ void move_selected_keyframes_time(curve_t<K>& c, float d, bool do_round = false)
         detail::move_selected_keys_time_right(c, d, do_round);
 }
 
-template<class K>
-void move_selected_keyframes_value(curve_t<K>& c, float d)
+template <class K> void move_selected_keyframes_value(curve_t<K>& c, float d)
 {
     assert(0 && "Can't move non float curves keyframes in Y");
 }
 
-template<class K>
-void reverse_keyframes(curve_t<K>& c, bool selected_only)
+template <class K> void reverse_keyframes(curve_t<K>& c, bool selected_only)
 {
     if (c.empty() || c.size() == 1)
         return;
@@ -203,6 +205,5 @@ void highpass_keyframes(float_curve_t& c, float stddev, bool selected_only);
 // for some reason, gcc does not pick this overload...
 void reverse_float_keyframes(float_curve_t& c, bool selected_only);
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

@@ -14,9 +14,11 @@
 
 namespace ramen
 {
-animated_param_command_t::animated_param_command_t(param_set_t& pset, const std::string& id)
-: undo::command_t("Param Changed")
-, pset_(pset)
+animated_param_command_t::animated_param_command_t(
+    param_set_t&       pset,
+    const std::string& id)
+  : undo::command_t("Param Changed")
+  , pset_(pset)
 {
     id_ = id;
     set_done(true);
@@ -54,7 +56,7 @@ void animated_param_command_t::redo()
     assert(!new_value_.is_empty() && "Empty value in animated param command");
 
     param_t& p = pset_.find(id_);
-    p.value()  = new_value_;
+    p.value() = new_value_;
     swap_curves();
     p.evaluate(app().document().composition().frame());
     p.update_widgets();
@@ -62,4 +64,4 @@ void animated_param_command_t::redo()
     undo::command_t::redo();
 }
 
-}  // namespace
+}  // namespace ramen

@@ -10,20 +10,20 @@ namespace image
 {
 class gauss_blur_node_t : public base_blur_node_t
 {
-public:
+  public:
     static const node_metaclass_t& gauss_blur_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     gauss_blur_node_t();
 
-protected:
+  protected:
     gauss_blur_node_t(const gauss_blur_node_t& other)
-    : base_blur_node_t(other)
+      : base_blur_node_t(other)
     {
     }
     void operator=(const gauss_blur_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new gauss_blur_node_t(*this); }
 
     void do_create_params() override;
@@ -35,6 +35,5 @@ private:
     void get_expand_radius(int& hradius, int& vradius) const override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

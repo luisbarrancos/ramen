@@ -16,15 +16,15 @@ class tab_group_param_t : public composite_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     tab_group_param_t();
     explicit tab_group_param_t(const std::string& name);
 
-protected:
+  protected:
     tab_group_param_t(const tab_group_param_t& other);
     void operator=(const tab_group_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new tab_group_param_t(*this); }
 
     QWidget* do_create_widgets() override;
@@ -35,5 +35,4 @@ private:
     QPointer<QTabWidget> tab_;
 };
 
-}  // namespace
-
+}  // namespace ramen

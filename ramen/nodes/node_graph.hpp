@@ -25,14 +25,15 @@ namespace ramen
 */
 class node_graph_t
 {
-public:
+  public:
     typedef boost::ptr_vector<node_t> node_container_type;
 
     typedef node_container_type::iterator       node_iterator;
     typedef node_container_type::const_iterator const_node_iterator;
 
-    typedef node_container_type::reverse_iterator       reverse_node_iterator;
-    typedef node_container_type::const_reverse_iterator const_reverse_node_iterator;
+    typedef node_container_type::reverse_iterator reverse_node_iterator;
+    typedef node_container_type::const_reverse_iterator
+        const_reverse_node_iterator;
 
     typedef node_container_type       node_range_type;
     typedef const node_container_type const_node_range_type;
@@ -40,8 +41,9 @@ public:
     typedef std::vector<edge_t>::iterator       edge_iterator;
     typedef std::vector<edge_t>::const_iterator const_edge_iterator;
 
-    typedef std::vector<edge_t>::reverse_iterator       reverse_edge_iterator;
-    typedef std::vector<edge_t>::const_reverse_iterator const_reverse_edge_iterator;
+    typedef std::vector<edge_t>::reverse_iterator reverse_edge_iterator;
+    typedef std::vector<edge_t>::const_reverse_iterator
+        const_reverse_edge_iterator;
 
     typedef std::vector<edge_t>       edge_range_type;
     typedef const std::vector<edge_t> const_edge_range_type;
@@ -78,12 +80,11 @@ public:
     void connect(node_t* src, node_t* dst, int port);
     void disconnect(node_t* src, node_t* dst, int port);
 
-private:
+  private:
     void operator=(const node_graph_t& other);
 
     node_container_type nodes_;
     std::vector<edge_t> edges_;
 };
 
-}  // ramen
-
+}  // namespace ramen

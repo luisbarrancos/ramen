@@ -12,16 +12,25 @@ namespace boost
 namespace gil
 {
 // transform pixels for 3 inputs and one destination
-template<typename View1, typename View2, typename View3, typename View4, typename F>
-GIL_FORCEINLINE F
-                transform_pixels(const View1& src1, const View2& src2, const View3& src3, const View4& dst, F fun)
+template <
+    typename View1,
+    typename View2,
+    typename View3,
+    typename View4,
+    typename F>
+GIL_FORCEINLINE F transform_pixels(
+    const View1& src1,
+    const View2& src2,
+    const View3& src3,
+    const View4& dst,
+    F            fun)
 {
     for (std::ptrdiff_t y = 0; y < dst.height(); ++y)
     {
         typename View1::x_iterator srcIt1 = src1.row_begin(y);
         typename View2::x_iterator srcIt2 = src2.row_begin(y);
         typename View3::x_iterator srcIt3 = src3.row_begin(y);
-        typename View4::x_iterator dstIt  = dst.row_begin(y);
+        typename View4::x_iterator dstIt = dst.row_begin(y);
 
         for (int x = 0, e = dst_.width(); x < e; ++x)
             dstIt[x] = fun(srcIt1[x], srcIt2[x], srcIt3[x]);
@@ -30,9 +39,18 @@ GIL_FORCEINLINE F
     return fun;
 }
 
-template<typename View1, typename View2, typename View3, typename View4, typename F>
+template <
+    typename View1,
+    typename View2,
+    typename View3,
+    typename View4,
+    typename F>
 GIL_FORCEINLINE F transform_pixel_positions(
-    const View1& src1, const View2& src2, const View3& src3, const View4& dst, F fun)
+    const View1& src1,
+    const View2& src2,
+    const View3& src3,
+    const View4& dst,
+    F            fun)
 {
     assert(src1.dimensions() == dst.dimensions());
     assert(src2.dimensions() == dst.dimensions());
@@ -46,7 +64,8 @@ GIL_FORCEINLINE F transform_pixel_positions(
     {
         typename View4::x_iterator dstIt = dst.row_begin(y);
 
-        for (int x = 0, e = src1.width(); x < e; ++x, ++loc1.x(), ++loc2.x(), ++loc3.x())
+        for (int x = 0, e = src1.width(); x < e;
+             ++x, ++loc1.x(), ++loc2.x(), ++loc3.x())
             dstIt[x] = fun(loc1, loc2, loc3);
 
         loc1.x() -= src1.width();
@@ -59,6 +78,5 @@ GIL_FORCEINLINE F transform_pixel_positions(
     return fun;
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace gil
+}  // namespace boost

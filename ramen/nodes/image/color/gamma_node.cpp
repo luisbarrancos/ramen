@@ -10,7 +10,7 @@ namespace ramen
 namespace image
 {
 gamma_node_t::gamma_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("gamma");
 }
@@ -25,11 +25,15 @@ void gamma_node_t::do_create_params()
     add_param(p);
 }
 
-bool gamma_node_t::do_is_identity() const { return get_value<float>(param("gamma")) == 1.0f; }
+bool gamma_node_t::do_is_identity() const
+{
+    return get_value<float>(param("gamma")) == 1.0f;
+}
 
-void gamma_node_t::do_process(const image::const_image_view_t& src,
-                              const image::image_view_t&       dst,
-                              const render::context_t&         context)
+void gamma_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     image::apply_gamma(src, dst, 1.0f / get_value<float>(param("gamma")));
 }
@@ -37,7 +41,10 @@ void gamma_node_t::do_process(const image::const_image_view_t& src,
 // factory
 node_t* create_gamma_node() { return new gamma_node_t(); }
 
-const node_metaclass_t* gamma_node_t::metaclass() const { return &gamma_node_metaclass(); }
+const node_metaclass_t* gamma_node_t::metaclass() const
+{
+    return &gamma_node_metaclass();
+}
 
 const node_metaclass_t& gamma_node_t::gamma_node_metaclass()
 {
@@ -46,21 +53,21 @@ const node_metaclass_t& gamma_node_t::gamma_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.gamma";
+        info.id = "image.builtin.gamma";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Gamma";
-        info.create        = &create_gamma_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Gamma";
+        info.create = &create_gamma_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(gamma_node_t::gamma_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    gamma_node_t::gamma_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

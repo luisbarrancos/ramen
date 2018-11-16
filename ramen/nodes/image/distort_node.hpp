@@ -12,13 +12,12 @@ namespace image
 {
 class RAMEN_API distort_node_t : public base_warp_node_t
 {
-protected:
+  protected:
     distort_node_t();
 
     distort_node_t(const distort_node_t& other);
     void operator=(const distort_node_t&);
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

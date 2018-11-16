@@ -26,18 +26,19 @@ namespace imageio
 {
 class RAMEN_API writer_t
 {
-public:
+  public:
     writer_t() {}
     virtual ~writer_t() {}
 
-    void write_image(const boost::filesystem::path&   p,
-                     const image::const_image_view_t& view,
-                     const core::dictionary_t&        params) const
+    void write_image(
+        const boost::filesystem::path&   p,
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const
     {
         do_write_image(p, view, params);
     }
 
-protected:
+  protected:
     boost::uint8_t convert8(float x) const
     {
         return math::fast_float_to_int(ramen::clamp(x, 0.0f, 1.0f) * 255.0);
@@ -48,32 +49,39 @@ protected:
         return math::fast_float_to_int(ramen::clamp(x, 0.0f, 1.0f) * 65535.0);
     }
 
-    template<class PixelIter>
-    void clamp(PixelIter start, PixelIter end) const
+    template <class PixelIter> void clamp(PixelIter start, PixelIter end) const
     {
         for (PixelIter it(start); it != end; ++it)
         {
-            boost::gil::get_color(*it, boost::gil::red_t())
-                = ramen::clamp((float) boost::gil::get_color(*it, boost::gil::red_t()), 0.0f, 1.0f);
+            boost::gil::get_color(*it, boost::gil::red_t()) = ramen::clamp(
+                (float) boost::gil::get_color(*it, boost::gil::red_t()),
+                0.0f,
+                1.0f);
             boost::gil::get_color(*it, boost::gil::green_t()) = ramen::clamp(
-                (float) boost::gil::get_color(*it, boost::gil::green_t()), 0.0f, 1.0f);
+                (float) boost::gil::get_color(*it, boost::gil::green_t()),
+                0.0f,
+                1.0f);
             boost::gil::get_color(*it, boost::gil::blue_t()) = ramen::clamp(
-                (float) boost::gil::get_color(*it, boost::gil::blue_t()), 0.0f, 1.0f);
+                (float) boost::gil::get_color(*it, boost::gil::blue_t()),
+                0.0f,
+                1.0f);
             boost::gil::get_color(*it, boost::gil::alpha_t()) = ramen::clamp(
-                (float) boost::gil::get_color(*it, boost::gil::alpha_t()), 0.0f, 1.0f);
+                (float) boost::gil::get_color(*it, boost::gil::alpha_t()),
+                0.0f,
+                1.0f);
         }
     }
 
-private:
+  private:
     // non-copyable
     writer_t(const writer_t&);
     writer_t& operator=(const writer_t&);
 
-    virtual void do_write_image(const boost::filesystem::path&   p,
-                                const image::const_image_view_t& view,
-                                const core::dictionary_t&        params) const = 0;
+    virtual void do_write_image(
+        const boost::filesystem::path&   p,
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const = 0;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

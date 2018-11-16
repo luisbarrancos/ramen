@@ -11,7 +11,7 @@ namespace image
 {
 struct filter_t
 {
-protected:
+  protected:
     filter_t();
 
     static int accuracy();
@@ -19,7 +19,7 @@ protected:
 
 struct lanczos3_filter_t : public filter_t
 {
-public:
+  public:
     lanczos3_filter_t() {}
 
     int filter_area(float scale) const;
@@ -28,13 +28,13 @@ public:
 
     static void init_table();
 
-private:
+  private:
     static std::vector<float> ftable;
 };
 
 struct mitchell_filter_t : public filter_t
 {
-public:
+  public:
     mitchell_filter_t() {}
 
     int filter_area(float scale) const;
@@ -43,13 +43,13 @@ public:
 
     static void init_table();
 
-private:
+  private:
     static std::vector<float> ftable;
 };
 
 struct catrom_filter_t : public filter_t
 {
-public:
+  public:
     catrom_filter_t() {}
 
     int filter_area(float scale) const;
@@ -58,13 +58,13 @@ public:
 
     static void init_table();
 
-private:
+  private:
     static float catrom(float x);
 
     static std::vector<float> ftable;
 };
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen
 
 #endif

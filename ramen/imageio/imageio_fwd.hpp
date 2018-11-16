@@ -12,6 +12,5 @@ class reader_t;
 class multichannel_reader_t;
 class writer_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace imageio
+}  // namespace ramen

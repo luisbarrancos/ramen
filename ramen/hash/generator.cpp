@@ -34,7 +34,8 @@ const generator_t::digest_type& generator_t::digest() const
             reinterpret_cast<void*>(const_cast<char*>(ss_.str().c_str())),
             ss_.str().size(),
             0,  // seed
-            reinterpret_cast<void*>(const_cast<digest_type::iterator>(digest().begin())));
+            reinterpret_cast<void*>(
+                const_cast<digest_type::iterator>(digest().begin())));
     }
 
     return digest_.get();
@@ -51,11 +52,12 @@ std::string generator_t::digest_as_string() const
     /*
     const char *ptr = reinterpret_cast<const char*>( digest().begin());
     for( int i = 0; i < sizeof( digest_type); ++i)
-        s << std::setfill( '0') << std::setw( 2) << std::hex << static_cast<int>( ptr[i]);
+        s << std::setfill( '0') << std::setw( 2) << std::hex <<
+    static_cast<int>( ptr[i]);
     */
 
     return s.str();
 }
 
-}  // hash
-}  // ramen
+}  // namespace hash
+}  // namespace ramen

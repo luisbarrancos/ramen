@@ -20,39 +20,45 @@ namespace viewer
 {
 class tiled_image_strategy_t : public image_strategy_t
 {
-public:
-    tiled_image_strategy_t(const image::buffer_t& pixels,
-                           const Imath::Box2i&    display_window,
-                           const Imath::Box2i&    data_window,
-                           GLenum                 texture_unit = GL_TEXTURE0);
+  public:
+    tiled_image_strategy_t(
+        const image::buffer_t& pixels,
+        const Imath::Box2i&    display_window,
+        const Imath::Box2i&    data_window,
+        GLenum                 texture_unit = GL_TEXTURE0);
 
-    bool update_pixels(const image::buffer_t& pixels,
-                       const Imath::Box2i&    display_window,
-                       const Imath::Box2i&    data_window) override;
+    bool update_pixels(
+        const image::buffer_t& pixels,
+        const Imath::Box2i&    display_window,
+        const Imath::Box2i&    data_window) override;
 
     void draw() const override;
 
-    boost::optional<Imath::Color4f> color_at(const Imath::V2i& p) const override;
+    boost::optional<Imath::Color4f> color_at(
+        const Imath::V2i& p) const override;
 
-private:
+  private:
     static int tile_size();
 
     Imath::Box2i area_for_tile(int x, int y) const;
 
     struct tile_t : boost::noncopyable
     {
-    public:
+      public:
         tile_t(const image::buffer_t& pixels, const Imath::Box2i& area);
         ~tile_t();
 
-        void update_texture(const Imath::Box2i& area, char* ptr, std::size_t rowsize);
+        void update_texture(
+            const Imath::Box2i& area,
+            char*               ptr,
+            std::size_t         rowsize);
 
         void draw() const;
 
-        static char*       pixel_ptr(const image::buffer_t& pixels, int x, int y);
+        static char* pixel_ptr(const image::buffer_t& pixels, int x, int y);
         static std::size_t rowbytes(const image::buffer_t& pixels);
 
-    private:
+      private:
         void alloc_tile(int width, int height);
 
         GLuint       texture_id_;
@@ -63,7 +69,6 @@ private:
     std::vector<std::unique_ptr<tile_t>> tiles_;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

@@ -11,10 +11,11 @@ namespace ramen
 namespace image
 {
 set_dod_node_t::set_dod_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("dod");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -51,7 +52,8 @@ void set_dod_node_t::do_create_params()
 
 void set_dod_node_t::do_calc_bounds(const render::context_t& context)
 {
-    Imath::Box2i bounds(ImathExt::intersect(input_as<image_node_t>()->bounds(), dod_area()));
+    Imath::Box2i bounds(
+        ImathExt::intersect(input_as<image_node_t>()->bounds(), dod_area()));
     set_bounds(bounds);
 }
 
@@ -63,13 +65,15 @@ void set_dod_node_t::do_calc_inputs_interest(const render::context_t& context)
 
 void set_dod_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area = ImathExt::intersect(input_as<image_node_t>()->defined(), defined());
+    Imath::Box2i area =
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined());
 
     if (area.isEmpty())
         return;
 
-    boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                            subimage_view(area));
+    boost::gil::copy_pixels(
+        input_as<image_node_t>()->const_subimage_view(area),
+        subimage_view(area));
 }
 
 Imath::Box2i set_dod_node_t::dod_area() const
@@ -79,14 +83,18 @@ Imath::Box2i set_dod_node_t::dod_area() const
     int          crop_l = get_absolute_value<float>(param("left"));
     int          crop_b = get_absolute_value<float>(param("bottom"));
     int          crop_r = get_absolute_value<float>(param("right"));
-    return Imath::Box2i(Imath::V2i(box.min.x + crop_l, box.min.y + crop_t),
-                        Imath::V2i(box.max.x - crop_r, box.max.y - crop_b));
+    return Imath::Box2i(
+        Imath::V2i(box.min.x + crop_l, box.min.y + crop_t),
+        Imath::V2i(box.max.x - crop_r, box.max.y - crop_b));
 }
 
 // factory
 node_t* create_set_dod_node() { return new set_dod_node_t(); }
 
-const node_metaclass_t* set_dod_node_t::metaclass() const { return &set_dod_node_metaclass(); }
+const node_metaclass_t* set_dod_node_t::metaclass() const
+{
+    return &set_dod_node_metaclass();
+}
 
 const node_metaclass_t& set_dod_node_t::set_dod_node_metaclass()
 {
@@ -95,22 +103,22 @@ const node_metaclass_t& set_dod_node_t::set_dod_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.setdod";
+        info.id = "image.builtin.setdod";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Util";
-        info.menu_item     = "Set DoD";
-        info.help          = "Limits processing to the specified area";
-        info.create        = &create_set_dod_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Util";
+        info.menu_item = "Set DoD";
+        info.help = "Limits processing to the specified area";
+        info.create = &create_set_dod_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(set_dod_node_t::set_dod_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    set_dod_node_t::set_dod_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

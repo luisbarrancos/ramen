@@ -19,18 +19,19 @@ namespace
 {
 struct apply_chroma_joint_bilateral
 {
-    apply_chroma_joint_bilateral(const image::const_image_view_t&      src,
-                                 const image::image_view_t&            dst,
-                                 const image::const_gray_image_view_t& filter,
-                                 int                                   xoff,
-                                 int                                   yoff,
-                                 float                                 csigma)
-    : src_(src)
-    , dst_(dst)
-    , filter_(filter)
+    apply_chroma_joint_bilateral(
+        const image::const_image_view_t&      src,
+        const image::image_view_t&            dst,
+        const image::const_gray_image_view_t& filter,
+        int                                   xoff,
+        int                                   yoff,
+        float                                 csigma)
+      : src_(src)
+      , dst_(dst)
+      , filter_(filter)
     {
-        xoff_        = xoff;
-        yoff_        = yoff;
+        xoff_ = xoff;
+        yoff_ = yoff;
         color_sigma_ = csigma;
     }
 
@@ -67,9 +68,9 @@ struct apply_chroma_joint_bilateral
                             break;
 
                         int   filterx = dx + xoff_;
-                        float weight  = filter_(filterx, filtery)[0];
+                        float weight = filter_(filterx, filtery)[0];
 
-                        float diff         = src_(imx, imy)[0] - src_(x, y)[0];
+                        float diff = src_(imx, imy)[0] - src_(x, y)[0];
                         float lum_distance = diff * diff * color_sigma_mult;
 
                         weight *= std::exp((double) -lum_distance);
@@ -88,7 +89,7 @@ struct apply_chroma_joint_bilateral
         }
     }
 
-private:
+  private:
     const image::const_image_view_t& src_;
     const image::image_view_t&       dst_;
 
@@ -98,10 +99,10 @@ private:
     float color_sigma_;
 };
 
-}  // unnamed
+}  // namespace
 
 chroma_blur_node_t::chroma_blur_node_t()
-: areaop_node_t()
+  : areaop_node_t()
 {
     set_name("chroma_blur");
 }
@@ -147,13 +148,15 @@ void chroma_blur_node_t::get_expand_radius(int& hradius, int& vradius) const
 
 void chroma_blur_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
 
-    image::const_image_view_t src(input_as<image_node_t>()->const_subimage_view(area));
-    image::image_view_t       dst(subimage_view(area));
+    image::const_image_view_t src(
+        input_as<image_node_t>()->const_subimage_view(area));
+    image::image_view_t dst(subimage_view(area));
 
     image::image_t tmp(src.width(), src.height());
     image::convert_rgb_to_yuv(src, boost::gil::view(tmp));
@@ -164,7 +167,7 @@ void chroma_blur_node_t::do_process(const render::context_t& context)
     stddev.x = stddev.y / aspect_ratio() / context.subsample * proxy_scale().x;
     stddev.y = stddev.y / context.subsample * proxy_scale().y;
 
-    int filter_width  = stddev.x ? ((int) (stddev.x * 6 + 1) | 1) : 1;
+    int filter_width = stddev.x ? ((int) (stddev.x * 6 + 1) | 1) : 1;
     int filter_height = stddev.y ? ((int) (stddev.y * 6 + 1) | 1) : 1;
 
     image::gray_image_t      filter_img(filter_width, filter_height);
@@ -174,9 +177,9 @@ void chroma_blur_node_t::do_process(const render::context_t& context)
     {
         for (int x = 0; x < filter_width; ++x)
         {
-            float dx        = (x - filter_width / 2) / filter_width;
-            float dy        = (y - filter_height / 2) / filter_height;
-            float d2        = dx * dx + dy * dy;
+            float dx = (x - filter_width / 2) / filter_width;
+            float dy = (y - filter_height / 2) / filter_height;
+            float d2 = dx * dx + dy * dy;
             filter(x, y)[0] = std::exp((double) -d2 / 2);
         }
     }
@@ -187,7 +190,12 @@ void chroma_blur_node_t::do_process(const render::context_t& context)
     tbb::parallel_for(
         tbb::blocked_range<int>(0, src.height()),
         apply_chroma_joint_bilateral(
-            boost::gil::const_view(tmp), dst, filter, xoff, yoff, get_value<float>(param("color"))),
+            boost::gil::const_view(tmp),
+            dst,
+            filter,
+            xoff,
+            yoff,
+            get_value<float>(param("color"))),
         tbb::auto_partitioner());
 
     image::convert_yuv_to_rgb(dst, dst);
@@ -208,25 +216,26 @@ const node_metaclass_t& chroma_blur_node_t::chroma_blur_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.chroma_blur";
+        info.id = "image.builtin.chroma_blur";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Filter";
-        info.menu_item     = "Chroma Blur";
-        info.help          = "Blurs the chrominance channels of the input image "
-                    "using a joint bilateral filter. It's useful to "
-                    "reduce chroma subsampling and compression artifacts in DV video.";
+        info.menu = "Image";
+        info.submenu = "Filter";
+        info.menu_item = "Chroma Blur";
+        info.help =
+            "Blurs the chrominance channels of the input image "
+            "using a joint bilateral filter. It's useful to "
+            "reduce chroma subsampling and compression artifacts in DV video.";
 
         info.create = &create_chroma_blur_node;
-        inited      = true;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(chroma_blur_node_t::chroma_blur_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    chroma_blur_node_t::chroma_blur_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -27,29 +27,38 @@ namespace roto
 {
 class scene_renderer_t : boost::noncopyable
 {
-public:
-    scene_renderer_t(const scene_t& scene, const Imath::Box2i& area, float aspect, int subsample);
+  public:
+    scene_renderer_t(
+        const scene_t&      scene,
+        const Imath::Box2i& area,
+        float               aspect,
+        int                 subsample);
 
     void render();
 
-    image::const_gray_image_view_t const_view() const { return boost::gil::const_view(pixels_); }
-    image::gray_image_view_t       view() { return boost::gil::view(pixels_); }
+    image::const_gray_image_view_t const_view() const
+    {
+        return boost::gil::const_view(pixels_);
+    }
+    image::gray_image_view_t view() { return boost::gil::view(pixels_); }
 
-private:
+  private:
     void render_shape(const shape_t& s);
     void render_and_filter_shape(const shape_t& s, int bbox_index);
 
-    void         convert_to_path(const shape_t&     s,
-                                 agg::path_storage& path,
-                                 const Imath::V2i&  offset,
-                                 int                subsample) const;
+    void convert_to_path(
+        const shape_t&     s,
+        agg::path_storage& path,
+        const Imath::V2i&  offset,
+        int                subsample) const;
     Imath::Box2f calc_bbox(const shape_t& s, int subsample);
 
-    Imath::V2f transform_point(const Imath::V2d&  p,
-                               const Imath::V2f&  shape_offset,
-                               const Imath::M33f& m,
-                               int                subsample,
-                               const Imath::V2i&  offset) const;
+    Imath::V2f transform_point(
+        const Imath::V2d&  p,
+        const Imath::V2f&  shape_offset,
+        const Imath::M33f& m,
+        int                subsample,
+        const Imath::V2i&  offset) const;
 
     const scene_t&      scene_;
     image::gray_image_t pixels_;
@@ -58,9 +67,10 @@ private:
     float               aspect_;
 
     // agg things
-    typedef image::agg_gray32f_renderer_t<boost::gil::gray32f_view_t> ren_base_type;
-    typedef ren_base_type::color_type                                 color_type;
-    typedef agg::renderer_scanline_aa_solid<ren_base_type>            renderer_type;
+    typedef image::agg_gray32f_renderer_t<boost::gil::gray32f_view_t>
+                                                           ren_base_type;
+    typedef ren_base_type::color_type                      color_type;
+    typedef agg::renderer_scanline_aa_solid<ren_base_type> renderer_type;
 
     ren_base_type                 ren_base_;
     agg::scanline_u8              sl_;
@@ -74,6 +84,5 @@ private:
     image::gray_image_t       buf_, tmp_;
 };
 
-}  // roto
-}  // ramen
-
+}  // namespace roto
+}  // namespace ramen

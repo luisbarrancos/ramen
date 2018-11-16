@@ -12,8 +12,11 @@
 
 namespace ramen
 {
-template<class InputIterator, class UnaryFunction>
-inline void for_each_position(InputIterator first, InputIterator last, UnaryFunction f)
+template <class InputIterator, class UnaryFunction>
+inline void for_each_position(
+    InputIterator first,
+    InputIterator last,
+    UnaryFunction f)
 {
     while (first != last)
     {
@@ -22,17 +25,16 @@ inline void for_each_position(InputIterator first, InputIterator last, UnaryFunc
     }
 }
 
-template<class InputRange, class UnaryFunction>
+template <class InputRange, class UnaryFunction>
 inline void for_each_position(InputRange& range, UnaryFunction f)
 {
     for_each_position(boost::begin(range), boost::end(range), f);
 }
 
-template<class InputRange, class UnaryFunction>
+template <class InputRange, class UnaryFunction>
 inline void for_each_position(const InputRange& range, UnaryFunction f)
 {
     for_each_position(boost::begin(range), boost::end(range), f);
 }
 
-}  // ramen
-
+}  // namespace ramen

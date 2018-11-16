@@ -17,7 +17,7 @@ namespace serialization
 {
 class yaml_iarchive_t : boost::noncopyable
 {
-public:
+  public:
     explicit yaml_iarchive_t(std::istream& is);
 
     const yaml_node_t& root() const;
@@ -27,8 +27,7 @@ public:
 
     int version() const { return version_; }
 
-    template<class T>
-    void get_value(const std::string& key, T& value) const
+    template <class T> void get_value(const std::string& key, T& value) const
     {
         root().get_value(key, value);
     }
@@ -36,13 +35,14 @@ public:
     yaml_node_t get_node(const std::string& key) const;
 
     // optional values
-    template<class T>
+    template <class T>
     bool get_optional_value(const std::string& key, T& value) const
     {
         return root().get_optional_value(key, value);
     }
 
-    boost::optional<yaml_node_t> get_optional_node(const std::string& key) const;
+    boost::optional<yaml_node_t> get_optional_node(
+        const std::string& key) const;
 
     // errors
     std::stringstream& error_stream() { return error_stream_; }
@@ -51,7 +51,7 @@ public:
     // util
     static std::ios_base::openmode file_open_mode();
 
-private:
+  private:
     void init(std::istream& is);
 
     YAML::Parser               parser_;
@@ -64,6 +64,5 @@ private:
     std::stringstream error_stream_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace serialization
+}  // namespace ramen

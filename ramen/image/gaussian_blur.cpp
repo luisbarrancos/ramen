@@ -10,10 +10,11 @@ namespace ramen
 {
 namespace image
 {
-void gaussian_blur_rgba(const const_image_view_t& src,
-                        const image_view_t&       dst,
-                        float                     stddevx,
-                        float                     stddevy)
+void gaussian_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     stddevx,
+    float                     stddevy)
 {
     if (stddevx == 0 && stddevy == 0)
     {
@@ -25,11 +26,12 @@ void gaussian_blur_rgba(const const_image_view_t& src,
     gaussian_blur_rgba_(src, boost::gil::view(buffer), dst, stddevx, stddevy);
 }
 
-void gaussian_blur_rgba(const const_image_view_t& src,
-                        const image_view_t&       tmp,
-                        const image_view_t&       dst,
-                        float                     stddevx,
-                        float                     stddevy)
+void gaussian_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       tmp,
+    const image_view_t&       dst,
+    float                     stddevx,
+    float                     stddevy)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -43,10 +45,11 @@ void gaussian_blur_rgba(const const_image_view_t& src,
     gaussian_blur_rgba_(src, tmp, dst, stddevx, stddevy);
 }
 
-void gaussian_blur_rgb(const const_rgb_image_view_t& src,
-                       const rgb_image_view_t&       dst,
-                       float                         stddevx,
-                       float                         stddevy)
+void gaussian_blur_rgb(
+    const const_rgb_image_view_t& src,
+    const rgb_image_view_t&       dst,
+    float                         stddevx,
+    float                         stddevy)
 {
     if (stddevx == 0 && stddevy == 0)
     {
@@ -58,11 +61,12 @@ void gaussian_blur_rgb(const const_rgb_image_view_t& src,
     gaussian_blur_rgb_(src, boost::gil::view(buffer), dst, stddevx, stddevy);
 }
 
-void gaussian_blur_rgb(const const_rgb_image_view_t& src,
-                       const rgb_image_view_t&       tmp,
-                       const rgb_image_view_t&       dst,
-                       float                         stddevx,
-                       float                         stddevy)
+void gaussian_blur_rgb(
+    const const_rgb_image_view_t& src,
+    const rgb_image_view_t&       tmp,
+    const rgb_image_view_t&       dst,
+    float                         stddevx,
+    float                         stddevy)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -76,10 +80,11 @@ void gaussian_blur_rgb(const const_rgb_image_view_t& src,
     gaussian_blur_rgb_(src, tmp, dst, stddevx, stddevy);
 }
 
-void gaussian_blur_channel(const const_channel_view_t& src,
-                           const channel_view_t&       dst,
-                           float                       stddevx,
-                           float                       stddevy)
+void gaussian_blur_channel(
+    const const_channel_view_t& src,
+    const channel_view_t&       dst,
+    float                       stddevx,
+    float                       stddevy)
 {
     if (stddevx == 0 && stddevy == 0)
     {
@@ -88,14 +93,16 @@ void gaussian_blur_channel(const const_channel_view_t& src,
     }
 
     boost::gil::gray32f_image_t buffer(src.height(), src.width());
-    gaussian_blur_channel_(src, boost::gil::view(buffer), dst, stddevx, stddevy);
+    gaussian_blur_channel_(
+        src, boost::gil::view(buffer), dst, stddevx, stddevy);
 }
 
-void gaussian_blur_channel(const const_channel_view_t&       src,
-                           const boost::gil::gray32f_view_t& tmp,
-                           const channel_view_t&             dst,
-                           float                             stddevx,
-                           float                             stddevy)
+void gaussian_blur_channel(
+    const const_channel_view_t&       src,
+    const boost::gil::gray32f_view_t& tmp,
+    const channel_view_t&             dst,
+    float                             stddevx,
+    float                             stddevy)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -109,10 +116,11 @@ void gaussian_blur_channel(const const_channel_view_t&       src,
     gaussian_blur_channel_(src, tmp, dst, stddevx, stddevy);
 }
 
-void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
-                        const boost::gil::gray32f_view_t&  dst,
-                        float                              stddevx,
-                        float                              stddevy)
+void gaussian_blur_gray(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              stddevx,
+    float                              stddevy)
 {
     if (stddevx == 0 && stddevy == 0)
     {
@@ -124,11 +132,12 @@ void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
     gaussian_blur_gray_(src, boost::gil::view(buffer), dst, stddevx, stddevy);
 }
 
-void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
-                        const boost::gil::gray32f_view_t&  tmp,
-                        const boost::gil::gray32f_view_t&  dst,
-                        float                              stddevx,
-                        float                              stddevy)
+void gaussian_blur_gray(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  tmp,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              stddevx,
+    float                              stddevy)
 {
     assert(src.width() == tmp.height());
     assert(src.height() == tmp.width());
@@ -142,5 +151,5 @@ void gaussian_blur_gray(const boost::gil::gray32fc_view_t& src,
     gaussian_blur_gray_(src, tmp, dst, stddevx, stddevy);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

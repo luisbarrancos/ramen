@@ -22,11 +22,10 @@ namespace image
 {
 namespace detail
 {
-template<class ConstMaskView>
-struct box_blur_radius_fun
+template <class ConstMaskView> struct box_blur_radius_fun
 {
     box_blur_radius_fun(const ConstMaskView& mask, const Imath::V2i& mask_pos)
-    : mask_(mask)
+      : mask_(mask)
     {
         mask_pos_ = mask_pos;
     }
@@ -45,37 +44,37 @@ struct box_blur_radius_fun
         return mask_(xx, yy)[0];
     }
 
-private:
+  private:
     const ConstMaskView& mask_;
     Imath::V2i           mask_pos_;
 };
 
-template<class Fun>
-struct transpose_fun
+template <class Fun> struct transpose_fun
 {
     transpose_fun(Fun f)
-    : f_(f)
+      : f_(f)
     {
     }
 
     float operator()(int x, int y) const { return f_(y, x); }
 
-private:
+  private:
     Fun f_;
 };
 
-template<class ConstGrayView, class GrayView, class MaskFun>
+template <class ConstGrayView, class GrayView, class MaskFun>
 struct box_blur_mask_fun
 {
-public:
-    box_blur_mask_fun(const ConstGrayView& src,
-                      float                min_radius,
-                      float                max_radius,
-                      MaskFun              mf,
-                      const GrayView&      dst)
-    : src_(src)
-    , mfun_(mf)
-    , dst_(dst)
+  public:
+    box_blur_mask_fun(
+        const ConstGrayView& src,
+        float                min_radius,
+        float                max_radius,
+        MaskFun              mf,
+        const GrayView&      dst)
+      : src_(src)
+      , mfun_(mf)
+      , dst_(dst)
     {
         assert(min_radius >= 0 && max_radius >= 0);
         min_radius_ = min_radius;
@@ -97,19 +96,18 @@ public:
 
             for (int x = 0, xe = src_.width(); x < xe; ++x)
             {
-                float alpha  = mfun_(x, y);
-                alpha        = Imath::clamp(alpha, 0.0f, 1.0f);
+                float alpha = mfun_(x, y);
+                alpha = Imath::clamp(alpha, 0.0f, 1.0f);
                 float radius = Imath::lerp(min_radius_, max_radius_, alpha);
-                float area   = 2.0f * radius + 1.0f;
-                float val    = mean(x, radius);
+                float area = 2.0f * radius + 1.0f;
+                float val = mean(x, radius);
                 dst_it[x][0] = val / area;
             }
         }
     }
 
-private:
-    template<class Iter>
-    void make_table(Iter start, Iter end) const
+  private:
+    template <class Iter> void make_table(Iter start, Iter end) const
     {
         for (int i = 0; i < pad_; ++i)
             table_[i] = (*start)[0] * (i + 1);
@@ -118,15 +116,15 @@ private:
 
         for (int i = 0, ie = src_.width(); i < ie; ++i)
         {
-            int index     = i + pad_;
-            val           = (*start)[0];
+            int index = i + pad_;
+            val = (*start)[0];
             table_[index] = table_[index - 1] + val;
             ++start;
         }
 
         for (int i = 0; i < pad_; ++i)
         {
-            int index     = i + pad_ + src_.width();
+            int index = i + pad_ + src_.width();
             table_[index] = table_[index - 1] + val;
         }
     }
@@ -157,17 +155,22 @@ private:
     const GrayView&            dst_;
 };
 
-}  // namespace
+}  // namespace detail
 
-template<class ConstGrayView, class ConstMaskView, class TmpView, class GrayView>
-void box_blur_mask(const ConstGrayView& src,
-                   const ConstMaskView& mask,
-                   const Imath::V2i&    mask_pos,
-                   const Imath::V2f&    min_radius,
-                   const Imath::V2f&    max_radius,
-                   int                  iters,
-                   const TmpView&       tmp,
-                   const GrayView&      dst)
+template <
+    class ConstGrayView,
+    class ConstMaskView,
+    class TmpView,
+    class GrayView>
+void box_blur_mask(
+    const ConstGrayView& src,
+    const ConstMaskView& mask,
+    const Imath::V2i&    mask_pos,
+    const Imath::V2f&    min_radius,
+    const Imath::V2f&    max_radius,
+    int                  iters,
+    const TmpView&       tmp,
+    const GrayView&      dst)
 {
     typedef detail::box_blur_radius_fun<ConstMaskView> mask_fun_t;
     typedef detail::transpose_fun<mask_fun_t>          transposed_mask_fun_t;
@@ -181,13 +184,17 @@ void box_blur_mask(const ConstGrayView& src,
         detail::box_blur_mask_fun<ConstGrayView, TmpView, mask_fun_t> fun_h(
             src, min_radius.x, max_radius.x, mf, tmp);
         tbb::parallel_for(
-            tbb::blocked_range<std::size_t>(0, src.height()), fun_h, tbb::auto_partitioner());
+            tbb::blocked_range<std::size_t>(0, src.height()),
+            fun_h,
+            tbb::auto_partitioner());
 
         // vertical pass
-        detail::box_blur_mask_fun<TmpView, GrayView, transposed_mask_fun_t> fun_v(
-            tmp, min_radius.y, max_radius.y, tmf, dst);
+        detail::box_blur_mask_fun<TmpView, GrayView, transposed_mask_fun_t>
+            fun_v(tmp, min_radius.y, max_radius.y, tmf, dst);
         tbb::parallel_for(
-            tbb::blocked_range<std::size_t>(0, tmp.height()), fun_v, tbb::auto_partitioner());
+            tbb::blocked_range<std::size_t>(0, tmp.height()),
+            fun_v,
+            tbb::auto_partitioner());
     }
 
     for (int i = 1; i < iters; ++i)
@@ -196,16 +203,19 @@ void box_blur_mask(const ConstGrayView& src,
         detail::box_blur_mask_fun<GrayView, TmpView, mask_fun_t> fun_h(
             dst, min_radius.x, max_radius.x, mf, tmp);
         tbb::parallel_for(
-            tbb::blocked_range<std::size_t>(0, dst.height()), fun_h, tbb::auto_partitioner());
+            tbb::blocked_range<std::size_t>(0, dst.height()),
+            fun_h,
+            tbb::auto_partitioner());
 
         // vertical pass
-        detail::box_blur_mask_fun<TmpView, GrayView, transposed_mask_fun_t> fun_v(
-            tmp, min_radius.y, max_radius.y, tmf, dst);
+        detail::box_blur_mask_fun<TmpView, GrayView, transposed_mask_fun_t>
+            fun_v(tmp, min_radius.y, max_radius.y, tmf, dst);
         tbb::parallel_for(
-            tbb::blocked_range<std::size_t>(0, tmp.height()), fun_v, tbb::auto_partitioner());
+            tbb::blocked_range<std::size_t>(0, tmp.height()),
+            fun_v,
+            tbb::auto_partitioner());
     }
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

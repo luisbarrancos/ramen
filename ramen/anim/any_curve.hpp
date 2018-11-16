@@ -19,6 +19,5 @@ void copy(const any_curve_ptr_t& src, any_curve_t& dst);
 void copy(const any_curve_t& src, any_curve_ptr_t& dst);
 void swap(any_curve_ptr_t& a, any_curve_t& b);
 
-}  // anim
-}  // ramen
-
+}  // namespace anim
+}  // namespace ramen

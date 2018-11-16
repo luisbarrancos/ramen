@@ -23,7 +23,7 @@ class time_controls_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     time_controls_t();
 
     QWidget* widget() { return window_; }
@@ -35,7 +35,7 @@ public:
 
     void update();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void goto_start();
     void prev_frame();
@@ -50,7 +50,7 @@ public Q_SLOTS:
     void make_flipbook();
     void set_autokey(bool b);
 
-private:
+  private:
     void stop_playing();
 
     QWidget* window_;
@@ -64,6 +64,5 @@ private:
     bool stop_playing_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

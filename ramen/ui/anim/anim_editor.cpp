@@ -55,10 +55,10 @@ void print_full_name(anim::track_t* t)
 }
 #endif
 
-}  // unnamed
+}  // namespace
 
 anim_editor_t::anim_editor_t()
-: window_(0)
+  : window_(0)
 {
     window_ = new QWidget();
     window_->setWindowTitle("Curve editor");
@@ -76,12 +76,21 @@ anim_editor_t::anim_editor_t()
     tree_->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tree_->setContextMenuPolicy(Qt::CustomContextMenu);
     tree_->setModel(0);
-    connect(tree_,
-            SIGNAL(customContextMenuRequested(const QPoint&)),
-            this,
-            SLOT(show_context_menu(QPoint)));
-    connect(tree_, SIGNAL(expanded(QModelIndex)), this, SLOT(item_expanded(QModelIndex)));
-    connect(tree_, SIGNAL(collapsed(QModelIndex)), this, SLOT(item_collapsed(QModelIndex)));
+    connect(
+        tree_,
+        SIGNAL(customContextMenuRequested(const QPoint&)),
+        this,
+        SLOT(show_context_menu(QPoint)));
+    connect(
+        tree_,
+        SIGNAL(expanded(QModelIndex)),
+        this,
+        SLOT(item_expanded(QModelIndex)));
+    connect(
+        tree_,
+        SIGNAL(collapsed(QModelIndex)),
+        this,
+        SLOT(item_collapsed(QModelIndex)));
     split_->addWidget(tree_);
 
     view_ = new anim_curves_view_t();
@@ -120,13 +129,25 @@ anim_editor_t::anim_editor_t()
     connect(select_all_, SIGNAL(triggered()), this, SLOT(select_all()));
 
     const_extrap_ = new QAction("Constant", this);
-    connect(const_extrap_, SIGNAL(triggered()), this, SLOT(set_extrapolation_constant()));
+    connect(
+        const_extrap_,
+        SIGNAL(triggered()),
+        this,
+        SLOT(set_extrapolation_constant()));
 
     lin_extrap_ = new QAction("Linear", this);
-    connect(lin_extrap_, SIGNAL(triggered()), this, SLOT(set_extrapolation_linear()));
+    connect(
+        lin_extrap_,
+        SIGNAL(triggered()),
+        this,
+        SLOT(set_extrapolation_linear()));
 
     repeat_extrap_ = new QAction("Repeat", this);
-    connect(repeat_extrap_, SIGNAL(triggered()), this, SLOT(set_extrapolation_repeat()));
+    connect(
+        repeat_extrap_,
+        SIGNAL(triggered()),
+        this,
+        SLOT(set_extrapolation_repeat()));
 
     import_ = new QAction("Import...", this);
     connect(import_, SIGNAL(triggered()), this, SLOT(import_curves()));
@@ -137,7 +158,7 @@ anim_editor_t::anim_editor_t()
 
 void anim_editor_t::set_active_node(node_t* n)
 {
-    std::shared_ptr<track_model_t> old       = current_;
+    std::shared_ptr<track_model_t> old = current_;
     QItemSelectionModel*           sel_model = tree_->selectionModel();
 
     active_tracks_.clear();
@@ -155,10 +176,13 @@ void anim_editor_t::set_active_node(node_t* n)
         tree_->setModel(current_.get());
 
         QItemSelectionModel* new_sel = tree_->selectionModel();
-        connect(new_sel,
-                SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-                this,
-                SLOT(update_selection(const QItemSelection&, const QItemSelection&)));
+        connect(
+            new_sel,
+            SIGNAL(
+                selectionChanged(const QItemSelection&, const QItemSelection&)),
+            this,
+            SLOT(update_selection(
+                const QItemSelection&, const QItemSelection&)));
     }
     else
     {
@@ -192,24 +216,27 @@ void anim_editor_t::recreate_tracks(node_t* n)
     }
 }
 
-void anim_editor_t::update_selection(const QItemSelection& selected,
-                                     const QItemSelection& deselected)
+void anim_editor_t::update_selection(
+    const QItemSelection& selected,
+    const QItemSelection& deselected)
 {
     active_tracks_.clear();
 
     QItemSelectionModel* selection = tree_->selectionModel();
-    QModelIndexList      indexes   = selection->selectedIndexes();
+    QModelIndexList      indexes = selection->selectedIndexes();
 
     if (indexes.empty())
         return;
 
     for (int i = 0; i < indexes.size(); ++i)
     {
-        anim::track_t* track = static_cast<anim::track_t*>(indexes[i].internalPointer());
+        anim::track_t* track =
+            static_cast<anim::track_t*>(indexes[i].internalPointer());
 
         if (track)
             anim::for_each_leaf_track(
-                track, boost::bind(&anim_editor_t::insert_in_active_tracks, this, _1));
+                track,
+                boost::bind(&anim_editor_t::insert_in_active_tracks, this, _1));
     }
 
     toolbar().selection_changed();
@@ -313,7 +340,7 @@ void anim_editor_t::deselect_all()
 
 void anim_editor_t::get_selected_keyframe(anim::track_t*& track, int& key_index)
 {
-    track     = 0;
+    track = 0;
     key_index = -1;
 
     for (anim::track_t* t : active_tracks())
@@ -405,7 +432,9 @@ void anim_editor_t::delete_selected_keyframes()
     }
 }
 
-void anim_editor_t::set_autotangents(anim::keyframe_t::auto_tangent_method m, bool selected_only)
+void anim_editor_t::set_autotangents(
+    anim::keyframe_t::auto_tangent_method m,
+    bool                                  selected_only)
 {
     if (selected_only && !app().ui()->anim_editor().any_keyframe_selected())
         return;
@@ -587,14 +616,20 @@ void anim_editor_t::set_tangents_smooth()
     set_autotangents(anim::keyframe_t::tangent_smooth, true);
 }
 
-void anim_editor_t::set_tangents_flat() { set_autotangents(anim::keyframe_t::tangent_flat, true); }
+void anim_editor_t::set_tangents_flat()
+{
+    set_autotangents(anim::keyframe_t::tangent_flat, true);
+}
 
 void anim_editor_t::set_tangents_linear()
 {
     set_autotangents(anim::keyframe_t::tangent_linear, true);
 }
 
-void anim_editor_t::set_tangents_step() { set_autotangents(anim::keyframe_t::tangent_step, true); }
+void anim_editor_t::set_tangents_step()
+{
+    set_autotangents(anim::keyframe_t::tangent_step, true);
+}
 
 void anim_editor_t::copy_curves()
 {
@@ -605,7 +640,8 @@ void anim_editor_t::copy_curves()
 
     for (anim::track_t* t : active_tracks())
     {
-        anim::clipboard_t::instance().copy_curve(t->curve_name(), t->curve().get());
+        anim::clipboard_t::instance()
+            .copy_curve(t->curve_name(), t->curve().get());
     }
 
     anim::clipboard_t::instance().end_copy();
@@ -620,7 +656,8 @@ void anim_editor_t::copy_keyframes()
 
     for (anim::track_t* t : active_tracks())
     {
-        anim::clipboard_t::instance().copy_keys(t->curve_name(), t->curve().get());
+        anim::clipboard_t::instance()
+            .copy_keys(t->curve_name(), t->curve().get());
     }
 
     anim::clipboard_t::instance().end_copy();
@@ -663,14 +700,23 @@ void anim_editor_t::select_all()
     update();
 }
 
-void anim_editor_t::set_extrapolation_constant() { set_extrapolation(anim::extrapolate_constant); }
+void anim_editor_t::set_extrapolation_constant()
+{
+    set_extrapolation(anim::extrapolate_constant);
+}
 
-void anim_editor_t::set_extrapolation_linear() { set_extrapolation(anim::extrapolate_linear); }
+void anim_editor_t::set_extrapolation_linear()
+{
+    set_extrapolation(anim::extrapolate_linear);
+}
 
-void anim_editor_t::set_extrapolation_repeat() { set_extrapolation(anim::extrapolate_repeat); }
+void anim_editor_t::set_extrapolation_repeat()
+{
+    set_extrapolation(anim::extrapolate_repeat);
+}
 
 void anim_editor_t::import_curves() {}
 void anim_editor_t::export_curves() {}
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

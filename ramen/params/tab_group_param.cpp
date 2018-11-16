@@ -11,17 +11,17 @@
 namespace ramen
 {
 tab_group_param_t::tab_group_param_t()
-: composite_param_t()
+  : composite_param_t()
 {
 }
 tab_group_param_t::tab_group_param_t(const std::string& name)
-: composite_param_t(name)
+  : composite_param_t(name)
 {
 }
 
 tab_group_param_t::tab_group_param_t(const tab_group_param_t& other)
-: composite_param_t(other)
-, tab_(0)
+  : composite_param_t(other)
+  , tab_(0)
 {
 }
 
@@ -53,4 +53,4 @@ void tab_group_param_t::do_create_tracks(anim::track_t* parent)
         p.create_tracks(parent);
 }
 
-}  // namespace
+}  // namespace ramen

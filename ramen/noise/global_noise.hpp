@@ -12,6 +12,5 @@ extern simplex_noise_t global_noise;
 extern simplex_noise_t global_noise1;
 extern simplex_noise_t global_noise3;
 
-}  // namespace
-}  // namespace
-
+}  // namespace noise
+}  // namespace ramen

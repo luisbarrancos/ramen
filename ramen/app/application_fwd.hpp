@@ -8,5 +8,4 @@ namespace ramen
 {
 class application_t;
 
-}  // namespace
-
+}  // namespace ramen

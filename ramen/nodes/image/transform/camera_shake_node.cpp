@@ -22,13 +22,13 @@ namespace ramen
 namespace image
 {
 camera_shake_node_t::camera_shake_node_t()
-: xform2d_node_t()
+  : xform2d_node_t()
 {
     set_name("cam_shake");
 }
 
 camera_shake_node_t::camera_shake_node_t(const camera_shake_node_t& other)
-: xform2d_node_t(other)
+  : xform2d_node_t(other)
 {
 }
 
@@ -91,42 +91,48 @@ void camera_shake_node_t::do_create_params()
 void camera_shake_node_t::do_calc_hash_str(const render::context_t& context)
 {
     xform2d_node_t::do_calc_hash_str(context);
-    hash_generator() << "(" << boost::lexical_cast<std::string>(context.frame) << ")";
+    hash_generator() << "(" << boost::lexical_cast<std::string>(context.frame)
+                     << ")";
 }
 
-camera_shake_node_t::matrix3_type camera_shake_node_t::do_calc_transform_matrix_at_frame(
-    float frame, int subsample) const
+camera_shake_node_t::matrix3_type camera_shake_node_t::
+    do_calc_transform_matrix_at_frame(float frame, int subsample) const
 {
-    Imath::V2d c = get_absolute_value_at_frame<Imath::V2f>(param("center"), frame) / subsample;
+    Imath::V2d c =
+        get_absolute_value_at_frame<Imath::V2f>(param("center"), frame) /
+        subsample;
 
     float         seed = get_value<float>(param("seed"));
     Imath::Rand48 rng(seed);
 
-    float      freq  = 1.0f / get_value<float>(param("freq"));
+    float      freq = 1.0f / get_value<float>(param("freq"));
     Imath::V2f t_amp = get_value<Imath::V2f>(param("t_amp"));
 
-    noise::vector_noise_adaptor2_t<noise::simplex_noise_t, noise::simplex_noise_t> noise(
-        noise::global_noise, noise::global_noise1);
+    noise::
+        vector_noise_adaptor2_t<noise::simplex_noise_t, noise::simplex_noise_t>
+            noise(noise::global_noise, noise::global_noise1);
 
     Imath::V2d t = noise(Imath::V2f(frame / freq, rng.nextf() + 0.11751));
-    t.x          = t.x * t_amp.x / subsample;
-    t.y          = t.y * t_amp.y / subsample;
+    t.x = t.x * t_amp.x / subsample;
+    t.y = t.y * t_amp.y / subsample;
 
-    float r_amp   = get_value<float>(param("r_amp"));
-    float s_amp   = get_value<float>(param("s_amp"));
+    float r_amp = get_value<float>(param("r_amp"));
+    float s_amp = get_value<float>(param("s_amp"));
     float extra_s = get_value<float>(param("extra_s"));
 
-    Imath::V2d rs = noise(Imath::V2f((frame / freq) + 0.11243, rng.nextf() + 1.7567));
-    rs.x          = rs.x * r_amp;
-    rs.y          = std::max((rs.y * s_amp) + 1.0f + extra_s, 0.0);
+    Imath::V2d rs =
+        noise(Imath::V2f((frame / freq) + 0.11243, rng.nextf() + 1.7567));
+    rs.x = rs.x * r_amp;
+    rs.y = std::max((rs.y * s_amp) + 1.0f + extra_s, 0.0);
 
-    matrix3_type m = matrix3_type().setTranslation(-c)
-                     * matrix3_type().setScale(Imath::V2d(aspect_ratio(), 1.0))
-                     * matrix3_type().setScale(Imath::V2d(rs.y, rs.y))
-                     * matrix3_type().setRotation(rs.x * math::constants<double>::deg2rad())
-                     * matrix3_type().setTranslation(t)
-                     * matrix3_type().setScale(Imath::V2d(1.0 / aspect_ratio(), 1.0))
-                     * matrix3_type().setTranslation(c);
+    matrix3_type m =
+        matrix3_type().setTranslation(-c) *
+        matrix3_type().setScale(Imath::V2d(aspect_ratio(), 1.0)) *
+        matrix3_type().setScale(Imath::V2d(rs.y, rs.y)) *
+        matrix3_type().setRotation(rs.x * math::constants<double>::deg2rad()) *
+        matrix3_type().setTranslation(t) *
+        matrix3_type().setScale(Imath::V2d(1.0 / aspect_ratio(), 1.0)) *
+        matrix3_type().setTranslation(c);
     return m;
 }
 
@@ -144,21 +150,21 @@ const node_metaclass_t& camera_shake_node_t::camera_shake_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.camshake";
+        info.id = "image.builtin.camshake";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Camera Shake";
-        info.create        = &create_camera_shake_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Camera Shake";
+        info.create = &create_camera_shake_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(camera_shake_node_t::camera_shake_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    camera_shake_node_t::camera_shake_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

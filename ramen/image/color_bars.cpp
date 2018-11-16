@@ -24,7 +24,7 @@ struct color_bars_fn
 
     color_bars_fn() {}
     color_bars_fn(const point_t& sz)
-    : width_(sz.x / 7)
+      : width_(sz.x / 7)
     {
     }
 
@@ -54,7 +54,7 @@ struct color_bars_fn
     int width_;
 };
 
-}  // detail
+}  // namespace detail
 
 void make_color_bars(const image_view_t& view)
 {
@@ -64,13 +64,15 @@ void make_color_bars(const image_view_t& view)
     typedef boost::gil::image_view<locator_t>              my_virt_view_t;
 
     point_t        dims(view.width(), view.height());
-    my_virt_view_t bars(dims, locator_t(point_t(0, 0), point_t(1, 1), deref_t(dims)));
+    my_virt_view_t bars(
+        dims, locator_t(point_t(0, 0), point_t(1, 1), deref_t(dims)));
     boost::gil::copy_pixels(bars, view);
 }
 
-void make_color_bars(const image_view_t& view,
-                     const Imath::Box2i& domain,
-                     const Imath::Box2i& defined)
+void make_color_bars(
+    const image_view_t& view,
+    const Imath::Box2i& domain,
+    const Imath::Box2i& defined)
 {
     typedef detail::color_bars_fn                          deref_t;
     typedef deref_t::point_t                               point_t;
@@ -78,15 +80,18 @@ void make_color_bars(const image_view_t& view,
     typedef boost::gil::image_view<locator_t>              my_virt_view_t;
 
     point_t        dims(domain.size().x + 1, domain.size().y + 1);
-    my_virt_view_t bars(dims, locator_t(point_t(0, 0), point_t(1, 1), deref_t(dims)));
+    my_virt_view_t bars(
+        dims, locator_t(point_t(0, 0), point_t(1, 1), deref_t(dims)));
 
-    boost::gil::copy_pixels(boost::gil::subimage_view(bars,
-                                                      defined.min.x - domain.min.x,
-                                                      defined.min.y - domain.min.y,
-                                                      defined.size().x + 1,
-                                                      defined.size().y + 1),
-                            view);
+    boost::gil::copy_pixels(
+        boost::gil::subimage_view(
+            bars,
+            defined.min.x - domain.min.x,
+            defined.min.y - domain.min.y,
+            defined.size().x + 1,
+            defined.size().y + 1),
+        view);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

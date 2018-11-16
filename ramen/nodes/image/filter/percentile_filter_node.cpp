@@ -14,7 +14,7 @@ namespace ramen
 namespace image
 {
 percentile_filter_node_t::percentile_filter_node_t()
-: areaop_node_t()
+  : areaop_node_t()
 {
     set_name("percent");
 }
@@ -23,7 +23,7 @@ void percentile_filter_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p(new popup_param_t("Channels"));
     p->set_id("channels");
-    p->menu_items() = std::vector<std::string>({ "RGBA", "RGB", "Alpha" });
+    p->menu_items() = std::vector<std::string>({"RGBA", "RGB", "Alpha"});
     add_param(p);
 
     std::auto_ptr<float_param_t> q(new float_param_t("Radius"));
@@ -40,7 +40,8 @@ void percentile_filter_node_t::do_create_params()
     add_param(q);
 }
 
-void percentile_filter_node_t::get_expand_radius(int& hradius, int& vradius) const
+void percentile_filter_node_t::get_expand_radius(int& hradius, int& vradius)
+    const
 {
     hradius = get_value<float>(param("radius"));
     vradius = hradius;
@@ -48,7 +49,8 @@ void percentile_filter_node_t::get_expand_radius(int& hradius, int& vradius) con
 
 void percentile_filter_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
@@ -57,32 +59,36 @@ void percentile_filter_node_t::do_process(const render::context_t& context)
 
     if (radius == 0)
     {
-        boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                                subimage_view(area));
+        boost::gil::copy_pixels(
+            input_as<image_node_t>()->const_subimage_view(area),
+            subimage_view(area));
         return;
     }
 
     switch (get_value<int>(param("channels")))
     {
         case 0:
-            image::percentile_filter_rgba(input_as<image_node_t>()->const_subimage_view(area),
-                                          subimage_view(area),
-                                          radius,
-                                          get_value<float>(param("percent")));
+            image::percentile_filter_rgba(
+                input_as<image_node_t>()->const_subimage_view(area),
+                subimage_view(area),
+                radius,
+                get_value<float>(param("percent")));
             break;
 
         case 1:
-            image::percentile_filter_rgb(input_as<image_node_t>()->const_subimage_view(area),
-                                         subimage_view(area),
-                                         radius,
-                                         get_value<float>(param("percent")));
+            image::percentile_filter_rgb(
+                input_as<image_node_t>()->const_subimage_view(area),
+                subimage_view(area),
+                radius,
+                get_value<float>(param("percent")));
             break;
 
         case 2:
-            image::percentile_filter_alpha(input_as<image_node_t>()->const_subimage_view(area),
-                                           subimage_view(area),
-                                           radius,
-                                           get_value<float>(param("percent")));
+            image::percentile_filter_alpha(
+                input_as<image_node_t>()->const_subimage_view(area),
+                subimage_view(area),
+                radius,
+                get_value<float>(param("percent")));
             break;
 
         default:
@@ -91,31 +97,35 @@ void percentile_filter_node_t::do_process(const render::context_t& context)
 }
 
 // factory
-node_t* create_percentile_filter_node() { return new percentile_filter_node_t(); }
+node_t* create_percentile_filter_node()
+{
+    return new percentile_filter_node_t();
+}
 
 const node_metaclass_t* percentile_filter_node_t::metaclass() const
 {
     return &percentile_filter_node_metaclass();
 }
 
-const node_metaclass_t& percentile_filter_node_t::percentile_filter_node_metaclass()
+const node_metaclass_t& percentile_filter_node_t::
+    percentile_filter_node_metaclass()
 {
     static bool             inited(false);
     static node_metaclass_t info;
 
     if (!inited)
     {
-        info.id            = "image.builtin.percentile_filter";
+        info.id = "image.builtin.percentile_filter";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Filter";
-        info.menu_item     = "Percentile Filter";
-        info.help          = "This node can do median filtering, dilating and eroding "
+        info.menu = "Image";
+        info.submenu = "Filter";
+        info.menu_item = "Percentile Filter";
+        info.help = "This node can do median filtering, dilating and eroding "
                     "depending on the Percent param.";
 
         info.create = &create_percentile_filter_node;
-        inited      = true;
+        inited = true;
     }
 
     return info;
@@ -124,5 +134,5 @@ const node_metaclass_t& percentile_filter_node_t::percentile_filter_node_metacla
 static bool registered = node_factory_t::instance().register_node(
     percentile_filter_node_t::percentile_filter_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

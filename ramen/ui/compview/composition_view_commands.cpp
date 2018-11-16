@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/compview/composition_view_commands.hpp>
 
 #include <boost/bind.hpp>
@@ -17,10 +16,10 @@ namespace ramen
 namespace undo
 {
 connect_command_t::connect_command_t(node_t* src, node_t* dest, int port)
-: command_t("Connect")
-, src_(src)
-, dest_(dest)
-, port_(port)
+  : command_t("Connect")
+  , src_(src)
+  , dest_(dest)
+  , port_(port)
 {
     prev_src_ = dest_->input(port_);
 }
@@ -44,10 +43,10 @@ void connect_command_t::redo()
 }
 
 disconnect_command_t::disconnect_command_t(node_t* src, node_t* dest, int port)
-: command_t("Disconnect")
-, src_(src)
-, dest_(dest)
-, port_(port)
+  : command_t("Disconnect")
+  , src_(src)
+  , dest_(dest)
+  , port_(port)
 {
 }
 
@@ -65,5 +64,5 @@ void disconnect_command_t::redo()
     command_t::redo();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

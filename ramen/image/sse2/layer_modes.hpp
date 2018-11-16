@@ -18,24 +18,29 @@ namespace sse2
 {
 struct base_layer_mode_fun
 {
-public:
+  public:
     base_layer_mode_fun(float opacity = 1.0f)
     {
-        opacity_     = _mm_set1_ps(opacity);
+        opacity_ = _mm_set1_ps(opacity);
         inv_opacity_ = _mm_set1_ps(1.0f - opacity);
-        alpha_max_   = _mm_set_ps(1.0f,
-                                std::numeric_limits<float>::max(),
-                                std::numeric_limits<float>::max(),
-                                std::numeric_limits<float>::max());
+        alpha_max_ = _mm_set_ps(
+            1.0f,
+            std::numeric_limits<float>::max(),
+            std::numeric_limits<float>::max(),
+            std::numeric_limits<float>::max());
 
-        alpha_min_ = _mm_set_ps(0.0f,
-                                -std::numeric_limits<float>::max(),
-                                -std::numeric_limits<float>::max(),
-                                -std::numeric_limits<float>::max());
+        alpha_min_ = _mm_set_ps(
+            0.0f,
+            -std::numeric_limits<float>::max(),
+            -std::numeric_limits<float>::max(),
+            -std::numeric_limits<float>::max());
     }
 
-protected:
-    __m128 clamp_alpha(__m128 f) const { return _mm_min_ps(_mm_max_ps(f, alpha_min_), alpha_max_); }
+  protected:
+    __m128 clamp_alpha(__m128 f) const
+    {
+        return _mm_min_ps(_mm_max_ps(f, alpha_min_), alpha_max_);
+    }
 
     __m128 lerp(__m128 a, __m128 b) const
     {
@@ -51,7 +56,7 @@ protected:
 struct over_layer_mode_fun : public base_layer_mode_fun
 {
     over_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -60,7 +65,7 @@ struct over_layer_mode_fun : public base_layer_mode_fun
 struct add_layer_mode_fun : public base_layer_mode_fun
 {
     add_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -69,7 +74,7 @@ struct add_layer_mode_fun : public base_layer_mode_fun
 struct mul_layer_mode_fun : public base_layer_mode_fun
 {
     mul_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -78,7 +83,7 @@ struct mul_layer_mode_fun : public base_layer_mode_fun
 struct sub_layer_mode_fun : public base_layer_mode_fun
 {
     sub_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -87,7 +92,7 @@ struct sub_layer_mode_fun : public base_layer_mode_fun
 struct mix_layer_mode_fun : public base_layer_mode_fun
 {
     mix_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -96,7 +101,7 @@ struct mix_layer_mode_fun : public base_layer_mode_fun
 struct max_layer_mode_fun : public base_layer_mode_fun
 {
     max_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
@@ -105,13 +110,12 @@ struct max_layer_mode_fun : public base_layer_mode_fun
 struct min_layer_mode_fun : public base_layer_mode_fun
 {
     min_layer_mode_fun(float opacity = 1.0f)
-    : base_layer_mode_fun(opacity)
+      : base_layer_mode_fun(opacity)
     {
     }
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 };
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

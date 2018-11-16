@@ -22,22 +22,21 @@ namespace ramen
 {
 namespace anim
 {
-template<class T>
-class shape_key_t : public keyframe_t
+template <class T> class shape_key_t : public keyframe_t
 {
-public:
+  public:
     typedef T              point_type;
     typedef std::vector<T> value_type;
 
     shape_key_t()
-    : keyframe_t()
+      : keyframe_t()
     {
         set_v0_auto_tangent(keyframe_t::tangent_linear);
         set_v1_auto_tangent(keyframe_t::tangent_linear);
     }
 
     shape_key_t(float time, int num_pts = 0)
-    : keyframe_t(time)
+      : keyframe_t(time)
     {
         assert(num_pts >= 0);
 
@@ -116,7 +115,7 @@ public:
         out.end_map();
     }
 
-private:
+  private:
     // keyframes should be cheap to copy. Undo is currently based on it.
     // so we use copy_on_write for complex keyframes.
     core::copy_on_write_t<std::vector<T>> value_;
@@ -125,6 +124,5 @@ private:
 typedef shape_key_t<Imath::V2f> shape_key2f_t;
 typedef shape_key_t<Imath::V3f> shape_key3f_t;
 
-}  // anim
-}  // ramen
-
+}  // namespace anim
+}  // namespace ramen

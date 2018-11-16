@@ -13,4 +13,3 @@
 #pragma once
 
 bool get_jpeg_size(const char* filename, int& width, int& height);
-

@@ -19,13 +19,14 @@ namespace ramen
 namespace image
 {
 base_output_node_t::base_output_node_t()
-: image_node_t()
+  : image_node_t()
 {
-    add_input_plug("Front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "Front", false, ui::palette_t::instance().color("front plug"), "Front");
 }
 
 base_output_node_t::base_output_node_t(const base_output_node_t& other)
-: image_node_t(other)
+  : image_node_t(other)
 {
 }
 
@@ -37,8 +38,9 @@ void base_output_node_t::do_process(const render::context_t& context)
 
     if (!area.isEmpty())
     {
-        boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                                subimage_view(area));
+        boost::gil::copy_pixels(
+            input_as<image_node_t>()->const_subimage_view(area),
+            subimage_view(area));
 
         try
         {
@@ -49,9 +51,10 @@ void base_output_node_t::do_process(const render::context_t& context)
             {
                 std::string cs(get_value<std::string>(param("colorspace")));
 
-                OCIO::ConstConfigRcPtr    config = app().ocio_manager().config();
-                OCIO::ConstProcessorRcPtr proc   = config->getProcessor(
-                    OCIO::ROLE_SCENE_LINEAR, get_value<std::string>(param("colorspace")).c_str());
+                OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
+                OCIO::ConstProcessorRcPtr proc = config->getProcessor(
+                    OCIO::ROLE_SCENE_LINEAR,
+                    get_value<std::string>(param("colorspace")).c_str());
                 image::ocio_transform(image_view(), proc);
             }
         }
@@ -69,5 +72,5 @@ void base_output_node_t::process_and_write(const render::context_t& context)
     write(context);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

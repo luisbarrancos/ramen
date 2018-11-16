@@ -10,17 +10,17 @@ namespace image
 {
 class move2d_node_t : public xform2d_node_t
 {
-public:
+  public:
     static const node_metaclass_t& move2d_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     move2d_node_t();
 
-protected:
+  protected:
     move2d_node_t(const move2d_node_t& other);
     void operator=(const move2d_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new move2d_node_t(*this); }
 
     void do_create_params() override;
@@ -28,9 +28,10 @@ private:
 
     void do_create_manipulators() override;
 
-    matrix3_type do_calc_transform_matrix_at_frame(float frame, int subsample = 1) const override;
+    matrix3_type do_calc_transform_matrix_at_frame(
+        float frame,
+        int   subsample = 1) const override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

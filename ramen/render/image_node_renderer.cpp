@@ -19,8 +19,8 @@ namespace
 {
 std::ostream& print_box(std::ostream& os, const Imath::Box2i& box)
 {
-    os << "(( " << box.min.x << ", " << box.min.y << "), ( " << box.max.x << ", " << box.max.y
-       << "))";
+    os << "(( " << box.min.x << ", " << box.min.y << "), ( " << box.max.x
+       << ", " << box.max.y << "))";
     return os;
 }
 
@@ -58,7 +58,7 @@ struct test_empty_images
     }
 };
 
-}  // unnamed
+}  // namespace
 
 namespace render
 {
@@ -69,13 +69,13 @@ bool image_node_renderer_t::do_log = false;
 #endif
 
 image_node_renderer_t::image_node_renderer_t()
-: has_context_(false)
-, render_done_(false)
+  : has_context_(false)
+  , render_done_(false)
 {
 }
 
 image_node_renderer_t::image_node_renderer_t(const context_t& new_context)
-: render_done_(false)
+  : render_done_(false)
 {
     set_context(new_context);
 }
@@ -90,14 +90,17 @@ void image_node_renderer_t::set_context(const context_t& context)
 {
     has_context_ = true;
     new_context_ = context;
-    n_           = dynamic_cast<image_node_t*>(new_context_.result_node);
+    n_ = dynamic_cast<image_node_t*>(new_context_.result_node);
     assert(n_);
     n_->release_image();
 
     n_->composition()->set_frame(new_context_.frame);
-    depth_first_inputs_search(*n_, boost::bind(&image_node_t::calc_format_fun, _1, new_context_));
-    depth_first_inputs_search(*n_, boost::bind(&image_node_t::calc_bounds_fun, _1, new_context_));
-    depth_first_inputs_search(*n_, boost::bind(&image_node_t::clear_interest_fun, _1));
+    depth_first_inputs_search(
+        *n_, boost::bind(&image_node_t::calc_format_fun, _1, new_context_));
+    depth_first_inputs_search(
+        *n_, boost::bind(&image_node_t::calc_bounds_fun, _1, new_context_));
+    depth_first_inputs_search(
+        *n_, boost::bind(&image_node_t::clear_interest_fun, _1));
 }
 
 const Imath::Box2i& image_node_renderer_t::format() const
@@ -121,16 +124,19 @@ void image_node_renderer_t::render(const Imath::Box2i& roi)
 
     n_->set_interest(roi);
     breadth_first_inputs_apply(
-        *n_, boost::bind(&image_node_t::calc_inputs_interest_fun, _1, new_context_));
-    depth_first_inputs_search(*n_, boost::bind(&image_node_t::calc_defined_fun, _1, new_context_));
-    depth_first_inputs_search(*n_,
-                              boost::bind(&image_node_t::subsample_areas_fun, _1, new_context_));
+        *n_,
+        boost::bind(&image_node_t::calc_inputs_interest_fun, _1, new_context_));
+    depth_first_inputs_search(
+        *n_, boost::bind(&image_node_t::calc_defined_fun, _1, new_context_));
+    depth_first_inputs_search(
+        *n_, boost::bind(&image_node_t::subsample_areas_fun, _1, new_context_));
 
     if (do_log)
         depth_first_inputs_search(*n_, test_empty_images());
 
     depth_first_inputs_search(*n_, boost::bind(&node_t::clear_hash, _1));
-    depth_first_inputs_search(*n_, boost::bind(&node_t::calc_hash_str, _1, new_context_));
+    depth_first_inputs_search(
+        *n_, boost::bind(&node_t::calc_hash_str, _1, new_context_));
 
     if (do_log)
         depth_first_inputs_search(*n_, print_areas());
@@ -158,5 +164,5 @@ image::const_image_view_t image_node_renderer_t::format_image_view() const
     return n_->const_subimage_view(format());
 }
 
-}  // namespace
-}  // namespace
+}  // namespace render
+}  // namespace ramen

@@ -10,29 +10,38 @@
 
 class half_lut_t
 {
-public:
+  public:
     half_lut_t() {}
 
-    template<class Fun>
-    half_lut_t(Fun  f,
-               half domain_min    = -HALF_MAX,
-               half domain_max    = HALF_MAX,
-               half default_value = 0,
-               half pos_inf_value = 0,
-               half neg_inf_value = 0,
-               half nan_value     = 0)
+    template <class Fun>
+    half_lut_t(
+        Fun  f,
+        half domain_min = -HALF_MAX,
+        half domain_max = HALF_MAX,
+        half default_value = 0,
+        half pos_inf_value = 0,
+        half neg_inf_value = 0,
+        half nan_value = 0)
     {
-        init(f, domain_min, domain_max, default_value, pos_inf_value, neg_inf_value, nan_value);
+        init(
+            f,
+            domain_min,
+            domain_max,
+            default_value,
+            pos_inf_value,
+            neg_inf_value,
+            nan_value);
     }
 
-    template<class Fun>
-    void init(Fun  f,
-              half domain_min    = -HALF_MAX,
-              half domain_max    = HALF_MAX,
-              half default_value = 0,
-              half pos_inf_value = 0,
-              half neg_inf_value = 0,
-              half nan_value     = 0)
+    template <class Fun>
+    void init(
+        Fun  f,
+        half domain_min = -HALF_MAX,
+        half domain_max = HALF_MAX,
+        half default_value = 0,
+        half pos_inf_value = 0,
+        half neg_inf_value = 0,
+        half nan_value = 0)
     {
         if (!lut_)
             lut_.reset(new half[1 << 16]);
@@ -68,7 +77,6 @@ public:
 
     void swap(half_lut_t& other) { lut_.swap(other.lut_); }
 
-private:
+  private:
     boost::scoped_array<half> lut_;
 };
-

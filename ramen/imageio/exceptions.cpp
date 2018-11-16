@@ -10,7 +10,7 @@ namespace imageio
 {
 exception::exception() {}
 exception::exception(const std::string& msg)
-: what_(msg)
+  : what_(msg)
 {
 }
 
@@ -23,18 +23,18 @@ const char* exception::what() const throw()
 }
 
 unknown_image_format::unknown_image_format()
-: exception("Unknown image format")
+  : exception("Unknown image format")
 {
 }
 
 unsupported_image::unsupported_image()
-: exception("Unsupported image type")
+  : exception("Unsupported image type")
 {
 }
 unsupported_image::unsupported_image(const std::string& msg)
-: exception(msg)
+  : exception(msg)
 {
 }
 
-}  // namespace
-}  // namespace
+}  // namespace imageio
+}  // namespace ramen

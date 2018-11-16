@@ -35,7 +35,7 @@ namespace core
 */
 class RAMEN_API variant_t
 {
-public:
+  public:
     variant_t();
 
     explicit variant_t(bool x);
@@ -59,8 +59,7 @@ public:
 
     // when variant is constructed with a pointer, generate a compile error
     // to avoid the implicit conversion to bool.
-    template<class T>
-    explicit variant_t(T*)
+    template <class T> explicit variant_t(T*)
     {
         BOOST_STATIC_ASSERT(boost::mpl::not_<boost::is_pointer<T*>>::value);
     }
@@ -76,27 +75,21 @@ public:
     bool operator==(const variant_t& other) const;
     bool operator!=(const variant_t& other) const;
 
-private:
-    template<class X>
-    friend const X& get(const variant_t& v);
+  private:
+    template <class X> friend const X& get(const variant_t& v);
 
-    template<class X>
-    friend X& get(variant_t& v);
+    template <class X> friend X& get(variant_t& v);
 
-    template<class X>
-    friend const X* get(const variant_t* v);
+    template <class X> friend const X* get(const variant_t* v);
 
-    template<class X>
-    friend X* get(variant_t* v);
+    template <class X> friend X* get(variant_t* v);
 
-    template<class T>
-    void init(const T& x);
+    template <class T> void init(const T& x);
 
     const unsigned char* storage() const;
     unsigned char*       storage();
 
-    template<class T>
-    struct make_struct
+    template <class T> struct make_struct
     {
         T unused;
     };
@@ -107,15 +100,13 @@ private:
         std::size_t size;
     };
 
-    template<class T>
-    struct box2_struct
+    template <class T> struct box2_struct
     {
         make_struct<T[2]> a;
         make_struct<T[2]> b;
     };
 
-    template<class T>
-    struct box3_struct
+    template <class T> struct box3_struct
     {
         make_struct<T[3]> a;
         make_struct<T[3]> b;
@@ -142,26 +133,28 @@ private:
         box3_struct<float> bfs3;
     };
 
-    typedef boost::mpl::vector<bool,
-                               boost::int32_t,
-                               boost::int64_t,
-                               float,
-                               math::point2i_t,
-                               math::point2f_t,
-                               math::point3f_t,
-                               math::hpoint3f_t,
-                               string_t,
-                               math::box2i_t>
+    typedef boost::mpl::vector<
+        bool,
+        boost::int32_t,
+        boost::int64_t,
+        float,
+        math::point2i_t,
+        math::point2f_t,
+        math::point3f_t,
+        math::hpoint3f_t,
+        string_t,
+        math::box2i_t>
         type_list_t;
 
     // find the biggest element
-    typedef boost::mpl::max_element<
-        boost::mpl::transform_view<type_list_t, boost::mpl::sizeof_<boost::mpl::_1>>>::type
-        biggest_type_it;
+    typedef boost::mpl::max_element<boost::mpl::transform_view<
+        type_list_t,
+        boost::mpl::sizeof_<boost::mpl::_1>>>::type biggest_type_it;
 
     union {
-        unsigned char storage_[sizeof(boost::mpl::deref<biggest_type_it::base>::type)];
-        max_align     unused;
+        unsigned char
+                  storage_[sizeof(boost::mpl::deref<biggest_type_it::base>::type)];
+        max_align unused;
     };
 
     struct vtable
@@ -172,14 +165,12 @@ private:
         bool (*equals)(const variant_t&, const variant_t&);
     };
 
-    template<class T>
-    struct vtable_impl;
+    template <class T> struct vtable_impl;
 
     vtable* vptr_;
 };
 
-template<class T>
-const T& get(const variant_t& v)
+template <class T> const T& get(const variant_t& v)
 {
     if (v.type() != type_traits<T>::type())
         throw bad_type_cast(v.type(), type_traits<T>::type());
@@ -187,8 +178,7 @@ const T& get(const variant_t& v)
     return *reinterpret_cast<const T*>(v.storage());
 }
 
-template<class T>
-T& get(variant_t& v)
+template <class T> T& get(variant_t& v)
 {
     if (v.type() != type_traits<T>::type())
         throw bad_type_cast(v.type(), type_traits<T>::type());
@@ -196,8 +186,7 @@ T& get(variant_t& v)
     return *reinterpret_cast<T*>(v.storage());
 }
 
-template<class T>
-const T* get(const variant_t* v)
+template <class T> const T* get(const variant_t* v)
 {
     if (v->type() != type_traits<T>::type())
         return 0;
@@ -205,8 +194,7 @@ const T* get(const variant_t* v)
     return reinterpret_cast<const T*>(v->storage());
 }
 
-template<class T>
-T* get(variant_t* v)
+template <class T> T* get(variant_t* v)
 {
     if (v->type() != type_traits<T>::type())
         return 0;
@@ -215,8 +203,7 @@ T* get(variant_t* v)
 }
 
 // Equality
-template<class T>
-bool operator==(const variant_t& a, const T& b)
+template <class T> bool operator==(const variant_t& a, const T& b)
 {
     if (type_traits<T>::type() != a.type())
         return false;
@@ -224,8 +211,7 @@ bool operator==(const variant_t& a, const T& b)
     return get<T>(a) == b;
 }
 
-template<class T>
-bool operator==(const variant_t& a, const char* b)
+template <class T> bool operator==(const variant_t& a, const char* b)
 {
     if (a.type() != string_k)
         return false;
@@ -233,26 +219,22 @@ bool operator==(const variant_t& a, const char* b)
     return get<T>(a) == b;
 }
 
-template<class T>
-bool operator==(const T& a, const variant_t& b)
+template <class T> bool operator==(const T& a, const variant_t& b)
 {
     return b == a;
 }
 
-template<class T>
-bool operator!=(const variant_t& a, const T& b)
+template <class T> bool operator!=(const variant_t& a, const T& b)
 {
     return !(a == b);
 }
 
-template<class T>
-bool operator!=(const T& a, const variant_t& b)
+template <class T> bool operator!=(const T& a, const variant_t& b)
 {
     return !(b == a);
 }
 
 RAMEN_API std::ostream& operator<<(std::ostream& os, const variant_t& x);
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

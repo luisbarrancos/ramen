@@ -29,12 +29,13 @@ namespace
 {
 struct gauss_blur_rgba_fn
 {
-    gauss_blur_rgba_fn(const const_image_view_t& src,
-                       const image_view_t&       dst,
-                       __m128*                   kernel,
-                       int                       size)
-    : src_(src)
-    , dst_(dst)
+    gauss_blur_rgba_fn(
+        const const_image_view_t& src,
+        const image_view_t&       dst,
+        __m128*                   kernel,
+        int                       size)
+      : src_(src)
+      , dst_(dst)
     {
         kernel_ = kernel;
         k_size_ = size;
@@ -51,14 +52,15 @@ struct gauss_blur_rgba_fn
 
             for (int x = 0, e = src_.width(); x < e; ++x)
             {
-                __m128* k_it  = kernel_;
+                __m128* k_it = kernel_;
                 __m128  accum = _mm_setzero_ps();
 
                 for (int i = -xoff; i <= xoff; ++i)
                 {
                     int    indx = clamp(x + i, 0, (int) src_.width() - 1);
-                    __m128 p    = _mm_load_ps(reinterpret_cast<const float*>(&(src_it[indx])));
-                    accum       = _mm_add_ps(accum, _mm_mul_ps(p, *k_it++));
+                    __m128 p = _mm_load_ps(
+                        reinterpret_cast<const float*>(&(src_it[indx])));
+                    accum = _mm_add_ps(accum, _mm_mul_ps(p, *k_it++));
                 }
 
                 _mm_store_ps(reinterpret_cast<float*>(&(dst_it[x])), accum);
@@ -83,13 +85,13 @@ void make_gauss_kernel(__m128* kernel, int size, float dev)
     }
 
     int   radius = size / 2;
-    float sum    = 0;
+    float sum = 0;
 
     for (int i = 0; i < size; i++)
     {
-        float diff  = (i - radius) / dev;
+        float diff = (i - radius) / dev;
         float value = std::exp(-diff * diff / 2);
-        kernel[i]   = _mm_set1_ps(value);
+        kernel[i] = _mm_set1_ps(value);
         sum += value;
     }
 
@@ -99,13 +101,14 @@ void make_gauss_kernel(__m128* kernel, int size, float dev)
         kernel[i] = _mm_mul_ps(kernel[i], norm);
 }
 
-}  // unnamed
+}  // namespace
 
-void gaussian_blur_rgba(const const_image_view_t& src,
-                        const image_view_t&       tmp,
-                        const image_view_t&       dst,
-                        float                     std_devx,
-                        float                     std_devy)
+void gaussian_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       tmp,
+    const image_view_t&       dst,
+    float                     std_devx,
+    float                     std_devy)
 {
     // create kernel here
     int sizex = (int) (std_devx * 6 + 1) | 1;
@@ -119,18 +122,20 @@ void gaussian_blur_rgba(const const_image_view_t& src,
     __m128* kernel = new __m128[std::max(sizex, sizey)];
 
     make_gauss_kernel(kernel, sizex, std_devx);
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, src.height()),
-                      gauss_blur_rgba_fn(src, tmp, kernel, sizex),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, src.height()),
+        gauss_blur_rgba_fn(src, tmp, kernel, sizex),
+        tbb::auto_partitioner());
 
     make_gauss_kernel(kernel, sizey, std_devy);
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
-                      gauss_blur_rgba_fn(tmp, dst, kernel, sizey),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, tmp.height()),
+        gauss_blur_rgba_fn(tmp, dst, kernel, sizey),
+        tbb::auto_partitioner());
 
     delete[] kernel;
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

@@ -12,23 +12,24 @@ namespace ramen
 {
 /**
 \ingroup params
-\brief Base class for parameterised objects that can contain children parameterised objects.
+\brief Base class for parameterised objects that can contain children
+parameterised objects.
 */
 class RAMEN_API composite_parameterised_t : public parameterised_t
 {
-public:
-    typedef boost::ptr_vector<parameterised_t>           parameterised_container_type;
+  public:
+    typedef boost::ptr_vector<parameterised_t> parameterised_container_type;
     typedef parameterised_container_type::const_iterator const_iterator;
     typedef parameterised_container_type::iterator       iterator;
 
     composite_parameterised_t();
     ~composite_parameterised_t() override;
 
-protected:
+  protected:
     composite_parameterised_t(const composite_parameterised_t& other);
     void operator=(const parameterised_t& other);
 
-    void                           add_parameterised(std::auto_ptr<parameterised_t> p);
+    void add_parameterised(std::auto_ptr<parameterised_t> p);
     std::auto_ptr<parameterised_t> remove_parameterised(parameterised_t* p);
 
     const parameterised_container_type& children() const { return children_; }
@@ -40,9 +41,8 @@ protected:
     iterator begin() { return children_.begin(); }
     iterator end() { return children_.end(); }
 
-private:
+  private:
     parameterised_container_type children_;
 };
 
-}  // ramen
-
+}  // namespace ramen

@@ -15,16 +15,15 @@ class label_separator_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     label_separator_t(QWidget* parent = 0);
     label_separator_t(const QString& text, QWidget* parent = 0);
 
-private:
+  private:
     void init();
 
     QLabel* label_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

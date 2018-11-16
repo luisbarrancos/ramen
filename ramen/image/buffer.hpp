@@ -19,7 +19,7 @@ namespace image
 {
 class RAMEN_API buffer_t
 {
-public:
+  public:
     static const unsigned int alignment;
 
     buffer_t();
@@ -49,9 +49,11 @@ public:
     const_rgb_image_view_t  const_rgb_view() const;
     const_gray_image_view_t const_gray_view() const;
 
-    const_image_view_t      const_rgba_subimage_view(const Imath::Box2i& area) const;
-    const_rgb_image_view_t  const_rgb_subimage_view(const Imath::Box2i& area) const;
-    const_gray_image_view_t const_gray_subimage_view(const Imath::Box2i& area) const;
+    const_image_view_t const_rgba_subimage_view(const Imath::Box2i& area) const;
+    const_rgb_image_view_t const_rgb_subimage_view(
+        const Imath::Box2i& area) const;
+    const_gray_image_view_t const_gray_subimage_view(
+        const Imath::Box2i& area) const;
 
     // non const views
     image_view_t      rgba_view() const;
@@ -65,7 +67,7 @@ public:
     bool operator==(const buffer_t& other) const;
     bool operator!=(const buffer_t& other) const;
 
-private:
+  private:
     void init();
 
     void alloc_pixels();
@@ -84,6 +86,5 @@ private:
     bool                               use_disk_cache_;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

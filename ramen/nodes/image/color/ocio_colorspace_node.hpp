@@ -15,29 +15,32 @@ namespace image
 {
 class ocio_colorspace_node_t : public pointop_node_t
 {
-public:
+  public:
     static const node_metaclass_t& ocio_colorspace_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     ocio_colorspace_node_t();
 
-protected:
+  protected:
     ocio_colorspace_node_t(const ocio_colorspace_node_t& other)
-    : pointop_node_t(other)
+      : pointop_node_t(other)
     {
     }
     void operator=(const ocio_colorspace_node_t&);
 
-private:
-    node_t* do_clone() const override { return new ocio_colorspace_node_t(*this); }
+  private:
+    node_t* do_clone() const override
+    {
+        return new ocio_colorspace_node_t(*this);
+    }
 
     void do_create_params() override;
 
-    void do_process(const image::const_image_view_t& src,
-                    const image::image_view_t&       dst,
-                    const render::context_t&         context) override;
+    void do_process(
+        const image::const_image_view_t& src,
+        const image::image_view_t&       dst,
+        const render::context_t&         context) override;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

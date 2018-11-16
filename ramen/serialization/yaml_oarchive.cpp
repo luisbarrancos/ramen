@@ -15,8 +15,8 @@ namespace serialization
 const int yaml_oarchive_t::version = 1;
 
 yaml_oarchive_t::yaml_oarchive_t()
-: header_written_(false)
-, map_level_(0)
+  : header_written_(false)
+  , map_level_(0)
 {
     begin_map();
 }
@@ -90,9 +90,12 @@ void yaml_oarchive_t::end_seq()
     check_errors();
 }
 
-bool              yaml_oarchive_t::good() const { return out_.good(); }
-void              yaml_oarchive_t::check_errors() const { check_yaml_errors(out_); }
-const std::string yaml_oarchive_t::last_error() const { return out_.GetLastError(); }
+bool yaml_oarchive_t::good() const { return out_.good(); }
+void yaml_oarchive_t::check_errors() const { check_yaml_errors(out_); }
+const std::string yaml_oarchive_t::last_error() const
+{
+    return out_.GetLastError();
+}
 
-}  // namespace
-}  // namespace
+}  // namespace serialization
+}  // namespace ramen

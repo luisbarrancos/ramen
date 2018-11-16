@@ -16,7 +16,7 @@ namespace ramen
 namespace roto
 {
 triple_t::triple_t()
-: flags_(0)
+  : flags_(0)
 {
     select(false);
     set_corner(false);
@@ -24,7 +24,7 @@ triple_t::triple_t()
 }
 
 triple_t::triple_t(const Imath::V2f& p)
-: flags_(0)
+  : flags_(0)
 {
     set_p0(p);
     set_p1(p);
@@ -163,7 +163,8 @@ void triple_t::read(const serialization::yaml_node_t& node, int version)
         break;
 
         default:
-            node.error_stream() << "Error reading shape point. Unknown number of elements\n";
+            node.error_stream()
+                << "Error reading shape point. Unknown number of elements\n";
     };
 }
 
@@ -184,5 +185,5 @@ void triple_t::write(serialization::yaml_oarchive_t& out, int version) const
     out.end_seq();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

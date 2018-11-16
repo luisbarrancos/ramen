@@ -25,7 +25,7 @@
 namespace ramen
 {
 file_param_t::file_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     is_input_ = true;
     set_default_value(boost::filesystem::path());
@@ -33,17 +33,22 @@ file_param_t::file_param_t(const std::string& name)
 }
 
 file_param_t::file_param_t(const file_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
-    is_input_        = other.is_input_;
+    is_input_ = other.is_input_;
     ext_list_string_ = other.ext_list_string_;
-    input_           = 0;
-    button_          = 0;
+    input_ = 0;
+    button_ = 0;
 }
 
-void file_param_t::set_default_value(const boost::filesystem::path& p) { value().assign(p); }
+void file_param_t::set_default_value(const boost::filesystem::path& p)
+{
+    value().assign(p);
+}
 
-void file_param_t::set_value(const boost::filesystem::path& p, change_reason reason)
+void file_param_t::set_value(
+    const boost::filesystem::path& p,
+    change_reason                  reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -86,7 +91,8 @@ void file_param_t::set_extension(const std::string& ext)
 void file_param_t::do_add_to_hash(hash::generator_t& hash_gen) const
 {
     if (is_input_)
-        hash_gen << filesystem::hash_string(get_value<boost::filesystem::path>(*this));
+        hash_gen << filesystem::hash_string(
+            get_value<boost::filesystem::path>(*this));
 }
 
 void file_param_t::do_read(const serialization::yaml_node_t& node)
@@ -132,14 +138,16 @@ void file_param_t::update_input_text()
     update_input_text(get_value<boost::filesystem::path>(*this));
 }
 
-void file_param_t::do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                             const boost::filesystem::path& new_base)
+void file_param_t::do_convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     boost::filesystem::path p(get_value<boost::filesystem::path>(*this));
 
     if (p.is_relative())
     {
-        value().assign(filesystem::convert_relative_path(p, old_base, new_base));
+        value().assign(
+            filesystem::convert_relative_path(p, old_base, new_base));
         update_widgets();
     }
 }
@@ -172,10 +180,10 @@ void file_param_t::do_make_paths_relative()
 
 QWidget* file_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    input_         = new ui::line_edit_t(top);
-    button_        = new QPushButton(top);
+    input_ = new ui::line_edit_t(top);
+    button_ = new QPushButton(top);
 
     QSize s = input_->sizeHint();
 
@@ -192,9 +200,10 @@ QWidget* file_param_t::do_create_widgets()
     connect(button_, SIGNAL(clicked()), this, SLOT(select_pushed()));
 
     input_->move(app().ui()->inspector().left_margin(), 0);
-    input_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                       - button_->width() - 10,
-                   s.height());
+    input_->resize(
+        app().ui()->inspector().width() -
+            app().ui()->inspector().left_margin() - button_->width() - 10,
+        s.height());
 
     if (is_input_)
         input_->setReadOnly(true);
@@ -215,11 +224,12 @@ void file_param_t::select_pushed()
 {
     QString     fname;
     static bool was_relative = false;
-    bool        relative     = false;
+    bool        relative = false;
 
     if (is_input_)
     {
-        QFileDialog dialog(0, "Select file", QString::null, ext_list_string_.c_str());
+        QFileDialog dialog(
+            0, "Select file", QString::null, ext_list_string_.c_str());
         dialog.setOption(QFileDialog::DontUseNativeDialog, true);
         dialog.setFileMode(QFileDialog::ExistingFile);
 
@@ -236,25 +246,31 @@ void file_param_t::select_pushed()
 
         QGridLayout* glayout = (QGridLayout*) dialog.layout();
         glayout->addWidget(
-            relative_check, glayout->rowCount(), 0, 1, glayout->columnCount(), Qt::AlignLeft);
+            relative_check,
+            glayout->rowCount(),
+            0,
+            1,
+            glayout->columnCount(),
+            Qt::AlignLeft);
 
         dialog.show();
 
         if (dialog.exec())
         {
             QStringList filenames = dialog.selectedFiles();
-            fname                 = filenames[0];
-            relative              = relative_check->isChecked();
-            was_relative          = relative;
+            fname = filenames[0];
+            relative = relative_check->isChecked();
+            was_relative = relative;
         }
     }
     else
-        fname = QFileDialog::getSaveFileName(0,
-                                             "Select file",
-                                             QString::null,
-                                             ext_list_string_.c_str(),
-                                             0,
-                                             QFileDialog::DontUseNativeDialog);
+        fname = QFileDialog::getSaveFileName(
+            0,
+            "Select file",
+            QString::null,
+            ext_list_string_.c_str(),
+            0,
+            QFileDialog::DontUseNativeDialog);
 
     if (!fname.isEmpty())
     {
@@ -283,4 +299,4 @@ void file_param_t::text_changed()
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

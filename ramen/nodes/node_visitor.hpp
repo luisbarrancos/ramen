@@ -12,21 +12,20 @@ namespace ramen
 {
 class node_visitor
 {
-public:
+  public:
     virtual ~node_visitor();
 
-    virtual void visit(node_t* n)       = 0;
+    virtual void visit(node_t* n) = 0;
     virtual void visit(image_node_t* n) = 0;
 };
 
 class generic_node_visitor : public node_visitor
 {
-public:
+  public:
     ~generic_node_visitor() override;
 
     void visit(node_t* n) override = 0;
     void visit(image_node_t* n) override;
 };
 
-}  // ramen
-
+}  // namespace ramen

@@ -32,32 +32,35 @@
 namespace ramen
 {
 roto_shape_param_t::roto_shape_param_t(const std::string& id)
-: static_param_t("Shape")
-, selected_(0)
+  : static_param_t("Shape")
+  , selected_(0)
 {
     set_id(id);
 }
 
 roto_shape_param_t::roto_shape_param_t(const roto_shape_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
-    name_input_    = 0;
-    parent_menu_   = 0;
+    name_input_ = 0;
+    parent_menu_ = 0;
     display_color_ = 0;
-    autokey_       = 0;
-    shape_key_     = 0;
-    selected_      = 0;
-    order_up_      = 0;
-    order_down_    = 0;
+    autokey_ = 0;
+    shape_key_ = 0;
+    selected_ = 0;
+    order_up_ = 0;
+    order_down_ = 0;
 }
 
-param_t* roto_shape_param_t::do_clone() const { return new roto_shape_param_t(*this); }
+param_t* roto_shape_param_t::do_clone() const
+{
+    return new roto_shape_param_t(*this);
+}
 
 QWidget* roto_shape_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    name_input_    = new ui::line_edit_t(top);
+    name_input_ = new ui::line_edit_t(top);
 
     QSize s = name_input_->sizeHint();
 
@@ -68,7 +71,9 @@ QWidget* roto_shape_param_t::do_create_widgets()
 
     name_input_->move(app().ui()->inspector().left_margin(), 0);
     name_input_->resize(
-        app().ui()->inspector().width() - app().ui()->inspector().left_margin() - 80, s.height());
+        app().ui()->inspector().width() -
+            app().ui()->inspector().left_margin() - 80,
+        s.height());
     name_input_->setEnabled(false);
     connect(name_input_, SIGNAL(editingFinished()), this, SLOT(rename_shape()));
     int current_height = s.height() + 5;
@@ -80,15 +85,19 @@ QWidget* roto_shape_param_t::do_create_widgets()
     label->setText("Parent");
 
     parent_menu_ = new QComboBox(top);
-    s            = parent_menu_->sizeHint();
+    s = parent_menu_->sizeHint();
     parent_menu_->setFocusPolicy(Qt::NoFocus);
     parent_menu_->addItem("None");
     s = parent_menu_->sizeHint();
     parent_menu_->move(app().ui()->inspector().left_margin(), current_height);
     parent_menu_->setEnabled(false);
-    connect(parent_menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(set_shape_parent(int)));
+    connect(
+        parent_menu_,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(set_shape_parent(int)));
 
-    int w     = app().ui()->inspector().left_margin() + s.width() + 5;
+    int w = app().ui()->inspector().left_margin() + s.width() + 5;
     order_up_ = new QToolButton(top);
     order_up_->setFocusPolicy(Qt::NoFocus);
     order_up_->setArrowType(Qt::UpArrow);
@@ -106,7 +115,8 @@ QWidget* roto_shape_param_t::do_create_widgets()
     order_down_->setEnabled(false);
     order_down_->move(w, current_height);
     order_down_->resize(s.height(), s.height());
-    connect(order_down_, SIGNAL(pressed()), this, SLOT(move_shape_order_down()));
+    connect(
+        order_down_, SIGNAL(pressed()), this, SLOT(move_shape_order_down()));
     current_height += s.height() + 5;
 
     label = new QLabel(top);
@@ -119,7 +129,8 @@ QWidget* roto_shape_param_t::do_create_widgets()
     display_color_->move(app().ui()->inspector().left_margin(), current_height);
     display_color_->resize(s.height(), s.height());
     display_color_->setEnabled(false);
-    connect(display_color_, SIGNAL(pressed()), this, SLOT(change_shape_color()));
+    connect(
+        display_color_, SIGNAL(pressed()), this, SLOT(change_shape_color()));
 
     autokey_ = new QToolButton(top);
     autokey_->setText("Autokey");
@@ -169,7 +180,7 @@ void roto_shape_param_t::set_active_shape(roto::shape_t* s)
             parent_menu_->setCurrentIndex(0);
         else
         {
-            QString pname        = s->parent_name().c_str();
+            QString pname = s->parent_name().c_str();
             bool    parent_found = false;
 
             for (int i = 0; i < parent_menu_->count(); ++i)
@@ -187,9 +198,10 @@ void roto_shape_param_t::set_active_shape(roto::shape_t* s)
 
         parent_menu_->setEnabled(true);
 
-        ui::color_t c(s->display_color().x / 255.0f,
-                      s->display_color().y / 255.0f,
-                      s->display_color().z / 255.0f);
+        ui::color_t c(
+            s->display_color().x / 255.0f,
+            s->display_color().y / 255.0f,
+            s->display_color().z / 255.0f);
         display_color_->set_value(c);
         display_color_->setEnabled(true);
 
@@ -241,7 +253,8 @@ void roto_shape_param_t::update_parent_menu()
     parent_menu_->clear();
     parent_menu_->addItem("None");
 
-    const image::roto_node_t* node = dynamic_cast<const image::roto_node_t*>(parameterised());
+    const image::roto_node_t* node =
+        dynamic_cast<const image::roto_node_t*>(parameterised());
     assert(node);
 
     int new_index = 0, i = 1;
@@ -261,7 +274,8 @@ void roto_shape_param_t::update_parent_menu()
 
 void roto_shape_param_t::rename_shape()
 {
-    roto_node().scene().rename_shape(selected_, name_input_->text().toStdString());
+    roto_node().scene().rename_shape(
+        selected_, name_input_->text().toStdString());
     name_input_->blockSignals(true);
     name_input_->setText(selected_->name().c_str());
     name_input_->blockSignals(false);
@@ -275,16 +289,19 @@ void roto_shape_param_t::change_shape_color()
     Imath::Color3f col = selected_->display_color();
 
     QColor initial(col.x, col.y, col.z);
-    QColor c = QColorDialog::getColor(initial, (QWidget*) app().ui()->main_window());
+    QColor c =
+        QColorDialog::getColor(initial, (QWidget*) app().ui()->main_window());
 
     if (c.isValid())
     {
-        selected_->set_display_color(Imath::Color3f(c.red(), c.green(), c.blue()));
+        selected_->set_display_color(
+            Imath::Color3f(c.red(), c.green(), c.blue()));
 
         display_color_->blockSignals(true);
-        ui::color_t c(selected_->display_color().x / 255.0f,
-                      selected_->display_color().y / 255.0f,
-                      selected_->display_color().z / 255.0f);
+        ui::color_t c(
+            selected_->display_color().x / 255.0f,
+            selected_->display_color().y / 255.0f,
+            selected_->display_color().z / 255.0f);
         display_color_->set_value(c);
         display_color_->blockSignals(false);
         parameterised()->update_overlay();
@@ -307,12 +324,13 @@ void roto_shape_param_t::set_shape_parent(int index)
     if (index != 0)
     {
         std::string item = parent_menu_->currentText().toStdString();
-        new_parent_      = roto_node().scene().find_shape(item);
+        new_parent_ = roto_node().scene().find_shape(item);
 
         if (new_parent_ == selected_->parent())  // Nothing to do here
             return;
 
-        if (selected_->find_in_children(new_parent_))  // This is an error. Restore the old state.
+        if (selected_->find_in_children(
+                new_parent_))  // This is an error. Restore the old state.
         {
             parent_menu_->blockSignals(true);
 
@@ -338,7 +356,8 @@ void roto_shape_param_t::set_shape_parent(int index)
     }
 
     std::auto_ptr<undo::set_roto_parent_command_t> cmd;
-    cmd.reset(new undo::set_roto_parent_command_t(roto_node(), selected_, new_parent_));
+    cmd.reset(new undo::set_roto_parent_command_t(
+        roto_node(), selected_, new_parent_));
     cmd->redo();
     app().document().undo_stack().push_back(cmd);
     app().ui()->update();
@@ -364,7 +383,8 @@ void roto_shape_param_t::move_shape_order_down()
 
 const image::roto_node_t& roto_shape_param_t::roto_node() const
 {
-    const image::roto_node_t* r = dynamic_cast<const image::roto_node_t*>(parameterised());
+    const image::roto_node_t* r =
+        dynamic_cast<const image::roto_node_t*>(parameterised());
     assert(r);
 
     return *r;
@@ -378,4 +398,4 @@ image::roto_node_t& roto_shape_param_t::roto_node()
     return *r;
 }
 
-}  // namespace
+}  // namespace ramen

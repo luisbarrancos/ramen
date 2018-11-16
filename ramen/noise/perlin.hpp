@@ -12,19 +12,22 @@ namespace ramen
 namespace noise
 {
 class perlin_t
-: public noise_base_t
-, boost::noncopyable
+  : public noise_base_t
+  , boost::noncopyable
 {
-public:
+  public:
     perlin_t(int seed = 0);
 
     float operator()(float x) const;
     float operator()(float x, float y) const;
     float operator()(float x, float y, float z) const;
     float operator()(const Imath::V2f& v) const { return (*this)(v.x, v.y); }
-    float operator()(const Imath::V3f& v) const { return (*this)(v.x, v.y, v.z); }
+    float operator()(const Imath::V3f& v) const
+    {
+        return (*this)(v.x, v.y, v.z);
+    }
 
-private:
+  private:
     void init(int seed);
 
     float do_noise1(float arg) const;
@@ -48,6 +51,5 @@ private:
     float g1[B + B + 2];
 };
 
-}  // noise
-}  // ramen
-
+}  // namespace noise
+}  // namespace ramen

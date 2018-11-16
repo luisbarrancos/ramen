@@ -20,7 +20,7 @@ class time_scale_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     time_scale_t(QWidget* parent = 0);
 
     void setRange(int lo, int hi);
@@ -29,17 +29,17 @@ public:
 
     void setValue(int v);
 
-protected:
+  protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void valueChanged(double value);
 
-private:
+  private:
     int round_halfup(float x) const;
     int frame_from_mouse_pos(int x) const;
 
@@ -55,24 +55,24 @@ class time_slider_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     time_slider_t(QWidget* parent = 0);
 
     void update(int start, int frame, int end);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_start_frame(double t);
     void set_end_frame(double t);
     void set_frame(double t);
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void start_frame_changed(int t);
     void end_frame_changed(int t);
     void time_changed(int t);
 
-private:
+  private:
     void block_all_signals(bool b);
     void adjust_frame(int frame);
 
@@ -81,6 +81,5 @@ private:
     time_scale_t*     scale_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

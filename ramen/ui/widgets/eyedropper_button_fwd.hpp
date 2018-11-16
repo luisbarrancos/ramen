@@ -10,6 +10,5 @@ namespace ui
 {
 class eyedropper_button_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -12,7 +12,7 @@ namespace roto
 {
 class convert_tool_t : public tool_t
 {
-public:
+  public:
     convert_tool_t(image::roto_node_t& parent);
 
     void draw_overlay(const ui::paint_event_t& event) const override;
@@ -21,11 +21,10 @@ public:
     void mouse_drag_event(const ui::mouse_drag_event_t& event) override;
     void mouse_release_event(const ui::mouse_release_event_t& event) override;
 
-private:
+  private:
     bool         box_pick_mode_;
     Imath::Box2f box_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

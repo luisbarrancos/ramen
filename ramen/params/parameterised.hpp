@@ -29,7 +29,7 @@ namespace ramen
 */
 class RAMEN_API parameterised_t : public manipulable_t
 {
-public:
+  public:
     /// Constructor.
     parameterised_t();
 
@@ -94,8 +94,7 @@ public:
     param_t& param(const std::string& identifier);
 
     /// Adds a param to this parameterised.
-    template<class T>
-    void add_param(std::auto_ptr<T> p)
+    template <class T> void add_param(std::auto_ptr<T> p)
     {
         param_set().add_param(p);
     }
@@ -115,14 +114,14 @@ public:
     /// Updates widgets associated with this parameterised's params.
     void update_widgets();
 
-protected:
+  protected:
     parameterised_t(const parameterised_t& other);
     void operator=(const parameterised_t& other);
 
     /// Evaluate all params at frame frame.
     void evaluate_params(float frame);
 
-private:
+  private:
     /*!
         \brief Customization hook for parameterised_t::clone.
         For subclasses to implement.
@@ -168,5 +167,4 @@ private:
 /// Makes a copy of a parameterised
 RAMEN_API parameterised_t* new_clone(const parameterised_t& other);
 
-}  // ramen
-
+}  // namespace ramen

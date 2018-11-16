@@ -14,5 +14,5 @@ struct system_t::impl
     }
 };
 
-}  // system
-}  // ramen
+}  // namespace system
+}  // namespace ramen

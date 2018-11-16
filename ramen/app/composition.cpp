@@ -30,12 +30,12 @@ namespace ramen
 {
 composition_t::composition_t()
 {
-    start_frame_    = 1;
-    end_frame_      = 100;
-    frame_          = 1;
+    start_frame_ = 1;
+    end_frame_ = 100;
+    frame_ = 1;
     default_format_ = app().preferences().default_format();
-    frame_rate_     = app().preferences().frame_rate();
-    autokey_        = true;
+    frame_rate_ = app().preferences().frame_rate();
+    autokey_ = true;
 }
 
 composition_t::~composition_t()
@@ -44,7 +44,10 @@ composition_t::~composition_t()
         released_(&(*it));
 }
 
-const unique_name_map_t<node_t*>& composition_t::node_map() const { return node_map_; }
+const unique_name_map_t<node_t*>& composition_t::node_map() const
+{
+    return node_map_;
+}
 
 std::string composition_t::make_name_unique(const std::string& s) const
 {
@@ -76,7 +79,10 @@ std::auto_ptr<node_t> composition_t::release_node(node_t* n)
     return g_.release_node(n);
 }
 
-node_t* composition_t::find_node(const std::string& name) { return node_map_.find(name); }
+node_t* composition_t::find_node(const std::string& name)
+{
+    return node_map_.find(name);
+}
 
 void composition_t::add_edge(const edge_t& e, bool notify)
 {
@@ -153,19 +159,21 @@ void composition_t::notify_all_dirty()
     for (node_iterator it(nodes().begin()), ie = nodes().end(); it != ie; ++it)
     {
         if (it->notify_dirty())
-            detail::breadth_first_outputs_recursive_search(*it,
-                                                           boost::bind(&node_t::do_notify, _1));
+            detail::breadth_first_outputs_recursive_search(
+                *it, boost::bind(&node_t::do_notify, _1));
     }
 }
 
 void composition_t::clear_all_notify_dirty_flags()
 {
-    boost::range::for_each(nodes(), boost::bind(&node_t::set_notify_dirty, _1, false));
+    boost::range::for_each(
+        nodes(), boost::bind(&node_t::set_notify_dirty, _1, false));
 }
 
 void composition_t::begin_interaction()
 {
-    boost::range::for_each(nodes(), boost::bind(&node_t::begin_interaction, _1));
+    boost::range::for_each(
+        nodes(), boost::bind(&node_t::begin_interaction, _1));
 }
 
 void composition_t::end_interaction()
@@ -213,10 +221,10 @@ void composition_t::set_frame(float f)
 render::context_t composition_t::current_context(render::render_mode mode) const
 {
     render::context_t c;
-    c.mode           = mode;
-    c.composition    = const_cast<composition_t*>(this);
-    c.subsample      = 1;
-    c.frame          = frame_;
+    c.mode = mode;
+    c.composition = const_cast<composition_t*>(this);
+    c.subsample = 1;
+    c.frame = frame_;
     c.default_format = default_format_;
     return c;
 }
@@ -234,12 +242,14 @@ void composition_t::deselect_all()
 
 bool composition_t::any_selected() const
 {
-    return boost::range::find_if(nodes(), boost::bind(&node_t::selected, _1)) != nodes().end();
+    return boost::range::find_if(nodes(), boost::bind(&node_t::selected, _1)) !=
+           nodes().end();
 }
 
 node_t* composition_t::selected_node()
 {
-    if (boost::range::count_if(nodes(), boost::bind(&node_t::selected, _1)) == 1)
+    if (boost::range::count_if(nodes(), boost::bind(&node_t::selected, _1)) ==
+        1)
     {
         node_iterator it(nodes().begin());
 
@@ -253,7 +263,10 @@ node_t* composition_t::selected_node()
     return 0;
 }
 
-const boost::filesystem::path& composition_t::composition_dir() const { return composition_dir_; }
+const boost::filesystem::path& composition_t::composition_dir() const
+{
+    return composition_dir_;
+}
 
 void composition_t::set_composition_dir(const boost::filesystem::path& dir)
 {
@@ -268,29 +281,36 @@ void composition_t::set_composition_dir(const boost::filesystem::path& dir)
     composition_dir_ = dir;
 }
 
-void composition_t::convert_all_relative_paths(const boost::filesystem::path& new_base)
+void composition_t::convert_all_relative_paths(
+    const boost::filesystem::path& new_base)
 {
     boost::range::for_each(
-        nodes(), boost::bind(&node_t::convert_relative_paths, _1, composition_dir_, new_base));
+        nodes(),
+        boost::bind(
+            &node_t::convert_relative_paths, _1, composition_dir_, new_base));
 }
 
 void composition_t::make_all_paths_absolute()
 {
-    boost::range::for_each(nodes(), boost::bind(&node_t::make_paths_absolute, _1));
+    boost::range::for_each(
+        nodes(), boost::bind(&node_t::make_paths_absolute, _1));
 }
 
 void composition_t::make_all_paths_relative()
 {
-    boost::range::for_each(nodes(), boost::bind(&node_t::make_paths_relative, _1));
+    boost::range::for_each(
+        nodes(), boost::bind(&node_t::make_paths_relative, _1));
 }
 
-boost::filesystem::path composition_t::relative_to_absolute(const boost::filesystem::path& p) const
+boost::filesystem::path composition_t::relative_to_absolute(
+    const boost::filesystem::path& p) const
 {
     assert(!composition_dir_.empty());
     return filesystem::make_absolute_path(p, composition_dir());
 }
 
-boost::filesystem::path composition_t::absolute_to_relative(const boost::filesystem::path& p) const
+boost::filesystem::path composition_t::absolute_to_relative(
+    const boost::filesystem::path& p) const
 {
     assert(!composition_dir_.empty());
     return filesystem::make_relative_path(p, composition_dir());
@@ -301,17 +321,21 @@ void composition_t::load_from_file(const boost::filesystem::path& p)
 {
     assert(p.is_absolute());
 
-    boost::filesystem::ifstream ifs(p, serialization::yaml_iarchive_t::file_open_mode());
+    boost::filesystem::ifstream ifs(
+        p, serialization::yaml_iarchive_t::file_open_mode());
 
     if (!ifs.is_open() || !ifs.good())
-        throw std::runtime_error(std::string("Couldn't open input file ")
-                                 + filesystem::file_string(p));
+        throw std::runtime_error(
+            std::string("Couldn't open input file ") +
+            filesystem::file_string(p));
 
-    std::auto_ptr<serialization::yaml_iarchive_t> in(new serialization::yaml_iarchive_t(ifs));
+    std::auto_ptr<serialization::yaml_iarchive_t> in(
+        new serialization::yaml_iarchive_t(ifs));
 
     if (!in->read_composition_header())
-        throw std::runtime_error(std::string("Couldn't open input file ")
-                                 + filesystem::file_string(p));
+        throw std::runtime_error(
+            std::string("Couldn't open input file ") +
+            filesystem::file_string(p));
 
     set_composition_dir(p.parent_path());
     read(*in);
@@ -333,7 +357,8 @@ void composition_t::read(serialization::yaml_iarchive_t& in)
         added_(&n);
 
     for (node_t& n : nodes())
-        n.for_each_param(boost::bind(&param_t::emit_param_changed, _1, param_t::node_loaded));
+        n.for_each_param(boost::bind(
+            &param_t::emit_param_changed, _1, param_t::node_loaded));
 }
 
 void composition_t::read_nodes(serialization::yaml_iarchive_t& in)
@@ -382,7 +407,8 @@ void composition_t::read_node(const serialization::yaml_node_t& node)
     }
     catch (YAML::Exception& e)
     {
-        node.error_stream() << "Yaml exception: " << e.what() << " while reading node\n";
+        node.error_stream()
+            << "Yaml exception: " << e.what() << " while reading node\n";
     }
     catch (std::runtime_error& e)
     {
@@ -390,13 +416,15 @@ void composition_t::read_node(const serialization::yaml_node_t& node)
     }
 }
 
-std::auto_ptr<node_t> composition_t::create_node(const std::string&         id,
-                                                 const std::pair<int, int>& version)
+std::auto_ptr<node_t> composition_t::create_node(
+    const std::string&         id,
+    const std::pair<int, int>& version)
 {
     assert(!id.empty());
     assert(version.first >= 0 && version.second >= 0);
 
-    std::auto_ptr<node_t> p(node_factory_t::instance().create_by_id_with_version(id, version));
+    std::auto_ptr<node_t> p(
+        node_factory_t::instance().create_by_id_with_version(id, version));
 
     // as a last resort, return an unknown node
     if (!p.get())
@@ -416,8 +444,9 @@ std::auto_ptr<node_t> composition_t::create_node(const std::string&         id,
     return p;
 }
 
-std::auto_ptr<node_t> composition_t::create_unknown_node(const std::string&         id,
-                                                         const std::pair<int, int>& version)
+std::auto_ptr<node_t> composition_t::create_unknown_node(
+    const std::string&         id,
+    const std::pair<int, int>& version)
 {
     // TODO: implement this.
     assert(0 && "Create unknown node not implemented yet");
@@ -473,8 +502,8 @@ void composition_t::read_edge(const serialization::yaml_node_t& node)
         dst_ptr->notify();
     }
     else
-        node.error_stream() << "Can't connect " << src_ptr->name() << " to " << dst_ptr->name()
-                            << "\n";
+        node.error_stream() << "Can't connect " << src_ptr->name() << " to "
+                            << dst_ptr->name() << "\n";
 }
 
 void composition_t::write(serialization::yaml_oarchive_t& out) const
@@ -489,17 +518,21 @@ void composition_t::write(serialization::yaml_oarchive_t& out) const
 
     out << YAML::Key << "nodes" << YAML::Value;
     out.begin_seq();
-    boost::range::for_each(nodes(), boost::bind(&node_t::write, _1, boost::ref(out)));
+    boost::range::for_each(
+        nodes(), boost::bind(&node_t::write, _1, boost::ref(out)));
     out.end_seq();
 
     out << YAML::Key << "edges" << YAML::Value;
     out.begin_seq();
-    boost::range::for_each(edges(),
-                           boost::bind(&composition_t::write_edge, this, boost::ref(out), _1));
+    boost::range::for_each(
+        edges(),
+        boost::bind(&composition_t::write_edge, this, boost::ref(out), _1));
     out.end_seq();
 }
 
-void composition_t::write_edge(serialization::yaml_oarchive_t& out, const edge_t& e) const
+void composition_t::write_edge(
+    serialization::yaml_oarchive_t& out,
+    const edge_t&                   e) const
 {
     out.flow();
     out.begin_seq();
@@ -507,4 +540,4 @@ void composition_t::write_edge(serialization::yaml_oarchive_t& out, const edge_t
     out.end_seq();
 }
 
-}  // ramen
+}  // namespace ramen

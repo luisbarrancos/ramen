@@ -12,14 +12,14 @@ namespace image
 {
 namespace sse2
 {
-void box_blur_rgba(const const_image_view_t& src,
-                   const image_view_t&       tmp,
-                   const image_view_t&       dst,
-                   float                     hradius,
-                   float                     vradius,
-                   int                       iters = 1);
+void box_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       tmp,
+    const image_view_t&       dst,
+    float                     hradius,
+    float                     vradius,
+    int                       iters = 1);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

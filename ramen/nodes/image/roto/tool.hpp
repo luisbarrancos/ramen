@@ -20,20 +20,22 @@ namespace roto
 {
 class tool_t : public ui::tool_t
 {
-public:
+  public:
     tool_t(image::roto_node_t& parent);
 
     const image::roto_node_t& parent() const { return parent_; }
     image::roto_node_t&       parent() { return parent_; }
 
-protected:
+  protected:
     triple_t* pick_point(shape_t* s, const ui::mouse_event_t& event);
-    void select_points_in_box(shape_t* s, const Imath::Box2f& box, const ui::mouse_event_t& event);
+    void      select_points_in_box(
+             shape_t*                 s,
+             const Imath::Box2f&      box,
+             const ui::mouse_event_t& event);
 
-private:
+  private:
     image::roto_node_t& parent_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

@@ -15,7 +15,7 @@ namespace image
 {
 class RAMEN_API base_warp_node_t : public image_node_t
 {
-public:
+  public:
     enum filter_type
     {
         filter_point = 0,
@@ -24,10 +24,12 @@ public:
         filter_mipmap
     };
 
-    typedef image::mipmap_sampler_t<image::sse2::bilinear_sampler_t, image::sse2::catrom_sampler_t>
+    typedef image::mipmap_sampler_t<
+        image::sse2::bilinear_sampler_t,
+        image::sse2::catrom_sampler_t>
         mipmap_type;
 
-protected:
+  protected:
     base_warp_node_t();
     base_warp_node_t(const base_warp_node_t& other);
     void operator=(const base_warp_node_t&);
@@ -38,23 +40,25 @@ protected:
     void                create_default_filter_param();
     virtual filter_type get_filter_type() const;
 
-    Imath::Box2i expand_interest(const Imath::Box2i& box, const render::context_t& context) const;
+    Imath::Box2i expand_interest(
+        const Imath::Box2i&      box,
+        const render::context_t& context) const;
 
     // mipmaps
 
     int  max_mipmap_levels() const;
-    void make_mipmap(image_node_t*                 src,
-                     mipmap_type&                  mipmap,
-                     std::vector<image::buffer_t>& buffers) const;
+    void make_mipmap(
+        image_node_t*                 src,
+        mipmap_type&                  mipmap,
+        std::vector<image::buffer_t>& buffers) const;
 
     bool notify_pending_;
 
-private:
+  private:
     // interaction
     void do_begin_interaction() override;
     void do_end_interaction() override;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

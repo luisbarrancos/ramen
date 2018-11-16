@@ -49,7 +49,7 @@ struct draw_node_visitor : public generic_node_visitor
     draw_node_visitor(QPainter& painter);
     void visit(node_t* n) override;
 
-private:
+  private:
     QPainter& painter_;
 };
 
@@ -58,17 +58,20 @@ struct draw_edges_visitor : public generic_node_visitor
     draw_edges_visitor(const composition_view_t& view, QPainter& painter);
     void visit(node_t* n) override;
 
-private:
+  private:
     const composition_view_t& view_;
     QPainter&                 painter_;
 };
 
 struct pick_node_visitor : public generic_node_visitor
 {
-    pick_node_visitor(const composition_view_t& view, const Imath::V2f& p, pick_result_t& result);
+    pick_node_visitor(
+        const composition_view_t& view,
+        const Imath::V2f&         p,
+        pick_result_t&            result);
     void visit(node_t* n) override;
 
-private:
+  private:
     const composition_view_t& view_;
     Imath::V2f                p_;
     pick_result_t&            result_;
@@ -81,7 +84,7 @@ struct box_pick_node_visitor : public generic_node_visitor
 
     bool result;
 
-private:
+  private:
     Imath::Box2f box_;
 };
 
@@ -93,11 +96,10 @@ struct pick_edge_visitor : public generic_node_visitor
     node_t *src, *dst;
     int     port;
 
-private:
+  private:
     Imath::V2f                p_;
     const composition_view_t& view_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

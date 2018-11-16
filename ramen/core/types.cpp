@@ -12,8 +12,8 @@ namespace core
 {
 const char* type_to_string(type_t t)
 {
-#define RAMEN_CORE_TYPE2STRING_CASE(type_enum_k, type_name)                                        \
-    case type_enum_k:                                                                              \
+#define RAMEN_CORE_TYPE2STRING_CASE(type_enum_k, type_name) \
+    case type_enum_k:                                       \
         return type_name;
 
     switch (t)
@@ -69,5 +69,5 @@ const char* type_to_string(type_t t)
     return 0;
 }
 
-}  // core
-}  // ramen
+}  // namespace core
+}  // namespace ramen

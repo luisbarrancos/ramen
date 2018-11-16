@@ -35,13 +35,13 @@ void make_gauss_kernel(float* kernel, int size, float dev)
     }
 
     int   radius = size / 2;
-    float sum    = 0;
+    float sum = 0;
 
     for (int i = 0; i < size; i++)
     {
-        float diff  = (i - radius) / dev;
+        float diff = (i - radius) / dev;
         float value = std::exp(-diff * diff / 2);
-        kernel[i]   = value;
+        kernel[i] = value;
         sum += value;
     }
 
@@ -53,12 +53,13 @@ void make_gauss_kernel(float* kernel, int size, float dev)
 
 struct gaussian_blur_rgb_fn
 {
-    gaussian_blur_rgb_fn(const const_rgb_image_view_t& src,
-                         const rgb_image_view_t&       dst,
-                         float*                        kernel,
-                         int                           size)
-    : src_(src)
-    , dst_(dst)
+    gaussian_blur_rgb_fn(
+        const const_rgb_image_view_t& src,
+        const rgb_image_view_t&       dst,
+        float*                        kernel,
+        int                           size)
+      : src_(src)
+      , dst_(dst)
     {
         kernel_ = kernel;
         k_size_ = size;
@@ -75,7 +76,7 @@ struct gaussian_blur_rgb_fn
 
             for (int x = 0, e = src_.width(); x < e; ++x)
             {
-                float* k_it    = kernel_;
+                float* k_it = kernel_;
                 float  r_accum = 0.0f;
                 float  g_accum = 0.0f;
                 float  b_accum = 0.0f;
@@ -84,9 +85,12 @@ struct gaussian_blur_rgb_fn
                 {
                     int indx = clamp(x + i, 0, (int) src_.width() - 1);
 
-                    float r = boost::gil::get_color(src_it[indx], boost::gil::red_t());
-                    float g = boost::gil::get_color(src_it[indx], boost::gil::green_t());
-                    float b = boost::gil::get_color(src_it[indx], boost::gil::blue_t());
+                    float r = boost::gil::get_color(
+                        src_it[indx], boost::gil::red_t());
+                    float g = boost::gil::get_color(
+                        src_it[indx], boost::gil::green_t());
+                    float b = boost::gil::get_color(
+                        src_it[indx], boost::gil::blue_t());
 
                     r_accum += (r * *k_it);
                     g_accum += (g * *k_it);
@@ -94,9 +98,9 @@ struct gaussian_blur_rgb_fn
                     ++k_it;
                 }
 
-                boost::gil::get_color(*dst_it, boost::gil::red_t())   = r_accum;
+                boost::gil::get_color(*dst_it, boost::gil::red_t()) = r_accum;
                 boost::gil::get_color(*dst_it, boost::gil::green_t()) = g_accum;
-                boost::gil::get_color(*dst_it, boost::gil::blue_t())  = b_accum;
+                boost::gil::get_color(*dst_it, boost::gil::blue_t()) = b_accum;
                 ++dst_it;
             }
         }
@@ -108,14 +112,14 @@ struct gaussian_blur_rgb_fn
     int                           k_size_;
 };
 
-}  // unnamed
+}  // namespace
 
-
-void gaussian_blur_rgb(const const_rgb_image_view_t& src,
-                       const rgb_image_view_t&       tmp,
-                       const rgb_image_view_t&       dst,
-                       float                         stddevx,
-                       float                         stddevy)
+void gaussian_blur_rgb(
+    const const_rgb_image_view_t& src,
+    const rgb_image_view_t&       tmp,
+    const rgb_image_view_t&       dst,
+    float                         stddevx,
+    float                         stddevy)
 {
     int sizex = (int) (stddevx * 6 + 1) | 1;
     if (sizex == 1)
@@ -129,18 +133,20 @@ void gaussian_blur_rgb(const const_rgb_image_view_t& src,
 
     make_gauss_kernel(kernel, sizex, stddevx);
 
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, src.height()),
-                      gaussian_blur_rgb_fn(src, tmp, kernel, sizex),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, src.height()),
+        gaussian_blur_rgb_fn(src, tmp, kernel, sizex),
+        tbb::auto_partitioner());
 
     make_gauss_kernel(kernel, sizey, stddevy);
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
-                      gaussian_blur_rgb_fn(tmp, dst, kernel, sizey),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, tmp.height()),
+        gaussian_blur_rgb_fn(tmp, dst, kernel, sizey),
+        tbb::auto_partitioner());
 
     delete[] kernel;
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

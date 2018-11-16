@@ -26,13 +26,13 @@
 namespace ramen
 {
 float2_param_t::float2_param_t(const std::string& name)
-: proportional_param_t(name)
+  : proportional_param_t(name)
 {
     private_init();
 }
 
 float2_param_t::float2_param_t(const float2_param_t& other)
-: proportional_param_t(other)
+  : proportional_param_t(other)
 {
     input0_ = input1_ = 0;
 }
@@ -69,7 +69,10 @@ void float2_param_t::set_value(const Imath::V2f& x, change_reason reason)
     set_value_at_frame(x, frame, reason);
 }
 
-void float2_param_t::set_value_at_frame(const Imath::V2f& x, float frame, change_reason reason)
+void float2_param_t::set_value_at_frame(
+    const Imath::V2f& x,
+    float             frame,
+    change_reason     reason)
 {
     if (can_undo())
         param_set()->add_command(this);
@@ -91,14 +94,17 @@ void float2_param_t::set_value_at_frame(const Imath::V2f& x, float frame, change
     emit_param_changed(reason);
 }
 
-void float2_param_t::set_absolute_value(const Imath::V2f& x, change_reason reason)
+void float2_param_t::set_absolute_value(
+    const Imath::V2f& x,
+    change_reason     reason)
 {
     set_value(absolute_to_relative(round(x)), reason);
 }
 
-void float2_param_t::set_absolute_value_at_frame(const Imath::V2f& x,
-                                                 float             frame,
-                                                 change_reason     reason)
+void float2_param_t::set_absolute_value_at_frame(
+    const Imath::V2f& x,
+    float             frame,
+    change_reason     reason)
 {
     set_value_at_frame(absolute_to_relative(round(x)), frame, reason);
 }
@@ -119,8 +125,8 @@ Imath::V2f float2_param_t::derive(float time) const
 Imath::V2f float2_param_t::integrate(float time1, float time2) const
 {
     Imath::V2f result = get_value<Imath::V2f>(*this);
-    result.x          = (time2 - time1) * result.x;
-    result.y          = (time2 - time1) * result.y;
+    result.x = (time2 - time1) * result.x;
+    result.y = (time2 - time1) * result.y;
 
     if (!curve(0).empty())
         result.x = curve(0).integrate(time1, time2);
@@ -131,9 +137,10 @@ Imath::V2f float2_param_t::integrate(float time1, float time2) const
     return result;
 }
 
-void float2_param_t::do_format_changed(const Imath::Box2i& new_domain,
-                                       float               aspect,
-                                       const Imath::V2f&   proxy_scale)
+void float2_param_t::do_format_changed(
+    const Imath::Box2i& new_domain,
+    float               aspect,
+    const Imath::V2f&   proxy_scale)
 {
     Imath::V2f scale, offset;
     get_scale_and_offset(scale, offset);
@@ -184,7 +191,8 @@ void float2_param_t::do_write(serialization::yaml_oarchive_t& out) const
     bool two = curve(1).empty();  // && expression( 1).empty();
 
     if (one || two)
-        out << YAML::Key << "value" << YAML::Value << get_value<Imath::V2f>(*this);
+        out << YAML::Key << "value" << YAML::Value
+            << get_value<Imath::V2f>(*this);
 }
 
 void float2_param_t::do_update_widgets()
@@ -217,10 +225,10 @@ void float2_param_t::do_enable_widgets(bool e)
 
 QWidget* float2_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    input0_        = new ui::param_spinbox_t(*this, 0, top);
-    input1_        = new ui::param_spinbox_t(*this, 1, top);
+    input0_ = new ui::param_spinbox_t(*this, 0, top);
+    input1_ = new ui::param_spinbox_t(*this, 1, top);
 
     QSize s = input0_->sizeHint();
 
@@ -232,8 +240,8 @@ QWidget* float2_param_t::do_create_widgets()
 
     int xpos = app().ui()->inspector().left_margin();
 
-    Imath::V2f v    = get_absolute_value<Imath::V2f>(*this);
-    float      low  = absolute_min();
+    Imath::V2f v = get_absolute_value<Imath::V2f>(*this);
+    float      low = absolute_min();
     float      high = absolute_max();
 
     // make inputs a little bigger
@@ -247,9 +255,17 @@ QWidget* float2_param_t::do_create_widgets()
     input0_->setEnabled(enabled());
     if (round_to_int())
         input0_->setDecimals(0);
-    connect(input0_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input0_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input0_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input0_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input0_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input0_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += (s.width() + 5);
 
@@ -261,9 +277,17 @@ QWidget* float2_param_t::do_create_widgets()
     input1_->setEnabled(enabled());
     if (round_to_int())
         input1_->setDecimals(0);
-    connect(input1_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input1_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
     connect(input1_, SIGNAL(spinBoxPressed()), this, SLOT(spinbox_pressed()));
-    connect(input1_, SIGNAL(spinBoxDragged(double)), this, SLOT(spinbox_dragged(double)));
+    connect(
+        input1_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(spinbox_dragged(double)));
     connect(input1_, SIGNAL(spinBoxReleased()), this, SLOT(spinbox_released()));
     xpos += (s.width() + 2);
 
@@ -284,7 +308,7 @@ QWidget* float2_param_t::do_create_widgets()
 void float2_param_t::calc_proportional_factors()
 {
     proportional_factor = Imath::V3f(1, 1, 1);
-    Imath::V2f v        = get_absolute_value<Imath::V2f>(*this);
+    Imath::V2f v = get_absolute_value<Imath::V2f>(*this);
 
     if (sender() == input0_)
     {
@@ -300,19 +324,19 @@ void float2_param_t::calc_proportional_factors()
 
 void float2_param_t::set_component_value_from_slot()
 {
-    Imath::V2f v(
-        absolute_to_relative(Imath::V2f(round(input0_->value()), round(input1_->value()))));
-    int   index;
-    float comp_value;
+    Imath::V2f v(absolute_to_relative(
+        Imath::V2f(round(input0_->value()), round(input1_->value()))));
+    int        index;
+    float      comp_value;
 
     if (QObject::sender() == input0_)
     {
-        index      = 0;
+        index = 0;
         comp_value = v.x;
     }
     else
     {
-        index      = 1;
+        index = 1;
         comp_value = v.y;
     }
 
@@ -331,14 +355,14 @@ void float2_param_t::value_changed(double value)
         if (sender() == input0_)
         {
             float inc = value - v.x;
-            v.x       = value;
-            v.y       = clamp(v.y + (inc * proportional_factor.y));
+            v.x = value;
+            v.y = clamp(v.y + (inc * proportional_factor.y));
         }
         else
         {
             float inc = value - v.y;
-            v.y       = value;
-            v.x       = clamp(v.x + (inc * proportional_factor.x));
+            v.y = value;
+            v.x = clamp(v.x + (inc * proportional_factor.x));
         }
 
         set_value(absolute_to_relative(round(v)));
@@ -370,14 +394,20 @@ void float2_param_t::spinbox_dragged(double value)
         if (sender() == input0_)
         {
             float inc = value - v.x;
-            v.x       = value;
-            v.y = ramen::clamp(v.y + (inc * proportional_factor.y), absolute_min(), absolute_max());
+            v.x = value;
+            v.y = ramen::clamp(
+                v.y + (inc * proportional_factor.y),
+                absolute_min(),
+                absolute_max());
         }
         else
         {
             float inc = value - v.y;
-            v.y       = value;
-            v.x = ramen::clamp(v.x + (inc * proportional_factor.x), absolute_min(), absolute_max());
+            v.y = value;
+            v.x = ramen::clamp(
+                v.x + (inc * proportional_factor.x),
+                absolute_min(),
+                absolute_max());
         }
 
         set_value(absolute_to_relative(round(v)));
@@ -402,4 +432,4 @@ void float2_param_t::spinbox_released()
         app().ui()->end_interaction();
 }
 
-}  // namespace
+}  // namespace ramen

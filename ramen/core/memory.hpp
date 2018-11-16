@@ -18,11 +18,9 @@ namespace ramen
 {
 namespace core
 {
-template<class T>
-struct pointer_traits;
+template <class T> struct pointer_traits;
 
-template<class T>
-struct pointer_traits<T*>
+template <class T> struct pointer_traits<T*>
 {
     typedef T                  element_type;
     typedef T*                 pointer_type;
@@ -32,8 +30,7 @@ struct pointer_traits<T*>
     static void delete_ptr(T* x) { delete x; }
 };
 
-template<class T>
-struct pointer_traits<T (*)[]>
+template <class T> struct pointer_traits<T (*)[]>
 {
     typedef T                  element_type;
     typedef T*                 pointer_type;
@@ -47,22 +44,21 @@ struct pointer_traits<T (*)[]>
 \ingroup core
 \brief An improved std::auto_ptr like smart pointer.
 */
-template<class T>
-class auto_ptr_t
+template <class T> class auto_ptr_t
 {
     BOOST_MOVABLE_BUT_NOT_COPYABLE(auto_ptr_t)
 
     // for safe bool
     operator int() const;
 
-public:
+  public:
     typedef pointer_traits<T*>                       traits_type;
     typedef typename traits_type::element_type       element_type;
     typedef typename traits_type::pointer_type       pointer_type;
     typedef typename traits_type::const_pointer_type const_pointer_type;
 
     explicit auto_ptr_t(pointer_type ptr = 0)
-    : ptr_(0)
+      : ptr_(0)
     {
         reset(ptr);
     }
@@ -70,7 +66,7 @@ public:
     ~auto_ptr_t() { delete_contents(); }
 
     auto_ptr_t(BOOST_RV_REF(auto_ptr_t) other)
-    : ptr_(0)
+      : ptr_(0)
     {
         reset();
         swap(other);
@@ -101,7 +97,7 @@ public:
     pointer_type release()
     {
         pointer_type rv = ptr_;
-        ptr_            = 0;
+        ptr_ = 0;
         return rv;
     }
 
@@ -121,7 +117,7 @@ public:
 
     bool operator!();
 
-private:
+  private:
     void delete_contents()
     {
         if (ptr_)
@@ -134,24 +130,21 @@ private:
     pointer_type ptr_;
 };
 
-template<class T>
-inline void swap(auto_ptr_t<T>& x, auto_ptr_t<T>& y)
+template <class T> inline void swap(auto_ptr_t<T>& x, auto_ptr_t<T>& y)
 {
     x.swap(y);
 }
 
-template<class T>
-T* aligned_ptr(T* p, int alignment)
+template <class T> T* aligned_ptr(T* p, int alignment)
 {
     assert(((alignment - 1) & alignment) == 0);
 
-    uintptr_t ptr     = reinterpret_cast<uintptr_t>(p);
-    uintptr_t align   = alignment - 1;
+    uintptr_t ptr = reinterpret_cast<uintptr_t>(p);
+    uintptr_t align = alignment - 1;
     uintptr_t aligned = (ptr + align + 1) & ~align;
 
     return reinterpret_cast<unsigned char*>(aligned);
 }
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

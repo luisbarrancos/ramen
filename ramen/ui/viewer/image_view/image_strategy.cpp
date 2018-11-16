@@ -10,12 +10,13 @@ namespace ui
 {
 namespace viewer
 {
-image_strategy_t::image_strategy_t(const Imath::Box2i& display_window,
-                                   const Imath::Box2i& data_window,
-                                   GLenum              texture_unit)
+image_strategy_t::image_strategy_t(
+    const Imath::Box2i& display_window,
+    const Imath::Box2i& data_window,
+    GLenum              texture_unit)
 {
-    texture_unit_   = texture_unit;
-    data_window_    = data_window;
+    texture_unit_ = texture_unit;
+    data_window_ = data_window;
     display_window_ = display_window;
 }
 
@@ -37,13 +38,14 @@ int image_strategy_t::height() const
     return 0;
 }
 
-bool image_strategy_t::update_pixels(const image::buffer_t& pixels,
-                                     const Imath::Box2i&    display_window,
-                                     const Imath::Box2i&    data_window)
+bool image_strategy_t::update_pixels(
+    const image::buffer_t& pixels,
+    const Imath::Box2i&    display_window,
+    const Imath::Box2i&    data_window)
 {
     return false;
 }
 
-}  // viewer
-}  // ui
-}  // ramen
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

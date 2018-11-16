@@ -20,17 +20,16 @@ class composition_settings_dialog_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     static composition_settings_dialog_t& instance();
 
     void exec_dialog();
 
-private:
+  private:
     composition_settings_dialog_t();
 
     Ui::composition_settings ui_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -11,7 +11,7 @@ namespace ramen
 namespace ui
 {
 text_edit_t::text_edit_t(QWidget* parent)
-: QPlainTextEdit(parent)
+  : QPlainTextEdit(parent)
 {
     setTabChangesFocus(true);
     document()->setModified(false);
@@ -28,5 +28,5 @@ void text_edit_t::focusOutEvent(QFocusEvent* e)
     QPlainTextEdit::focusOutEvent(e);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

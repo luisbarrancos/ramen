@@ -20,7 +20,7 @@ void yaml_iarchive_t::init(std::istream& is)
 {
     assert(is.good());
 
-    version_     = 0;
+    version_ = 0;
     header_read_ = false;
 
     if (1)
@@ -70,16 +70,23 @@ bool yaml_iarchive_t::read_composition_header()
     return true;
 }
 
-yaml_node_t yaml_iarchive_t::get_node(const std::string& key) const { return root().get_node(key); }
+yaml_node_t yaml_iarchive_t::get_node(const std::string& key) const
+{
+    return root().get_node(key);
+}
 
-boost::optional<yaml_node_t> yaml_iarchive_t::get_optional_node(const std::string& key) const
+boost::optional<yaml_node_t> yaml_iarchive_t::get_optional_node(
+    const std::string& key) const
 {
     return root().get_optional_node(key);
 }
 
 std::string yaml_iarchive_t::errors() const { return error_stream_.str(); }
 
-std::ios_base::openmode yaml_iarchive_t::file_open_mode() { return std::ios::in; }
+std::ios_base::openmode yaml_iarchive_t::file_open_mode()
+{
+    return std::ios::in;
+}
 
-}  // namespace
-}  // namespace
+}  // namespace serialization
+}  // namespace ramen

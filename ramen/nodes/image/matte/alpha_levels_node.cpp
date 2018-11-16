@@ -16,8 +16,8 @@ namespace
 struct remap_alpha_premult_fun
 {
     remap_alpha_premult_fun(float lo, float hi)
-    : alpha_low_(lo)
-    , alpha_high_(hi)
+      : alpha_low_(lo)
+      , alpha_high_(hi)
     {
     }
 
@@ -52,15 +52,15 @@ struct remap_alpha_premult_fun
         return image::pixel_t(r * a, g * a, b * a, a);
     }
 
-private:
+  private:
     float alpha_low_, alpha_high_;
 };
 
 struct remap_alpha_unpremult_fun
 {
     remap_alpha_unpremult_fun(float lo, float hi)
-    : alpha_low_(lo)
-    , alpha_high_(hi)
+      : alpha_low_(lo)
+      , alpha_high_(hi)
     {
     }
 
@@ -84,13 +84,13 @@ struct remap_alpha_unpremult_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     float alpha_low_, alpha_high_;
 };
-}
+}  // namespace
 
 alpha_levels_node_t::alpha_levels_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("alpha_levels");
 }
@@ -117,25 +117,28 @@ void alpha_levels_node_t::do_create_params()
     add_param(p);
 }
 
-void alpha_levels_node_t::do_process(const image::const_image_view_t& src,
-                                     const image::image_view_t&       dst,
-                                     const render::context_t&         context)
+void alpha_levels_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     if (get_value<bool>(param("premult")))
     {
         boost::gil::tbb_transform_pixels(
             src,
             dst,
-            remap_alpha_premult_fun(get_value<float>(param("alpha_low")),
-                                    get_value<float>(param("alpha_high"))));
+            remap_alpha_premult_fun(
+                get_value<float>(param("alpha_low")),
+                get_value<float>(param("alpha_high"))));
     }
     else
     {
         boost::gil::tbb_transform_pixels(
             src,
             dst,
-            remap_alpha_unpremult_fun(get_value<float>(param("alpha_low")),
-                                      get_value<float>(param("alpha_high"))));
+            remap_alpha_unpremult_fun(
+                get_value<float>(param("alpha_low")),
+                get_value<float>(param("alpha_high"))));
     }
 }
 
@@ -154,21 +157,21 @@ const node_metaclass_t& alpha_levels_node_t::alpha_levels_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.alpha_levels";
+        info.id = "image.builtin.alpha_levels";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Matte";
-        info.menu_item     = "Alpha Levels";
-        info.create        = &create_alpha_levels_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Matte";
+        info.menu_item = "Alpha Levels";
+        info.create = &create_alpha_levels_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(alpha_levels_node_t::alpha_levels_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    alpha_levels_node_t::alpha_levels_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

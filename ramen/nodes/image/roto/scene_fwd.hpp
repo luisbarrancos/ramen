@@ -10,6 +10,5 @@ namespace roto
 {
 class scene_t;
 
-}  // roto
-}  // ramen
-
+}  // namespace roto
+}  // namespace ramen

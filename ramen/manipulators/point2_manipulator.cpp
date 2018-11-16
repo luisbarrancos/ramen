@@ -22,10 +22,10 @@
 namespace ramen
 {
 point2_manipulator_t::point2_manipulator_t(float2_param_t* param)
-: manipulator_t()
+  : manipulator_t()
 {
     assert(param);
-    param_    = param;
+    param_ = param;
     selected_ = false;
 }
 
@@ -35,16 +35,17 @@ void point2_manipulator_t::do_draw_overlay(const ui::paint_event_t& event) const
     p.x *= event.aspect_ratio;
     gl_line_width(default_line_width());
 
-    float          size  = 10 / event.pixel_scale;
+    float          size = 10 / event.pixel_scale;
     Imath::Color3c color = selected_ ? selected_color() : default_color();
     manipulators::draw_cross(p, size, size, color, event.pixel_scale);
 }
 
-bool point2_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& event)
+bool point2_manipulator_t::do_mouse_press_event(
+    const ui::mouse_press_event_t& event)
 {
-    selected_    = false;
+    selected_ = false;
     Imath::V2f p = get_absolute_value<Imath::V2f>(*param_);
-    p.x          = p.x * event.aspect_ratio;
+    p.x = p.x * event.aspect_ratio;
 
     if (manipulators::inside_pick_distance(event.wpos, p, event.pixel_scale))
         selected_ = true;
@@ -53,7 +54,8 @@ bool point2_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& e
     return selected_;
 }
 
-void point2_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& event)
+void point2_manipulator_t::do_mouse_drag_event(
+    const ui::mouse_drag_event_t& event)
 {
     assert(selected_);
 
@@ -74,7 +76,8 @@ void point2_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& eve
     event.view->update();
 }
 
-void point2_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t& event)
+void point2_manipulator_t::do_mouse_release_event(
+    const ui::mouse_release_event_t& event)
 {
     selected_ = false;
 
@@ -87,4 +90,4 @@ void point2_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_
     event.view->update();
 }
 
-}  // namespace
+}  // namespace ramen

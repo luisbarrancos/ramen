@@ -19,4 +19,3 @@
 // disable min/max macros on windows.
 #define NOMINMAX
 #endif
-

@@ -23,18 +23,21 @@ namespace color
 \ingroup color
 \brief A 3 component color.
 */
-template<class T>
+template <class T>
 class color3_t
-: boost::addable<
-      color3_t<T>,
-      boost::subtractable<
-          color3_t<T>,
-          boost::dividable2<
-              color3_t<T>,
-              T,
-              boost::multipliable2<color3_t<T>, T, boost::equality_comparable<color3_t<T>>>>>>
+  : boost::addable<
+        color3_t<T>,
+        boost::subtractable<
+            color3_t<T>,
+            boost::dividable2<
+                color3_t<T>,
+                T,
+                boost::multipliable2<
+                    color3_t<T>,
+                    T,
+                    boost::equality_comparable<color3_t<T>>>>>>
 {
-public:
+  public:
     typedef T value_type;
 
     static unsigned int dimensions() { return 3; }
@@ -42,16 +45,16 @@ public:
     color3_t() {}
 
     explicit color3_t(T xx)
-    : x(xx)
-    , y(xx)
-    , z(xx)
+      : x(xx)
+      , y(xx)
+      , z(xx)
     {
     }
 
     color3_t(T xx, T yy, T zz)
-    : x(xx)
-    , y(yy)
-    , z(zz)
+      : x(xx)
+      , y(yy)
+      , z(zz)
     {
     }
 
@@ -124,7 +127,7 @@ public:
     T x, y, z;
 };
 
-template<class T>
+template <class T>
 color3_t<T> clamp(const color3_t<T>& c, T lo = T(0), T hi = T(1))
 {
     color3_t<T> x(c);
@@ -132,7 +135,7 @@ color3_t<T> clamp(const color3_t<T>& c, T lo = T(0), T hi = T(1))
     return x;
 }
 
-template<class T>
+template <class T>
 std::ostream& operator<<(std::ostream& os, const color3_t<T>& c)
 {
     os << c.x << ", " << c.y << ", " << c.z;
@@ -144,6 +147,5 @@ typedef color3_t<float>  color3f_t;
 typedef color3_t<double> color3d_t;
 typedef color3_t<half>   color3h_t;
 
-}  // color
-}  // ramen
-
+}  // namespace color
+}  // namespace ramen

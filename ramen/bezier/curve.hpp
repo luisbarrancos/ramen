@@ -20,12 +20,11 @@ namespace ramen
 namespace bezier
 {
 // P is Imath::Vec 2, 3 or a similar class
-template<class P = Imath::V2f, int Degree = 3>
-class curve_t
+template <class P = Imath::V2f, int Degree = 3> class curve_t
 {
     BOOST_STATIC_ASSERT(Degree >= 1);
 
-public:
+  public:
     BOOST_STATIC_CONSTANT(int, degree = Degree);
     BOOST_STATIC_CONSTANT(int, order = Degree + 1);
 
@@ -53,7 +52,11 @@ public:
         p[2] = q2;
     }
 
-    curve_t(const point_type& q0, const point_type& q1, const point_type& q2, const point_type& q3)
+    curve_t(
+        const point_type& q0,
+        const point_type& q1,
+        const point_type& q2,
+        const point_type& q3)
     {
         BOOST_STATIC_ASSERT(degree == 3);
         p[0] = q0;
@@ -64,13 +67,17 @@ public:
 
     const point_type& operator[](int indx) const
     {
-        assert(indx >= 0 && indx < order && "bezier curve operator[], index out of bounds");
+        assert(
+            indx >= 0 && indx < order &&
+            "bezier curve operator[], index out of bounds");
         return p[indx];
     }
 
     point_type& operator[](int indx)
     {
-        assert(indx >= 0 && indx < order && "bezier curve operator[], index out of bounds");
+        assert(
+            indx >= 0 && indx < order &&
+            "bezier curve operator[], index out of bounds");
         return p[indx];
     }
 
@@ -164,7 +171,8 @@ public:
         vector_type result;
 
         for (unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * (Degree - 1) * (p[2][i] - p[1][i] - p[1][i] + p[0][i]);
+            result[i] =
+                Degree * (Degree - 1) * (p[2][i] - p[1][i] - p[1][i] + p[0][i]);
 
         return result;
     }
@@ -176,8 +184,9 @@ public:
         vector_type result;
 
         for (unsigned int i = 0; i < P::dimensions(); ++i)
-            result[i] = Degree * (Degree - 1)
-                        * (p[Degree][i] - p[Degree - 1][i] - p[Degree - 1][i] + p[Degree - 2][i]);
+            result[i] = Degree * (Degree - 1) *
+                        (p[Degree][i] - p[Degree - 1][i] - p[Degree - 1][i] +
+                         p[Degree - 2][i]);
 
         return result;
     }
@@ -201,6 +210,5 @@ public:
     point_type p[Degree + 1];
 };
 
-}  // bezier
-}  // ramen
-
+}  // namespace bezier
+}  // namespace ramen

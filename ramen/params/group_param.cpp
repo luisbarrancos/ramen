@@ -16,14 +16,14 @@
 namespace ramen
 {
 group_param_t::group_param_t(const std::string& name)
-: composite_param_t(name)
-, can_collapse_(true)
+  : composite_param_t(name)
+  , can_collapse_(true)
 {
 }
 
 group_param_t::group_param_t(const group_param_t& other)
-: composite_param_t(other)
-, group_(0)
+  : composite_param_t(other)
+  , group_(0)
 {
 }
 
@@ -48,4 +48,4 @@ void group_param_t::do_enable_widgets(bool e)
         group_->setEnabled(e);
 }
 
-}  // ramen
+}  // namespace ramen

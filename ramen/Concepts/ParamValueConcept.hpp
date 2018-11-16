@@ -14,17 +14,17 @@ namespace ramen
 \ingroup concepts
 \brief concept checking class for param values
 */
-template<class T>
+template <class T>
 struct ParamValueConcept
-: boost::DefaultConstructible<T>
-, boost::CopyConstructible<T>
-, boost::Assignable<T>
-, boost::EqualityComparable<T>
+  : boost::DefaultConstructible<T>
+  , boost::CopyConstructible<T>
+  , boost::Assignable<T>
+  , boost::EqualityComparable<T>
 {
-private:
+  private:
     BOOST_CONCEPT_ASSERT((RegularConcept<T>) );
 
-public:
+  public:
     BOOST_CONCEPT_USAGE(ParamValueConcept) {}
 };
 
@@ -32,29 +32,25 @@ public:
 \ingroup concepts
 \brief concept checking class for param values that have operator[] defined
 */
-template<class T>
+template <class T>
 struct IndexableParamValueConcept
-: boost::DefaultConstructible<T>
-, boost::CopyConstructible<T>
-, boost::Assignable<T>
-, boost::EqualityComparable<T>
+  : boost::DefaultConstructible<T>
+  , boost::CopyConstructible<T>
+  , boost::Assignable<T>
+  , boost::EqualityComparable<T>
 {
-private:
+  private:
     BOOST_CONCEPT_ASSERT((ParamValueConcept<T>) );
 
-public:
+  public:
     BOOST_CONCEPT_USAGE(IndexableParamValueConcept) { checkIndexOperator(t); }
 
     T t;
 
-private:
-    template<class X>
-    static void nothing(const X& x)
-    {
-    }
+  private:
+    template <class X> static void nothing(const X& x) {}
 
-    template<class X>
-    static void checkIndexOperator(const X& x)
+    template <class X> static void checkIndexOperator(const X& x)
     {
         nothing(x[0]);
     }
@@ -62,5 +58,4 @@ private:
     static void checkIndexOperator(const core::empty_t& x) {}
 };
 
-}  // ramen
-
+}  // namespace ramen

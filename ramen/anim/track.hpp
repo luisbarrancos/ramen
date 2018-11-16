@@ -23,7 +23,7 @@ namespace anim
 {
 class track_t
 {
-public:
+  public:
     track_t();
     explicit track_t(const std::string& name);
     track_t(const std::string& name, const any_curve_ptr_t& curve);
@@ -66,7 +66,7 @@ public:
     const boost::optional<any_curve_ptr_t>& curve() const { return curve_; }
     boost::optional<any_curve_ptr_t>&       curve() { return curve_; }
 
-private:
+  private:
     void init();
 
     void do_make_full_names();
@@ -80,8 +80,7 @@ private:
     Imath::Color3c                   color_;
 };
 
-template<class Fun>
-void for_each_track_depth_first(track_t* t, Fun f)
+template <class Fun> void for_each_track_depth_first(track_t* t, Fun f)
 {
     f(t);
 
@@ -89,8 +88,7 @@ void for_each_track_depth_first(track_t* t, Fun f)
         for_each_track_depth_first(t->child(i), f);
 }
 
-template<class Fun>
-void for_each_leaf_track(track_t* t, Fun f)
+template <class Fun> void for_each_leaf_track(track_t* t, Fun f)
 {
     if (t->is_leaf())
         f(t);
@@ -101,8 +99,7 @@ void for_each_leaf_track(track_t* t, Fun f)
     }
 }
 
-template<class Fun>
-void for_each_curve(track_t* t, Fun f)
+template <class Fun> void for_each_curve(track_t* t, Fun f)
 {
     if (t->is_leaf() && t->curve())
         f(t->curve().get());
@@ -113,6 +110,5 @@ void for_each_curve(track_t* t, Fun f)
     }
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

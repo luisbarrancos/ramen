@@ -18,12 +18,12 @@ class color_button_t : public QPushButton
 {
     Q_OBJECT
 
-public:
+  public:
     color_button_t(QWidget* parent = 0);
 
     const color_t& value() const { return value_; }
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_value(const color_t& c);
 
@@ -31,11 +31,11 @@ public Q_SLOTS:
     void set_green(double x);
     void set_blue(double x);
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void value_changed(const ramen::ui::color_t&);
 
-private:
+  private:
     void update_button_color();
 
     double clamp(double x) const
@@ -52,6 +52,5 @@ private:
     color_t value_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

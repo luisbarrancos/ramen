@@ -26,7 +26,7 @@ namespace undo
 */
 class stack_t : boost::noncopyable
 {
-public:
+  public:
     /// Constructor.
     stack_t();
 
@@ -40,10 +40,11 @@ public:
     void clear_all();
 
     /// Pushes an undo command.
-    template<class T>
-    void push_back(std::auto_ptr<T> c)
+    template <class T> void push_back(std::auto_ptr<T> c)
     {
-        assert(dynamic_cast<command_t*>(c.get()) != 0);  // I think this is not needed...
+        assert(
+            dynamic_cast<command_t*>(c.get()) !=
+            0);  // I think this is not needed...
         undo_stack_.push_back(c.release());
 
         if (undo_stack_.size() > 50)
@@ -71,11 +72,10 @@ public:
     /// Returns true if the redo stack is empty.
     bool redo_empty() const { return redo_stack_.empty(); }
 
-private:
+  private:
     boost::ptr_deque<command_t> undo_stack_;
     boost::ptr_deque<command_t> redo_stack_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

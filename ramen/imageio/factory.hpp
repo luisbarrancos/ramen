@@ -25,7 +25,7 @@ namespace imageio
 {
 class RAMEN_API factory_t
 {
-public:
+  public:
     static factory_t& instance();
 
     ~factory_t();
@@ -44,10 +44,11 @@ public:
     bool is_image_file(const boost::filesystem::path& p) const;
     bool is_image_format_tag(const std::string& tag) const;
 
-    core::auto_ptr_t<reader_t> reader_for_image(const boost::filesystem::path& p) const;
+    core::auto_ptr_t<reader_t> reader_for_image(
+        const boost::filesystem::path& p) const;
     core::auto_ptr_t<writer_t> writer_for_tag(const std::string& tag) const;
 
-private:
+  private:
     factory_t();
 
     // non-copyable
@@ -56,7 +57,8 @@ private:
 
     const_iterator format_for_tag(const std::string& tag) const;
     const_iterator format_for_extension(const boost::filesystem::path& p) const;
-    const_iterator format_for_file_contents(const boost::filesystem::path& p) const;
+    const_iterator format_for_file_contents(
+        const boost::filesystem::path& p) const;
 
     boost::ptr_vector<format_t> formats_;
     std::vector<std::string>    extensions_;
@@ -65,6 +67,5 @@ private:
     mutable char* detect_buffer_;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

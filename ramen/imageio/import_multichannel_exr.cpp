@@ -31,9 +31,10 @@ namespace ramen
 {
 namespace imageio
 {
-void import_layer(node_t*                   node,
-                  std::vector<std::string>& channels,
-                  std::set<std::string>&    channel_set)
+void import_layer(
+    node_t*                   node,
+    std::vector<std::string>& channels,
+    std::set<std::string>&    channel_set)
 {
     image::input_node_t* n = dynamic_cast<image::input_node_t*>(node);
     assert(n);
@@ -63,10 +64,11 @@ void import_layer(node_t*                   node,
     channels.clear();
 }
 
-void import_layer(node_t*                         n,
-                  Imf::ChannelList::ConstIterator first,
-                  Imf::ChannelList::ConstIterator last,
-                  std::set<std::string>&          channel_set)
+void import_layer(
+    node_t*                         n,
+    Imf::ChannelList::ConstIterator first,
+    Imf::ChannelList::ConstIterator last,
+    std::set<std::string>&          channel_set)
 {
     std::vector<std::string> channels;
 
@@ -82,7 +84,10 @@ void import_layer(node_t*                         n,
         import_layer(n, channels, channel_set);
 }
 
-void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bool sequence)
+void import_multichannel_exr(
+    const boost::filesystem::path& p,
+    bool                           relative,
+    bool                           sequence)
 {
     bool tiled;
 
@@ -96,7 +101,9 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
     const Imf::ChannelList& ch_list(ifile.header().channels());
 
     std::set<std::string> channel_set;
-    for (Imf::ChannelList::ConstIterator it(ch_list.begin()); it != ch_list.end(); ++it)
+    for (Imf::ChannelList::ConstIterator it(ch_list.begin());
+         it != ch_list.end();
+         ++it)
         channel_set.insert(std::string(it.name()));
 
     if (channel_set.empty())
@@ -106,10 +113,11 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
     }
 
     app().document().composition().deselect_all();
-    std::auto_ptr<undo::add_nodes_command_t> command(new undo::add_nodes_command_t());
+    std::auto_ptr<undo::add_nodes_command_t> command(
+        new undo::add_nodes_command_t());
 
-    image::input_node_t* node
-        = new image::input_node_t(p, sequence, app().document().composition().composition_dir());
+    image::input_node_t* node = new image::input_node_t(
+        p, sequence, app().document().composition().composition_dir());
     node->set_composition(&app().document().composition());
     node->create_params();
     node->select(true);
@@ -123,7 +131,9 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
     std::set<std::string> layer_set;
     ch_list.layers(layer_set);
 
-    for (std::set<std::string>::iterator sit(layer_set.begin()); sit != layer_set.end(); ++sit)
+    for (std::set<std::string>::iterator sit(layer_set.begin());
+         sit != layer_set.end();
+         ++sit)
     {
         Imf::ChannelList::ConstIterator it, last;
         ch_list.channelsInLayer(*sit, it, last);
@@ -138,7 +148,8 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
     std::vector<std::string> channels;
 
     // handle color layer
-    if (channel_set.count("R") || channel_set.count("B") || channel_set.count("B"))
+    if (channel_set.count("R") || channel_set.count("B") ||
+        channel_set.count("B"))
     {
         channels.push_back("A");
         channels.push_back("B");
@@ -152,7 +163,8 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
         command->add_node(node_copy);
     }
 
-    if (channel_set.count("Y") || channel_set.count("RY") || channel_set.count("BY"))
+    if (channel_set.count("Y") || channel_set.count("RY") ||
+        channel_set.count("BY"))
     {
         channels.push_back("A");
         channels.push_back("BY");
@@ -168,7 +180,8 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
 
     if (!channel_set.empty())
     {
-        for (std::set<std::string>::iterator cit(channel_set.begin()); cit != channel_set.end();
+        for (std::set<std::string>::iterator cit(channel_set.begin());
+             cit != channel_set.end();
              ++cit)
         {
             channels.push_back(*cit);
@@ -200,5 +213,5 @@ void import_multichannel_exr(const boost::filesystem::path& p, bool relative, bo
     delete node;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace imageio
+}  // namespace ramen

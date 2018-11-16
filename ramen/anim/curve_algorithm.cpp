@@ -17,9 +17,12 @@ namespace anim
 {
 namespace detail
 {
-int round(double x) { return (x > 0.0) ? std::floor(x + 0.5) : std::ceil(x - 0.5); }
+int round(double x)
+{
+    return (x > 0.0) ? std::floor(x + 0.5) : std::ceil(x - 0.5);
+}
 
-}  // detail
+}  // namespace detail
 
 namespace
 {
@@ -42,11 +45,11 @@ void make_gauss_kernel(float stddev, std::vector<float>& kernel)
     }
 
     int   radius = size / 2;
-    float sum    = 0;
+    float sum = 0;
 
     for (int i = 0; i < size; i++)
     {
-        float diff  = (i - radius) / stddev;
+        float diff = (i - radius) / stddev;
         float value = std::exp(-diff * diff / 2);
         kernel.push_back(value);
         sum += value;
@@ -58,13 +61,14 @@ void make_gauss_kernel(float stddev, std::vector<float>& kernel)
         kernel[i] *= norm;
 }
 
-float smooth_keyframe(const float_curve_t&          c,
-                      float_curve_t::const_iterator it,
-                      const std::vector<float>&     kernel)
+float smooth_keyframe(
+    const float_curve_t&          c,
+    float_curve_t::const_iterator it,
+    const std::vector<float>&     kernel)
 {
     int off = (kernel.size() - 1) / 2;
 
-    float t   = it->time();
+    float t = it->time();
     float val = 0;
 
     for (int i = -off; i <= off; ++i)
@@ -79,7 +83,7 @@ float smooth_keyframe(const float_curve_t&          c,
 void do_sample_curve(const float_curve_t& src, float_curve_t& dst)
 {
     int start = std::floor(src.start_time());
-    int end   = std::ceil(src.end_time());
+    int end = std::ceil(src.end_time());
 
     for (int i = start; i <= end; ++i)
     {
@@ -88,8 +92,7 @@ void do_sample_curve(const float_curve_t& src, float_curve_t& dst)
     }
 }
 
-template<class Iter>
-Iter find_selected_range_end(Iter it, Iter end)
+template <class Iter> Iter find_selected_range_end(Iter it, Iter end)
 {
     assert(it != end);
     assert(it->selected());
@@ -117,7 +120,8 @@ void do_sample_selected_keys(const float_curve_t& src, float_curve_t& dst)
         else
         {
             // find selected range end
-            float_curve_t::const_iterator range_end = find_selected_range_end(it, end);
+            float_curve_t::const_iterator range_end =
+                find_selected_range_end(it, end);
 
             if (range_end == it)
             {
@@ -127,12 +131,12 @@ void do_sample_selected_keys(const float_curve_t& src, float_curve_t& dst)
             else
             {
                 int start = std::floor(it->time());
-                int end   = std::ceil(range_end->time());
+                int end = std::ceil(range_end->time());
 
                 for (int i = start; i <= end; ++i)
                 {
                     float val = src.evaluate(i);
-                    new_it    = dst.insert(i, val, false);
+                    new_it = dst.insert(i, val, false);
                     new_it->select(true);
                 }
             }
@@ -175,7 +179,7 @@ void do_reverse_selected_float_keyframes(float_curve_t& c)
     }
 }
 
-}  // unnamed
+}  // namespace
 
 void move_selected_keyframes_value(float_curve_t& c, float d)
 {
@@ -247,7 +251,8 @@ void highpass_keyframes(float_curve_t& c, float stddev, bool selected_only)
             continue;
 
         float val = smooth_keyframe(tmp, it, kernel);
-        it->set_value(Imath::clamp(it->value() - val, c.get_min(), c.get_max()));
+        it->set_value(
+            Imath::clamp(it->value() - val, c.get_min(), c.get_max()));
     }
 
     c.recalc_tangents_and_coefficients();
@@ -262,5 +267,5 @@ void reverse_float_keyframes(float_curve_t& c, bool selected_only)
     c.recalc_tangents_and_coefficients();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

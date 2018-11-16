@@ -10,6 +10,5 @@ namespace image
 {
 class roto_node_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

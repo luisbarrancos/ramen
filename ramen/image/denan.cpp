@@ -17,7 +17,7 @@ namespace
 struct replace_nan_fun
 {
     replace_nan_fun(float new_val)
-    : new_val_(new_val)
+      : new_val_(new_val)
     {
     }
 
@@ -39,17 +39,20 @@ struct replace_nan_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     float new_val_;
 };
 
-}  // detail
+}  // namespace
 
-void denan(const const_image_view_t& src, const image_view_t& dst, float replacement)
+void denan(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     replacement)
 {
     replace_nan_fun f(replacement);
     boost::gil::tbb_transform_pixels(src, dst, f);
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

@@ -31,22 +31,22 @@ float resize_coord(float x, float center, float scale)
     return ((x - center + 0.5f) / scale - 0.5f) + center;
 }
 
-template<class Filter>
-struct resize_x_fun
+template <class Filter> struct resize_x_fun
 {
-    resize_x_fun(const image::const_image_view_t& src,
-                 const Imath::Box2i&              src_area,
-                 const image::image_view_t&       dst,
-                 const Imath::Box2i&              dst_area,
-                 int                              xcenter,
-                 float                            scale)
-    : src_(src)
-    , dst_(dst)
+    resize_x_fun(
+        const image::const_image_view_t& src,
+        const Imath::Box2i&              src_area,
+        const image::image_view_t&       dst,
+        const Imath::Box2i&              dst_area,
+        int                              xcenter,
+        float                            scale)
+      : src_(src)
+      , dst_(dst)
     {
-        scale_    = scale;
+        scale_ = scale;
         src_area_ = src_area;
         dst_area_ = dst_area;
-        xcenter_  = xcenter;
+        xcenter_ = xcenter;
     }
 
     void operator()(const tbb::blocked_range<int>& r) const
@@ -56,23 +56,27 @@ struct resize_x_fun
         Filter filter;
 
         float filter_width = std::max(1.0f, scale_);
-        int   filter_area  = filter.filter_area(scale_);
+        int   filter_area = filter.filter_area(scale_);
 
         for (int y = r.begin(), ye = r.end(); y < ye; ++y)
         {
-            int src_y = Imath::clamp(y + dst_area_.min.y, src_area_.min.y, src_area_.max.y);
-            image::const_image_view_t::x_iterator src_it(src_.row_begin(src_y - src_area_.min.y));
-            image::image_view_t::x_iterator       dst_it(dst_.row_begin(y));
+            int src_y = Imath::clamp(
+                y + dst_area_.min.y, src_area_.min.y, src_area_.max.y);
+            image::const_image_view_t::x_iterator src_it(
+                src_.row_begin(src_y - src_area_.min.y));
+            image::image_view_t::x_iterator dst_it(dst_.row_begin(y));
 
             for (int x = 0, xe = dst_.width(); x < xe; ++x)
             {
-                float old_x  = resize_coord(x + dst_area_.min.x, xcenter_, scale_);
-                int   old_xi = Imath::Math<float>::floor(old_x);
+                float old_x =
+                    resize_coord(x + dst_area_.min.x, xcenter_, scale_);
+                int old_xi = Imath::Math<float>::floor(old_x);
 
-                int min_x = std::max(src_area_.min.x, old_xi - filter_area / 2 + 1);
+                int min_x =
+                    std::max(src_area_.min.x, old_xi - filter_area / 2 + 1);
                 int max_x = std::min(old_xi + filter_area / 2, src_area_.max.x);
 
-                __m128 acc          = _mm_setzero_ps();
+                __m128 acc = _mm_setzero_ps();
                 float  total_weight = 0;
 
                 // iterate over the filter box
@@ -81,17 +85,17 @@ struct resize_x_fun
                     float weight = filter((dx - old_x) / filter_width);
                     total_weight += weight;
 
-                    __m128 p = _mm_load_ps(
-                        reinterpret_cast<const float*>(&(src_it[dx - src_area_.min.x])));
+                    __m128 p = _mm_load_ps(reinterpret_cast<const float*>(
+                        &(src_it[dx - src_area_.min.x])));
                     __m128 w = _mm_set_ps1(weight);
-                    p        = _mm_mul_ps(p, w);
-                    acc      = _mm_add_ps(acc, p);
+                    p = _mm_mul_ps(p, w);
+                    acc = _mm_add_ps(acc, p);
                 }
 
                 if (total_weight > 0)
                 {
                     __m128 w = _mm_set_ps1(1.0f / total_weight);
-                    acc      = _mm_mul_ps(acc, w);
+                    acc = _mm_mul_ps(acc, w);
                 }
 
                 _mm_store_ps(reinterpret_cast<float*>(&(*dst_it)), acc);
@@ -100,7 +104,7 @@ struct resize_x_fun
         }
     }
 
-private:
+  private:
     float scale_;
     float xcenter_;
 
@@ -111,25 +115,25 @@ private:
     Imath::Box2i               dst_area_;
 };
 
-template<class Filter>
-struct resize_y_fun
+template <class Filter> struct resize_y_fun
 {
-    resize_y_fun(const image::const_image_view_t& src,
-                 int                              src_min,
-                 int                              src_max,
-                 const image::image_view_t&       dst,
-                 int                              dst_min,
-                 int                              dst_max,
-                 int                              ycenter,
-                 float                            scale)
-    : src_(src)
-    , dst_(dst)
+    resize_y_fun(
+        const image::const_image_view_t& src,
+        int                              src_min,
+        int                              src_max,
+        const image::image_view_t&       dst,
+        int                              dst_min,
+        int                              dst_max,
+        int                              ycenter,
+        float                            scale)
+      : src_(src)
+      , dst_(dst)
     {
         assert(src.width() == dst.width());
         assert(src.height() == src_max - src_min + 1);
         assert(dst.height() == dst_max - dst_min + 1);
 
-        scale_   = scale;
+        scale_ = scale;
         src_min_ = src_min;
         src_max_ = src_max;
         dst_min_ = dst_min;
@@ -144,7 +148,7 @@ struct resize_y_fun
         Filter filter;
 
         float filter_width = std::max(1.0f, scale_);
-        int   filter_area  = filter.filter_area(scale_);
+        int   filter_area = filter.filter_area(scale_);
 
         for (int x = r.begin(), xe = r.end(); x < xe; ++x)
         {
@@ -153,13 +157,13 @@ struct resize_y_fun
 
             for (int y = 0, ye = dst_.height(); y < ye; ++y)
             {
-                float old_y  = resize_coord(y + dst_min_, ycenter_, scale_);
+                float old_y = resize_coord(y + dst_min_, ycenter_, scale_);
                 int   old_yi = Imath::Math<float>::floor(old_y);
 
                 int min_y = std::max(src_min_, old_yi - filter_area / 2 + 1);
                 int max_y = std::min(old_yi + filter_area / 2, src_max_);
 
-                __m128 acc          = _mm_setzero_ps();
+                __m128 acc = _mm_setzero_ps();
                 float  total_weight = 0;
 
                 // iterate over the filter box
@@ -168,17 +172,17 @@ struct resize_y_fun
                     float weight = filter((dy - old_y) / filter_width);
                     total_weight += weight;
 
-                    __m128 p
-                        = _mm_load_ps(reinterpret_cast<const float*>(&(src_it[dy - src_min_])));
+                    __m128 p = _mm_load_ps(reinterpret_cast<const float*>(
+                        &(src_it[dy - src_min_])));
                     __m128 w = _mm_set_ps1(weight);
-                    p        = _mm_mul_ps(p, w);
-                    acc      = _mm_add_ps(acc, p);
+                    p = _mm_mul_ps(p, w);
+                    acc = _mm_add_ps(acc, p);
                 }
 
                 if (total_weight > 0)
                 {
                     __m128 w = _mm_set_ps1(1.0f / total_weight);
-                    acc      = _mm_mul_ps(acc, w);
+                    acc = _mm_mul_ps(acc, w);
                 }
 
                 _mm_store_ps(reinterpret_cast<float*>(&(*dst_it)), acc);
@@ -187,7 +191,7 @@ struct resize_y_fun
         }
     }
 
-private:
+  private:
     float scale_;
     int   ycenter_;
 
@@ -198,26 +202,28 @@ private:
     int                        dst_min_, dst_max_;
 };
 
-template<class Filter>
-void resize(const image::const_image_view_t& src,
-            const Imath::Box2i&              src_defined,
-            const Imath::Box2i&              src_area,
-            const image::image_view_t&       tmp,
-            const Imath::Box2i&              tmp_area,
-            const image::image_view_t&       dst,
-            const Imath::Box2i&              dst_area,
-            const Imath::V2i&                center,
-            const Imath::V2f&                scale)
+template <class Filter>
+void resize(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale)
 {
     resize_x_fun<Filter> xf(src, src_defined, tmp, tmp_area, center.x, scale.x);
-    resize_y_fun<Filter> yf(tmp,
-                            tmp_area.min.y,
-                            tmp_area.max.y,
-                            dst,
-                            dst_area.min.y,
-                            dst_area.max.y,
-                            center.y,
-                            scale.y);
+    resize_y_fun<Filter> yf(
+        tmp,
+        tmp_area.min.y,
+        tmp_area.max.y,
+        dst,
+        dst_area.min.y,
+        dst_area.max.y,
+        center.y,
+        scale.y);
 
     //#ifndef NDEBUG
     xf(tbb::blocked_range<int>(0, tmp.height()));
@@ -233,12 +239,13 @@ void resize(const image::const_image_view_t& src,
 
 struct resize_half_fun
 {
-    resize_half_fun(const image::const_image_view_t& src,
-                    const Imath::Box2i&              src_area,
-                    const image::image_view_t&       dst,
-                    const Imath::Box2i&              dst_area)
-    : src_(src)
-    , dst_(dst)
+    resize_half_fun(
+        const image::const_image_view_t& src,
+        const Imath::Box2i&              src_area,
+        const image::image_view_t&       dst,
+        const Imath::Box2i&              dst_area)
+      : src_(src)
+      , dst_(dst)
     {
         src_area_ = src_area;
         dst_area_ = dst_area;
@@ -279,20 +286,22 @@ struct resize_half_fun
 
                 for (int j = -1; j <= 1; ++j)
                 {
-                    int yy = Imath::clamp(src_y + j, src_area_.min.y, src_area_.max.y);
+                    int yy = Imath::clamp(
+                        src_y + j, src_area_.min.y, src_area_.max.y);
                     image::const_image_view_t::x_iterator src_it(
                         src_.row_begin(yy - src_area_.min.y));
 
                     for (int i = -1; i <= 1; ++i)
                     {
-                        int   xx     = Imath::clamp(src_x, src_area_.min.x, src_area_.max.x);
+                        int xx = Imath::clamp(
+                            src_x, src_area_.min.x, src_area_.max.x);
                         float weight = weights_[j + 1][i + 1];
 
-                        __m128 p = _mm_load_ps(
-                            reinterpret_cast<const float*>(&(src_it[xx - src_area_.min.x])));
+                        __m128 p = _mm_load_ps(reinterpret_cast<const float*>(
+                            &(src_it[xx - src_area_.min.x])));
                         __m128 w = _mm_set_ps1(weight);
 
-                        p   = _mm_mul_ps(p, w);
+                        p = _mm_mul_ps(p, w);
                         acc = _mm_add_ps(acc, p);
                     }
                 }
@@ -304,7 +313,7 @@ struct resize_half_fun
         }
     }
 
-private:
+  private:
     const image::const_image_view_t& src_;
     Imath::Box2i                     src_area_;
 
@@ -315,64 +324,93 @@ private:
     __m128 inv_total_weights_;
 };
 
-}  // unnamed
+}  // namespace
 
 void resize_bilinear(const const_image_view_t& src, const image_view_t& dst)
 {
     generic::resize<sse2::bilinear_sampler_t>(src, dst);
 }
 
-void resize_lanczos3(const image::const_image_view_t& src,
-                     const Imath::Box2i&              src_defined,
-                     const Imath::Box2i&              src_area,
-                     const image::image_view_t&       tmp,
-                     const Imath::Box2i&              tmp_area,
-                     const image::image_view_t&       dst,
-                     const Imath::Box2i&              dst_area,
-                     const Imath::V2i&                center,
-                     const Imath::V2f&                scale)
+void resize_lanczos3(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale)
 {
     resize<lanczos3_filter_t>(
-        src, src_defined, src_area, tmp, tmp_area, dst, dst_area, center, scale);
+        src,
+        src_defined,
+        src_area,
+        tmp,
+        tmp_area,
+        dst,
+        dst_area,
+        center,
+        scale);
 }
 
-void resize_mitchell(const image::const_image_view_t& src,
-                     const Imath::Box2i&              src_defined,
-                     const Imath::Box2i&              src_area,
-                     const image::image_view_t&       tmp,
-                     const Imath::Box2i&              tmp_area,
-                     const image::image_view_t&       dst,
-                     const Imath::Box2i&              dst_area,
-                     const Imath::V2i&                center,
-                     const Imath::V2f&                scale)
+void resize_mitchell(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale)
 {
     resize<mitchell_filter_t>(
-        src, src_defined, src_area, tmp, tmp_area, dst, dst_area, center, scale);
+        src,
+        src_defined,
+        src_area,
+        tmp,
+        tmp_area,
+        dst,
+        dst_area,
+        center,
+        scale);
 }
 
-void resize_catrom(const image::const_image_view_t& src,
-                   const Imath::Box2i&              src_defined,
-                   const Imath::Box2i&              src_area,
-                   const image::image_view_t&       tmp,
-                   const Imath::Box2i&              tmp_area,
-                   const image::image_view_t&       dst,
-                   const Imath::Box2i&              dst_area,
-                   const Imath::V2i&                center,
-                   const Imath::V2f&                scale)
+void resize_catrom(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale)
 {
     resize<catrom_filter_t>(
-        src, src_defined, src_area, tmp, tmp_area, dst, dst_area, center, scale);
+        src,
+        src_defined,
+        src_area,
+        tmp,
+        tmp_area,
+        dst,
+        dst_area,
+        center,
+        scale);
 }
 
-void resize_half(const image::const_image_view_t& src,
-                 const Imath::Box2i&              src_area,
-                 const image::image_view_t&       dst,
-                 const Imath::Box2i&              dst_area)
+void resize_half(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area)
 {
-    tbb::parallel_for(tbb::blocked_range<int>(0, dst.height()),
-                      resize_half_fun(src, src_area, dst, dst_area));
+    tbb::parallel_for(
+        tbb::blocked_range<int>(0, dst.height()),
+        resize_half_fun(src, src_area, dst, dst_area));
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

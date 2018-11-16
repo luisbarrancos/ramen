@@ -9,10 +9,10 @@
 
 namespace ramen
 {
-template<class T>
+template <class T>
 struct RegularConcept
-: boost::CopyConstructible<T>
-, boost::Assignable<T>
+  : boost::CopyConstructible<T>
+  , boost::Assignable<T>
 // boost::EqualityComparable<T>
 {
     BOOST_CONCEPT_USAGE(RegularConcept) { boost::swap(t, t); }
@@ -20,5 +20,4 @@ struct RegularConcept
     T t;
 };
 
-}  // ramen
-
+}  // namespace ramen

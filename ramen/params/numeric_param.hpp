@@ -20,7 +20,7 @@ class RAMEN_API numeric_param_t : public animated_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     enum numeric_type_t
     {
         absolute = 0,
@@ -48,7 +48,7 @@ public:
     Imath::V2f   absolute_to_relative(const Imath::V2f& x) const;
     Imath::Box2f absolute_to_relative(const Imath::Box2f& x) const;
 
-protected:
+  protected:
     numeric_param_t(const numeric_param_t& other);
     void operator=(const numeric_param_t& other);
 
@@ -62,9 +62,11 @@ protected:
     void get_scale_and_offset(float& scale, float& offset) const;
     void get_scale_and_offset(Imath::V2f& scale, Imath::V2f& offset) const;
 
-private:
-    poly_param_value_t relative_to_absolute(const poly_param_value_t& val) const;
-    poly_param_value_t absolute_to_relative(const poly_param_value_t& val) const;
+  private:
+    poly_param_value_t relative_to_absolute(
+        const poly_param_value_t& val) const;
+    poly_param_value_t absolute_to_relative(
+        const poly_param_value_t& val) const;
 
     Imath::Box2i frame_area() const;
 
@@ -72,8 +74,7 @@ private:
     int            depends_on_port_;
 };
 
-template<class S>
-S get_absolute_value(const param_t& p)
+template <class S> S get_absolute_value(const param_t& p)
 {
     const numeric_param_t* q = dynamic_cast<const numeric_param_t*>(&p);
     assert(q);
@@ -96,8 +97,7 @@ S get_absolute_value(const param_t& p)
 #endif
 }
 
-template<class S>
-S get_absolute_value_at_frame(const param_t& p, float frame)
+template <class S> S get_absolute_value_at_frame(const param_t& p, float frame)
 {
     const numeric_param_t* q = dynamic_cast<const numeric_param_t*>(&p);
     assert(q);
@@ -120,5 +120,4 @@ S get_absolute_value_at_frame(const param_t& p, float frame)
 #endif
 }
 
-}  // ramen
-
+}  // namespace ramen

@@ -21,13 +21,14 @@ namespace detail
 {
 class apply_color_matrix_fn
 {
-public:
-    apply_color_matrix_fn(const const_image_view_t& src,
-                          const image_view_t&       dst,
-                          const Imath::M44f&        m)
-    : src_(src)
-    , dst_(dst)
-    , m_(m)
+  public:
+    apply_color_matrix_fn(
+        const const_image_view_t& src,
+        const image_view_t&       dst,
+        const Imath::M44f&        m)
+      : src_(src)
+      , dst_(dst)
+      , m_(m)
     {
     }
 
@@ -44,39 +45,46 @@ public:
                 float g = boost::gil::get_color(*src_it, boost::gil::green_t());
                 float b = boost::gil::get_color(*src_it, boost::gil::blue_t());
 
-                float xr = r * m_[0][0] + g * m_[1][0] + b * m_[2][0] + m_[3][0];
-                float xg = r * m_[0][1] + g * m_[1][1] + b * m_[2][1] + m_[3][1];
-                float xb = r * m_[0][2] + g * m_[1][2] + b * m_[2][2] + m_[3][2];
+                float xr =
+                    r * m_[0][0] + g * m_[1][0] + b * m_[2][0] + m_[3][0];
+                float xg =
+                    r * m_[0][1] + g * m_[1][1] + b * m_[2][1] + m_[3][1];
+                float xb =
+                    r * m_[0][2] + g * m_[1][2] + b * m_[2][2] + m_[3][2];
 
-                *dst_it = image::pixel_t(std::max(xr, 0.0f),
-                                         std::max(xg, 0.0f),
-                                         std::max(xb, 0.0f),
-                                         boost::gil::get_color(*src_it, boost::gil::alpha_t()));
+                *dst_it = image::pixel_t(
+                    std::max(xr, 0.0f),
+                    std::max(xg, 0.0f),
+                    std::max(xb, 0.0f),
+                    boost::gil::get_color(*src_it, boost::gil::alpha_t()));
                 ++src_it;
                 ++dst_it;
             }
         }
     }
 
-private:
+  private:
     const const_image_view_t& src_;
     const image_view_t&       dst_;
     Imath::M44f               m_;
 };
 
-}  // detail
+}  // namespace detail
 
-void apply_color_matrix(const const_image_view_t& src,
-                        const image_view_t&       dst,
-                        const Imath::M44f&        m)
+void apply_color_matrix(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    const Imath::M44f&        m)
 {
-    assert(src.dimensions() == dst.dimensions()
-           && "Apply color matrix, src and dst must have the same size");
-    tbb::parallel_for(tbb::blocked_range<int>(0, src.height()),
-                      detail::apply_color_matrix_fn(src, dst, m),
-                      tbb::auto_partitioner());
+    assert(
+        src.dimensions() == dst.dimensions() &&
+        "Apply color matrix, src and dst must have the same size");
+    tbb::parallel_for(
+        tbb::blocked_range<int>(0, src.height()),
+        detail::apply_color_matrix_fn(src, dst, m),
+        tbb::auto_partitioner());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

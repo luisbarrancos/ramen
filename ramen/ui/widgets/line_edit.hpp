@@ -14,14 +14,13 @@ class line_edit_t : public QLineEdit
 {
     Q_OBJECT
 
-public:
+  public:
     line_edit_t(QWidget* parent = 0);
     line_edit_t(const QString& contents, QWidget* parent = 0);
 
-protected:
+  protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

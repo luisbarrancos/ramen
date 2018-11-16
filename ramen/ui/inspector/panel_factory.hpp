@@ -17,7 +17,7 @@ namespace ui
 {
 class panel_factory_t : boost::noncopyable
 {
-public:
+  public:
     panel_factory_t();
     ~panel_factory_t();
 
@@ -29,13 +29,12 @@ public:
     iterator create_panel(parameterised_t* p);
     void     delete_panel(parameterised_t* p);
 
-private:
+  private:
     void do_create_panel(parameterised_t* p);
 
     std::map<parameterised_t*, panel_t*>           panels_;
     std::map<parameterised_t*, panel_t*>::iterator current_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

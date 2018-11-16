@@ -14,13 +14,13 @@ namespace ramen
 namespace ui
 {
 exposure_picker_t::exposure_picker_t(QWidget* parent)
-: QWidget(parent)
-, background_(sizeHint(), QImage::Format_RGB32)
+  : QWidget(parent)
+  , background_(sizeHint(), QImage::Format_RGB32)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFocusPolicy(Qt::StrongFocus);
     valid_background_ = false;
-    exposure_         = 0;
+    exposure_ = 0;
 }
 
 QSize exposure_picker_t::sizeHint() const { return QSize(200, 15); }
@@ -81,7 +81,10 @@ void exposure_picker_t::mouseMoveEvent(QMouseEvent* event)
     event->accept();
 }
 
-void exposure_picker_t::mouseReleaseEvent(QMouseEvent* event) { event->accept(); }
+void exposure_picker_t::mouseReleaseEvent(QMouseEvent* event)
+{
+    event->accept();
+}
 
 void exposure_picker_t::resizeEvent(QResizeEvent* event)
 {
@@ -105,7 +108,7 @@ void exposure_picker_t::update_background()
     {
         QRgb* p = reinterpret_cast<QRgb*>(background_.scanLine(j));
 
-        double l     = 0;
+        double l = 0;
         double l_inc = 1.0 / (double) (width() - 1);
 
         for (int i = 0; i < background_.width(); ++i)
@@ -116,5 +119,5 @@ void exposure_picker_t::update_background()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

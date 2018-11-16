@@ -10,22 +10,25 @@ namespace image
 {
 class set_matte_node_t : public image_node_t
 {
-public:
+  public:
     static const node_metaclass_t& set_matte_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     set_matte_node_t();
 
-    bool use_cache(const render::context_t& context) const override { return false; }
+    bool use_cache(const render::context_t& context) const override
+    {
+        return false;
+    }
 
-protected:
+  protected:
     set_matte_node_t(const set_matte_node_t& other)
-    : image_node_t(other)
+      : image_node_t(other)
     {
     }
     void operator=(const set_matte_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new set_matte_node_t(*this); }
 
     void do_create_params() override;
@@ -35,6 +38,5 @@ private:
     void do_process(const render::context_t& context) override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

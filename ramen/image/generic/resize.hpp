@@ -19,14 +19,13 @@ namespace generic
 {
 namespace detail
 {
-template<class Sampler>
-class resize_fn
+template <class Sampler> class resize_fn
 {
-public:
+  public:
     resize_fn(const const_image_view_t& src, const image_view_t& dst)
-    : src_(src)
-    , dst_(dst)
-    , s_(src)
+      : src_(src)
+      , dst_(dst)
+      , s_(src)
     {
         yscale_ = src_.height() / dst_.height();
     }
@@ -47,29 +46,37 @@ public:
         }
     }
 
-private:
+  private:
     Sampler                   s_;
     const const_image_view_t& src_;
     const image_view_t&       dst_;
     float                     yscale_;
 };
 
-}  // detail
+}  // namespace detail
 
 // util
 
-Imath::V2i   resize_point(const Imath::V2i& p, const Imath::V2i& center, float sx, float sy);
-Imath::Box2i resize_box(const Imath::Box2i& box, const Imath::V2i& center, float sx, float sy);
+Imath::V2i resize_point(
+    const Imath::V2i& p,
+    const Imath::V2i& center,
+    float             sx,
+    float             sy);
+Imath::Box2i resize_box(
+    const Imath::Box2i& box,
+    const Imath::V2i&   center,
+    float               sx,
+    float               sy);
 
-template<class Sampler>
+template <class Sampler>
 void resize(const const_image_view_t& src, const image_view_t& dst)
 {
-    tbb::parallel_for(tbb::blocked_range<int>(0, dst.height() + 1),
-                      detail::resize_fn<Sampler>(src, dst),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<int>(0, dst.height() + 1),
+        detail::resize_fn<Sampler>(src, dst),
+        tbb::auto_partitioner());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

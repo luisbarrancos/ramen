@@ -13,9 +13,9 @@ namespace ramen
 namespace gl
 {
 program_t::program_t(GLenum shader_type)
-: shader_type_(shader_type)
+  : shader_type_(shader_type)
 {
-    shader_  = 0;
+    shader_ = 0;
     program_ = 0;
 }
 
@@ -29,7 +29,7 @@ void program_t::compile(const char* src0, const char* src1)
 {
     if (!program_)
     {
-        shader_  = gl_create_shader(shader_type_);
+        shader_ = gl_create_shader(shader_type_);
         program_ = gl_create_program();
     }
     else
@@ -110,9 +110,10 @@ void program_t::uniform_1f(const char* param, float v)
 void program_t::uniform_4f(const char* param, float* v)
 {
     assert(program_);
-    gl_uniform4f(gl_get_uniform_location(program_, param), v[0], v[1], v[2], v[3]);
+    gl_uniform4f(
+        gl_get_uniform_location(program_, param), v[0], v[1], v[2], v[3]);
     check_gl_errors();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace gl
+}  // namespace ramen

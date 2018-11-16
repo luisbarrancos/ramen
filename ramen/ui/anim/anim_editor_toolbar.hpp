@@ -28,7 +28,7 @@ class anim_editor_toolbar_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     anim_editor_toolbar_t(QWidget* parent = 0);
     ~anim_editor_toolbar_t() override;
 
@@ -36,7 +36,7 @@ public:
 
     void selection_changed();
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void set_tangents_smooth();
     void set_tangents_flat();
@@ -54,7 +54,7 @@ private Q_SLOTS:
     void smooth_selected_keys();
     void high_pass_selected_keys();
 
-private:
+  private:
     QButtonGroup* bgroup_;
 
     QToolButton* select_;
@@ -79,6 +79,5 @@ private:
     undo::drag_keys_command_t* drag_command_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

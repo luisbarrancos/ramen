@@ -6,5 +6,5 @@ namespace ramen
 {
 namespace image
 {
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

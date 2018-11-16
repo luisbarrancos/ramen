@@ -10,20 +10,20 @@ namespace image
 {
 class blur_mask_node_t : public base_blur_node_t
 {
-public:
+  public:
     static const node_metaclass_t& blur_mask_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     blur_mask_node_t();
 
-protected:
+  protected:
     blur_mask_node_t(const blur_mask_node_t& other)
-    : base_blur_node_t(other)
+      : base_blur_node_t(other)
     {
     }
     void operator=(const blur_mask_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new blur_mask_node_t(*this); }
 
     void do_create_params() override;
@@ -38,6 +38,5 @@ private:
     Imath::V2f get_max_blur_radius() const;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

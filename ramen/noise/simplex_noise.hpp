@@ -47,10 +47,10 @@ namespace ramen
 namespace noise
 {
 class simplex_noise_t
-: public noise_base_t
-, boost::noncopyable
+  : public noise_base_t
+  , boost::noncopyable
 {
-public:
+  public:
     simplex_noise_t(int seed = 0);
 
     float operator()(float x) const;
@@ -59,13 +59,19 @@ public:
     float operator()(float x, float y, float z, float w) const;
 
     float operator()(const Imath::V2f& v) const { return (*this)(v.x, v.y); }
-    float operator()(const Imath::V3f& v) const { return (*this)(v.x, v.y, v.z); }
-    float operator()(const Imath::V4f& v) const { return (*this)(v.x, v.y, v.z, v.w); }
+    float operator()(const Imath::V3f& v) const
+    {
+        return (*this)(v.x, v.y, v.z);
+    }
+    float operator()(const Imath::V4f& v) const
+    {
+        return (*this)(v.x, v.y, v.z, v.w);
+    }
 
-private:
+  private:
     float grad1(int hash, float x) const
     {
-        int   h    = hash & 15;
+        int   h = hash & 15;
         float grad = 1.0f + (h & 7); /* Gradient value 1.0, 2.0, ..., 8.0 */
         if (h & 8)
             grad = -grad;  /* Set a random sign for the gradient */
@@ -82,21 +88,25 @@ private:
 
     float grad3(int hash, float x, float y, float z) const
     {
-        int   h = hash & 15;     /* Convert low 4 bits of hash code into 12 simple */
-        float u = h < 8 ? x : y; /* gradient directions, and compute dot product. */
-        float v = h < 4 ? y : h == 12 || h == 14 ? x : z; /* Fix repeats at h = 12 to 15 */
+        int h = hash & 15; /* Convert low 4 bits of hash code into 12 simple */
+        float u =
+            h < 8 ? x : y; /* gradient directions, and compute dot product. */
+        float v =
+            h < 4
+                ? y
+                : h == 12 || h == 14 ? x : z; /* Fix repeats at h = 12 to 15 */
         return ((h & 1) ? -u : u) + ((h & 2) ? -v : v);
     }
 
     float grad4(int hash, float x, float y, float z, float t) const
     {
-        int   h = hash & 31;      /* Convert low 5 bits of hash code into 32 simple */
-        float u = h < 24 ? x : y; /* gradient directions, and compute dot product. */
+        int h = hash & 31; /* Convert low 5 bits of hash code into 32 simple */
+        float u =
+            h < 24 ? x : y; /* gradient directions, and compute dot product. */
         float v = h < 16 ? y : z;
         float w = h < 8 ? z : t;
         return ((h & 1) ? -u : u) + ((h & 2) ? -v : v) + ((h & 4) ? -w : w);
     }
-
 
     float smoothstep(float v0, float v1, float v) const
     {
@@ -118,6 +128,5 @@ private:
     static unsigned char simplex[64][4];
 };
 
-}  // noise
-}  // ramen
-
+}  // namespace noise
+}  // namespace ramen

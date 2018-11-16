@@ -23,5 +23,4 @@ class color_param_t;
 
 class combo_group_param_t;
 
-}  // namespace
-
+}  // namespace ramen

@@ -26,55 +26,65 @@ namespace
 {
 struct add_mix_layer_mode_unpremult_fun
 {
-    add_mix_layer_mode_unpremult_fun(const halfFunction<half>& fg_lut,
-                                     const halfFunction<half>& bg_lut)
-    : fg_lut_(fg_lut)
-    , bg_lut_(bg_lut)
+    add_mix_layer_mode_unpremult_fun(
+        const halfFunction<half>& fg_lut,
+        const halfFunction<half>& bg_lut)
+      : fg_lut_(fg_lut)
+      , bg_lut_(bg_lut)
     {
     }
 
-    image::pixel_t operator()(const image::pixel_t& back, const image::pixel_t& front) const
+    image::pixel_t operator()(
+        const image::pixel_t& back,
+        const image::pixel_t& front) const
     {
         using namespace boost::gil;
 
-        float a     = fg_lut_((float) get_color(front, alpha_t()));
+        float a = fg_lut_((float) get_color(front, alpha_t()));
         float a_inv = bg_lut_((float) get_color(front, alpha_t()));
 
-        return image::pixel_t(get_color(front, red_t()) * a + get_color(back, red_t()) * a_inv,
-                              get_color(front, green_t()) * a + get_color(back, green_t()) * a_inv,
-                              get_color(front, blue_t()) * a + get_color(back, blue_t()) * a_inv,
-                              clamp(a + get_color(back, alpha_t()), 0.0f, 1.0f));
+        return image::pixel_t(
+            get_color(front, red_t()) * a + get_color(back, red_t()) * a_inv,
+            get_color(front, green_t()) * a +
+                get_color(back, green_t()) * a_inv,
+            get_color(front, blue_t()) * a + get_color(back, blue_t()) * a_inv,
+            clamp(a + get_color(back, alpha_t()), 0.0f, 1.0f));
     }
 
-private:
+  private:
     const halfFunction<half>& fg_lut_;
     const halfFunction<half>& bg_lut_;
 };
 
 struct add_mix_layer_mode_premult_fun
 {
-    add_mix_layer_mode_premult_fun(const halfFunction<half>& fg_lut,
-                                   const halfFunction<half>& bg_lut)
-    : fun_(fg_lut, bg_lut)
+    add_mix_layer_mode_premult_fun(
+        const halfFunction<half>& fg_lut,
+        const halfFunction<half>& bg_lut)
+      : fun_(fg_lut, bg_lut)
     {
     }
 
-    image::pixel_t operator()(const image::pixel_t& back, const image::pixel_t& front) const
+    image::pixel_t operator()(
+        const image::pixel_t& back,
+        const image::pixel_t& front) const
     {
         return fun_(back, image::unpremultiply_pixel(front));
     }
 
-private:
+  private:
     add_mix_layer_mode_unpremult_fun fun_;
 };
-}
+}  // namespace
 
 add_mix_layer_node_t::add_mix_layer_node_t()
-: base_layer_node_t()
+  : base_layer_node_t()
 {
     set_name("add_mix");
-    add_input_plug("back", false, ui::palette_t::instance().color("back plug"), "Back");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "back", false, ui::palette_t::instance().color("back plug"), "Back");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -82,7 +92,7 @@ void add_mix_layer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p(new popup_param_t("Mode"));
     p->set_id("mode");
-    p->menu_items() = std::vector<std::string>({ "Background", "Foreground" });
+    p->menu_items() = std::vector<std::string>({"Background", "Foreground"});
     add_param(p);
 
     std::auto_ptr<bool_param_t> b(new bool_param_t("Premultiplied"));
@@ -132,7 +142,8 @@ void add_mix_layer_node_t::do_process(const render::context_t& context)
     if (!bg_area.isEmpty())
     {
         render_input(0, context);
-        boost::gil::copy_pixels(bg->const_subimage_view(bg_area), subimage_view(bg_area));
+        boost::gil::copy_pixels(
+            bg->const_subimage_view(bg_area), subimage_view(bg_area));
         release_input_image(0);
     }
 
@@ -142,25 +153,28 @@ void add_mix_layer_node_t::do_process(const render::context_t& context)
     {
         render_input(1, context);
 
-        const curve_param_t* c = dynamic_cast<const curve_param_t*>(&param("fg"));
-        halfFunction<half>   fg_lut(anim::eval_float_curve(c->curve()));
+        const curve_param_t* c =
+            dynamic_cast<const curve_param_t*>(&param("fg"));
+        halfFunction<half> fg_lut(anim::eval_float_curve(c->curve()));
 
         c = dynamic_cast<const curve_param_t*>(&param("bg"));
         halfFunction<half> bg_lut(anim::eval_float_curve(c->curve()));
 
         if (get_value<bool>(param("premult")))
         {
-            boost::gil::tbb_transform2_pixels(const_subimage_view(comp_area),
-                                              fg->const_subimage_view(comp_area),
-                                              subimage_view(comp_area),
-                                              add_mix_layer_mode_premult_fun(fg_lut, bg_lut));
+            boost::gil::tbb_transform2_pixels(
+                const_subimage_view(comp_area),
+                fg->const_subimage_view(comp_area),
+                subimage_view(comp_area),
+                add_mix_layer_mode_premult_fun(fg_lut, bg_lut));
         }
         else
         {
-            boost::gil::tbb_transform2_pixels(const_subimage_view(comp_area),
-                                              fg->const_subimage_view(comp_area),
-                                              subimage_view(comp_area),
-                                              add_mix_layer_mode_unpremult_fun(fg_lut, bg_lut));
+            boost::gil::tbb_transform2_pixels(
+                const_subimage_view(comp_area),
+                fg->const_subimage_view(comp_area),
+                subimage_view(comp_area),
+                add_mix_layer_mode_unpremult_fun(fg_lut, bg_lut));
         }
 
         release_input_image(1);
@@ -183,14 +197,14 @@ const node_metaclass_t& add_mix_layer_node_t::add_mix_layer_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.addmix";
+        info.id = "image.builtin.addmix";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Layer";
-        info.menu_item     = "AddMix";
-        info.create        = &create_add_mix_layer_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Layer";
+        info.menu_item = "AddMix";
+        info.create = &create_add_mix_layer_node;
+        inited = true;
     }
 
     return info;
@@ -199,5 +213,5 @@ const node_metaclass_t& add_mix_layer_node_t::add_mix_layer_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     add_mix_layer_node_t::add_mix_layer_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

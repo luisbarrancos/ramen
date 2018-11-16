@@ -21,8 +21,9 @@ namespace anim
 {
 class clipboard_t : boost::noncopyable
 {
-public:
-    typedef std::pair<std::string, std::shared_ptr<any_curve_t>> named_curve_type;
+  public:
+    typedef std::pair<std::string, std::shared_ptr<any_curve_t>>
+        named_curve_type;
 
     static clipboard_t& instance();
 
@@ -44,11 +45,13 @@ public:
     void copy(const float_curve_t& c);
     void paste(float_curve_t& dst);
 
-private:
+  private:
     clipboard_t();
     ~clipboard_t();
 
-    int find_compatible_curve(const std::string& name, const anim::any_curve_ptr_t& c);
+    int find_compatible_curve(
+        const std::string&           name,
+        const anim::any_curve_ptr_t& c);
 
     std::vector<named_curve_type> contents_;
     bool                          copy_curves_mode_;
@@ -57,6 +60,5 @@ private:
     util::edit_distance_t distance_fun_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

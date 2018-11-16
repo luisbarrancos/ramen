@@ -17,21 +17,21 @@ namespace undo
 {
 class add_node_command_t : public command_t
 {
-public:
+  public:
     add_node_command_t(std::auto_ptr<node_t> n, node_t* src = 0);
     ~add_node_command_t() override;
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     node_t *              src_, *node_;
     std::auto_ptr<node_t> storage_;
 };
 
 class add_nodes_command_t : public command_t
 {
-public:
+  public:
     add_nodes_command_t();
 
     void add_node(std::auto_ptr<node_t> n);
@@ -39,11 +39,10 @@ public:
     void undo() override;
     void redo() override;
 
-private:
+  private:
     std::vector<node_t*>      nodes_;
     boost::ptr_vector<node_t> node_storage_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

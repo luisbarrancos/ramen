@@ -18,7 +18,7 @@ namespace core
 */
 class RAMEN_API name_t
 {
-public:
+  public:
     name_t();
     explicit name_t(const char* str);
 
@@ -35,11 +35,11 @@ public:
     void swap(name_t& other)
     {
         const char* tmp = data_;
-        data_           = other.data_;
-        other.data_     = tmp;
+        data_ = other.data_;
+        other.data_ = tmp;
     }
 
-private:
+  private:
     void init(const char* str);
 
     const char* data_;
@@ -47,8 +47,10 @@ private:
 
 inline void swap(name_t& x, name_t& y) { x.swap(y); }
 
-inline std::ostream& operator<<(std::ostream& os, const name_t& name) { return os << name.c_str(); }
+inline std::ostream& operator<<(std::ostream& os, const name_t& name)
+{
+    return os << name.c_str();
+}
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

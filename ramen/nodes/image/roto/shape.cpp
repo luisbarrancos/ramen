@@ -37,13 +37,13 @@ namespace ramen
 namespace roto
 {
 shape_t::shape_t()
-: parameterised_t()
+  : parameterised_t()
 {
     init();
 }
 
 shape_t::shape_t(const Imath::Box2f& box)
-: parameterised_t()
+  : parameterised_t()
 {
     assert(!box.isEmpty());
 
@@ -56,40 +56,42 @@ shape_t::shape_t(const Imath::Box2f& box)
 }
 
 shape_t::shape_t(const shape_t& other)
-: parameterised_t(other)
-, parent_(0)
-, scene_(0)
+  : parameterised_t(other)
+  , parent_(0)
+  , scene_(0)
 {
-    selected_      = false;
+    selected_ = false;
     display_color_ = other.display_color_;
-    triples_       = other.triples_;
-    closed_        = other.closed_;
-    autokey_       = other.autokey_;
-    track_mouse_   = other.track_mouse_;
-    is_null_       = other.is_null_;
-    curve_         = other.curve_;
-    offset_        = other.offset_;
+    triples_ = other.triples_;
+    closed_ = other.closed_;
+    autokey_ = other.autokey_;
+    track_mouse_ = other.track_mouse_;
+    is_null_ = other.is_null_;
+    curve_ = other.curve_;
+    offset_ = other.offset_;
 
     xform_param_ = dynamic_cast<shape_transform_param_t*>(&param("xform"));
     assert(xform_param_);
 
-    param_set().param_changed.connect(boost::bind(&shape_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&shape_t::param_changed, this, _1, _2));
 }
 
 void shape_t::init()
 {
     set_name("shape");
     display_color_ = Imath::Color3c(255, 255, 0);
-    selected_      = false;
-    closed_        = false;
-    autokey_       = true;
-    track_mouse_   = true;
-    parent_        = 0;
-    scene_         = 0;
-    is_null_       = false;
-    offset_        = Imath::V2f(0, 0);
+    selected_ = false;
+    closed_ = false;
+    autokey_ = true;
+    track_mouse_ = true;
+    parent_ = 0;
+    scene_ = 0;
+    is_null_ = false;
+    offset_ = Imath::V2f(0, 0);
 
-    param_set().param_changed.connect(boost::bind(&shape_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&shape_t::param_changed, this, _1, _2));
 }
 
 shape_t* shape_t::do_clone() const { return new shape_t(*this); }
@@ -144,7 +146,8 @@ void shape_t::unparent_all_children()
     for (roto::shape_t& s : children())
         childs.push_back(&s);
 
-    boost::range::for_each(childs, boost::bind(&shape_t::set_parent, _1, (shape_t*) 0));
+    boost::range::for_each(
+        childs, boost::bind(&shape_t::set_parent, _1, (shape_t*) 0));
 }
 
 bool shape_t::find_in_children(const shape_t* shape) const
@@ -152,7 +155,9 @@ bool shape_t::find_in_children(const shape_t* shape) const
     if (shape == this)
         return true;
 
-    for (list_type::const_iterator it(children().begin()), e(children().end()); it != e; ++it)
+    for (list_type::const_iterator it(children().begin()), e(children().end());
+         it != e;
+         ++it)
     {
         if (it->find_in_children(shape))
             return true;
@@ -163,7 +168,8 @@ bool shape_t::find_in_children(const shape_t* shape) const
 
 void shape_t::do_create_params()
 {
-    std::auto_ptr<shape_transform_param_t> xf(new shape_transform_param_t("Transform", "xform"));
+    std::auto_ptr<shape_transform_param_t> xf(
+        new shape_transform_param_t("Transform", "xform"));
     xform_param_ = xf.get();
     add_param(xf);
 
@@ -219,9 +225,8 @@ void shape_t::do_create_params()
         add_param(f2);
 
         /*
-        std::auto_ptr<button_param_t> but( new button_param_t( "Apply Track to Points..."));
-        but->set_id( "apply_track_pts");
-        but->set_enabled( false);
+        std::auto_ptr<button_param_t> but( new button_param_t( "Apply Track to
+        Points...")); but->set_id( "apply_track_pts"); but->set_enabled( false);
         add_param( but);
         */
     }
@@ -240,13 +245,13 @@ void shape_t::param_changed(param_t* p, param_t::change_reason reason)
         image::apply_track_mode mode;
         image::apply_track_use use;
 
-        const image::tracker_node_t *tracker = ui::apply_track_dialog_t::instance().exec( mode,
-        use);
+        const image::tracker_node_t *tracker =
+        ui::apply_track_dialog_t::instance().exec( mode, use);
 
         if( tracker)
         {
-            xform_param_->apply_track( composition()->start_frame(), composition()->end_frame(),
-        tracker, mode, use); update_xforms();
+            xform_param_->apply_track( composition()->start_frame(),
+        composition()->end_frame(), tracker, mode, use); update_xforms();
         }
 
         return;
@@ -281,7 +286,8 @@ void shape_t::do_create_manipulators() {}
 
 void shape_t::deselect_all_points() const
 {
-    boost::range::for_each(triples(), boost::bind(&triple_t::select, _1, false));
+    boost::range::for_each(
+        triples(), boost::bind(&triple_t::select, _1, false));
 }
 
 bool shape_t::any_point_selected() const
@@ -307,7 +313,10 @@ bool shape_t::all_points_selected() const
 }
 
 // params
-Imath::V2f shape_t::center() const { return get_value<Imath::V2f>(xform_param_->center_param()); }
+Imath::V2f shape_t::center() const
+{
+    return get_value<Imath::V2f>(xform_param_->center_param());
+}
 
 Imath::V2f shape_t::translation() const
 {
@@ -365,9 +374,10 @@ void shape_t::update_xforms(bool motion_blur_only)
     else
         global_ = local_;
 
-    boost::range::for_each(children(), boost::bind(&shape_t::update_xforms, _1, motion_blur_only));
+    boost::range::for_each(
+        children(), boost::bind(&shape_t::update_xforms, _1, motion_blur_only));
 
-    inv_local_  = Imath::inverse(local_);
+    inv_local_ = Imath::inverse(local_);
     inv_global_ = Imath::inverse(global_);
 }
 
@@ -478,13 +488,14 @@ void shape_t::close() { closed_ = true; }
 void shape_t::do_set_frame(float f) { evaluate_shape_curve(f); }
 
 // anim
-class output_iterator : public std::iterator<std::output_iterator_tag, void, void, void, void>
+class output_iterator
+  : public std::iterator<std::output_iterator_tag, void, void, void, void>
 {
-public:
+  public:
     explicit output_iterator(shape_t& s)
     {
-        it_    = s.triples().begin();
-        end_   = s.triples().end();
+        it_ = s.triples().begin();
+        end_ = s.triples().end();
         index_ = 0;
     }
 
@@ -537,7 +548,7 @@ public:
         return tmp;
     }
 
-private:
+  private:
     shape_t::triple_iterator it_;
     shape_t::triple_iterator end_;
     int                      index_;
@@ -583,7 +594,8 @@ bool shape_t::can_delete_selected_points() const
     if (!any_point_selected() || all_points_selected())
         return false;
 
-    int num_selected = boost::range::count_if(triples(), boost::bind(&triple_t::selected, _1));
+    int num_selected =
+        boost::range::count_if(triples(), boost::bind(&triple_t::selected, _1));
 
     if (size() - num_selected < 3)
         return false;
@@ -597,19 +609,22 @@ void shape_t::delete_selected_points()
 
     if (anim_curve().empty())
     {
-        triples().erase(std::remove_if(triples().begin(),
-                                       triples().end(),
-                                       boost::bind(&triple_t::selected, _1)),
-                        triples().end());
+        triples().erase(
+            std::remove_if(
+                triples().begin(),
+                triples().end(),
+                boost::bind(&triple_t::selected, _1)),
+            triples().end());
     }
     else
     {
         while (1)
         {
             bool any_selected = false;
-            int  index        = 0;
+            int  index = 0;
 
-            for (std::vector<triple_t>::iterator it(triples().begin()); it != triples().end();
+            for (std::vector<triple_t>::iterator it(triples().begin());
+                 it != triples().end();
                  ++it, index += 3)
             {
                 if (it->selected())
@@ -623,7 +638,7 @@ void shape_t::delete_selected_points()
 
             // post-conditions
             {
-                int num_pts     = anim_curve()[0].size();
+                int num_pts = anim_curve()[0].size();
                 int num_triples = triples().size();
                 assert(num_pts == num_triples * 3);
             }
@@ -781,7 +796,8 @@ void shape_t::do_create_tracks(anim::track_t* parent)
     if (!is_null())
     {
         std::auto_ptr<anim::track_t> t(new anim::track_t("Points", &curve_));
-        t->changed.connect(boost::bind(&shape_t::shape_curve_changed, this, _1));
+        t->changed.connect(
+            boost::bind(&shape_t::shape_curve_changed, this, _1));
         parent->add_child(t);
     }
 }
@@ -798,7 +814,8 @@ void shape_t::add_to_hash_str(hash::generator_t& hash_gen) const
     param_set().add_to_hash(hash_gen);
 
     float coords[6];
-    for (const_triple_iterator it(triples().begin()); it != triples().end(); ++it)
+    for (const_triple_iterator it(triples().begin()); it != triples().end();
+         ++it)
     {
         coords[0] = it->p0().x;
         coords[1] = it->p0().y;
@@ -806,7 +823,8 @@ void shape_t::add_to_hash_str(hash::generator_t& hash_gen) const
         coords[3] = it->p1().y;
         coords[4] = it->p2().x;
         coords[5] = it->p2().y;
-        hash_gen.sstream().write(reinterpret_cast<char*>(coords), sizeof(float) * 6);
+        hash_gen.sstream()
+            .write(reinterpret_cast<char*>(coords), sizeof(float) * 6);
     }
 }
 
@@ -846,7 +864,8 @@ void shape_t::read(const serialization::yaml_node_t& node, int version)
     serialization::yaml_node_t params = node.get_node("params");
     param_set().read(params);
 
-    serialization::optional_yaml_node_t points = node.get_optional_node("points");
+    serialization::optional_yaml_node_t points =
+        node.get_optional_node("points");
 
     if (points)
     {
@@ -859,7 +878,8 @@ void shape_t::read(const serialization::yaml_node_t& node, int version)
             triples().push_back(t);
         }
 
-        serialization::optional_yaml_node_t curve_node(node.get_optional_node("curve"));
+        serialization::optional_yaml_node_t curve_node(
+            node.get_optional_node("curve"));
 
         if (curve_node)
             curve_.read(curve_node.get());
@@ -876,9 +896,10 @@ void shape_t::write(serialization::yaml_oarchive_t& out, int version) const
         out << YAML::Key << "parent" << YAML::Value << parent()->name();
 
     // work around a bug? in yaml-cpp
-    Imath::Color3f col((float) display_color().x / 255.0f,
-                       (float) display_color().y / 255.0f,
-                       (float) display_color().z / 255.0f);
+    Imath::Color3f col(
+        (float) display_color().x / 255.0f,
+        (float) display_color().y / 255.0f,
+        (float) display_color().z / 255.0f);
 
     out << YAML::Key << "display_color" << YAML::Value << col;
 
@@ -888,8 +909,9 @@ void shape_t::write(serialization::yaml_oarchive_t& out, int version) const
     {
         out << YAML::Key << "points" << YAML::Value;
         out.begin_seq();
-        boost::range::for_each(triples(),
-                               boost::bind(&triple_t::write, _1, boost::ref(out), version));
+        boost::range::for_each(
+            triples(),
+            boost::bind(&triple_t::write, _1, boost::ref(out), version));
         out.end_seq();
 
         if (!curve_.empty())
@@ -904,5 +926,5 @@ void shape_t::write(serialization::yaml_oarchive_t& out, int version) const
 
 shape_t* new_clone(const shape_t& other) { return other.clone(); }
 
-}  // roto
-}  // ramen
+}  // namespace roto
+}  // namespace ramen

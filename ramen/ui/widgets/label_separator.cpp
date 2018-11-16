@@ -12,14 +12,14 @@ namespace ramen
 namespace ui
 {
 label_separator_t::label_separator_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     label_ = new QLabel();
     init();
 }
 
 label_separator_t::label_separator_t(const QString& text, QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     label_ = new QLabel(text);
     init();
@@ -42,5 +42,5 @@ void label_separator_t::init()
     hlayout->addWidget(line);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

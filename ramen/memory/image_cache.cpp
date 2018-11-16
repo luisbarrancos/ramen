@@ -13,7 +13,7 @@ namespace ramen
 namespace memory
 {
 image_cache_t::image_cache_t()
-: interacting_(false)
+  : interacting_(false)
 {
 }
 
@@ -39,7 +39,10 @@ void image_cache_t::end_interaction()
     interacting_ = false;
 }
 
-void image_cache_t::insert(node_t* n, const digest_type& key, image::buffer_t& img)
+void image_cache_t::insert(
+    node_t*            n,
+    const digest_type& key,
+    image::buffer_t&   img)
 {
     if (items_.find(key) != items_.end())
     {
@@ -61,7 +64,8 @@ void image_cache_t::insert(node_t* n, const digest_type& key, image::buffer_t& i
     // insert the image buffer in the cache
     if (interacting_)
     {
-        std::map<node_t*, map_iterator>::iterator it = added_while_interacting_.find(n);
+        std::map<node_t*, map_iterator>::iterator it =
+            added_while_interacting_.find(n);
 
         if (it != added_while_interacting_.end())
             erase(it->second);
@@ -72,21 +76,24 @@ void image_cache_t::insert(node_t* n, const digest_type& key, image::buffer_t& i
     use_list_.push_front(result);
 
     if (interacting_)
-        added_while_interacting_.insert(std::pair<node_t*, map_iterator>(n, result));
+        added_while_interacting_.insert(
+            std::pair<node_t*, map_iterator>(n, result));
 
     // remove image buffers included inside this one
     std::pair<map_iterator, map_iterator> range = items_.equal_range(key);
     for (map_iterator it(range.first); it != range.second;)
     {
-        if (it != result && ImathExt::isInside(img.bounds(), it->second.buffer.bounds()))
+        if (it != result &&
+            ImathExt::isInside(img.bounds(), it->second.buffer.bounds()))
             erase(it++);
         else
             ++it;
     }
 }
 
-boost::optional<image::buffer_t> image_cache_t::find(const digest_type&  key,
-                                                     const Imath::Box2i& area)
+boost::optional<image::buffer_t> image_cache_t::find(
+    const digest_type&  key,
+    const Imath::Box2i& area)
 {
     if (items_.find(key) != items_.end())
     {
@@ -133,7 +140,8 @@ void image_cache_t::erase(map_iterator it)
     if (interacting_)
     {
         // remove the item from the added_while_interacting_ map
-        for (std::map<node_t*, map_iterator>::iterator it2(added_while_interacting_.begin());
+        for (std::map<node_t*, map_iterator>::iterator it2(
+                 added_while_interacting_.begin());
              it2 != added_while_interacting_.end();
              ++it2)
         {
@@ -149,5 +157,5 @@ void image_cache_t::erase(map_iterator it)
     items_.erase(it);
 }
 
-}  // memory
-}  // ramen
+}  // namespace memory
+}  // namespace ramen

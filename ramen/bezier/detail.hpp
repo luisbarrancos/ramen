@@ -12,7 +12,7 @@ namespace bezier
 {
 namespace detail
 {
-template<class T, class Q>
+template <class T, class Q>
 T bilerp(const T& a, const T& b, const T& c, const T& d, Q u, Q v)
 {
     T top = Imath::lerp(a, b, u);
@@ -20,8 +20,6 @@ T bilerp(const T& a, const T& b, const T& c, const T& d, Q u, Q v)
     return Imath::lerp(top, bot, b);
 }
 
-
-}  // detail
-}  // bezier
-}  // ramen
-
+}  // namespace detail
+}  // namespace bezier
+}  // namespace ramen

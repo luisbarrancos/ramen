@@ -14,7 +14,6 @@ namespace viewer
 {
 class viewer_context_t;
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

@@ -10,6 +10,5 @@ namespace ui
 {
 class anim_curves_view_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -23,18 +23,19 @@ namespace
 {
 enum
 {
-    border_black  = 0,
-    border_tile   = 1,
+    border_black = 0,
+    border_tile = 1,
     border_mirror = 2
 };
 
-}  // unnamed
+}  // namespace
 
 transform_blur_node_t::transform_blur_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("move2_blur");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -56,7 +57,7 @@ void transform_blur_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> q(new popup_param_t("Borders"));
     q->set_id("borders");
-    q->menu_items() = std::vector<std::string>({ "Black", "Tile", "Mirror" });
+    q->menu_items() = std::vector<std::string>({"Black", "Tile", "Mirror"});
     add_param(q);
 }
 
@@ -72,15 +73,20 @@ void transform_blur_node_t::do_calc_bounds(const render::context_t& context)
     for (int i = 0; i < num_samples; ++i)
     {
         Imath::M33d  m(p->xform_blur_matrix_at_frame(
-            context.frame, (float) i / (num_samples - 1), aspect_ratio(), context.subsample));
-        Imath::Box2i bounds(ImathExt::transform(input_as<image_node_t>()->bounds(), m, false));
+            context.frame,
+            (float) i / (num_samples - 1),
+            aspect_ratio(),
+            context.subsample));
+        Imath::Box2i bounds(
+            ImathExt::transform(input_as<image_node_t>()->bounds(), m, false));
         area.extendBy(bounds);
     }
 
     set_bounds(area);
 }
 
-void transform_blur_node_t::do_calc_inputs_interest(const render::context_t& context)
+void transform_blur_node_t::do_calc_inputs_interest(
+    const render::context_t& context)
 {
     if (interest().isEmpty())
         return;
@@ -95,7 +101,10 @@ void transform_blur_node_t::do_calc_inputs_interest(const render::context_t& con
     for (int i = 0; i < num_samples; ++i)
     {
         Imath::M33d m(p->xform_blur_matrix_at_frame(
-            context.frame, (float) i / (num_samples - 1), aspect_ratio(), context.subsample));
+            context.frame,
+            (float) i / (num_samples - 1),
+            aspect_ratio(),
+            context.subsample));
 
         try
         {
@@ -136,8 +145,12 @@ void transform_blur_node_t::do_process(const render::context_t& context)
     for (int i = 0; i < num_samples; ++i)
     {
         Imath::M33d m(p->xform_blur_matrix_at_frame(
-            context.frame, (float) i / (num_samples - 1), aspect_ratio(), context.subsample));
-        boost::gil::fill_pixels(boost::gil::view(tmp), image::pixel_t(0, 0, 0, 0));
+            context.frame,
+            (float) i / (num_samples - 1),
+            aspect_ratio(),
+            context.subsample));
+        boost::gil::fill_pixels(
+            boost::gil::view(tmp), image::pixel_t(0, 0, 0, 0));
 
         do_process(boost::gil::view(tmp), m, border_mode);
 
@@ -151,9 +164,10 @@ void transform_blur_node_t::do_process(const render::context_t& context)
         acc.multiply(1.0f / sumw);
 }
 
-void transform_blur_node_t::do_process(const image::image_view_t& dst,
-                                       const Imath::M33d&         xf,
-                                       int                        border_mode)
+void transform_blur_node_t::do_process(
+    const image::image_view_t& dst,
+    const Imath::M33d&         xf,
+    int                        border_mode)
 {
     if (input_as<image_node_t>()->defined().isEmpty())
         return;
@@ -164,32 +178,35 @@ void transform_blur_node_t::do_process(const image::image_view_t& dst,
 
         if (border_mode == border_black)
         {
-            image::affine_warp_bilinear(input_as<image_node_t>()->defined(),
-                                        input_as<image_node_t>()->const_image_view(),
-                                        defined(),
-                                        dst,
-                                        xf,
-                                        inv_xf);
+            image::affine_warp_bilinear(
+                input_as<image_node_t>()->defined(),
+                input_as<image_node_t>()->const_image_view(),
+                defined(),
+                dst,
+                xf,
+                inv_xf);
         }
         else
         {
             if (border_mode == border_tile)
             {
-                image::affine_warp_bilinear_tile(input_as<image_node_t>()->defined(),
-                                                 input_as<image_node_t>()->const_image_view(),
-                                                 defined(),
-                                                 dst,
-                                                 xf,
-                                                 inv_xf);
+                image::affine_warp_bilinear_tile(
+                    input_as<image_node_t>()->defined(),
+                    input_as<image_node_t>()->const_image_view(),
+                    defined(),
+                    dst,
+                    xf,
+                    inv_xf);
             }
             else
             {
-                image::affine_warp_bilinear_mirror(input_as<image_node_t>()->defined(),
-                                                   input_as<image_node_t>()->const_image_view(),
-                                                   defined(),
-                                                   dst,
-                                                   xf,
-                                                   inv_xf);
+                image::affine_warp_bilinear_mirror(
+                    input_as<image_node_t>()->defined(),
+                    input_as<image_node_t>()->const_image_view(),
+                    defined(),
+                    dst,
+                    xf,
+                    inv_xf);
             }
         }
     }
@@ -214,14 +231,14 @@ const node_metaclass_t& transform_blur_node_t::transform_blur_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.transform_blur";
+        info.id = "image.builtin.transform_blur";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Transform Blur";
-        info.create        = &create_transform_blur_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Transform Blur";
+        info.create = &create_transform_blur_node;
+        inited = true;
     }
 
     return info;
@@ -230,4 +247,4 @@ const node_metaclass_t& transform_blur_node_t::transform_blur_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     transform_blur_node_t::transform_blur_node_metaclass());
 
-}  // namespace
+}  // namespace ramen

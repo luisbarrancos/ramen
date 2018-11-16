@@ -21,8 +21,8 @@ namespace ramen
 namespace roto
 {
 rect_tool_t::rect_tool_t(image::roto_node_t& parent)
-: tool_t(parent)
-, creating_(false)
+  : tool_t(parent)
+  , creating_(false)
 {
 }
 
@@ -62,7 +62,8 @@ void rect_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
         if (s->autokey())
             s->set_shape_key(app().document().composition().frame());
 
-        std::auto_ptr<undo::add_roto_command_t> cmd(new undo::add_roto_command_t(parent(), s));
+        std::auto_ptr<undo::add_roto_command_t> cmd(
+            new undo::add_roto_command_t(parent(), s));
         cmd->redo();
         app().document().undo_stack().push_back(cmd);
         app().ui()->update();
@@ -71,5 +72,5 @@ void rect_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
     creating_ = false;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/dialogs/multiline_alert.hpp>
 
 #include <QVBoxLayout>
@@ -27,7 +26,7 @@ multiline_alert_t& multiline_alert_t::instance()
 }
 
 multiline_alert_t::multiline_alert_t()
-: QDialog(app().ui()->main_window())
+  : QDialog(app().ui()->main_window())
 {
     setWindowTitle("Alert");
 
@@ -44,12 +43,14 @@ multiline_alert_t::multiline_alert_t()
     vlayout->addWidget(buttonBox);
 }
 
-void multiline_alert_t::show_alert(const std::string& title, const std::string& text)
+void multiline_alert_t::show_alert(
+    const std::string& title,
+    const std::string& text)
 {
     setWindowTitle(title.c_str());
     text_->setText(text.c_str());
     exec();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

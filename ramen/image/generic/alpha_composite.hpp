@@ -12,32 +12,37 @@ namespace image
 {
 namespace generic
 {
-void alpha_composite_add(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
-void alpha_composite_mul(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
-void alpha_composite_sub(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
-void alpha_composite_mix(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
-void alpha_composite_max(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
-void alpha_composite_min(const const_image_view_t& back,
-                         const const_image_view_t& front,
-                         const image_view_t&       dst,
-                         float                     opacity);
+void alpha_composite_add(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void alpha_composite_mul(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void alpha_composite_sub(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void alpha_composite_mix(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void alpha_composite_max(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
+void alpha_composite_min(
+    const const_image_view_t& back,
+    const const_image_view_t& front,
+    const image_view_t&       dst,
+    float                     opacity);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

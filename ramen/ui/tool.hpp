@@ -15,7 +15,7 @@ namespace ui
 {
 class tool_t
 {
-public:
+  public:
     tool_t();
     virtual ~tool_t();
 
@@ -35,14 +35,21 @@ public:
     virtual void mouse_drag_event(const mouse_drag_event_t& event);
     virtual void mouse_release_event(const mouse_release_event_t& event);
 
-protected:
-    bool inside_pick_distance(const Imath::V2f& p, const mouse_event_t& event) const;
-    bool inside_pick_distance(const Imath::Box2f& b, const mouse_event_t& event) const;
+  protected:
+    bool inside_pick_distance(const Imath::V2f& p, const mouse_event_t& event)
+        const;
+    bool inside_pick_distance(const Imath::Box2f& b, const mouse_event_t& event)
+        const;
 
-    bool inside_pick_distance(const Imath::V2f& p, const Imath::V2f& q, float pixel_scale) const;
-    bool inside_pick_distance(const Imath::Box2f& b, const Imath::V2f& p, float pixel_scale) const;
+    bool inside_pick_distance(
+        const Imath::V2f& p,
+        const Imath::V2f& q,
+        float             pixel_scale) const;
+    bool inside_pick_distance(
+        const Imath::Box2f& b,
+        const Imath::V2f&   p,
+        float               pixel_scale) const;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

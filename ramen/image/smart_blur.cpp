@@ -33,13 +33,13 @@ void make_gauss_kernel(float* kernel, int size, float dev)
     }
 
     int   radius = size / 2;
-    float sum    = 0;
+    float sum = 0;
 
     for (int i = 0; i < size; i++)
     {
-        float diff  = (i - radius) / dev;
+        float diff = (i - radius) / dev;
         float value = std::exp(-diff * diff / 2);
-        kernel[i]   = value;
+        kernel[i] = value;
         sum += value;
     }
 
@@ -51,16 +51,17 @@ void make_gauss_kernel(float* kernel, int size, float dev)
 
 struct smart_blur_fn
 {
-    smart_blur_fn(const const_image_view_t& src,
-                  const image_view_t&       dst,
-                  float                     thereshold,
-                  float*                    kernel,
-                  int                       size)
-    : src_(src)
-    , dst_(dst)
+    smart_blur_fn(
+        const const_image_view_t& src,
+        const image_view_t&       dst,
+        float                     thereshold,
+        float*                    kernel,
+        int                       size)
+      : src_(src)
+      , dst_(dst)
     {
-        kernel_     = kernel;
-        k_size_     = size;
+        kernel_ = kernel;
+        k_size_ = size;
         thereshold_ = thereshold;
     }
 
@@ -150,14 +151,15 @@ struct smart_blur_fn
     float                     thereshold_;
 };
 
-}  // unnamed
+}  // namespace
 
-void smart_blur_rgba(const const_image_view_t& src,
-                     const image_view_t&       tmp,
-                     const image_view_t&       dst,
-                     float                     stddevx,
-                     float                     stddevy,
-                     float                     thereshold)
+void smart_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       tmp,
+    const image_view_t&       dst,
+    float                     stddevx,
+    float                     stddevy,
+    float                     thereshold)
 {
     // create kernel here
     int sizex = (int) (stddevx * 6 + 1) | 1;
@@ -171,27 +173,31 @@ void smart_blur_rgba(const const_image_view_t& src,
     float* kernel = new float[std::max(sizex, sizey)];
 
     make_gauss_kernel(kernel, sizex, stddevx);
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, src.height()),
-                      smart_blur_fn(src, tmp, thereshold, kernel, sizex),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, src.height()),
+        smart_blur_fn(src, tmp, thereshold, kernel, sizex),
+        tbb::auto_partitioner());
 
     make_gauss_kernel(kernel, sizey, stddevy);
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
-                      smart_blur_fn(tmp, dst, thereshold, kernel, sizey),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, tmp.height()),
+        smart_blur_fn(tmp, dst, thereshold, kernel, sizey),
+        tbb::auto_partitioner());
 
     delete[] kernel;
 }
 
-void smart_blur_rgba(const const_image_view_t& src,
-                     const image_view_t&       dst,
-                     float                     stddevx,
-                     float                     stddevy,
-                     float                     thereshold)
+void smart_blur_rgba(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     stddevx,
+    float                     stddevy,
+    float                     thereshold)
 {
     image::image_t tmp(src.height(), src.width());
-    smart_blur_rgba(src, boost::gil::view(tmp), dst, stddevx, stddevy, thereshold);
+    smart_blur_rgba(
+        src, boost::gil::view(tmp), dst, stddevx, stddevy, thereshold);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

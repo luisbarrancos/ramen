@@ -12,15 +12,16 @@ namespace ramen
 {
 namespace undo
 {
-drag_keys_command_t::drag_keys_command_t(node_t*                                   node,
-                                         const std::shared_ptr<ui::track_model_t>& model)
-: anim_editor_command_t(node, model)
+drag_keys_command_t::drag_keys_command_t(
+    node_t*                                   node,
+    const std::shared_ptr<ui::track_model_t>& model)
+  : anim_editor_command_t(node, model)
 {
 }
 
 void drag_keys_command_t::start_drag(const Imath::V2f& offset, bool snap_frames)
 {
-    offset_      = offset;
+    offset_ = offset;
     snap_frames_ = snap_frames;
 }
 
@@ -52,5 +53,5 @@ void drag_keys_command_t::end_drag()
     notify_nodes();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

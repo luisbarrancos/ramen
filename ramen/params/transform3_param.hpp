@@ -21,10 +21,13 @@ class transform3_param_t : public composite_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     typedef image::matrix4_t matrix_type;
 
-    transform3_param_t(const std::string& name, const std::string& id, bool image_mode = true);
+    transform3_param_t(
+        const std::string& name,
+        const std::string& id,
+        bool               image_mode = true);
 
     bool image_mode() const { return image_mode_; }
 
@@ -49,17 +52,19 @@ public:
     Imath::V3f get_center() const;
     Imath::V3f get_center_at_frame(float frame) const;
 
-    matrix_type matrix_at_frame(float frame, float aspect = 1.0f, int subsample = 1) const;
+    matrix_type matrix_at_frame(
+        float frame,
+        float aspect = 1.0f,
+        int   subsample = 1) const;
 
-protected:
+  protected:
     transform3_param_t(const transform3_param_t& other);
     void operator=(const transform3_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new transform3_param_t(*this); }
 
     bool image_mode_;
 };
 
-}  // namespace
-
+}  // namespace ramen

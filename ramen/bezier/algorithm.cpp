@@ -10,7 +10,10 @@ namespace ramen
 {
 namespace bezier
 {
-Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f>& c, const Imath::V2f& p, float& t)
+Imath::V2f nearest_point_on_curve(
+    const curve_t<Imath::V2f>& c,
+    const Imath::V2f&          p,
+    float&                     t)
 {
     Point2 q;
     Point2 cp[4];
@@ -26,15 +29,17 @@ Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f>& c, const Imath::V2f
     }
 
     Point2 result = NearestPointOnCurve(q, cp, &tt);
-    t             = tt;
+    t = tt;
     return Imath::V2f(result.x, result.y);
 }
 
-Imath::V2f nearest_point_on_curve(const curve_t<Imath::V2f>& c, const Imath::V2f& p)
+Imath::V2f nearest_point_on_curve(
+    const curve_t<Imath::V2f>& c,
+    const Imath::V2f&          p)
 {
     float t;
     return nearest_point_on_curve(c, p, t);
 }
 
-}  // bezier
-}  // ramen
+}  // namespace bezier
+}  // namespace ramen

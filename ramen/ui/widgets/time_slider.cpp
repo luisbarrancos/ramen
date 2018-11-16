@@ -24,8 +24,7 @@ namespace ui
 {
 namespace
 {
-template<class T>
-T clamp(T x, T lo, T hi)
+template <class T> T clamp(T x, T lo, T hi)
 {
     if (x < lo)
         return lo;
@@ -36,15 +35,15 @@ T clamp(T x, T lo, T hi)
     return x;
 }
 
-}  // unnamed
+}  // namespace
 
 time_scale_t::time_scale_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     min_value_ = 1;
     max_value_ = 100;
-    value_     = 1;
-    drag_      = false;
+    value_ = 1;
+    drag_ = false;
 }
 
 void time_scale_t::setRange(int lo, int hi)
@@ -87,7 +86,7 @@ int time_scale_t::round_halfup(float x) const
 int time_scale_t::frame_from_mouse_pos(int x) const
 {
     float f = (float) x / width();
-    f       = f * (max_value_ - min_value_) + min_value_;
+    f = f * (max_value_ - min_value_) + min_value_;
     return clamp(round_halfup(f), min_value_, max_value_);
 }
 
@@ -95,7 +94,7 @@ void time_scale_t::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        drag_   = true;
+        drag_ = true;
         last_x_ = event->x();
         setValue(frame_from_mouse_pos(last_x_));
     }
@@ -131,12 +130,12 @@ void time_scale_t::paintEvent(QPaintEvent* event)
     painter.drawLine(0, 7, width(), 7);
 
     const int      spacing = 50;
-    int            nticks  = std::floor((double) width() / spacing);
+    int            nticks = std::floor((double) width() / spacing);
     nice_numbers_t numbers(min_value_, max_value_, nticks);
 
     for (nice_numbers_t::iterator it(numbers.begin()); it < numbers.end(); ++it)
     {
-        float x  = *it;
+        float x = *it;
         float sx = (x - min_value_) / (max_value_ - min_value_) * width();
         painter.drawLine(QPointF(sx, 2), QPointF(sx, 12));
         painter.drawText(QPoint(sx, height()), QString::number(x));
@@ -146,14 +145,15 @@ void time_scale_t::paintEvent(QPaintEvent* event)
     pen.setWidth(3);
     painter.setPen(pen);
 
-    float x = (float) (value_ - min_value_) / (float) (max_value_ - min_value_) * width();
+    float x = (float) (value_ - min_value_) /
+              (float) (max_value_ - min_value_) * width();
     painter.drawLine(QPointF(x, 0), QPointF(x, height()));
 
     event->accept();
 }
 
 time_slider_t::time_slider_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     start_ = new double_spinbox_t();
     start_->setTrackMouse(false);
@@ -177,10 +177,17 @@ time_slider_t::time_slider_t(QWidget* parent)
     scale_->setRange(1, 100);
     scale_->setValue(1);
 
-    connect(start_, SIGNAL(valueChanged(double)), this, SLOT(set_start_frame(double)));
-    connect(end_, SIGNAL(valueChanged(double)), this, SLOT(set_end_frame(double)));
-    connect(current_, SIGNAL(valueChanged(double)), this, SLOT(set_frame(double)));
-    connect(scale_, SIGNAL(valueChanged(double)), this, SLOT(set_frame(double)));
+    connect(
+        start_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(set_start_frame(double)));
+    connect(
+        end_, SIGNAL(valueChanged(double)), this, SLOT(set_end_frame(double)));
+    connect(
+        current_, SIGNAL(valueChanged(double)), this, SLOT(set_frame(double)));
+    connect(
+        scale_, SIGNAL(valueChanged(double)), this, SLOT(set_frame(double)));
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(start_);
@@ -232,7 +239,7 @@ void time_slider_t::set_end_frame(double t)
     block_all_signals(true);
 
     int cur_frame = current_->value();
-    int new_end   = std::max(t, start_->value());
+    int new_end = std::max(t, start_->value());
     end_->setValue(new_end);
 
     current_->setMaximum(end_->value());
@@ -275,5 +282,5 @@ void time_slider_t::adjust_frame(int frame)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

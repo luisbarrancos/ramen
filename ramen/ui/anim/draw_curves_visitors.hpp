@@ -15,11 +15,12 @@ namespace ramen
 namespace ui
 {
 // utility function. Also used outside of here, so it's public.
-void tangents_mask(const anim::float_key_t& k,
-                   const anim::float_key_t* prev,
-                   const anim::float_key_t* next,
-                   bool&                    left,
-                   bool&                    right);
+void tangents_mask(
+    const anim::float_key_t& k,
+    const anim::float_key_t* prev,
+    const anim::float_key_t* next,
+    bool&                    left,
+    bool&                    right);
 
 // visitors
 struct draw_curve_visitor : public boost::static_visitor<>
@@ -28,24 +29,28 @@ struct draw_curve_visitor : public boost::static_visitor<>
     void operator()(const anim::float_curve_t* c);
     void operator()(const anim::shape_curve2f_t* c);
 
-private:
+  private:
     const anim_curves_view_t& view_;
 };
 
 struct draw_keyframes_visitor : public boost::static_visitor<>
 {
-    draw_keyframes_visitor(const anim_curves_view_t& view, bool draw_tangents = true);
+    draw_keyframes_visitor(
+        const anim_curves_view_t& view,
+        bool                      draw_tangents = true);
     void operator()(const anim::float_curve_t* c);
     void operator()(const anim::shape_curve2f_t* c);
 
-private:
+  private:
     const anim_curves_view_t& view_;
     bool                      draw_tangents_;
 };
 
 struct bbox_curve_visitor : public boost::static_visitor<>
 {
-    bbox_curve_visitor(const Imath::Box2f box = Imath::Box2f(), bool sel_only = false);
+    bbox_curve_visitor(
+        const Imath::Box2f box = Imath::Box2f(),
+        bool               sel_only = false);
     void operator()(const anim::float_curve_t* c);
     void operator()(const anim::shape_curve2f_t* c);
 
@@ -53,6 +58,5 @@ struct bbox_curve_visitor : public boost::static_visitor<>
     bool         selected_only;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

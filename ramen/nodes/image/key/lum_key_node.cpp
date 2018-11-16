@@ -21,11 +21,14 @@ namespace
 {
 struct lum_key_fun
 {
-    lum_key_fun(const Imath::Color4f& c, const Imath::V2f& tol, const Imath::V2f& soft)
+    lum_key_fun(
+        const Imath::Color4f& c,
+        const Imath::V2f&     tol,
+        const Imath::V2f&     soft)
     {
-        range_.center  = image::luminance(c.r, c.g, c.b);
-        range_.tol_lo  = tol.x;
-        range_.tol_hi  = tol.y;
+        range_.center = image::luminance(c.r, c.g, c.b);
+        range_.tol_lo = tol.x;
+        range_.tol_hi = tol.y;
         range_.soft_lo = soft.x;
         range_.soft_hi = soft.y;
     }
@@ -33,21 +36,21 @@ struct lum_key_fun
     image::pixel_t operator()(const image::pixel_t& src) const
     {
         image::pixel_t result(src);
-        float          x                                     = image::luminance(src);
-        float          a                                     = 1.0f - range_(x);
+        float          x = image::luminance(src);
+        float          a = 1.0f - range_(x);
         boost::gil::get_color(result, boost::gil::alpha_t()) = a;
         return result;
     }
 
-private:
+  private:
     image::channel_range_t range_;
 };
 
 struct remap_alpha_unpremult_fun
 {
     remap_alpha_unpremult_fun(float lo, float hi)
-    : alpha_low_(lo)
-    , alpha_high_(hi)
+      : alpha_low_(lo)
+      , alpha_high_(hi)
     {
     }
 
@@ -71,14 +74,14 @@ struct remap_alpha_unpremult_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     float alpha_low_, alpha_high_;
 };
 
-}  // unnamed
+}  // namespace
 
 lum_key_node_t::lum_key_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("lum_key");
 }
@@ -132,21 +135,25 @@ void lum_key_node_t::do_create_params()
     add_param(b);
 }
 
-void lum_key_node_t::do_process(const image::const_image_view_t& src,
-                                const image::image_view_t&       dst,
-                                const render::context_t&         context)
+void lum_key_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
-    boost::gil::tbb_transform_pixels(src,
-                                     dst,
-                                     lum_key_fun(get_value<Imath::Color4f>(param("luminance")),
-                                                 get_value<Imath::V2f>(param("tolerance")),
-                                                 get_value<Imath::V2f>(param("softness"))));
+    boost::gil::tbb_transform_pixels(
+        src,
+        dst,
+        lum_key_fun(
+            get_value<Imath::Color4f>(param("luminance")),
+            get_value<Imath::V2f>(param("tolerance")),
+            get_value<Imath::V2f>(param("softness"))));
 
     boost::gil::tbb_transform_pixels(
         dst,
         dst,
-        remap_alpha_unpremult_fun(get_value<float>(param("alpha_low")),
-                                  get_value<float>(param("alpha_high"))));
+        remap_alpha_unpremult_fun(
+            get_value<float>(param("alpha_low")),
+            get_value<float>(param("alpha_high"))));
 
     if (get_value<bool>(param("invert")))
         image::invert_alpha(dst, dst);
@@ -158,7 +165,10 @@ void lum_key_node_t::do_process(const image::const_image_view_t& src,
 // factory
 node_t* create_lum_key_node() { return new lum_key_node_t(); }
 
-const node_metaclass_t* lum_key_node_t::metaclass() const { return &lum_key_node_metaclass(); }
+const node_metaclass_t* lum_key_node_t::metaclass() const
+{
+    return &lum_key_node_metaclass();
+}
 
 const node_metaclass_t& lum_key_node_t::lum_key_node_metaclass()
 {
@@ -167,21 +177,21 @@ const node_metaclass_t& lum_key_node_t::lum_key_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.lum_key";
+        info.id = "image.builtin.lum_key";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Key";
-        info.menu_item     = "Luminance Key";
-        info.create        = &create_lum_key_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Key";
+        info.menu_item = "Luminance Key";
+        info.create = &create_lum_key_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(lum_key_node_t::lum_key_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    lum_key_node_t::lum_key_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

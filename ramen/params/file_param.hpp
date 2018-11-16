@@ -18,12 +18,14 @@ class RAMEN_API file_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit file_param_t(const std::string& name);
 
     void set_default_value(const boost::filesystem::path& p);
 
-    void set_value(const boost::filesystem::path& p, change_reason reason = user_edited);
+    void set_value(
+        const boost::filesystem::path& p,
+        change_reason                  reason = user_edited);
 
     void set_is_input(bool b) { is_input_ = b; }
 
@@ -31,23 +33,27 @@ public:
     bool file_exists() const;
 
     // extensions
-    void set_extension_list_string(const std::string& str) { ext_list_string_ = str; }
+    void set_extension_list_string(const std::string& str)
+    {
+        ext_list_string_ = str;
+    }
 
     std::string extension() const;
     void        set_extension(const std::string& ext);
 
-protected:
+  protected:
     file_param_t(const file_param_t& other);
     void operator=(const file_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new file_param_t(*this); }
 
     void do_add_to_hash(hash::generator_t& hash_gen) const override;
 
     // paths
-    void do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                   const boost::filesystem::path& new_base) override;
+    void do_convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base) override;
     void do_make_paths_absolute() override;
     void do_make_paths_relative() override;
 
@@ -69,11 +75,10 @@ private:
 
     std::string ext_list_string_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void select_pushed();
     void text_changed();
 };
 
-}  // namespace
-
+}  // namespace ramen

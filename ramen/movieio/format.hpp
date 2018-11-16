@@ -32,15 +32,15 @@ struct RAMEN_API format_t
     virtual std::size_t detect_size() const;
     virtual bool        detect(const char* p) const;
 
-    virtual core::auto_ptr_t<reader_t> reader(const boost::filesystem::path& p) const;
+    virtual core::auto_ptr_t<reader_t> reader(
+        const boost::filesystem::path& p) const;
     virtual core::auto_ptr_t<writer_t> writer() const;
 
-private:
+  private:
     // non-copyable
     format_t(const format_t&);
     format_t& operator=(const format_t&);
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

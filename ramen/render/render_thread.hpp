@@ -20,17 +20,17 @@ struct RAMEN_API render_thread_t
     void init();
 
     boost::unique_future<bool>& render_image(image_node_renderer_t& renderer);
-    boost::unique_future<bool>& render_image(image_node_renderer_t& renderer,
-                                             const Imath::Box2i&    roi);
+    boost::unique_future<bool>& render_image(
+        image_node_renderer_t& renderer,
+        const Imath::Box2i&    roi);
 
     bool cancelled() const;
     void cancel_render();
 
-private:
+  private:
     struct impl;
     impl* m_pimpl;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace render
+}  // namespace ramen

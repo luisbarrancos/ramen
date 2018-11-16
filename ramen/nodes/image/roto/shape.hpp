@@ -38,10 +38,10 @@ namespace ramen
 namespace roto
 {
 class RAMEN_API shape_t
-: public parameterised_t
-, public boost::intrusive::list_base_hook<>
+  : public parameterised_t
+  , public boost::intrusive::list_base_hook<>
 {
-public:
+  public:
     shape_t();
     explicit shape_t(const Imath::Box2f& box);
 
@@ -91,8 +91,14 @@ public:
     // transforms
     const Imath::M33f&                  local_xform() const { return local_; }
     const Imath::M33f&                  global_xform() const { return global_; }
-    const boost::optional<Imath::M33f>& inv_local_xform() const { return inv_local_; }
-    const boost::optional<Imath::M33f>& inv_global_xform() const { return inv_global_; }
+    const boost::optional<Imath::M33f>& inv_local_xform() const
+    {
+        return inv_local_;
+    }
+    const boost::optional<Imath::M33f>& inv_global_xform() const
+    {
+        return inv_global_;
+    }
 
     Imath::V2f center() const;
     Imath::V2f translation() const;
@@ -129,15 +135,15 @@ public:
     Imath::V2f blur() const;
 
     // generic algorithms
-    template<class F>
-    F for_each_span(F f) const
+    template <class F> F for_each_span(F f) const
     {
         if (size() < 2)
             return f;
 
         bezier::curve_t<Imath::V2f> span;
 
-        for (shape_t::const_triple_iterator it(triples().begin()); it != triples().end() - 1;)
+        for (shape_t::const_triple_iterator it(triples().begin());
+             it != triples().end() - 1;)
         {
             span.p[0] = it->p1();
             span.p[1] = it->p2();
@@ -159,15 +165,15 @@ public:
         return f;
     }
 
-    template<class Pred>
-    bool for_each_span_while(Pred f) const
+    template <class Pred> bool for_each_span_while(Pred f) const
     {
         if (size() < 2)
             return false;
 
         bezier::curve_t<Imath::V2f> span;
 
-        for (shape_t::const_triple_iterator it(triples().begin()); it != triples().end() - 1;)
+        for (shape_t::const_triple_iterator it(triples().begin());
+             it != triples().end() - 1;)
         {
             span.p[0] = it->p1();
             span.p[1] = it->p2();
@@ -204,7 +210,10 @@ public:
 
     // display
     const Imath::Color3c& display_color() const { return display_color_; }
-    void                  set_display_color(const Imath::Color3c& c) const { display_color_ = c; }
+    void                  set_display_color(const Imath::Color3c& c) const
+    {
+        display_color_ = c;
+    }
 
     // anim & time
     const anim::shape_curve2f_t& anim_curve() const { return curve_; }
@@ -233,11 +242,11 @@ public:
     void read(const serialization::yaml_node_t& node, int version = 1);
     void write(serialization::yaml_oarchive_t& out, int version = 1) const;
 
-protected:
+  protected:
     shape_t(const shape_t& other);
     void operator=(const shape_t& other);
 
-private:
+  private:
     void init();
 
     shape_t* do_clone() const override;
@@ -283,6 +292,5 @@ private:
 
 RAMEN_API shape_t* new_clone(const shape_t& other);
 
-}  // roto
-}  // ramen
-
+}  // namespace roto
+}  // namespace ramen

@@ -35,19 +35,19 @@ namespace ramen
 */
 class RAMEN_API node_t : public composite_parameterised_t
 {
-public:
+  public:
     enum flag_bits
     {
-        selected_bit     = 1 << 0,
-        ignored_bit      = 1 << 1,
+        selected_bit = 1 << 0,
+        ignored_bit = 1 << 1,
         plugin_error_bit = 1 << 2,
-        active_bit       = 1 << 3,
-        context_bit      = 1 << 4,
-        cacheable_bit    = 1 << 5,
-        autolayout_bit   = 1 << 6,
+        active_bit = 1 << 3,
+        context_bit = 1 << 4,
+        cacheable_bit = 1 << 5,
+        autolayout_bit = 1 << 6,
         notify_dirty_bit = 1 << 7,
         ui_invisible_bit = 1 << 8,
-        interacting_bit  = 1 << 9
+        interacting_bit = 1 << 9
     };
 
     virtual const node_metaclass_t* metaclass() const { return 0; }
@@ -61,30 +61,32 @@ public:
     // inputs
     std::size_t num_inputs() const { return inputs_.size(); }
 
-    const std::vector<node_input_plug_t>& input_plugs() const { return inputs_; }
-    std::vector<node_input_plug_t>&       input_plugs() { return inputs_; }
+    const std::vector<node_input_plug_t>& input_plugs() const
+    {
+        return inputs_;
+    }
+    std::vector<node_input_plug_t>& input_plugs() { return inputs_; }
 
     int find_input(const core::name_t& id) const;
 
     const node_t* input(std::size_t i = 0) const;
     node_t*       input(std::size_t i = 0);
 
-    template<class T>
-    const T* input_as(std::size_t i = 0) const
+    template <class T> const T* input_as(std::size_t i = 0) const
     {
         return dynamic_cast<const T*>(input(i));
     }
 
-    template<class T>
-    T* input_as(std::size_t i = 0)
+    template <class T> T* input_as(std::size_t i = 0)
     {
         return dynamic_cast<T*>(input(i));
     }
 
-    void add_input_plug(const std::string&    id,
-                        bool                  optional,
-                        const Imath::Color3c& color,
-                        const std::string&    tooltip);
+    void add_input_plug(
+        const std::string&    id,
+        bool                  optional,
+        const Imath::Color3c& color,
+        const std::string&    tooltip);
 
     // outputs
 
@@ -98,9 +100,10 @@ public:
     const node_t* output(std::size_t i) const;
     node_t*       output(std::size_t i);
 
-    void add_output_plug(const std::string&    id,
-                         const Imath::Color3c& color,
-                         const std::string&    tooltip);
+    void add_output_plug(
+        const std::string&    id,
+        const Imath::Color3c& color,
+        const std::string&    tooltip);
 
     graph_color_t graph_color() const { return graph_color_; }
     void          set_graph_color(graph_color_t c) const { graph_color_ = c; }
@@ -108,7 +111,7 @@ public:
     // composition
     const composition_t* composition() const { return composition_; }
     composition_t*       composition() { return composition_; }
-    virtual void         set_composition(composition_t* comp) { composition_ = comp; }
+    virtual void set_composition(composition_t* comp) { composition_ = comp; }
 
     // visitor
     virtual void accept(node_visitor& v);
@@ -166,11 +169,18 @@ public:
 
     void calc_frames_needed(const render::context_t& context);
 
-    const std::vector<std::pair<int, float>>& frames_needed() const { return frames_needed_; }
+    const std::vector<std::pair<int, float>>& frames_needed() const
+    {
+        return frames_needed_;
+    }
 
-    std::vector<std::pair<int, float>>& frames_needed() { return frames_needed_; }
+    std::vector<std::pair<int, float>>& frames_needed()
+    {
+        return frames_needed_;
+    }
 
-    typedef std::vector<std::pair<int, float>>::const_iterator const_frames_needed_iterator;
+    typedef std::vector<std::pair<int, float>>::const_iterator
+        const_frames_needed_iterator;
 
     // edit
     void begin_active();
@@ -206,20 +216,26 @@ public:
     // user interface
     virtual const char* help_string() const;
 
-    virtual std::auto_ptr<QWidget> create_toolbar() { return std::auto_ptr<QWidget>(); }
+    virtual std::auto_ptr<QWidget> create_toolbar()
+    {
+        return std::auto_ptr<QWidget>();
+    }
 
     // paths
-    virtual void convert_relative_paths(const boost::filesystem::path& old_base,
-                                        const boost::filesystem::path& new_base);
+    virtual void convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base);
 
     virtual void make_paths_absolute();
     virtual void make_paths_relative();
 
     // serialization
-    void read(const serialization::yaml_node_t& in, const std::pair<int, int>& version);
+    void read(
+        const serialization::yaml_node_t& in,
+        const std::pair<int, int>&        version);
     void write(serialization::yaml_oarchive_t& out) const;
 
-protected:
+  protected:
     node_t(const node_t& other);
     void operator=(const node_t& other);
 
@@ -229,7 +245,7 @@ protected:
 
     bool is_valid_, is_identity_;
 
-private:
+  private:
     // connections
     virtual void do_connected(node_t* src, int port);
 
@@ -253,7 +269,9 @@ private:
         \brief Customization hook for node_t::read.
         Implement in subclasses to read extra data from node.
     */
-    virtual void do_read(const serialization::yaml_node_t& in, const std::pair<int, int>& version);
+    virtual void do_read(
+        const serialization::yaml_node_t& in,
+        const std::pair<int, int>&        version);
 
     /*!
         \brief Customization hook for node_t::write.
@@ -285,5 +303,4 @@ private:
 /// Makes a copy of a node.
 RAMEN_API node_t* new_clone(const node_t& other);
 
-}  // ramen
-
+}  // namespace ramen

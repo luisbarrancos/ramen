@@ -14,11 +14,11 @@ namespace image
 {
 namespace generic
 {
-void apply_color_matrix(const const_image_view_t& src,
-                        const image_view_t&       dst,
-                        const Imath::M44f&        m);
+void apply_color_matrix(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    const Imath::M44f&        m);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

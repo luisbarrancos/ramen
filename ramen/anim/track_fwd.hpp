@@ -10,6 +10,5 @@ namespace anim
 {
 class track_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

@@ -30,7 +30,9 @@ enum
     set_zero
 };
 
-void copy_luminance(const image::const_image_view_t& src, const image::channel_view_t& dst)
+void copy_luminance(
+    const image::const_image_view_t& src,
+    const image::channel_view_t&     dst)
 {
     assert(src.dimensions() == dst.dimensions());
 
@@ -42,19 +44,24 @@ void copy_luminance(const image::const_image_view_t& src, const image::channel_v
         for (int x = 0, xe = src.width(); x < xe; ++x)
         {
             float lum = image::luminance(*s_it++);
-            *d_it++   = lum;
+            *d_it++ = lum;
         }
     }
 }
 
-}  // unnamed
+}  // namespace
 
 copy_channels_node_t::copy_channels_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("copy ch");
-    add_input_plug("src1", false, ui::palette_t::instance().color("front plug"), "Source");
-    add_input_plug("src2", false, ui::palette_t::instance().color("front plug"), "Source 2");
+    add_input_plug(
+        "src1", false, ui::palette_t::instance().color("front plug"), "Source");
+    add_input_plug(
+        "src2",
+        false,
+        ui::palette_t::instance().color("front plug"),
+        "Source 2");
     add_output_plug();
 }
 
@@ -176,11 +183,15 @@ void copy_channels_node_t::do_calc_bounds(const render::context_t& context)
 
 void copy_channels_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i src1_area(ImathExt::intersect(input_as<image_node_t>(0)->defined(), defined()));
-    image::const_image_view_t src1(input_as<image_node_t>(0)->const_subimage_view(src1_area));
+    Imath::Box2i src1_area(
+        ImathExt::intersect(input_as<image_node_t>(0)->defined(), defined()));
+    image::const_image_view_t src1(
+        input_as<image_node_t>(0)->const_subimage_view(src1_area));
 
-    Imath::Box2i src2_area(ImathExt::intersect(input_as<image_node_t>(1)->defined(), defined()));
-    image::const_image_view_t src2(input_as<image_node_t>(1)->const_subimage_view(src2_area));
+    Imath::Box2i src2_area(
+        ImathExt::intersect(input_as<image_node_t>(1)->defined(), defined()));
+    image::const_image_view_t src2(
+        input_as<image_node_t>(1)->const_subimage_view(src2_area));
 
     image::image_view_t dst1(subimage_view(src1_area));
     image::image_view_t dst2(subimage_view(src2_area));
@@ -223,21 +234,24 @@ void copy_channels_node_t::do_process(const render::context_t& context)
     }
 }
 
-void copy_channels_node_t::copy_channel(const image::const_image_view_t& src,
-                                        int                              src_ch,
-                                        const image::image_view_t&       dst,
-                                        int                              dst_ch)
+void copy_channels_node_t::copy_channel(
+    const image::const_image_view_t& src,
+    int                              src_ch,
+    const image::image_view_t&       dst,
+    int                              dst_ch)
 {
     switch (src_ch)
     {
         case set_zero:
-            boost::gil::fill_pixels(boost::gil::nth_channel_view(dst, dst_ch),
-                                    boost::gil::gray32f_pixel_t(0.0f));
+            boost::gil::fill_pixels(
+                boost::gil::nth_channel_view(dst, dst_ch),
+                boost::gil::gray32f_pixel_t(0.0f));
             break;
 
         case set_one:
-            boost::gil::fill_pixels(boost::gil::nth_channel_view(dst, dst_ch),
-                                    boost::gil::gray32f_pixel_t(1.0f));
+            boost::gil::fill_pixels(
+                boost::gil::nth_channel_view(dst, dst_ch),
+                boost::gil::gray32f_pixel_t(1.0f));
             break;
 
         case copy_lum:
@@ -245,8 +259,9 @@ void copy_channels_node_t::copy_channel(const image::const_image_view_t& src,
             break;
 
         default:
-            boost::gil::copy_pixels(boost::gil::nth_channel_view(src, src_ch),
-                                    boost::gil::nth_channel_view(dst, dst_ch));
+            boost::gil::copy_pixels(
+                boost::gil::nth_channel_view(src, src_ch),
+                boost::gil::nth_channel_view(dst, dst_ch));
     }
 }
 
@@ -265,15 +280,15 @@ const node_metaclass_t& copy_channels_node_t::copy_channels_node_metaclass()
 
     if (!inited)
     {
-        m.id            = "image.builtin.copy_channels";
+        m.id = "image.builtin.copy_channels";
         m.major_version = 1;
         m.minor_version = 0;
-        m.menu          = "Image";
-        m.submenu       = "Channel";
-        m.menu_item     = "Copy Channels";
-        m.help          = "Copy channels from the second input to the first";
-        m.create        = &create_copy_channels_node;
-        inited          = true;
+        m.menu = "Image";
+        m.submenu = "Channel";
+        m.menu_item = "Copy Channels";
+        m.help = "Copy channels from the second input to the first";
+        m.create = &create_copy_channels_node;
+        inited = true;
     }
 
     return m;
@@ -282,5 +297,5 @@ const node_metaclass_t& copy_channels_node_t::copy_channels_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     copy_channels_node_t::copy_channels_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

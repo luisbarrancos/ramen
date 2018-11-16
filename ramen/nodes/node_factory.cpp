@@ -32,7 +32,7 @@ bool check_node_class(const std::string& c)
     return false;
 }
 
-}  // unnamed
+}  // namespace
 
 node_factory_t& node_factory_t::instance()
 {
@@ -56,7 +56,8 @@ bool node_factory_t::register_node(const node_metaclass_t& m)
 #ifndef NDEBUG
     if (!check_node_class(m.id))
     {
-        std::cout << "Registered node class with unknown prefix " << m.id << "\n";
+        std::cout << "Registered node class with unknown prefix " << m.id
+                  << "\n";
         assert(0);
     }
 #endif
@@ -70,10 +71,12 @@ bool node_factory_t::register_node(const node_metaclass_t& m)
 
     for (const node_metaclass_t& metaclass : metaclasses_)
     {
-        if (metaclass.id == m.id && metaclass.major_version == m.major_version
-            && metaclass.minor_version == m.minor_version)
+        if (metaclass.id == m.id &&
+            metaclass.major_version == m.major_version &&
+            metaclass.minor_version == m.minor_version)
         {
-            std::cout << "Duplicated metaclass in node factory: " << m.id << "\n";
+            std::cout << "Duplicated metaclass in node factory: " << m.id
+                      << "\n";
             assert(0);
         }
     }
@@ -81,7 +84,8 @@ bool node_factory_t::register_node(const node_metaclass_t& m)
     metaclasses_.push_back(m);
 
     // if this version of the node is newer that the one we have...
-    std::map<std::string, node_metaclass_t>::iterator it(newest_node_infos_.find(m.id));
+    std::map<std::string, node_metaclass_t>::iterator it(
+        newest_node_infos_.find(m.id));
 
     if (it != latest_versions_end())
     {
@@ -107,10 +111,13 @@ void node_factory_t::sort_by_menu_item()
     std::sort(metaclasses_.begin(), metaclasses_.end(), compare_menu_items());
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id(const std::string& id, bool ui)
+std::auto_ptr<node_t> node_factory_t::create_by_id(
+    const std::string& id,
+    bool               ui)
 {
-    std::map<std::string, node_metaclass_t>::iterator it(newest_node_infos_.find(id));
-    std::auto_ptr<node_t>                             n;
+    std::map<std::string, node_metaclass_t>::iterator it(
+        newest_node_infos_.find(id));
+    std::auto_ptr<node_t> n;
 
     if (it != newest_node_infos_.end())
     {
@@ -137,8 +144,9 @@ std::auto_ptr<node_t> node_factory_t::create_by_id(const std::string& id, bool u
     return n;
 }
 
-std::auto_ptr<node_t> node_factory_t::create_by_id_with_version(const std::string&         id,
-                                                                const std::pair<int, int>& version)
+std::auto_ptr<node_t> node_factory_t::create_by_id_with_version(
+    const std::string&         id,
+    const std::pair<int, int>& version)
 {
     std::vector<node_metaclass_t>::iterator best(metaclasses_.end());
     std::vector<node_metaclass_t>::iterator it(metaclasses_.begin());
@@ -152,7 +160,7 @@ std::auto_ptr<node_t> node_factory_t::create_by_id_with_version(const std::strin
             {
                 if (it->minor_version > best_minor)
                 {
-                    best       = it;
+                    best = it;
                     best_minor = it->minor_version;
                 }
             }
@@ -192,4 +200,4 @@ bool node_factory_t::is_latest_version(const std::string& id) const
     return it != latest_versions_end();
 }
 
-}  // ramen
+}  // namespace ramen

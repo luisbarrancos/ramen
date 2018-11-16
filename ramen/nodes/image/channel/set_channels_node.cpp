@@ -25,7 +25,9 @@ enum
     set_zero
 };
 
-void copy_luminance(const image::const_image_view_t& src, const image::channel_view_t& dst)
+void copy_luminance(
+    const image::const_image_view_t& src,
+    const image::channel_view_t&     dst)
 {
     assert(src.dimensions() == dst.dimensions());
 
@@ -37,15 +39,15 @@ void copy_luminance(const image::const_image_view_t& src, const image::channel_v
         for (int x = 0, xe = src.width(); x < xe; ++x)
         {
             float lum = image::luminance(*s_it++);
-            *d_it++   = lum;
+            *d_it++ = lum;
         }
     }
 }
 
-}  // unnamed
+}  // namespace
 
 set_channels_node_t::set_channels_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("set ch");
 }
@@ -55,30 +57,30 @@ void set_channels_node_t::do_create_params()
     std::auto_ptr<popup_param_t> p(new popup_param_t("Red"));
     p->set_id("red");
     p->set_default_value((int) copy_red);
-    p->menu_items()
-        = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero" });
+    p->menu_items() = std::vector<std::string>(
+        {"Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
 
     add_param(p);
 
     p.reset(new popup_param_t("Green"));
     p->set_id("green");
     p->set_default_value((int) copy_green);
-    p->menu_items()
-        = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero" });
+    p->menu_items() = std::vector<std::string>(
+        {"Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param(p);
 
     p.reset(new popup_param_t("Blue"));
     p->set_id("blue");
     p->set_default_value((int) copy_blue);
-    p->menu_items()
-        = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero" });
+    p->menu_items() = std::vector<std::string>(
+        {"Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param(p);
 
     p.reset(new popup_param_t("Alpha"));
     p->set_id("alpha");
     p->set_default_value((int) copy_alpha);
-    p->menu_items()
-        = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero" });
+    p->menu_items() = std::vector<std::string>(
+        {"Red", "Green", "Blue", "Alpha", "Luminance", "One", "Zero"});
     add_param(p);
 }
 
@@ -92,27 +94,32 @@ void set_channels_node_t::do_calc_bounds(const render::context_t& context)
         set_bounds(input_as<image_node_t>()->bounds());
 }
 
-void set_channels_node_t::do_process(const image::const_image_view_t& src,
-                                     const image::image_view_t&       dst,
-                                     const render::context_t&         context)
+void set_channels_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
 
-    copy_channel(input_as<image_node_t>()->const_subimage_view(area),
-                 get_value<int>(param("red")),
-                 subimage_view(area),
-                 0);
-    copy_channel(input_as<image_node_t>()->const_subimage_view(area),
-                 get_value<int>(param("green")),
-                 subimage_view(area),
-                 1);
-    copy_channel(input_as<image_node_t>()->const_subimage_view(area),
-                 get_value<int>(param("blue")),
-                 subimage_view(area),
-                 2);
+    copy_channel(
+        input_as<image_node_t>()->const_subimage_view(area),
+        get_value<int>(param("red")),
+        subimage_view(area),
+        0);
+    copy_channel(
+        input_as<image_node_t>()->const_subimage_view(area),
+        get_value<int>(param("green")),
+        subimage_view(area),
+        1);
+    copy_channel(
+        input_as<image_node_t>()->const_subimage_view(area),
+        get_value<int>(param("blue")),
+        subimage_view(area),
+        2);
 
     int alpha_op = get_value<int>(param("alpha"));
 
@@ -123,21 +130,24 @@ void set_channels_node_t::do_process(const image::const_image_view_t& src,
         copy_channel(src, get_value<int>(param("alpha")), dst, 3);
 }
 
-void set_channels_node_t::copy_channel(const image::const_image_view_t& src,
-                                       int                              src_ch,
-                                       const image::image_view_t&       dst,
-                                       int                              dst_ch)
+void set_channels_node_t::copy_channel(
+    const image::const_image_view_t& src,
+    int                              src_ch,
+    const image::image_view_t&       dst,
+    int                              dst_ch)
 {
     switch (src_ch)
     {
         case set_zero:
-            boost::gil::fill_pixels(boost::gil::nth_channel_view(dst, dst_ch),
-                                    boost::gil::gray32f_pixel_t(0.0f));
+            boost::gil::fill_pixels(
+                boost::gil::nth_channel_view(dst, dst_ch),
+                boost::gil::gray32f_pixel_t(0.0f));
             break;
 
         case set_one:
-            boost::gil::fill_pixels(boost::gil::nth_channel_view(dst, dst_ch),
-                                    boost::gil::gray32f_pixel_t(1.0f));
+            boost::gil::fill_pixels(
+                boost::gil::nth_channel_view(dst, dst_ch),
+                boost::gil::gray32f_pixel_t(1.0f));
             break;
 
         case copy_lum:
@@ -145,8 +155,9 @@ void set_channels_node_t::copy_channel(const image::const_image_view_t& src,
             break;
 
         default:
-            boost::gil::copy_pixels(boost::gil::nth_channel_view(src, src_ch),
-                                    boost::gil::nth_channel_view(dst, dst_ch));
+            boost::gil::copy_pixels(
+                boost::gil::nth_channel_view(src, src_ch),
+                boost::gil::nth_channel_view(dst, dst_ch));
             break;
     }
 }
@@ -166,22 +177,22 @@ const node_metaclass_t& set_channels_node_t::set_channels_node_metaclass()
 
     if (!inited)
     {
-        m.id            = "image.builtin.set_channels";
+        m.id = "image.builtin.set_channels";
         m.major_version = 1;
         m.minor_version = 0;
-        m.menu          = "Image";
-        m.submenu       = "Channel";
-        m.menu_item     = "Set Channels";
-        m.help          = "Reorders the channels of the input image.";
-        m.create        = &create_set_channels_node;
-        inited          = true;
+        m.menu = "Image";
+        m.submenu = "Channel";
+        m.menu_item = "Set Channels";
+        m.help = "Reorders the channels of the input image.";
+        m.create = &create_set_channels_node;
+        inited = true;
     }
 
     return m;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(set_channels_node_t::set_channels_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    set_channels_node_t::set_channels_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

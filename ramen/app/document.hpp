@@ -26,7 +26,7 @@ namespace ramen
 */
 class document_t : boost::noncopyable
 {
-public:
+  public:
     document_t();
     ~document_t();
 
@@ -48,12 +48,11 @@ public:
     composition_t&       composition() { return comp_; }
     const composition_t& composition() const { return comp_; }
 
-private:
+  private:
     composition_t                   comp_;
     mutable bool                    dirty_;
     core::auto_ptr_t<undo::stack_t> undo_;
     boost::filesystem::path         file_;
 };
 
-}  // ramen
-
+}  // namespace ramen

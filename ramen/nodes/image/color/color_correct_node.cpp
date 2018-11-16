@@ -20,10 +20,11 @@ namespace ramen
 namespace image
 {
 color_correct_node_t::color_correct_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("correct");
-    add_input_plug("mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
+    add_input_plug(
+        "mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
 }
 
 void color_correct_node_t::do_create_params()
@@ -45,8 +46,9 @@ void color_correct_node_t::do_create_params()
     add_param(g);
 }
 
-void color_correct_node_t::create_params_inside_param(composite_param_t* g,
-                                                      const std::string& id_prefix)
+void color_correct_node_t::create_params_inside_param(
+    composite_param_t* g,
+    const std::string& id_prefix)
 {
     std::auto_ptr<float3_param_t> p(new float3_param_t("Gamma"));
     p->set_id(id_prefix + "gamma");
@@ -87,9 +89,10 @@ void color_correct_node_t::create_params_inside_param(composite_param_t* g,
     g->add_param(q);
 }
 
-void color_correct_node_t::do_process(const image::const_image_view_t& src,
-                                      const image::image_view_t&       dst,
-                                      const render::context_t&         context)
+void color_correct_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     image::const_image_view_t src_view;
     image::image_view_t       dst_view;
@@ -98,7 +101,8 @@ void color_correct_node_t::do_process(const image::const_image_view_t& src,
     if (input(1))
     {
         boost::gil::copy_pixels(src, dst);
-        area = ImathExt::intersect(input_as<image_node_t>(1)->defined(), defined());
+        area = ImathExt::intersect(
+            input_as<image_node_t>(1)->defined(), defined());
 
         if (area.isEmpty())
             return;
@@ -114,30 +118,31 @@ void color_correct_node_t::do_process(const image::const_image_view_t& src,
 
     half_lut_t r_lut, g_lut, b_lut;
 
-    Imath::V3f gamma  = get_value<Imath::V3f>(param("gamma"));
-    Imath::V3f gain   = get_value<Imath::V3f>(param("gain"));
+    Imath::V3f gamma = get_value<Imath::V3f>(param("gamma"));
+    Imath::V3f gain = get_value<Imath::V3f>(param("gain"));
     Imath::V3f offset = get_value<Imath::V3f>(param("offset"));
 
-    image::color_correct_fun<> master_ccf(1.0f / gamma.x,
-                                          1.0f / gamma.y,
-                                          1.0f / gamma.z,
-                                          gain.x,
-                                          gain.y,
-                                          gain.z,
-                                          offset.x,
-                                          offset.y,
-                                          offset.z,
-                                          get_value<float>(param("saturation")),
-                                          get_value<float>(param("contrast")),
-                                          r_lut,
-                                          g_lut,
-                                          b_lut);
+    image::color_correct_fun<> master_ccf(
+        1.0f / gamma.x,
+        1.0f / gamma.y,
+        1.0f / gamma.z,
+        gain.x,
+        gain.y,
+        gain.z,
+        offset.x,
+        offset.y,
+        offset.z,
+        get_value<float>(param("saturation")),
+        get_value<float>(param("contrast")),
+        r_lut,
+        g_lut,
+        b_lut);
 
     boost::gil::tbb_transform2_pixels(src_view, src_view, dst_view, master_ccf);
 
     // shadows
-    gamma  = get_value<Imath::V3f>(param("sh_gamma"));
-    gain   = get_value<Imath::V3f>(param("sh_gain"));
+    gamma = get_value<Imath::V3f>(param("sh_gamma"));
+    gain = get_value<Imath::V3f>(param("sh_gain"));
     offset = get_value<Imath::V3f>(param("sh_offset"));
 
     image::color_correct_fun<image::shadow_blend_fun> shadow_ccf(
@@ -159,8 +164,8 @@ void color_correct_node_t::do_process(const image::const_image_view_t& src,
     boost::gil::tbb_transform2_pixels(src_view, dst_view, dst_view, shadow_ccf);
 
     // midtones
-    gamma  = get_value<Imath::V3f>(param("mid_gamma"));
-    gain   = get_value<Imath::V3f>(param("mid_gain"));
+    gamma = get_value<Imath::V3f>(param("mid_gamma"));
+    gain = get_value<Imath::V3f>(param("mid_gain"));
     offset = get_value<Imath::V3f>(param("mid_offset"));
 
     image::color_correct_fun<image::midtones_blend_fun> midtones_ccf(
@@ -179,11 +184,12 @@ void color_correct_node_t::do_process(const image::const_image_view_t& src,
         g_lut,
         b_lut);
 
-    boost::gil::tbb_transform2_pixels(src_view, dst_view, dst_view, midtones_ccf);
+    boost::gil::tbb_transform2_pixels(
+        src_view, dst_view, dst_view, midtones_ccf);
 
     // highs
-    gamma  = get_value<Imath::V3f>(param("high_gamma"));
-    gain   = get_value<Imath::V3f>(param("high_gain"));
+    gamma = get_value<Imath::V3f>(param("high_gamma"));
+    gain = get_value<Imath::V3f>(param("high_gain"));
     offset = get_value<Imath::V3f>(param("high_offset"));
 
     image::color_correct_fun<image::highlights_blend_fun> highlights_ccf(
@@ -202,14 +208,16 @@ void color_correct_node_t::do_process(const image::const_image_view_t& src,
         g_lut,
         b_lut);
 
-    boost::gil::tbb_transform2_pixels(src_view, dst_view, dst_view, highlights_ccf);
+    boost::gil::tbb_transform2_pixels(
+        src_view, dst_view, dst_view, highlights_ccf);
 
     // mask
     if (input(1))
         image::key_mix(
             src_view,
             dst_view,
-            boost::gil::nth_channel_view(input_as<image_node_t>(1)->const_subimage_view(area), 3),
+            boost::gil::nth_channel_view(
+                input_as<image_node_t>(1)->const_subimage_view(area), 3),
             dst_view);
 }
 
@@ -229,14 +237,14 @@ const node_metaclass_t& color_correct_node_t::color_correct_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.color_correct";
+        info.id = "image.builtin.color_correct";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Color Correct";
-        info.create        = &create_color_correct_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Color Correct";
+        info.create = &create_color_correct_node;
+        inited = true;
     }
 
     return info;
@@ -245,5 +253,5 @@ const node_metaclass_t& color_correct_node_t::color_correct_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     color_correct_node_t::color_correct_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

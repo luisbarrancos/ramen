@@ -21,20 +21,26 @@
 namespace ramen
 {
 ocio_colorspace_param_t::ocio_colorspace_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(default_colorspace());
 }
 
-ocio_colorspace_param_t::ocio_colorspace_param_t(const ocio_colorspace_param_t& other)
-: static_param_t(other)
-, menu_(0)
+ocio_colorspace_param_t::ocio_colorspace_param_t(
+    const ocio_colorspace_param_t& other)
+  : static_param_t(other)
+  , menu_(0)
 {
 }
 
-void ocio_colorspace_param_t::set_default_value(const std::string& cs) { value().assign(cs); }
+void ocio_colorspace_param_t::set_default_value(const std::string& cs)
+{
+    value().assign(cs);
+}
 
-void ocio_colorspace_param_t::set_value(const std::string& cs, change_reason reason)
+void ocio_colorspace_param_t::set_value(
+    const std::string& cs,
+    change_reason      reason)
 {
     if (param_set() && can_undo())
         param_set()->add_command(this);
@@ -45,9 +51,9 @@ void ocio_colorspace_param_t::set_value(const std::string& cs, change_reason rea
 
 QWidget* ocio_colorspace_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    menu_          = new ui::ocio_colorspace_combo_t(top);
+    menu_ = new ui::ocio_colorspace_combo_t(top);
     menu_->setFocusPolicy(Qt::NoFocus);
 
     QSize s = menu_->sizeHint();
@@ -63,10 +69,11 @@ QWidget* ocio_colorspace_param_t::do_create_widgets()
     std::string current_colorspace = get_value<std::string>(*this);
     menu_->set_colorspace_or_default(current_colorspace);
     menu_->setEnabled(enabled());
-    connect(menu_,
-            SIGNAL(colorspace_changed(const std::string&)),
-            this,
-            SLOT(colorspace_picked(const std::string&)));
+    connect(
+        menu_,
+        SIGNAL(colorspace_changed(const std::string&)),
+        this,
+        SLOT(colorspace_picked(const std::string&)));
 
     top->setMinimumSize(app().ui()->inspector().width(), s.height());
     top->setMaximumSize(app().ui()->inspector().width(), s.height());
@@ -111,7 +118,7 @@ void ocio_colorspace_param_t::do_read(const serialization::yaml_node_t& node)
     n >> val;
 
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
-    int                    index  = -1;
+    int                    index = -1;
 
     int num_color_spaces = config->getNumColorSpaces();
 
@@ -127,14 +134,16 @@ void ocio_colorspace_param_t::do_read(const serialization::yaml_node_t& node)
         value().assign(val);
     else
     {
-        node.error_stream() << "Node " << parameterised()->name() << ": colorspace " << val
-                            << " not found in OCIO config.\n";
+        node.error_stream()
+            << "Node " << parameterised()->name() << ": colorspace " << val
+            << " not found in OCIO config.\n";
         node.error_stream() << "Replacing by default value.\n";
         value().assign(default_colorspace());
     }
 }
 
-void ocio_colorspace_param_t::do_write(serialization::yaml_oarchive_t& out) const
+void ocio_colorspace_param_t::do_write(
+    serialization::yaml_oarchive_t& out) const
 {
     out << YAML::Key << "value" << YAML::Value << get_value<std::string>(*this);
 }
@@ -145,4 +154,4 @@ std::string ocio_colorspace_param_t::default_colorspace() const
     return config->getColorSpace(OCIO::ROLE_SCENE_LINEAR)->getName();
 }
 
-}  // namespace
+}  // namespace ramen

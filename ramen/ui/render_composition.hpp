@@ -10,15 +10,15 @@ namespace ramen
 {
 namespace ui
 {
-void render_composition(composition_t& comp,
-                        int            start,
-                        int            end,
-                        int            proxy_level,
-                        int            subsample,
-                        int            mb_extra_samples,
-                        float          mb_shutter_factor,
-                        bool           selected_only);
+void render_composition(
+    composition_t& comp,
+    int            start,
+    int            end,
+    int            proxy_level,
+    int            subsample,
+    int            mb_extra_samples,
+    float          mb_shutter_factor,
+    bool           selected_only);
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

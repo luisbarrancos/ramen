@@ -12,6 +12,5 @@ class yaml_node_t;
 class yaml_iarchive_t;
 class yaml_oarchive_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace serialization
+}  // namespace ramen

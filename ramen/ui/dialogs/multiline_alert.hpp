@@ -18,17 +18,16 @@ class multiline_alert_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     static multiline_alert_t& instance();
 
     void show_alert(const std::string& title, const std::string& text);
 
-private:
+  private:
     multiline_alert_t();
 
     QTextEdit* text_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

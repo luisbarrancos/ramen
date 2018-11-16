@@ -23,14 +23,14 @@
 namespace ramen
 {
 animated_param_t::animated_param_t(const std::string& name)
-: param_t(name)
-, step_(1.0f)
+  : param_t(name)
+  , step_(1.0f)
 {
 }
 
 animated_param_t::animated_param_t(const animated_param_t& other)
-: param_t(other)
-, curves_(other.curves_)
+  : param_t(other)
+  , curves_(other.curves_)
 {
     step_ = other.step_;
 }
@@ -57,7 +57,8 @@ anim::float_curve_t& animated_param_t::curve(int indx)
 
 void animated_param_t::add_curve(const std::string& name)
 {
-    curves_.push_back(curve_entry_type(boost::flyweight<std::string>(name), anim::float_curve_t()));
+    curves_.push_back(curve_entry_type(
+        boost::flyweight<std::string>(name), anim::float_curve_t()));
 }
 
 void animated_param_t::eval_curve(int index, float frame, float& v) const
@@ -93,13 +94,17 @@ void animated_param_t::set_range(float lo, float hi)
         curve(i).set_range(lo, hi);
 }
 
-void animated_param_t::set_default_anim_auto_tangents(anim::keyframe_t::auto_tangent_method m)
+void animated_param_t::set_default_anim_auto_tangents(
+    anim::keyframe_t::auto_tangent_method m)
 {
     for (int i = 0; i < num_curves(); ++i)
         curve(i).set_default_auto_tangents(m);
 }
 
-void animated_param_t::set_component_value(int index, float comp_value, change_reason reason)
+void animated_param_t::set_component_value(
+    int           index,
+    float         comp_value,
+    change_reason reason)
 {
     float frame = 1.0f;
 
@@ -109,18 +114,21 @@ void animated_param_t::set_component_value(int index, float comp_value, change_r
     set_component_value_at_frame(index, comp_value, frame, reason);
 }
 
-void animated_param_t::set_component_value_at_frame(int           index,
-                                                    float         comp_value,
-                                                    float         frame,
-                                                    change_reason reason)
+void animated_param_t::set_component_value_at_frame(
+    int           index,
+    float         comp_value,
+    float         frame,
+    change_reason reason)
 {
-    assert(index >= 0 && index < num_curves() && "animated_param_t: index out of bounds");
+    assert(
+        index >= 0 && index < num_curves() &&
+        "animated_param_t: index out of bounds");
 
     if (can_undo())
         param_set()->add_command(this);
 
-    if (poly_param_indexable_value_t* val
-        = core::poly_cast<poly_param_indexable_value_t*>(&value()))
+    if (poly_param_indexable_value_t* val =
+            core::poly_cast<poly_param_indexable_value_t*>(&value()))
     {
         assert(val && "non indexable param value found");
         val->set_component(index, comp_value);
@@ -133,7 +141,10 @@ void animated_param_t::set_component_value_at_frame(int           index,
     emit_param_changed(reason);
 }
 
-void animated_param_t::do_evaluate(float frame) { value() = value_at_frame(frame); }
+void animated_param_t::do_evaluate(float frame)
+{
+    value() = value_at_frame(frame);
+}
 
 float animated_param_t::clamp(float x) const
 {
@@ -146,7 +157,10 @@ float animated_param_t::clamp(float x) const
     return x;
 }
 
-void animated_param_t::anim_curve_changed(anim::any_curve_ptr_t& c) { do_anim_curve_changed(c); }
+void animated_param_t::anim_curve_changed(anim::any_curve_ptr_t& c)
+{
+    do_anim_curve_changed(c);
+}
 
 void animated_param_t::do_anim_curve_changed(anim::any_curve_ptr_t& c)
 {
@@ -159,7 +173,8 @@ void animated_param_t::do_anim_curve_changed(anim::any_curve_ptr_t& c)
 
 std::auto_ptr<undo::command_t> animated_param_t::do_create_command()
 {
-    return std::auto_ptr<undo::command_t>(new animated_param_command_t(*this->param_set(), id()));
+    return std::auto_ptr<undo::command_t>(
+        new animated_param_command_t(*this->param_set(), id()));
 }
 
 // spinboxes
@@ -172,11 +187,13 @@ void animated_param_t::set_key(int curve_index)
 
     if (curve(curve_index).empty())
     {
-        poly_param_indexable_value_t* val
-            = core::poly_cast<poly_param_indexable_value_t*>(&value());
+        poly_param_indexable_value_t* val =
+            core::poly_cast<poly_param_indexable_value_t*>(&value());
 
         if (val)
-            curve(curve_index).insert(composition()->frame(), val->get_component(curve_index));
+            curve(curve_index)
+                .insert(
+                    composition()->frame(), val->get_component(curve_index));
         else
         {
             assert(curve_index == 0);
@@ -253,7 +270,8 @@ void animated_param_t::do_create_tracks(anim::track_t* parent)
     if (num_curves() == 1)
     {
         t.reset(new anim::track_t(curve_name(), &curve()));
-        t->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+        t->changed.connect(
+            boost::bind(&animated_param_t::anim_curve_changed, this, _1));
     }
     else
     {
@@ -261,8 +279,10 @@ void animated_param_t::do_create_tracks(anim::track_t* parent)
 
         for (int i = 0; i < num_curves(); ++i)
         {
-            std::auto_ptr<anim::track_t> tx(new anim::track_t(curve_name(i), &curve(i)));
-            tx->changed.connect(boost::bind(&animated_param_t::anim_curve_changed, this, _1));
+            std::auto_ptr<anim::track_t> tx(
+                new anim::track_t(curve_name(i), &curve(i)));
+            tx->changed.connect(
+                boost::bind(&animated_param_t::anim_curve_changed, this, _1));
             t->add_child(tx);
         }
     }
@@ -273,11 +293,13 @@ void animated_param_t::do_create_tracks(anim::track_t* parent)
 // serialization
 void animated_param_t::read_curves(const serialization::yaml_node_t& node)
 {
-    serialization::optional_yaml_node_t curves(node.get_optional_node("curves"));
+    serialization::optional_yaml_node_t curves(
+        node.get_optional_node("curves"));
 
     if (curves)
     {
-        for (serialization::yaml_node_t::const_iterator it(curves.get().begin());
+        for (serialization::yaml_node_t::const_iterator it(
+                 curves.get().begin());
              it != curves.get().end();
              ++it)
         {
@@ -290,7 +312,8 @@ void animated_param_t::read_curves(const serialization::yaml_node_t& node)
                 c->read(crv_node);
             }
             else
-                node.error_stream() << "Unknown curve " << key << " found in param.";
+                node.error_stream()
+                    << "Unknown curve " << key << " found in param.";
         }
     }
 }
@@ -326,4 +349,4 @@ anim::float_curve_t* animated_param_t::find_curve(const std::string& name)
     return 0;
 }
 
-}  // namespace
+}  // namespace ramen

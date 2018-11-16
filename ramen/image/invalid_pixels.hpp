@@ -10,10 +10,10 @@ namespace ramen
 {
 namespace image
 {
-void count_invalid_pixels(const image_view_t& img,
-                          std::size_t&        nan_pixels,
-                          std::size_t&        neg_pixels);
+void count_invalid_pixels(
+    const image_view_t& img,
+    std::size_t&        nan_pixels,
+    std::size_t&        neg_pixels);
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

@@ -9,5 +9,4 @@ namespace ramen
 class animated_param_command_t;
 class animated_param_reset_command_t;
 
-}  // namespace
-
+}  // namespace ramen

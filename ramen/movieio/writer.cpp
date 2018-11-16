@@ -11,11 +11,12 @@ namespace movieio
 writer_t::writer_t() {}
 writer_t::~writer_t() {}
 
-void writer_t::write_frame(const image::const_image_view_t& view,
-                           const core::dictionary_t&        params) const
+void writer_t::write_frame(
+    const image::const_image_view_t& view,
+    const core::dictionary_t&        params) const
 {
     do_write_frame(view, params);
 }
 
-}  // movieio
-}  // ramen
+}  // namespace movieio
+}  // namespace ramen

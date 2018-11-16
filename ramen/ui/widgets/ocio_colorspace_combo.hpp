@@ -16,31 +16,33 @@ class ocio_colorspace_combo_t : public ocio_combo_t
 {
     Q_OBJECT
 
-public:
+  public:
     ocio_colorspace_combo_t(QWidget* parent = 0);
 
-    const std::string& get_current_colorspace() const { return current_colorspace_; }
+    const std::string& get_current_colorspace() const
+    {
+        return current_colorspace_;
+    }
 
     bool set_colorspace_or_default(const std::string& s);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_colorspace(const std::string& s);
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void colorspace_changed(const std::string&);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void combo_index_changed(int indx);
 
-private:
+  private:
     void set_default();
 
     std::string current_colorspace_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

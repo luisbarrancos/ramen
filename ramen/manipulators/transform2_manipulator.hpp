@@ -14,10 +14,10 @@ class transform2_param_t;
 
 class transform2_manipulator_t : public manipulator_t
 {
-public:
+  public:
     transform2_manipulator_t(param_t* param);
 
-private:
+  private:
     void do_draw_overlay(const ui::paint_event_t& event) const override;
 
     bool do_key_press_event(const ui::key_press_event_t& event) override;
@@ -25,7 +25,8 @@ private:
 
     bool do_mouse_press_event(const ui::mouse_press_event_t& event) override;
     void do_mouse_drag_event(const ui::mouse_drag_event_t& event) override;
-    void do_mouse_release_event(const ui::mouse_release_event_t& event) override;
+    void do_mouse_release_event(
+        const ui::mouse_release_event_t& event) override;
 
     transform2_param_t* param_;
     bool                drag_center_;
@@ -33,5 +34,4 @@ private:
     bool                dragx_, dragy_;
 };
 
-}  // ramen
-
+}  // namespace ramen

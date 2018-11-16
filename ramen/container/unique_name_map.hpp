@@ -18,18 +18,18 @@ namespace detail
 {
 class unique_name_map_base_t
 {
-public:
+  public:
     unique_name_map_base_t() {}
 };
 
-}  // detail
+}  // namespace detail
 
-template<class T>
+template <class T>
 class unique_name_map_t : public detail::unique_name_map_base_t
 {
-public:
+  public:
     unique_name_map_t()
-    : detail::unique_name_map_base_t()
+      : detail::unique_name_map_base_t()
     {
     }
 
@@ -75,7 +75,8 @@ public:
 
         while (1)
         {
-            typename std::map<std::string, T>::const_iterator it(map_.find(name));
+            typename std::map<std::string, T>::const_iterator it(
+                map_.find(name));
 
             if (it == map_.end())
                 return name;
@@ -84,14 +85,14 @@ public:
         }
     }
 
-private:
+  private:
     std::map<std::string, T> map_;
 };
 
-template<class T>
+template <class T>
 class unique_name_map_t<T*> : public detail::unique_name_map_base_t
 {
-public:
+  public:
     unique_name_map_t() {}
 
     void insert(T* val)
@@ -143,7 +144,8 @@ public:
 
         while (1)
         {
-            typename std::map<std::string, T*>::const_iterator it(map_.find(name));
+            typename std::map<std::string, T*>::const_iterator it(
+                map_.find(name));
 
             if (it == map_.end())
                 return name;
@@ -152,9 +154,8 @@ public:
         }
     }
 
-private:
+  private:
     std::map<std::string, T*> map_;
 };
 
-}  // namespace
-
+}  // namespace ramen

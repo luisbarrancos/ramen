@@ -22,7 +22,7 @@ class RAMEN_API composite_param_t : public param_t
 {
     Q_OBJECT
 
-public:
+  public:
     composite_param_t();
     explicit composite_param_t(const std::string& name);
 
@@ -31,8 +31,7 @@ public:
     const boost::ptr_vector<param_t>& params() const { return params_; }
     boost::ptr_vector<param_t>&       params() { return params_; }
 
-    template<class T>
-    void add_param(std::auto_ptr<T> p)
+    template <class T> void add_param(std::auto_ptr<T> p)
     {
         do_add_param(p.release());
     }
@@ -40,13 +39,13 @@ public:
     const param_t* find(const std::string& id) const;
     param_t*       find(const std::string& id);
 
-protected:
+  protected:
     composite_param_t(const composite_param_t& other);
     void operator=(const composite_param_t& other);
 
     void create_widgets_inside_widget(QWidget* parent);
 
-private:
+  private:
     void     do_init() override;
     param_t* do_clone() const override { return new composite_param_t(*this); }
 
@@ -64,13 +63,15 @@ private:
 
     void do_create_tracks(anim::track_t* parent) override;
 
-    void do_format_changed(const Imath::Box2i& new_format,
-                           float               aspect,
-                           const Imath::V2f&   proxy_scale) override;
+    void do_format_changed(
+        const Imath::Box2i& new_format,
+        float               aspect,
+        const Imath::V2f&   proxy_scale) override;
 
     // paths
-    void do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                   const boost::filesystem::path& new_base) override;
+    void do_convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base) override;
 
     void do_make_paths_absolute() override;
     void do_make_paths_relative() override;
@@ -88,5 +89,4 @@ private:
     bool                       create_track_;
 };
 
-}  // namespace
-
+}  // namespace ramen

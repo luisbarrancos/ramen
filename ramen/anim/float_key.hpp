@@ -18,7 +18,7 @@ namespace anim
 {
 class float_key_t : public keyframe_t
 {
-public:
+  public:
     typedef float value_type;
 
     float_key_t();
@@ -56,7 +56,10 @@ public:
 
     value_type evaluate_derivative(time_type t) const;
 
-    const std::array<value_type, 4>& cubic_polynomial() const { return coeffs_; }
+    const std::array<value_type, 4>& cubic_polynomial() const
+    {
+        return coeffs_;
+    }
 
     // constants
     static value_type max_slope();
@@ -67,13 +70,12 @@ public:
     void read(const serialization::yaml_node_t& in);
     void write(serialization::yaml_oarchive_t& out) const;
 
-private:
+  private:
     value_type                value_;
     value_type                v0_, v1_;  // tangents
     bool                      tangent_cont_;
     std::array<value_type, 4> coeffs_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

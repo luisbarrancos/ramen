@@ -19,7 +19,7 @@ namespace undo
 */
 class command_t
 {
-public:
+  public:
     /// Constructor.
     command_t();
 
@@ -53,7 +53,7 @@ public:
     /// Redoes this command.
     virtual void redo();
 
-protected:
+  protected:
     std::string name_;
     bool        was_dirty_;
     bool        done_;
@@ -65,7 +65,7 @@ protected:
 */
 class generic_command_t : public command_t
 {
-public:
+  public:
     typedef std::function<void()> function_type;
 
     /*!
@@ -74,9 +74,10 @@ public:
      \param undo_fun Function to call for undo.
      \param redo_fun Function to call for redo.
      */
-    generic_command_t(const std::string&   name,
-                      const function_type& undo_fun,
-                      const function_type& redo_fun);
+    generic_command_t(
+        const std::string&   name,
+        const function_type& undo_fun,
+        const function_type& redo_fun);
 
     /// Undoes this command.
     void undo() override;
@@ -84,14 +85,14 @@ public:
     /// Redoes this command.
     void redo() override;
 
-private:
+  private:
     function_type undo_;
     function_type redo_;
 };
 
 class composite_command_t : public command_t
 {
-public:
+  public:
     /// Constructor.
     explicit composite_command_t(const std::string& name);
 
@@ -107,10 +108,9 @@ public:
     /// Adds a child command to this command.
     void push_back(std::unique_ptr<command_t> c);
 
-protected:
+  protected:
     std::vector<std::unique_ptr<command_t>> commands_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

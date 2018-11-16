@@ -19,13 +19,15 @@ namespace ramen
 {
 namespace undo
 {
-add_roto_command_t::add_roto_command_t(image::roto_node_t& node, std::auto_ptr<roto::shape_t> shape)
-: command_t("Add Shape")
-, node_(node)
+add_roto_command_t::add_roto_command_t(
+    image::roto_node_t&          node,
+    std::auto_ptr<roto::shape_t> shape)
+  : command_t("Add Shape")
+  , node_(node)
 {
     assert(shape.get());
 
-    shape_   = shape.get();
+    shape_ = shape.get();
     storage_ = shape;
 }
 
@@ -50,11 +52,13 @@ void add_roto_command_t::redo()
     undo::command_t::redo();
 }
 
-delete_roto_command_t::delete_roto_command_t(image::roto_node_t& node, roto::shape_t* shape)
-: command_t("Delete Shape")
-, node_(node)
+delete_roto_command_t::delete_roto_command_t(
+    image::roto_node_t& node,
+    roto::shape_t*      shape)
+  : command_t("Delete Shape")
+  , node_(node)
 {
-    shape_  = shape;
+    shape_ = shape;
     parent_ = shape->parent();
     shape_->select(false);
 
@@ -90,13 +94,14 @@ void delete_roto_command_t::redo()
     undo::command_t::redo();
 }
 
-set_roto_parent_command_t::set_roto_parent_command_t(image::roto_node_t& node,
-                                                     roto::shape_t*      shape,
-                                                     roto::shape_t*      new_parent)
-: command_t("Set Parent")
-, node_(node)
+set_roto_parent_command_t::set_roto_parent_command_t(
+    image::roto_node_t& node,
+    roto::shape_t*      shape,
+    roto::shape_t*      new_parent)
+  : command_t("Set Parent")
+  , node_(node)
 {
-    shape_      = shape;
+    shape_ = shape;
     new_parent_ = new_parent;
     old_parent_ = shape->parent();
 }
@@ -117,15 +122,17 @@ void set_roto_parent_command_t::redo()
     undo::command_t::redo();
 }
 
-modify_shape_command_t::modify_shape_command_t(image::roto_node_t& node, roto::shape_t* shape)
-: command_t("Edit Shape")
-, node_(node)
+modify_shape_command_t::modify_shape_command_t(
+    image::roto_node_t& node,
+    roto::shape_t*      shape)
+  : command_t("Edit Shape")
+  , node_(node)
 {
     set_done(true);
 
     shape_ = shape;
 
-    old_pts_   = shape_->triples();
+    old_pts_ = shape_->triples();
     old_curve_ = shape_->anim_curve();
 }
 
@@ -150,14 +157,15 @@ void modify_shape_command_t::swap_shape_state()
     shape_->evaluate_shape_curve(app().document().composition().frame());
 }
 
-order_shape_command_t::order_shape_command_t(image::roto_node_t& node,
-                                             roto::shape_t*      shape,
-                                             bool                up)
-: command_t("Change Shape Order")
-, node_(node)
+order_shape_command_t::order_shape_command_t(
+    image::roto_node_t& node,
+    roto::shape_t*      shape,
+    bool                up)
+  : command_t("Change Shape Order")
+  , node_(node)
 {
     shape_ = shape;
-    up_    = up;
+    up_ = up;
 }
 
 void order_shape_command_t::undo()
@@ -184,5 +192,5 @@ void order_shape_command_t::redo()
     undo::command_t::redo();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

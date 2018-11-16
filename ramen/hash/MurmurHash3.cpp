@@ -31,9 +31,15 @@
 
 #define FORCE_INLINE inline __attribute__((always_inline))
 
-inline uint32_t rotl32(uint32_t x, int8_t r) { return (x << r) | (x >> (32 - r)); }
+inline uint32_t rotl32(uint32_t x, int8_t r)
+{
+    return (x << r) | (x >> (32 - r));
+}
 
-inline uint64_t rotl64(uint64_t x, int8_t r) { return (x << r) | (x >> (64 - r)); }
+inline uint64_t rotl64(uint64_t x, int8_t r)
+{
+    return (x << r) | (x >> (64 - r));
+}
 
 #define ROTL32(x, y) rotl32(x, y)
 #define ROTL64(x, y) rotl64(x, y)
@@ -81,7 +87,7 @@ FORCE_INLINE uint64_t fmix64(uint64_t k)
 
 void MurmurHash3_x86_32(const void* key, int len, uint32_t seed, void* out)
 {
-    const uint8_t* data    = (const uint8_t*) key;
+    const uint8_t* data = (const uint8_t*) key;
     const int      nblocks = len / 4;
 
     uint32_t h1 = seed;
@@ -140,9 +146,13 @@ void MurmurHash3_x86_32(const void* key, int len, uint32_t seed, void* out)
 
 //-----------------------------------------------------------------------------
 
-void MurmurHash3_x86_128(const void* key, const int len, uint32_t seed, void* out)
+void MurmurHash3_x86_128(
+    const void* key,
+    const int   len,
+    uint32_t    seed,
+    void*       out)
 {
-    const uint8_t* data    = (const uint8_t*) key;
+    const uint8_t* data = (const uint8_t*) key;
     const int      nblocks = len / 16;
 
     uint32_t h1 = seed;
@@ -302,9 +312,13 @@ void MurmurHash3_x86_128(const void* key, const int len, uint32_t seed, void* ou
 
 //-----------------------------------------------------------------------------
 
-void MurmurHash3_x64_128(const void* key, const int len, const uint32_t seed, void* out)
+void MurmurHash3_x64_128(
+    const void*    key,
+    const int      len,
+    const uint32_t seed,
+    void*          out)
 {
-    const uint8_t* data    = (const uint8_t*) key;
+    const uint8_t* data = (const uint8_t*) key;
     const int      nblocks = len / 16;
 
     uint64_t h1 = seed;

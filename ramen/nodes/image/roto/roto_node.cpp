@@ -55,30 +55,33 @@ enum
     update_mouse_up
 };
 
-}  // unnamed
+}  // namespace
 
 roto_node_t::roto_node_t()
-: image_node_t()
-, toolbar_(0)
-, scene_(this)
+  : image_node_t()
+  , toolbar_(0)
+  , scene_(this)
 {
     set_name("roto");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
-    inspector_   = 0;
+    inspector_ = 0;
     shape_param_ = 0;
-    param_set().param_changed.connect(boost::bind(&roto_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&roto_node_t::param_changed, this, _1, _2));
 }
 
 roto_node_t::roto_node_t(const roto_node_t& other)
-: image_node_t(other)
-, scene_(other.scene_)
+  : image_node_t(other)
+  , scene_(other.scene_)
 {
     scene_.set_parent(this);
     scene_.update_all_xforms();
-    toolbar_   = 0;
+    toolbar_ = 0;
     inspector_ = 0;
-    param_set().param_changed.connect(boost::bind(&roto_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&roto_node_t::param_changed, this, _1, _2));
 
     shape_param_ = dynamic_cast<roto_shape_param_t*>(&param("shape_panel"));
     assert(shape_param_);
@@ -91,22 +94,24 @@ void roto_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> pop(new popup_param_t("Output"));
     pop->set_id("output");
-    pop->menu_items() = std::vector<std::string>({ "Premultiplied", "Unpremultiplied" });
+    pop->menu_items() =
+        std::vector<std::string>({"Premultiplied", "Unpremultiplied"});
     pop->set_default_value(1);
     add_param(pop);
 
     pop.reset(new popup_param_t("Input Alpha"));
     pop->set_id("alpha");
-    pop->menu_items() = std::vector<std::string>({ "Replace", "Use" });
+    pop->menu_items() = std::vector<std::string>({"Replace", "Use"});
     add_param(pop);
 
     pop.reset(new popup_param_t("Update"));
     pop->set_id("update");
-    pop->menu_items() = std::vector<std::string>({ "Mouse Drag", "Mouse Up" });
+    pop->menu_items() = std::vector<std::string>({"Mouse Drag", "Mouse Up"});
     pop->set_include_in_hash(false);
     add_param(pop);
 
-    std::auto_ptr<motion_blur_param_t> mb(new motion_blur_param_t("Motion Blur"));
+    std::auto_ptr<motion_blur_param_t> mb(
+        new motion_blur_param_t("Motion Blur"));
     mb->set_id("motion_blur");
     add_param(mb);
 
@@ -114,7 +119,8 @@ void roto_node_t::do_create_params()
     add_param(sep);
 
     {
-        std::auto_ptr<roto_shape_param_t> rs(new roto_shape_param_t("shape_panel"));
+        std::auto_ptr<roto_shape_param_t> rs(
+            new roto_shape_param_t("shape_panel"));
         shape_param_ = rs.get();
         add_param(rs);
 
@@ -173,7 +179,8 @@ std::auto_ptr<roto::shape_t> roto_node_t::create_shape() const
     return new_shape;
 }
 
-std::auto_ptr<roto::shape_t> roto_node_t::create_shape(const Imath::Box2f& b) const
+std::auto_ptr<roto::shape_t> roto_node_t::create_shape(
+    const Imath::Box2f& b) const
 {
     std::auto_ptr<roto::shape_t> new_shape(new roto::shape_t(b));
     init_shape(*new_shape);
@@ -277,11 +284,14 @@ void roto_node_t::do_calc_bounds(const render::context_t& context)
 {
     frames_.clear();
 
-    motion_blur_param_t* mb = dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
+    motion_blur_param_t* mb =
+        dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
     assert(mb);
 
     motion_blur_info_t::loop_data_t d(mb->loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     Imath::Box2f bbox;
 
@@ -305,8 +315,8 @@ void roto_node_t::do_calc_bounds(const render::context_t& context)
     scene_bbox_.max.x = std::ceil((double) bbox.max.x);
     scene_bbox_.max.y = std::ceil((double) bbox.max.y);
 
-    if (get_value<int>(param("alpha")) == replace_alpha
-        && get_value<int>(param("output")) == output_premult)
+    if (get_value<int>(param("alpha")) == replace_alpha &&
+        get_value<int>(param("output")) == output_premult)
     {
         Imath::Box2i b(input_as<image_node_t>()->bounds());
         set_bounds(ImathExt::intersect(b, scene_bbox_));
@@ -319,8 +329,8 @@ void roto_node_t::do_calc_inputs_interest(const render::context_t& context)
 {
     image_node_t* in = input_as<image_node_t>();
 
-    if (get_value<int>(param("alpha")) == replace_alpha
-        && get_value<int>(param("output")) == output_premult)
+    if (get_value<int>(param("alpha")) == replace_alpha &&
+        get_value<int>(param("output")) == output_premult)
         in->add_interest(ImathExt::intersect(interest(), scene_bbox_));
     else
         in->add_interest(interest());
@@ -346,28 +356,34 @@ void roto_node_t::do_process(const render::context_t& context)
     if (area.isEmpty())
         return;
 
-    int output    = get_value<int>(param("output"));
+    int output = get_value<int>(param("output"));
     int composite = get_value<int>(param("alpha"));
 
     boost::gil::copy_pixels(in->const_subimage_view(area), subimage_view(area));
 
-    motion_blur_param_t* mb = dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
+    motion_blur_param_t* mb =
+        dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
     assert(mb);
 
     motion_blur_info_t::loop_data_t d(mb->loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     if (d.num_samples == 1)
     {
-        roto::scene_renderer_t renderer(scene(), area, aspect_ratio(), context.subsample);
+        roto::scene_renderer_t renderer(
+            scene(), area, aspect_ratio(), context.subsample);
 
         if (composite == use_alpha)
-            boost::gil::copy_pixels(boost::gil::nth_channel_view(in->const_subimage_view(area), 3),
-                                    renderer.view());
+            boost::gil::copy_pixels(
+                boost::gil::nth_channel_view(in->const_subimage_view(area), 3),
+                renderer.view());
 
         renderer.render();
-        boost::gil::copy_pixels(renderer.const_view(),
-                                boost::gil::nth_channel_view(subimage_view(area), 3));
+        boost::gil::copy_pixels(
+            renderer.const_view(),
+            boost::gil::nth_channel_view(subimage_view(area), 3));
     }
     else
         do_process_motion_blur(context, area);
@@ -376,11 +392,14 @@ void roto_node_t::do_process(const render::context_t& context)
         image::premultiply(subimage_view(area), subimage_view(area));
 }
 
-void roto_node_t::do_process_motion_blur(const render::context_t& context, const Imath::Box2i& area)
+void roto_node_t::do_process_motion_blur(
+    const render::context_t& context,
+    const Imath::Box2i&      area)
 {
     image_node_t* in = input_as<image_node_t>();
 
-    motion_blur_param_t* mb = dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
+    motion_blur_param_t* mb =
+        dynamic_cast<motion_blur_param_t*>(&param("motion_blur"));
     assert(mb);
 
     image::gray_image_t pixels(area.size().x + 1, area.size().y + 1);
@@ -389,10 +408,12 @@ void roto_node_t::do_process_motion_blur(const render::context_t& context, const
     image::gray_accumulator_t acc(boost::gil::view(pixels));
 
     motion_blur_info_t::loop_data_t d(mb->loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
-    float t         = d.start_time;
-    float sumw      = 0.0f;
+    float t = d.start_time;
+    float sumw = 0.0f;
     int   composite = get_value<int>(param("alpha"));
 
     for (int i = 0; i < d.num_samples; ++i)
@@ -400,11 +421,13 @@ void roto_node_t::do_process_motion_blur(const render::context_t& context, const
         scene().set_frame(t, true);
         scene().update_all_xforms(true);
 
-        roto::scene_renderer_t renderer(scene(), area, aspect_ratio(), context.subsample);
+        roto::scene_renderer_t renderer(
+            scene(), area, aspect_ratio(), context.subsample);
 
         if (composite == use_alpha)
-            boost::gil::copy_pixels(boost::gil::nth_channel_view(in->const_subimage_view(area), 3),
-                                    renderer.view());
+            boost::gil::copy_pixels(
+                boost::gil::nth_channel_view(in->const_subimage_view(area), 3),
+                renderer.view());
 
         renderer.render();
 
@@ -418,8 +441,9 @@ void roto_node_t::do_process_motion_blur(const render::context_t& context, const
     if (sumw != 0.0f)
         acc.multiply(1.0f / sumw);
 
-    boost::gil::copy_pixels(boost::gil::const_view(pixels),
-                            boost::gil::nth_channel_view(subimage_view(area), 3));
+    boost::gil::copy_pixels(
+        boost::gil::const_view(pixels),
+        boost::gil::nth_channel_view(subimage_view(area), 3));
 
     scene().set_frame(context.frame);
     scene().update_all_xforms();
@@ -437,18 +461,25 @@ void roto_node_t::param_changed(param_t* p, param_t::change_reason reason)
 }
 
 // serialization
-void roto_node_t::do_read(const serialization::yaml_node_t& node,
-                          const std::pair<int, int>&        version)
+void roto_node_t::do_read(
+    const serialization::yaml_node_t& node,
+    const std::pair<int, int>&        version)
 {
     scene().read(node);
 }
 
-void roto_node_t::do_write(serialization::yaml_oarchive_t& out) const { scene().write(out); }
+void roto_node_t::do_write(serialization::yaml_oarchive_t& out) const
+{
+    scene().write(out);
+}
 
 // factory
 node_t* create_roto_node() { return new roto_node_t(); }
 
-const node_metaclass_t* roto_node_t::metaclass() const { return &roto_node_metaclass(); }
+const node_metaclass_t* roto_node_t::metaclass() const
+{
+    return &roto_node_metaclass();
+}
 
 const node_metaclass_t& roto_node_t::roto_node_metaclass()
 {
@@ -457,21 +488,21 @@ const node_metaclass_t& roto_node_t::roto_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.roto";
+        info.id = "image.builtin.roto";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Matte";
-        info.menu_item     = "Roto";
-        info.create        = &create_roto_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Matte";
+        info.menu_item = "Roto";
+        info.create = &create_roto_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(roto_node_t::roto_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    roto_node_t::roto_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

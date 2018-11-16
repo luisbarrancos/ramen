@@ -20,7 +20,7 @@ namespace ocio
 {
 class RAMEN_API manager_t
 {
-public:
+  public:
     manager_t();
     ~manager_t();
 
@@ -28,16 +28,20 @@ public:
 
     const std::vector<std::string>& displays() const { return displays_; }
 
-    const std::string& default_display() const { return displays()[default_display_index()]; }
+    const std::string& default_display() const
+    {
+        return displays()[default_display_index()];
+    }
 
     int default_display_index() const { return default_display_index_; }
 
-    void        get_views(const std::string&        display,
-                          std::vector<std::string>& views,
-                          int&                      default_index) const;
+    void get_views(
+        const std::string&        display,
+        std::vector<std::string>& views,
+        int&                      default_index) const;
     std::string default_view(const std::string& display) const;
 
-private:
+  private:
     // noncopyable
     manager_t(const manager_t&);
     manager_t& operator=(const manager_t&);
@@ -52,6 +56,5 @@ private:
     std::vector<std::string> displays_;
 };
 
-}  // ocio
-}  // ramen
-
+}  // namespace ocio
+}  // namespace ramen

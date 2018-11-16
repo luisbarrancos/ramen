@@ -23,7 +23,7 @@ class RAMEN_API animated_param_t : public param_t
 {
     Q_OBJECT
 
-public:
+  public:
     typedef anim::float_key_t::time_type time_type;
 
     explicit animated_param_t(const std::string& name);
@@ -45,7 +45,8 @@ public:
     float step() const { return step_; }
     void  set_step(float s) { step_ = s; }
 
-    void set_default_anim_auto_tangents(anim::keyframe_t::auto_tangent_method m);
+    void set_default_anim_auto_tangents(
+        anim::keyframe_t::auto_tangent_method m);
 
     void anim_curve_changed(anim::any_curve_ptr_t& c);
 
@@ -55,7 +56,7 @@ public:
     void delete_all_keys(int curve_index);
     void paste(int curve_index);
 
-protected:
+  protected:
     animated_param_t(const animated_param_t& other);
     void operator=(const animated_param_t& other);
 
@@ -63,11 +64,15 @@ protected:
     void add_curve(const std::string& name);
     void eval_curve(int index, float frame, float& v) const;
 
-    void set_component_value(int index, float comp_value, change_reason reason = user_edited);
-    void set_component_value_at_frame(int           index,
-                                      float         comp_value,
-                                      float         frame,
-                                      change_reason reason = user_edited);
+    void set_component_value(
+        int           index,
+        float         comp_value,
+        change_reason reason = user_edited);
+    void set_component_value_at_frame(
+        int           index,
+        float         comp_value,
+        float         frame,
+        change_reason reason = user_edited);
 
     float clamp(float x) const;
 
@@ -77,7 +82,7 @@ protected:
     void read_curves(const serialization::yaml_node_t& node);
     void write_curves(serialization::yaml_oarchive_t& out) const;
 
-private:
+  private:
     void do_evaluate(float frame) override;
 
     void do_create_tracks(anim::track_t* parent) override;
@@ -86,11 +91,11 @@ private:
 
     anim::float_curve_t* find_curve(const std::string& name);
 
-    typedef boost::tuple<boost::flyweight<std::string>, anim::float_curve_t> curve_entry_type;
-    std::vector<curve_entry_type>                                            curves_;
+    typedef boost::tuple<boost::flyweight<std::string>, anim::float_curve_t>
+                                  curve_entry_type;
+    std::vector<curve_entry_type> curves_;
 
     float step_;
 };
 
-}  // ramen
-
+}  // namespace ramen

@@ -18,43 +18,46 @@ namespace filesystem
 path_sequence_t::path_sequence_t()
 {
     start_ = end_ = pad_ = 0;
-    is_seq_              = false;
-    valid_               = false;
+    is_seq_ = false;
+    valid_ = false;
 }
 
-path_sequence_t::path_sequence_t(const boost::filesystem::path& p, bool sequence)
+path_sequence_t::path_sequence_t(
+    const boost::filesystem::path& p,
+    bool                           sequence)
 {
-    valid_          = true;
-    dir_            = p.parent_path();
+    valid_ = true;
+    dir_ = p.parent_path();
     std::string str = p.filename().string();
 
-    boost::tuple<std::string, std::string, std::string> parts(decompose_filename(str));
+    boost::tuple<std::string, std::string, std::string> parts(
+        decompose_filename(str));
 
     if (sequence)
     {
         base_ = boost::get<0>(parts);
-        ext_  = boost::get<2>(parts);
+        ext_ = boost::get<2>(parts);
 
         start_ = end_ = 0;
-        pad_          = 1;
+        pad_ = 1;
 
         std::string fnum = boost::get<1>(parts);
-        is_seq_          = !fnum.empty();
+        is_seq_ = !fnum.empty();
 
         if (is_seq_)
         {
-            pad_   = get_pad(fnum);
+            pad_ = get_pad(fnum);
             start_ = boost::lexical_cast<int>(fnum);
-            end_   = start_;
+            end_ = start_;
         }
     }
     else
     {
         is_seq_ = false;
-        ext_    = boost::get<2>(parts);
-        base_   = std::string(str, 0, str.size() - ext_.size());
+        ext_ = boost::get<2>(parts);
+        base_ = std::string(str, 0, str.size() - ext_.size());
         start_ = end_ = 0;
-        pad_          = 1;
+        pad_ = 1;
     }
 }
 
@@ -89,14 +92,14 @@ path_sequence_t::path_sequence_t(const std::string& format, int start, int end)
     if (pos != std::string::npos)
     {
         is_seq_ = true;
-        start_  = start;
-        end_    = end;
-        pad_    = 0;
+        start_ = start;
+        end_ = end;
+        pad_ = 0;
 
         if (pos != 0)
         {
             base_ = std::string(part, 0, pos);
-            part  = std::string(part, pos, std::string::npos);
+            part = std::string(part, pos, std::string::npos);
         }
 
         if (part.size() != 2)
@@ -107,7 +110,7 @@ path_sequence_t::path_sequence_t(const std::string& format, int start, int end)
     }
     else
     {
-        base_   = part;
+        base_ = part;
         is_seq_ = false;
     }
 }
@@ -190,8 +193,9 @@ bool path_sequence_t::add_path(const boost::filesystem::path& p)
     if (!is_seq_)
         return false;
 
-    std::string                                         str = p.filename().string();
-    boost::tuple<std::string, std::string, std::string> parts(decompose_filename(str));
+    std::string str = p.filename().string();
+    boost::tuple<std::string, std::string, std::string> parts(
+        decompose_filename(str));
 
     std::string new_base = boost::get<0>(parts);
 
@@ -216,9 +220,9 @@ bool path_sequence_t::add_path(const boost::filesystem::path& p)
     if (fnum.empty())
         return false;
 
-    int n  = boost::lexical_cast<int>(fnum);
+    int n = boost::lexical_cast<int>(fnum);
     start_ = std::min(start_, n);
-    end_   = std::max(end_, n);
+    end_ = std::max(end_, n);
 
     pad_ = std::max(pad_, get_pad(fnum));
     return true;
@@ -294,11 +298,12 @@ int path_sequence_t::get_pad(const std::string& str) const
     return 1;
 }
 
-boost::tuple<std::string, std::string, std::string> path_sequence_t::decompose_filename(
-    const std::string& filename) const
+boost::tuple<std::string, std::string, std::string> path_sequence_t::
+    decompose_filename(const std::string& filename) const
 {
-    std::string ext  = get_extension(filename);
-    std::string fnum = get_frame_number(std::string(filename, 0, filename.length() - ext.length()));
+    std::string ext = get_extension(filename);
+    std::string fnum = get_frame_number(
+        std::string(filename, 0, filename.length() - ext.length()));
 
     std::string name;
     int         name_lenght = filename.length() - fnum.length() - ext.length();
@@ -309,38 +314,43 @@ boost::tuple<std::string, std::string, std::string> path_sequence_t::decompose_f
     return boost::make_tuple(name, fnum, ext);
 }
 
-void path_sequence_t::convert_relative_paths(const boost::filesystem::path& old_base,
-                                             const boost::filesystem::path& new_base)
+void path_sequence_t::convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     assert(old_base.is_absolute());
     assert(new_base.is_absolute());
 
     if (directory().is_relative())
     {
-        boost::filesystem::path new_dir
-            = filesystem::convert_relative_path(directory(), old_base, new_base);
+        boost::filesystem::path new_dir =
+            filesystem::convert_relative_path(directory(), old_base, new_base);
         set_directory(new_dir);
     }
 }
 
-void path_sequence_t::make_paths_absolute(const boost::filesystem::path& from_dir)
+void path_sequence_t::make_paths_absolute(
+    const boost::filesystem::path& from_dir)
 {
     assert(from_dir.is_absolute());
 
     if (directory().is_relative())
     {
-        boost::filesystem::path new_dir = filesystem::make_absolute_path(directory(), from_dir);
+        boost::filesystem::path new_dir =
+            filesystem::make_absolute_path(directory(), from_dir);
         set_directory(new_dir);
     }
 }
 
-void path_sequence_t::make_paths_relative(const boost::filesystem::path& from_dir)
+void path_sequence_t::make_paths_relative(
+    const boost::filesystem::path& from_dir)
 {
     assert(from_dir.is_absolute());
 
     if (directory().is_absolute())
     {
-        boost::filesystem::path new_dir = filesystem::make_relative_path(directory(), from_dir);
+        boost::filesystem::path new_dir =
+            filesystem::make_relative_path(directory(), from_dir);
         set_directory(new_dir);
     }
 }
@@ -397,5 +407,5 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const path_sequence_t& seq)
     return out;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace filesystem
+}  // namespace ramen

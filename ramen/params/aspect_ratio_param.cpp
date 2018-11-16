@@ -21,16 +21,16 @@ namespace ramen
 aspect_ratio_param_t::presets_type aspect_ratio_param_t::presets_;
 
 aspect_ratio_param_t::aspect_ratio_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(1.0f);
 }
 
 aspect_ratio_param_t::aspect_ratio_param_t(const aspect_ratio_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
     input_ = 0;
-    menu_  = 0;
+    menu_ = 0;
 }
 
 void aspect_ratio_param_t::set_default_value(float x) { value().assign(x); }
@@ -133,10 +133,10 @@ int aspect_ratio_param_t::index_for_value(float x) const
 
 QWidget* aspect_ratio_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    menu_          = new QComboBox(top);
-    input_         = new ui::double_spinbox_t(top);
+    menu_ = new QComboBox(top);
+    input_ = new ui::double_spinbox_t(top);
 
     QSize s = input_->sizeHint();
 
@@ -153,7 +153,11 @@ QWidget* aspect_ratio_param_t::do_create_widgets()
     input_->setDecimals(3);
     input_->setMinimum(0.1);
     input_->setTrackMouse(false);
-    connect(input_, SIGNAL(valueChanged(double)), this, SLOT(value_changed(double)));
+    connect(
+        input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(value_changed(double)));
 
     menu_->setFocusPolicy(Qt::NoFocus);
 
@@ -165,7 +169,8 @@ QWidget* aspect_ratio_param_t::do_create_widgets()
     menu_->move(app().ui()->inspector().left_margin() + s.width() + 5, 0);
     menu_->setEnabled(enabled());
     menu_->setCurrentIndex(index_for_value(val));
-    connect(menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
+    connect(
+        menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
 
     top->setMinimumSize(app().ui()->inspector().width(), s.height());
     top->setMaximumSize(app().ui()->inspector().width(), s.height());
@@ -201,4 +206,4 @@ void aspect_ratio_param_t::value_changed(double value)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

@@ -12,6 +12,5 @@ namespace ocio
 {
 class manager_t;
 
-}  // ocio
-}  // ramen
-
+}  // namespace ocio
+}  // namespace ramen

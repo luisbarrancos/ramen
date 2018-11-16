@@ -21,7 +21,7 @@ namespace memory
 {
 class manager_t
 {
-public:
+  public:
     typedef pool_allocator_t<pool_t>   image_allocator_type;
     typedef image_cache_t::digest_type digest_type;
 
@@ -33,14 +33,18 @@ public:
 
     void clear_caches();
 
-    void insert_in_cache(node_t* n, const digest_type& key, image::buffer_t& img);
+    void insert_in_cache(
+        node_t*            n,
+        const digest_type& key,
+        image::buffer_t&   img);
 
-    boost::optional<image::buffer_t> find_in_cache(const digest_type&  key,
-                                                   const Imath::Box2i& area);
+    boost::optional<image::buffer_t> find_in_cache(
+        const digest_type&  key,
+        const Imath::Box2i& area);
 
     image_allocator_type& image_allocator() { return *img_alloc_; }
 
-private:
+  private:
     friend class ramen::application_t;
 
     explicit manager_t(boost::uint64_t img_cache_size);
@@ -55,6 +59,5 @@ private:
     std::auto_ptr<image_cache_t>        img_cache_;
 };
 
-}  // memory
-}  // ramen
-
+}  // namespace memory
+}  // namespace ramen

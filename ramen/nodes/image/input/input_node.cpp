@@ -65,22 +65,24 @@ enum
     black_frame
 };
 
-}  // unnamed
+}  // namespace
 
 const int input_node_t::num_proxy_levels = 3;
 
 input_node_t::input_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("image_in");
     add_output_plug();
-    param_set().param_changed.connect(boost::bind(&input_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&input_node_t::param_changed, this, _1, _2));
 }
 
-input_node_t::input_node_t(const boost::filesystem::path& path,
-                           bool                           sequence,
-                           const boost::filesystem::path& from_dir)
-: image_node_t()
+input_node_t::input_node_t(
+    const boost::filesystem::path& path,
+    bool                           sequence,
+    const boost::filesystem::path& from_dir)
+  : image_node_t()
 {
     set_name("image_in");
     add_output_plug();
@@ -102,21 +104,25 @@ input_node_t::input_node_t(const boost::filesystem::path& path,
     clips_[0] = input_clip_t(seq);
     create_reader(0, from_dir);
 
-    param_set().param_changed.connect(boost::bind(&input_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&input_node_t::param_changed, this, _1, _2));
 }
 
 input_node_t::input_node_t(const input_node_t& other)
-: image_node_t(other)
-, clips_(other.clips_)
+  : image_node_t(other)
+  , clips_(other.clips_)
 {
     image_seq_param_t* seq = dynamic_cast<image_seq_param_t*>(&param("path"));
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
 
     seq = dynamic_cast<image_seq_param_t*>(&param("proxy1"));
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
 
     seq = dynamic_cast<image_seq_param_t*>(&param("proxy2"));
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
 
     readers_.reserve(num_proxy_levels);
     for (int i = 0; i < num_proxy_levels; ++i)
@@ -127,7 +133,8 @@ input_node_t::input_node_t(const input_node_t& other)
             create_reader(i);
     }
 
-    param_set().param_changed.connect(boost::bind(&input_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&input_node_t::param_changed, this, _1, _2));
 }
 
 boost::tuple<int, int, int, int> input_node_t::get_channels() const
@@ -137,26 +144,33 @@ boost::tuple<int, int, int, int> input_node_t::get_channels() const
 
 void input_node_t::set_channels(const boost::tuple<int, int, int, int>& c)
 {
-    image_channels_param_t* ch = dynamic_cast<image_channels_param_t*>(&param("channels"));
+    image_channels_param_t* ch =
+        dynamic_cast<image_channels_param_t*>(&param("channels"));
     assert(ch);
     ch->set_channels(c);
 }
 
-void input_node_t::set_channels(const std::string& red,
-                                const std::string& green,
-                                const std::string& blue,
-                                const std::string& alpha)
+void input_node_t::set_channels(
+    const std::string& red,
+    const std::string& green,
+    const std::string& blue,
+    const std::string& alpha)
 {
-    image_channels_param_t* ch = dynamic_cast<image_channels_param_t*>(&param("channels"));
+    image_channels_param_t* ch =
+        dynamic_cast<image_channels_param_t*>(&param("channels"));
     assert(ch);
     ch->set_channels(red, green, blue, alpha);
 }
 
-float input_node_t::get_aspect_param_value() const { return get_value<float>(param("aspect")); }
+float input_node_t::get_aspect_param_value() const
+{
+    return get_value<float>(param("aspect"));
+}
 
 void input_node_t::set_aspect_param_value(float a)
 {
-    aspect_ratio_param_t* asp = dynamic_cast<aspect_ratio_param_t*>(&param("aspect"));
+    aspect_ratio_param_t* asp =
+        dynamic_cast<aspect_ratio_param_t*>(&param("aspect"));
     assert(asp);
     asp->set_value(a);
 }
@@ -185,7 +199,8 @@ void input_node_t::create_image_params(const boost::filesystem::path& p)
     seq->set_id("path");
     seq->set_include_in_hash(false);
     seq->set_persist(false);
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
     add_param(seq);
 
     seq.reset(new image_seq_param_t("Proxy 1", 1));
@@ -193,7 +208,8 @@ void input_node_t::create_image_params(const boost::filesystem::path& p)
     seq->set_include_in_hash(false);
     seq->set_persist(false);
     seq->set_enabled(false);
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
     add_param(seq);
 
     seq.reset(new image_seq_param_t("Proxy 2", 2));
@@ -201,7 +217,8 @@ void input_node_t::create_image_params(const boost::filesystem::path& p)
     seq->set_include_in_hash(false);
     seq->set_persist(false);
     seq->set_enabled(false);
-    seq->file_picked.connect(boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
+    seq->file_picked.connect(
+        boost::bind(&input_node_t::file_picked, this, _1, _2, _3, _4));
     add_param(seq);
 
     std::auto_ptr<string_param_t> info(new string_param_t("Info", true));
@@ -220,12 +237,14 @@ void input_node_t::create_more_params()
     ch->set_persist(false);
     add_param(ch);
 
-    std::auto_ptr<aspect_ratio_param_t> r(new aspect_ratio_param_t("Aspect Ratio"));
+    std::auto_ptr<aspect_ratio_param_t> r(
+        new aspect_ratio_param_t("Aspect Ratio"));
     r->set_id("aspect");
     r->set_default_value(1.0f);
     add_param(r);
 
-    std::auto_ptr<ocio_colorspace_param_t> q(new ocio_colorspace_param_t("Colorspace"));
+    std::auto_ptr<ocio_colorspace_param_t> q(
+        new ocio_colorspace_param_t("Colorspace"));
     q->set_id("colorspace");
     add_param(q);
 
@@ -234,7 +253,7 @@ void input_node_t::create_more_params()
 
     std::auto_ptr<popup_param_t> pop(new popup_param_t("Out of Range"));
     pop->set_id("out_range");
-    pop->menu_items() = std::vector<std::string>({ "Hold", "Loop", "Black" });
+    pop->menu_items() = std::vector<std::string>({"Hold", "Loop", "Black"});
     pop->set_include_in_hash(false);
     add_param(pop);
 
@@ -257,7 +276,8 @@ void input_node_t::param_changed(param_t* p, param_t::change_reason reason)
 {
     if (reason != param_t::time_changed)
     {
-        if (p == &param("lock") || p == &param("slip") || p == &param("out_range"))
+        if (p == &param("lock") || p == &param("slip") ||
+            p == &param("out_range"))
             do_set_frame(composition()->frame());
     }
 }
@@ -298,12 +318,14 @@ boost::optional<int> input_node_t::map_frame_to_sequence(float t) const
         switch (get_value<int>(param("out_range")))
         {
             case hold_frame:
-                fnum = clamp(fnum, readers_[0]->start_frame(), readers_[0]->end_frame());
+                fnum = clamp(
+                    fnum, readers_[0]->start_frame(), readers_[0]->end_frame());
                 break;
 
             case loop_frame:
             {
-                int num_frames = readers_[0]->end_frame() - readers_[0]->start_frame() + 1;
+                int num_frames =
+                    readers_[0]->end_frame() - readers_[0]->start_frame() + 1;
                 fnum -= readers_[0]->start_frame();
 
                 int mod = Imath::modp(fnum, num_frames);
@@ -336,8 +358,10 @@ void input_node_t::do_calc_hash_str(const render::context_t& context)
         if (readers_[0]->is_multichannel())
         {
             tuple4i_t channels = get_value<tuple4i_t>(param("channels"));
-            hash_generator() << boost::get<0>(channels) << ", " << boost::get<1>(channels) << ", "
-                             << boost::get<2>(channels) << ", " << boost::get<3>(channels);
+            hash_generator()
+                << boost::get<0>(channels) << ", " << boost::get<1>(channels)
+                << ", " << boost::get<2>(channels) << ", "
+                << boost::get<3>(channels);
         }
     }
     else
@@ -346,33 +370,41 @@ void input_node_t::do_calc_hash_str(const render::context_t& context)
 
 void input_node_t::do_calc_format(const render::context_t& context)
 {
-    math::box2i_t tmp(readers_[index_for_proxy_level(context.proxy_level)]->format());
-    Imath::Box2i  format(Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
+    math::box2i_t tmp(
+        readers_[index_for_proxy_level(context.proxy_level)]->format());
+    Imath::Box2i format(
+        Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
 
     if (format.isEmpty())
     {
         // init with default values
-        set_format(Imath::Box2i(Imath::V2i(0, 0),
-                                Imath::V2i(context.default_format.area().max.x - 1,
-                                           context.default_format.area().max.y - 1)));
+        set_format(Imath::Box2i(
+            Imath::V2i(0, 0),
+            Imath::V2i(
+                context.default_format.area().max.x - 1,
+                context.default_format.area().max.y - 1)));
         set_aspect_ratio(context.default_format.aspect);
         set_proxy_scale(Imath::V2f(1.0f, 1.0f));
         return;
     }
 
     tmp = readers_[0]->format();
-    Imath::Box2i full_format(Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
+    Imath::Box2i full_format(
+        Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
 
     set_format(format);
     set_aspect_ratio(get_value<float>(param("aspect")));
-    set_proxy_scale(Imath::V2f((float) format.size().x / full_format.size().x,
-                               (float) format.size().y / full_format.size().y));
+    set_proxy_scale(Imath::V2f(
+        (float) format.size().x / full_format.size().x,
+        (float) format.size().y / full_format.size().y));
 }
 
 void input_node_t::do_calc_bounds(const render::context_t& context)
 {
-    math::box2i_t tmp(readers_[index_for_proxy_level(context.proxy_level)]->bounds());
-    Imath::Box2i  bounds(Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
+    math::box2i_t tmp(
+        readers_[index_for_proxy_level(context.proxy_level)]->bounds());
+    Imath::Box2i bounds(
+        Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
 
     if (bounds.isEmpty())
         bounds = format();
@@ -398,23 +430,28 @@ void input_node_t::do_process(const render::context_t& context)
 
     try
     {
-        math::box2i_t read_area(math::point2i_t(real_defined_.min.x, real_defined_.min.y),
-                                math::point2i_t(real_defined_.max.x, real_defined_.max.y));
+        math::box2i_t read_area(
+            math::point2i_t(real_defined_.min.x, real_defined_.min.y),
+            math::point2i_t(real_defined_.max.x, real_defined_.max.y));
 
         int level = index_for_proxy_level(context.proxy_level);
 
-        if (readers_[level]->is_multichannel() && readers_[level]->has_extra_channels())
+        if (readers_[level]->is_multichannel() &&
+            readers_[level]->has_extra_channels())
         {
             tuple4i_t channels = get_value<tuple4i_t>(param("channels"));
-            readers_[level]->read_frame(image_view(), read_area, context.subsample, channels);
+            readers_[level]->read_frame(
+                image_view(), read_area, context.subsample, channels);
         }
         else
-            readers_[level]->read_frame(image_view(), read_area, context.subsample);
+            readers_[level]
+                ->read_frame(image_view(), read_area, context.subsample);
 
         // transform to linear colorspace here.
         OCIO::ConstConfigRcPtr    config = app().ocio_manager().config();
-        OCIO::ConstProcessorRcPtr proc   = config->getProcessor(
-            get_value<std::string>(param("colorspace")).c_str(), OCIO::ROLE_SCENE_LINEAR);
+        OCIO::ConstProcessorRcPtr proc = config->getProcessor(
+            get_value<std::string>(param("colorspace")).c_str(),
+            OCIO::ROLE_SCENE_LINEAR);
         image::ocio_transform(image_view(), proc);
     }
     catch (...)
@@ -423,8 +460,9 @@ void input_node_t::do_process(const render::context_t& context)
     }
 }
 
-void input_node_t::do_read(const serialization::yaml_node_t& node,
-                           const std::pair<int, int>&        version)
+void input_node_t::do_read(
+    const serialization::yaml_node_t& node,
+    const std::pair<int, int>&        version)
 {
     filesystem::path_sequence_t seq;
 
@@ -446,7 +484,8 @@ void input_node_t::do_read(const serialization::yaml_node_t& node,
         create_reader(2);
     }
 
-    serialization::optional_yaml_node_t channels(node.get_optional_node("channels"));
+    serialization::optional_yaml_node_t channels(
+        node.get_optional_node("channels"));
 
     if (channels)
     {
@@ -465,20 +504,24 @@ void input_node_t::do_read(const serialization::yaml_node_t& node,
 void input_node_t::do_write(serialization::yaml_oarchive_t& out) const
 {
     if (readers_[0])
-        out << YAML::Key << "images" << YAML::Value << clips_[0].path_sequence();
+        out << YAML::Key << "images" << YAML::Value
+            << clips_[0].path_sequence();
 
     if (readers_[1])
-        out << YAML::Key << "proxy1" << YAML::Value << clips_[1].path_sequence();
+        out << YAML::Key << "proxy1" << YAML::Value
+            << clips_[1].path_sequence();
 
     if (readers_[2])
-        out << YAML::Key << "proxy2" << YAML::Value << clips_[2].path_sequence();
+        out << YAML::Key << "proxy2" << YAML::Value
+            << clips_[2].path_sequence();
 
-    if (readers_[0] && readers_[0]->is_multichannel() && readers_[0]->has_extra_channels())
+    if (readers_[0] && readers_[0]->is_multichannel() &&
+        readers_[0]->has_extra_channels())
     {
         std::string ch0, ch1, ch2, ch3;
 
-        const image_channels_param_t* p
-            = dynamic_cast<const image_channels_param_t*>(&param("channels"));
+        const image_channels_param_t* p =
+            dynamic_cast<const image_channels_param_t*>(&param("channels"));
         assert(p);
         p->get_channel_names(ch0, ch1, ch2, ch3);
 
@@ -492,8 +535,9 @@ void input_node_t::do_write(serialization::yaml_oarchive_t& out) const
     }
 }
 
-void input_node_t::convert_relative_paths(const boost::filesystem::path& old_base,
-                                          const boost::filesystem::path& new_base)
+void input_node_t::convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     for (int i = 0; i < clips_.size(); ++i)
         clips_[i].convert_relative_paths(old_base, new_base);
@@ -532,7 +576,9 @@ void input_node_t::create_reader(int proxy_level)
     create_reader(proxy_level, composition()->composition_dir());
 }
 
-void input_node_t::create_reader(int proxy_level, const boost::filesystem::path& from_dir)
+void input_node_t::create_reader(
+    int                            proxy_level,
+    const boost::filesystem::path& from_dir)
 {
     assert(proxy_level >= 0 && proxy_level < num_proxy_levels);
 
@@ -546,7 +592,8 @@ void input_node_t::create_reader(int proxy_level, const boost::filesystem::path&
 
         if (readers_[0])
         {
-            image_seq_param_t* seq = dynamic_cast<image_seq_param_t*>(&param("path"));
+            image_seq_param_t* seq =
+                dynamic_cast<image_seq_param_t*>(&param("path"));
             assert(seq);
 
             seq->set_input_text(clips_[0].format_string());
@@ -554,21 +601,26 @@ void input_node_t::create_reader(int proxy_level, const boost::filesystem::path&
             std::stringstream ss;
 
             math::box2i_t tmp(readers_[0]->format());
-            Imath::Box2i format(Imath::V2i(tmp.min.x, tmp.min.y), Imath::V2i(tmp.max.x, tmp.max.y));
+            Imath::Box2i  format(
+                Imath::V2i(tmp.min.x, tmp.min.y),
+                Imath::V2i(tmp.max.x, tmp.max.y));
 
             if (readers_[0]->is_sequence())
-                ss << "frames " << readers_[0]->start_frame() << "..." << readers_[0]->end_frame()
-                   << " ";
+                ss << "frames " << readers_[0]->start_frame() << "..."
+                   << readers_[0]->end_frame() << " ";
 
             if (!format.isEmpty())
-                ss << "size [" << format.size().x + 1 << " x " << format.size().y + 1 << "]";
+                ss << "size [" << format.size().x + 1 << " x "
+                   << format.size().y + 1 << "]";
 
             info->set_value(ss.str());
 
-            image_channels_param_t* ch = dynamic_cast<image_channels_param_t*>(&param("channels"));
+            image_channels_param_t* ch =
+                dynamic_cast<image_channels_param_t*>(&param("channels"));
             assert(ch);
 
-            if (readers_[0]->is_multichannel() && readers_[0]->has_extra_channels())
+            if (readers_[0]->is_multichannel() &&
+                readers_[0]->has_extra_channels())
                 ch->set_channel_list(readers_[0]->channel_list());
             else
                 ch->clear_channel_list();
@@ -580,25 +632,29 @@ void input_node_t::create_reader(int proxy_level, const boost::filesystem::path&
     {
         if (proxy_level == 1)
         {
-            image_seq_param_t* seq = dynamic_cast<image_seq_param_t*>(&param("proxy1"));
+            image_seq_param_t* seq =
+                dynamic_cast<image_seq_param_t*>(&param("proxy1"));
             assert(seq);
             seq->set_input_text(clips_[1].format_string());
         }
         else
         {
-            image_seq_param_t* seq = dynamic_cast<image_seq_param_t*>(&param("proxy2"));
+            image_seq_param_t* seq =
+                dynamic_cast<image_seq_param_t*>(&param("proxy2"));
             assert(seq);
             seq->set_input_text(clips_[2].format_string());
         }
     }
 }
 
-void input_node_t::file_picked(const boost::filesystem::path& p,
-                               int                            level,
-                               bool                           sequence,
-                               bool                           relative)
+void input_node_t::file_picked(
+    const boost::filesystem::path& p,
+    int                            level,
+    bool                           sequence,
+    bool                           relative)
 {
-    std::auto_ptr<undo::image_input_command_t> c(new undo::image_input_command_t(*this, level));
+    std::auto_ptr<undo::image_input_command_t> c(
+        new undo::image_input_command_t(*this, level));
 
     if (level != 0)
     {
@@ -640,12 +696,16 @@ node_t* create_gui_image_input_node()
     boost::filesystem::path p, dir;
 
     if (app().ui()->image_sequence_file_selector(p, sequence, relative))
-        return new input_node_t(p, sequence, app().document().composition().composition_dir());
+        return new input_node_t(
+            p, sequence, app().document().composition().composition_dir());
 
     return 0;
 }
 
-const node_metaclass_t* input_node_t::metaclass() const { return &image_input_node_metaclass(); }
+const node_metaclass_t* input_node_t::metaclass() const
+{
+    return &image_input_node_metaclass();
+}
 
 const node_metaclass_t& input_node_t::image_input_node_metaclass()
 {
@@ -654,22 +714,22 @@ const node_metaclass_t& input_node_t::image_input_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.image_input";
+        info.id = "image.builtin.image_input";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Image...";
-        info.create        = &create_image_input_node;
-        info.create_gui    = &create_gui_image_input_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Image...";
+        info.create = &create_image_input_node;
+        info.create_gui = &create_gui_image_input_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(input_node_t::image_input_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    input_node_t::image_input_node_metaclass());
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

@@ -25,8 +25,8 @@ namespace ramen
 namespace roto
 {
 toolbar_t::toolbar_t(image::roto_node_t& parent)
-: parent_(parent)
-, QWidget()
+  : parent_(parent)
+  , QWidget()
 {
     setMinimumSize(0, app().ui()->viewer_toolbar_height());
     setMaximumSize(QWIDGETSIZE_MAX, app().ui()->viewer_toolbar_height());
@@ -76,10 +76,12 @@ toolbar_t::toolbar_t(image::roto_node_t& parent)
     convert_->setCheckable(true);
     convert_->setChecked(false);
     convert_->setToolTip("Convert points to corner/curve points");
-    connect(convert_, SIGNAL(toggled(bool)), this, SLOT(pick_convert_tool(bool)));
+    connect(
+        convert_, SIGNAL(toggled(bool)), this, SLOT(pick_convert_tool(bool)));
     layout->addWidget(convert_);
 
-    QSpacerItem* s = new QSpacerItem(30, 30, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* s =
+        new QSpacerItem(30, 30, QSizePolicy::Expanding, QSizePolicy::Minimum);
     layout->addItem(s);
 
     setLayout(layout);
@@ -91,11 +93,11 @@ toolbar_t::toolbar_t(image::roto_node_t& parent)
     bgroup_->addButton(box_);
     bgroup_->addButton(null_);
 
-    select_tool_  = new select_tool_t(parent);
-    create_tool_  = new create_tool_t(parent);
-    rect_tool_    = new rect_tool_t(parent);
+    select_tool_ = new select_tool_t(parent);
+    create_tool_ = new create_tool_t(parent);
+    rect_tool_ = new rect_tool_t(parent);
     convert_tool_ = new convert_tool_t(parent);
-    null_tool_    = new null_tool_t(parent);
+    null_tool_ = new null_tool_t(parent);
 
     current_tool_ = select_tool_;
     current_tool_->begin_active();
@@ -162,5 +164,5 @@ void toolbar_t::pick_null_tool(bool b)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

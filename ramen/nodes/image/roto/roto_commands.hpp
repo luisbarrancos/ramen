@@ -17,13 +17,15 @@ namespace undo
 {
 class add_roto_command_t : public command_t
 {
-public:
-    add_roto_command_t(image::roto_node_t& node, std::auto_ptr<roto::shape_t> shape);
+  public:
+    add_roto_command_t(
+        image::roto_node_t&          node,
+        std::auto_ptr<roto::shape_t> shape);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     image::roto_node_t&          node_;
     roto::shape_t*               shape_;
     std::auto_ptr<roto::shape_t> storage_;
@@ -31,13 +33,13 @@ private:
 
 class delete_roto_command_t : public command_t
 {
-public:
+  public:
     delete_roto_command_t(image::roto_node_t& node, roto::shape_t* shape);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     image::roto_node_t&          node_;
     roto::shape_t *              shape_, *parent_;
     std::auto_ptr<roto::shape_t> storage_;
@@ -46,28 +48,29 @@ private:
 
 class set_roto_parent_command_t : public command_t
 {
-public:
-    set_roto_parent_command_t(image::roto_node_t& node,
-                              roto::shape_t*      shape,
-                              roto::shape_t*      new_parent);
+  public:
+    set_roto_parent_command_t(
+        image::roto_node_t& node,
+        roto::shape_t*      shape,
+        roto::shape_t*      new_parent);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     image::roto_node_t& node_;
     roto::shape_t *     shape_, *new_parent_, *old_parent_;
 };
 
 class modify_shape_command_t : public command_t
 {
-public:
+  public:
     modify_shape_command_t(image::roto_node_t& node, roto::shape_t* shape);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     void swap_shape_state();
 
     image::roto_node_t& node_;
@@ -79,18 +82,20 @@ private:
 
 class order_shape_command_t : public command_t
 {
-public:
-    order_shape_command_t(image::roto_node_t& node, roto::shape_t* shape, bool up);
+  public:
+    order_shape_command_t(
+        image::roto_node_t& node,
+        roto::shape_t*      shape,
+        bool                up);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     image::roto_node_t& node_;
     roto::shape_t*      shape_;
     bool                up_;
 };
 
-}  // undo
-}  // ramen
-
+}  // namespace undo
+}  // namespace ramen

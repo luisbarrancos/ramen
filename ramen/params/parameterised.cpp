@@ -15,16 +15,16 @@
 namespace ramen
 {
 parameterised_t::parameterised_t()
-: dont_persist_params_(false)
+  : dont_persist_params_(false)
 {
     params_.set_parent(this);
     parent_ = 0;
 }
 
 parameterised_t::parameterised_t(const parameterised_t& other)
-: params_(other.params_)
+  : params_(other.params_)
 {
-    name_                = other.name_;
+    name_ = other.name_;
     dont_persist_params_ = other.dont_persist_params_;
     params_.set_parent(this);
     parent_ = 0;
@@ -172,6 +172,9 @@ void parameterised_t::update_widgets()
     do_update_widgets();
 }
 
-parameterised_t* new_clone(const parameterised_t& other) { return other.clone(); }
+parameterised_t* new_clone(const parameterised_t& other)
+{
+    return other.clone();
+}
 
-}  // ramen
+}  // namespace ramen

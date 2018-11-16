@@ -9,5 +9,4 @@ namespace ramen
 class static_param_command_t;
 class static_param_reset_command_t;
 
-}  // namespace
-
+}  // namespace ramen

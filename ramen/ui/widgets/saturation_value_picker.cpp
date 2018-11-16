@@ -16,15 +16,15 @@ namespace ramen
 namespace ui
 {
 saturation_value_picker_t::saturation_value_picker_t(QWidget* parent)
-: QWidget(parent)
-, background_(sizeHint(), QImage::Format_RGB32)
+  : QWidget(parent)
+  , background_(sizeHint(), QImage::Format_RGB32)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setFocusPolicy(Qt::StrongFocus);
     valid_background_ = false;
-    hue_              = 0;
-    saturation_       = 0;
-    value_            = 0;
+    hue_ = 0;
+    saturation_ = 0;
+    value_ = 0;
 }
 
 QSize saturation_value_picker_t::sizeHint() const { return QSize(200, 200); }
@@ -33,7 +33,7 @@ void saturation_value_picker_t::set_hue(double h)
 {
     if (hue_ != h)
     {
-        hue_              = h;
+        hue_ = h;
         valid_background_ = false;
         update();
     }
@@ -44,7 +44,7 @@ void saturation_value_picker_t::set_saturation_value(double s, double v)
     if (v != value_ || s != saturation_)
     {
         saturation_ = s;
-        value_      = v;
+        value_ = v;
         saturation_value_changed(s, v);
         update();
     }
@@ -96,7 +96,10 @@ void saturation_value_picker_t::mouseMoveEvent(QMouseEvent* event)
     event->accept();
 }
 
-void saturation_value_picker_t::mouseReleaseEvent(QMouseEvent* event) { event->accept(); }
+void saturation_value_picker_t::mouseReleaseEvent(QMouseEvent* event)
+{
+    event->accept();
+}
 
 void saturation_value_picker_t::pick_sat_val(QMouseEvent* event)
 {
@@ -159,5 +162,5 @@ void saturation_value_picker_t::update_background()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

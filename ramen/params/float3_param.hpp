@@ -18,7 +18,7 @@ class RAMEN_API float3_param_t : public proportional_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit float3_param_t(const std::string& name);
 
     void set_default_value(const Imath::V3f& x);
@@ -26,16 +26,19 @@ public:
     poly_param_value_t value_at_frame(float frame) const override;
 
     void set_value(const Imath::V3f& x, change_reason reason = user_edited);
-    void set_value_at_frame(const Imath::V3f& x, float frame, change_reason reason = user_edited);
+    void set_value_at_frame(
+        const Imath::V3f& x,
+        float             frame,
+        change_reason     reason = user_edited);
 
     Imath::V3f derive(float time) const;
     Imath::V3f integrate(float time1, float time2) const;
 
-protected:
+  protected:
     float3_param_t(const float3_param_t& other);
     void operator=(const float3_param_t& other);
 
-private:
+  private:
     void private_init();
 
     param_t* do_clone() const override { return new float3_param_t(*this); }
@@ -54,7 +57,7 @@ private:
 
     QPointer<ui::param_spinbox_t> input0_, input1_, input2_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void value_changed(double value);
     void spinbox_pressed();
@@ -62,5 +65,4 @@ private Q_SLOTS:
     void spinbox_released();
 };
 
-}  // namespace
-
+}  // namespace ramen

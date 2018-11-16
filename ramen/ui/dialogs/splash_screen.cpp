@@ -33,8 +33,8 @@ public:
         var_t() {}
         explicit var_t( double v) : val( v) {}
 
-        void eval( const SeExprVarNode* node, SeVec3d& result) { result[0] = val;}
-        double val;
+        void eval( const SeExprVarNode* node, SeVec3d& result) { result[0] =
+val;} double val;
     };
 
     splash_expression_t( const std::string& expr) : SeExpression( expr) {}
@@ -53,24 +53,24 @@ public:
 };
 */
 
-}  // unnamed
+}  // namespace
 
 class splash_screen_widget_t : public QSplashScreen
 {
-public:
+  public:
     splash_screen_widget_t(const QPixmap& pixmap, Qt::WindowFlags f = 0)
-    : QSplashScreen(pixmap, f)
+      : QSplashScreen(pixmap, f)
     {
     }
 };
 
 splash_screen_t::splash_screen_t()
-: splash_(0)
+  : splash_(0)
 {
     if (render_splash())
     {
         QPixmap pixmap = QPixmap::fromImage(image_);
-        splash_        = new splash_screen_widget_t(pixmap);
+        splash_ = new splash_screen_widget_t(pixmap);
     }
     else
     {
@@ -106,9 +106,8 @@ void splash_screen_t::finish(QWidget* w)
 bool splash_screen_t::render_splash()
 {
     /*
-    boost::filesystem::path splash_sexpr_path = app().system().app_user_path() / "ui/splash.se";
-    if( do_render_splash( splash_sexpr_path))
-        return true;
+    boost::filesystem::path splash_sexpr_path = app().system().app_user_path() /
+    "ui/splash.se"; if( do_render_splash( splash_sexpr_path)) return true;
 
     splash_sexpr_path = app().system().app_bundle_path() / "ui/splash.se";
     if( do_render_splash( splash_sexpr_path))
@@ -166,7 +165,8 @@ bool splash_screen_t::do_render_splash(const boost::filesystem::path& p)
                 SeVec3d result = expr.evaluate();
                 image_.setPixel( i, j, qRgb( clamp( result[0], 0.0, 1.0) * 256,
                                              clamp( result[1], 0.0, 1.0) * 256,
-                                             clamp( result[2], 0.0, 1.0) * 256));
+                                             clamp( result[2], 0.0, 1.0) *
+    256));
             }
         }
 
@@ -180,5 +180,5 @@ bool splash_screen_t::do_render_splash(const boost::filesystem::path& p)
     return false;
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

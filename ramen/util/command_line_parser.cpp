@@ -14,7 +14,7 @@ namespace ramen
 namespace util
 {
 command_line_parser_t::command_line_parser_t(int cmd_argc, char** cmd_argv)
-: argv(0)
+  : argv(0)
 {
     assert(cmd_argc >= 1);
 
@@ -33,5 +33,5 @@ command_line_parser_t::~command_line_parser_t()
     free(reinterpret_cast<void*>(argv));
 }
 
-}  // util
-}  // ramen
+}  // namespace util
+}  // namespace ramen

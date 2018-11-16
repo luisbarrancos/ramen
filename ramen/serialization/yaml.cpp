@@ -23,9 +23,14 @@ void check_yaml_errors(const YAML::Emitter& out)
 #endif
 }
 
-const YAML::Node& get_node(const YAML::Node& node, const std::string& key) { return node[key]; }
+const YAML::Node& get_node(const YAML::Node& node, const std::string& key)
+{
+    return node[key];
+}
 
-const YAML::Node* get_optional_node(const YAML::Node& node, const std::string& key)
+const YAML::Node* get_optional_node(
+    const YAML::Node&  node,
+    const std::string& key)
 {
     return node.FindValue(key);
 }
@@ -54,4 +59,4 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const boost::filesystem::path& p)
     return out;
 }
 
-}  // ramen
+}  // namespace ramen

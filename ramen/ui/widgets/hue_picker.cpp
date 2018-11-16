@@ -14,13 +14,13 @@ namespace ramen
 namespace ui
 {
 hue_picker_t::hue_picker_t(QWidget* parent)
-: QWidget(parent)
-, background_(sizeHint(), QImage::Format_RGB32)
+  : QWidget(parent)
+  , background_(sizeHint(), QImage::Format_RGB32)
 {
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     setFocusPolicy(Qt::StrongFocus);
     valid_background_ = false;
-    hue_              = 0;
+    hue_ = 0;
 }
 
 QSize hue_picker_t::sizeHint() const { return QSize(15, 200); }
@@ -121,5 +121,5 @@ void hue_picker_t::update_background()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

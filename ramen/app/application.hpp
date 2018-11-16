@@ -42,7 +42,7 @@ namespace ramen
 */
 class RAMEN_API application_t : boost::noncopyable
 {
-public:
+  public:
     application_t(int argc, char** argv);
     ~application_t();
 
@@ -87,7 +87,7 @@ public:
     bool quitting() const { return quitting_; }
     void set_quitting(bool b) { quitting_ = b; }
 
-private:
+  private:
     // command line
     bool                   matches_option(char* arg, const char* opt) const;
     boost::optional<int>   parse_int(int num, int argc, char** argv) const;
@@ -125,7 +125,8 @@ private:
 
     core::auto_ptr_t<document_t> document_;
 
-    boost::optional<int> start_frame_, end_frame_, proxy_level_, subsample_, mb_extra_samples_;
+    boost::optional<int> start_frame_, end_frame_, proxy_level_, subsample_,
+        mb_extra_samples_;
 
     boost::optional<float> mb_shutter_factor_;
 
@@ -136,5 +137,4 @@ private:
 
 RAMEN_API application_t& app();
 
-}  // ramen
-
+}  // namespace ramen

@@ -33,13 +33,15 @@ enum
     circle_picked
 };
 
-circle_manipulator_t::circle_manipulator_t(float_param_t* radius, float2_param_t* center)
-: manipulator_t()
+circle_manipulator_t::circle_manipulator_t(
+    float_param_t*  radius,
+    float2_param_t* center)
+  : manipulator_t()
 {
     assert(radius);
 
-    center_   = center;
-    radius_   = radius;
+    center_ = center;
+    radius_ = radius;
     selected_ = no_pick;
 }
 
@@ -63,10 +65,15 @@ void circle_manipulator_t::do_draw_overlay(const ui::paint_event_t& event) const
 
     float radius = get_absolute_value<float>(*radius_);
     manipulators::draw_ellipse(
-        p, radius * event.aspect_ratio / node->aspect_ratio(), radius, color, event.pixel_scale);
+        p,
+        radius * event.aspect_ratio / node->aspect_ratio(),
+        radius,
+        color,
+        event.pixel_scale);
 }
 
-bool circle_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& event)
+bool circle_manipulator_t::do_mouse_press_event(
+    const ui::mouse_press_event_t& event)
 {
     const image_node_t* node = dynamic_cast<const image_node_t*>(parent());
     assert(node);
@@ -80,13 +87,14 @@ bool circle_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& e
     q.x = q.x * node->aspect_ratio() / event.aspect_ratio;
 
     float radius = get_absolute_value<float>(*radius_);
-    float d      = q.length();
+    float d = q.length();
 
     if (Imath::abs(d - radius) <= manipulators::pick_distance())
         selected_ = circle_picked;
     else
     {
-        if (center_ && manipulators::inside_pick_distance(event.wpos, p, event.pixel_scale))
+        if (center_ && manipulators::inside_pick_distance(
+                           event.wpos, p, event.pixel_scale))
             selected_ = center_picked;
     }
 
@@ -95,7 +103,8 @@ bool circle_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& e
     return selected_ != no_pick;
 }
 
-void circle_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& event)
+void circle_manipulator_t::do_mouse_drag_event(
+    const ui::mouse_drag_event_t& event)
 {
     assert(selected_ != no_pick);
 
@@ -128,7 +137,8 @@ void circle_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& eve
     event.view->update();
 }
 
-void circle_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t& event)
+void circle_manipulator_t::do_mouse_release_event(
+    const ui::mouse_release_event_t& event)
 {
     selected_ = no_pick;
 
@@ -149,8 +159,9 @@ Imath::V2f circle_manipulator_t::get_center() const
     const image_node_t* node = dynamic_cast<const image_node_t*>(parent());
     assert(node);
 
-    return Imath::V2f((node->format().max.x + node->format().min.x) * 0.5f,
-                      (node->format().max.y + node->format().min.y) * 0.5f);
+    return Imath::V2f(
+        (node->format().max.x + node->format().min.x) * 0.5f,
+        (node->format().max.y + node->format().min.y) * 0.5f);
 }
 
-}  // namespace
+}  // namespace ramen

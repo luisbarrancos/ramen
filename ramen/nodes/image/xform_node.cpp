@@ -11,18 +11,19 @@ namespace ramen
 namespace image
 {
 xform_node_t::xform_node_t()
-: base_warp_node_t()
+  : base_warp_node_t()
 {
 }
 
 xform_node_t::xform_node_t(const xform_node_t& other)
-: base_warp_node_t(other)
+  : base_warp_node_t(other)
 {
 }
 
-motion_blur_info_t::loop_data_t xform_node_t::motion_blur_loop_data(float frame,
-                                                                    int   extra_samples,
-                                                                    float shutter_factor) const
+motion_blur_info_t::loop_data_t xform_node_t::motion_blur_loop_data(
+    float frame,
+    int   extra_samples,
+    float shutter_factor) const
 {
     if (interacting())
         return motion_blur_info_t::loop_data_t(frame);
@@ -32,7 +33,7 @@ motion_blur_info_t::loop_data_t xform_node_t::motion_blur_loop_data(float frame,
     try
     {
         const param_t* p = &param("motion_blur");
-        mb               = dynamic_cast<const motion_blur_param_t*>(p);
+        mb = dynamic_cast<const motion_blur_param_t*>(p);
     }
     catch (std::exception& e)
     {
@@ -46,7 +47,8 @@ motion_blur_info_t::loop_data_t xform_node_t::motion_blur_loop_data(float frame,
 
 void xform_node_t::create_motion_blur_param()
 {
-    std::auto_ptr<motion_blur_param_t> mb(new motion_blur_param_t("Motion Blur"));
+    std::auto_ptr<motion_blur_param_t> mb(
+        new motion_blur_param_t("Motion Blur"));
     mb->set_id("motion_blur");
     mb->set_include_in_hash(false);
     add_param(mb);
@@ -55,7 +57,9 @@ void xform_node_t::create_motion_blur_param()
 void xform_node_t::do_calc_hash_str(const render::context_t& context)
 {
     motion_blur_info_t::loop_data_t d(motion_blur_loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     hash_generator() << (int) get_filter_type();
 
@@ -102,7 +106,7 @@ void xform_node_t::do_begin_interaction()
             try
             {
                 const param_t* p = &param("motion_blur");
-                mb               = dynamic_cast<const motion_blur_param_t*>(p);
+                mb = dynamic_cast<const motion_blur_param_t*>(p);
             }
             catch (std::exception& e)
             {
@@ -119,5 +123,5 @@ void xform_node_t::do_begin_interaction()
     }
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

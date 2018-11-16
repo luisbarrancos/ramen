@@ -33,21 +33,22 @@ namespace
 {
 struct rgradient_fun
 {
-    rgradient_fun(const Imath::V2f&     center,
-                  float                 r1,
-                  float                 r2,
-                  float                 gamma,
-                  const Imath::Color4f& c1,
-                  const Imath::Color4f& c2,
-                  const Imath::M33f&    m)
+    rgradient_fun(
+        const Imath::V2f&     center,
+        float                 r1,
+        float                 r2,
+        float                 gamma,
+        const Imath::Color4f& c1,
+        const Imath::Color4f& c2,
+        const Imath::M33f&    m)
     {
         center_ = Imath::V2f(center.x, center.y);
-        r1_     = r1;
-        r2_     = r2;
-        gamma_  = gamma;
-        c1_     = c1;
-        c2_     = c2;
-        m_      = m;
+        r1_ = r1;
+        r2_ = r2;
+        gamma_ = gamma;
+        c1_ = c1;
+        c2_ = c2;
+        m_ = m;
     }
 
     image::pixel_t operator()(const Imath::V2i& p) const
@@ -61,21 +62,21 @@ struct rgradient_fun
 
         if (dist < (r1_ * r1_))
         {
-            t  = 0;
+            t = 0;
             tg = 0;
         }
         else
         {
             if (dist > (r2_ * r2_))
             {
-                t  = 1;
+                t = 1;
                 tg = 1;
             }
             else
             {
                 dist = std::sqrt(dist);
-                t    = (dist - r1_) / (r2_ - r1_);
-                tg   = pow_h(t, gamma_);
+                t = (dist - r1_) / (r2_ - r1_);
+                tg = pow_h(t, gamma_);
             }
         }
 
@@ -86,7 +87,7 @@ struct rgradient_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     Imath::V2f     center_;
     float          r1_, r2_;
     Imath::Color4f c1_, c2_;
@@ -98,7 +99,7 @@ private:
 }  // namespace
 
 rgradient_node_t::rgradient_node_t()
-: generator_node_t()
+  : generator_node_t()
 {
     set_name("rgrad");
 }
@@ -171,8 +172,8 @@ void rgradient_node_t::do_create_params()
 
 void rgradient_node_t::do_create_manipulators()
 {
-    std::auto_ptr<point2_manipulator_t> m(
-        new point2_manipulator_t(dynamic_cast<float2_param_t*>(&param("center"))));
+    std::auto_ptr<point2_manipulator_t> m(new point2_manipulator_t(
+        dynamic_cast<float2_param_t*>(&param("center"))));
     add_manipulator(m);
 }
 
@@ -181,21 +182,26 @@ void rgradient_node_t::do_calc_bounds(const render::context_t& context)
     if (get_value<bool>(param("crop")))
     {
         Imath::V2f center = get_absolute_value<Imath::V2f>(param("center"));
-        center.x          = center.x * aspect_ratio();
+        center.x = center.x * aspect_ratio();
 
-        float r = std::max(get_absolute_value<float>(param("r0")),
-                           get_absolute_value<float>(param("r1")));
+        float r = std::max(
+            get_absolute_value<float>(param("r0")),
+            get_absolute_value<float>(param("r1")));
 
-        Imath::Box2f box(Imath::V2f(center.x - r, center.y - r),
-                         Imath::V2f(center.x + r, center.y + r));
+        Imath::Box2f box(
+            Imath::V2f(center.x - r, center.y - r),
+            Imath::V2f(center.x + r, center.y + r));
 
         Imath::V2f scale = get_value<Imath::V2f>(param("scale"));
         float      angle = get_value<float>(param("angle"));
 
-        Imath::M33f m = Imath::M33f().setTranslation(-center) * Imath::M33f().setScale(scale)
-                        * Imath::M33f().setRotation(angle * math::constants<float>::deg2rad())
-                        * Imath::M33f().setTranslation(center)
-                        * Imath::M33f().setScale(Imath::V2f(1.0f / aspect_ratio(), 1.0));
+        Imath::M33f m =
+            Imath::M33f().setTranslation(-center) *
+            Imath::M33f().setScale(scale) *
+            Imath::M33f().setRotation(
+                angle * math::constants<float>::deg2rad()) *
+            Imath::M33f().setTranslation(center) *
+            Imath::M33f().setScale(Imath::V2f(1.0f / aspect_ratio(), 1.0));
 
         box = ImathExt::transform(box, m);
         set_bounds(ImathExt::intersect(format(), ImathExt::roundBox(box)));
@@ -215,35 +221,38 @@ void rgradient_node_t::do_calc_defined(const render::context_t& context)
 void rgradient_node_t::do_process(const render::context_t& context)
 {
     Imath::V2f center = get_absolute_value<Imath::V2f>(param("center"));
-    center.x          = center.x * aspect_ratio() / context.subsample;
+    center.x = center.x * aspect_ratio() / context.subsample;
     center.y /= context.subsample;
 
     Imath::V2f scale = get_value<Imath::V2f>(param("scale"));
     float      angle = get_value<float>(param("angle"));
 
-    Imath::M33f m = Imath::M33f().setTranslation(-center) * Imath::M33f().setScale(scale)
-                    * Imath::M33f().setRotation(angle * math::constants<float>::deg2rad())
-                    * Imath::M33f().setTranslation(center)
-                    * Imath::M33f().setScale(Imath::V2f(1.0f / aspect_ratio(), 1.0));
+    Imath::M33f m =
+        Imath::M33f().setTranslation(-center) * Imath::M33f().setScale(scale) *
+        Imath::M33f().setRotation(angle * math::constants<float>::deg2rad()) *
+        Imath::M33f().setTranslation(center) *
+        Imath::M33f().setScale(Imath::V2f(1.0f / aspect_ratio(), 1.0));
 
     try
     {
         Imath::M33f   inv_m(m.inverse(true));
-        rgradient_fun grad(center,
-                           get_absolute_value<float>(param("r0")) / context.subsample,
-                           get_absolute_value<float>(param("r1")) / context.subsample,
-                           get_value<float>(param("gamma")),
-                           get_value<Imath::Color4f>(param("startcol")),
-                           get_value<Imath::Color4f>(param("endcol")),
-                           inv_m);
+        rgradient_fun grad(
+            center,
+            get_absolute_value<float>(param("r0")) / context.subsample,
+            get_absolute_value<float>(param("r1")) / context.subsample,
+            get_value<float>(param("gamma")),
+            get_value<Imath::Color4f>(param("startcol")),
+            get_value<Imath::Color4f>(param("endcol")),
+            inv_m);
 
         generate_pixels(grad);
     }
     catch (Iex::MathExc& e)
     {
         Imath::Color4f end_col = get_value<Imath::Color4f>(param("endcol"));
-        boost::gil::fill_pixels(image_view(),
-                                image::pixel_t(end_col.r, end_col.g, end_col.b, end_col.a));
+        boost::gil::fill_pixels(
+            image_view(),
+            image::pixel_t(end_col.r, end_col.g, end_col.b, end_col.a));
     }
 
     if (get_value<bool>(param("premult")))
@@ -253,7 +262,10 @@ void rgradient_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_rgradient_node() { return new rgradient_node_t(); }
 
-const node_metaclass_t* rgradient_node_t::metaclass() const { return &rgradient_node_metaclass(); }
+const node_metaclass_t* rgradient_node_t::metaclass() const
+{
+    return &rgradient_node_metaclass();
+}
 
 const node_metaclass_t& rgradient_node_t::rgradient_node_metaclass()
 {
@@ -262,21 +274,21 @@ const node_metaclass_t& rgradient_node_t::rgradient_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.rgradient";
+        info.id = "image.builtin.rgradient";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Radial Gradient";
-        info.create        = &create_rgradient_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Radial Gradient";
+        info.create = &create_rgradient_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(rgradient_node_t::rgradient_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    rgradient_node_t::rgradient_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

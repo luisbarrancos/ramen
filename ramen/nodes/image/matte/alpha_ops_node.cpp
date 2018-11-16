@@ -24,11 +24,12 @@ namespace
 {
 struct grad_magnitude_fun
 {
-    grad_magnitude_fun(const image::const_gray_image_view_t& src,
-                       const image::gray_image_view_t&       dst,
-                       float                                 thereshold)
-    : src_(src)
-    , dst_(dst)
+    grad_magnitude_fun(
+        const image::const_gray_image_view_t& src,
+        const image::gray_image_view_t&       dst,
+        float                                 thereshold)
+      : src_(src)
+      , dst_(dst)
     {
         thereshold_ = thereshold;
     }
@@ -39,8 +40,10 @@ struct grad_magnitude_fun
 
         for (int j = r.begin(); j < r.end(); ++j)
         {
-            image::const_gray_image_view_t::x_iterator top_it(src_.row_begin(std::max(j - 1, 0)));
-            image::const_gray_image_view_t::x_iterator center_it(src_.row_begin(j));
+            image::const_gray_image_view_t::x_iterator top_it(
+                src_.row_begin(std::max(j - 1, 0)));
+            image::const_gray_image_view_t::x_iterator center_it(
+                src_.row_begin(j));
             image::const_gray_image_view_t::x_iterator bottom_it(
                 src_.row_begin(std::min(j + 1, (int) src_.height() - 1)));
 
@@ -52,8 +55,8 @@ struct grad_magnitude_fun
                 int x0 = clamp(i - 1, 0, (int) src_.width() - 1);
                 int x1 = clamp(i + 1, 0, (int) src_.width() - 1);
 
-                float gx   = (center_it[x1][0] - center_it[x0][0]);
-                float gy   = (top_it[i][0] - bottom_it[i][0]);
+                float gx = (center_it[x1][0] - center_it[x0][0]);
+                float gy = (top_it[i][0] - bottom_it[i][0]);
                 float gmag = std::sqrt((double) (gx * gx) + (gy * gy)) / sqrt2;
 
                 if (gmag < thereshold_)
@@ -64,7 +67,7 @@ struct grad_magnitude_fun
         }
     }
 
-private:
+  private:
     const image::const_gray_image_view_t& src_;
     const image::gray_image_view_t&       dst_;
     float                                 thereshold_;
@@ -73,8 +76,8 @@ private:
 struct remap_alpha_fun
 {
     remap_alpha_fun(float lo, float hi)
-    : alpha_low_(lo)
-    , alpha_high_(hi)
+      : alpha_low_(lo)
+      , alpha_high_(hi)
     {
     }
 
@@ -95,14 +98,14 @@ struct remap_alpha_fun
         return image::gray_pixel_t(a);
     }
 
-private:
+  private:
     float alpha_low_, alpha_high_;
 };
 
-}  // unnamed
+}  // namespace
 
 alpha_ops_node_t::alpha_ops_node_t()
-: areaop_node_t()
+  : areaop_node_t()
 {
     set_name("alpha_ops");
 }
@@ -161,7 +164,8 @@ void alpha_ops_node_t::get_expand_radius(int& hradius, int& vradius) const
         vradius = 0;
     }
 
-    float shrinkx = get_value<float>(param("shrink")) * proxy_scale().x / aspect_ratio();
+    float shrinkx =
+        get_value<float>(param("shrink")) * proxy_scale().x / aspect_ratio();
     float shrinky = get_value<float>(param("shrink")) * proxy_scale().y;
 
     if (shrinkx > 0 || shrinky > 0)
@@ -170,7 +174,8 @@ void alpha_ops_node_t::get_expand_radius(int& hradius, int& vradius) const
         vradius += std::ceil((double) shrinky);
     }
 
-    float blurx = get_value<float>(param("blur")) * proxy_scale().x / aspect_ratio() / 2.0f;
+    float blurx = get_value<float>(param("blur")) * proxy_scale().x /
+                  aspect_ratio() / 2.0f;
     float blury = get_value<float>(param("blur")) * proxy_scale().y / 2.0f;
 
     if (blurx != 0 || blury != 0)
@@ -186,15 +191,18 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
 {
     using namespace boost::gil;
 
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
 
     // copy the rgb channels
-    copy_pixels(input_as<image_node_t>()->const_subimage_view(area), subimage_view(area));
+    copy_pixels(
+        input_as<image_node_t>()->const_subimage_view(area),
+        subimage_view(area));
 
-    int width  = defined().size().x + 1;
+    int width = defined().size().x + 1;
     int height = defined().size().y + 1;
 
     image::buffer_t img0(width, height, 1);
@@ -209,12 +217,15 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
     image::gray_image_view_t src(img0.gray_view());
     image::gray_image_view_t dst(img0.gray_view());
 
-    copy_pixels(nth_channel_view(input_as<image_node_t>()->const_subimage_view(area), 3),
-                boost::gil::subimage_view(src,
-                                          area.min.x - defined().min.x,
-                                          area.min.y - defined().min.y,
-                                          area.size().x + 1,
-                                          area.size().y + 1));
+    copy_pixels(
+        nth_channel_view(
+            input_as<image_node_t>()->const_subimage_view(area), 3),
+        boost::gil::subimage_view(
+            src,
+            area.min.x - defined().min.x,
+            area.min.y - defined().min.y,
+            area.size().x + 1,
+            area.size().y + 1));
 
     bool detect_edges = get_value<bool>(param("edetect"));
 
@@ -225,14 +236,16 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
 
         float theresh = get_value<float>(param("etheresh"));
 
-        tbb::parallel_for(tbb::blocked_range<int>(0, dst.height()),
-                          grad_magnitude_fun(src, dst, theresh),
-                          tbb::auto_partitioner());
+        tbb::parallel_for(
+            tbb::blocked_range<int>(0, dst.height()),
+            grad_magnitude_fun(src, dst, theresh),
+            tbb::auto_partitioner());
     }
 
-    float shrinkx
-        = get_value<float>(param("shrink")) / context.subsample * proxy_scale().x / aspect_ratio();
-    float shrinky = get_value<float>(param("shrink")) / context.subsample * proxy_scale().y;
+    float shrinkx = get_value<float>(param("shrink")) / context.subsample *
+                    proxy_scale().x / aspect_ratio();
+    float shrinky =
+        get_value<float>(param("shrink")) / context.subsample * proxy_scale().y;
 
     if (shrinkx != 0 || shrinky != 0)
     {
@@ -250,9 +263,10 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
         image::dilate(src, tmp.gray_view(), dst, shrinkx, shrinky);
     }
 
-    float blurx = get_value<float>(param("blur")) / (2 * context.subsample) * proxy_scale().x
-                  / aspect_ratio();
-    float blury = get_value<float>(param("blur")) / (2 * context.subsample) * proxy_scale().y;
+    float blurx = get_value<float>(param("blur")) / (2 * context.subsample) *
+                  proxy_scale().x / aspect_ratio();
+    float blury = get_value<float>(param("blur")) / (2 * context.subsample) *
+                  proxy_scale().y;
 
     if (blurx != 0 || blury != 0)
     {
@@ -274,10 +288,12 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
     }
 
     // alpha levels
-    boost::gil::tbb_transform_pixels(dst,
-                                     dst,
-                                     remap_alpha_fun(get_value<float>(param("alpha_low")),
-                                                     get_value<float>(param("alpha_high"))));
+    boost::gil::tbb_transform_pixels(
+        dst,
+        dst,
+        remap_alpha_fun(
+            get_value<float>(param("alpha_low")),
+            get_value<float>(param("alpha_high"))));
 
     // final
     copy_pixels(dst, nth_channel_view(image_view(), 3));
@@ -286,7 +302,10 @@ void alpha_ops_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_alpha_ops_node() { return new alpha_ops_node_t(); }
 
-const node_metaclass_t* alpha_ops_node_t::metaclass() const { return &alpha_ops_node_metaclass(); }
+const node_metaclass_t* alpha_ops_node_t::metaclass() const
+{
+    return &alpha_ops_node_metaclass();
+}
 
 const node_metaclass_t& alpha_ops_node_t::alpha_ops_node_metaclass()
 {
@@ -295,21 +314,21 @@ const node_metaclass_t& alpha_ops_node_t::alpha_ops_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.alpha_ops";
+        info.id = "image.builtin.alpha_ops";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Matte";
-        info.menu_item     = "Alpha Ops";
-        info.create        = &create_alpha_ops_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Matte";
+        info.menu_item = "Alpha Ops";
+        info.create = &create_alpha_ops_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(alpha_ops_node_t::alpha_ops_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    alpha_ops_node_t::alpha_ops_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -12,23 +12,23 @@ namespace ui
 {
 util::calculator_t spinbox_t::calc_;
 QChar              spinbox_t::thousand_sep_ = 0;
-QChar              spinbox_t::decimal_sep_  = 0;
+QChar              spinbox_t::decimal_sep_ = 0;
 
 spinbox_t::spinbox_t(QWidget* parent)
-: QLineEdit(parent)
+  : QLineEdit(parent)
 {
-    decimals_    = 5;
-    min_         = -std::numeric_limits<double>::max();
-    max_         = -min_;
-    step_        = 1;
+    decimals_ = 5;
+    min_ = -std::numeric_limits<double>::max();
+    max_ = -min_;
+    step_ = 1;
     track_mouse_ = true;
 
-    drag_       = false;
-    dragged_    = false;
+    drag_ = false;
+    dragged_ = false;
     first_drag_ = false;
 
     // create common actions
-    copy_  = new QAction("copy", this);
+    copy_ = new QAction("copy", this);
     paste_ = new QAction("paste", this);
 }
 
@@ -42,7 +42,8 @@ QSize spinbox_t::sizeHint() const
 
 void spinbox_t::setLineEditContents(double v)
 {
-    QString str = locale().toString(v, 'f', decimals()).remove(thousandSeparator());
+    QString str =
+        locale().toString(v, 'f', decimals()).remove(thousandSeparator());
 
     int index = str.indexOf(decimalSeparator());
     if (index != -1)
@@ -69,7 +70,7 @@ QChar spinbox_t::thousandSeparator() const
 {
     if (thousand_sep_ == 0)
     {
-        QString str   = locale().toString(1100.0, 'f');
+        QString str = locale().toString(1100.0, 'f');
         thousand_sep_ = str[1];
     }
 
@@ -80,12 +81,12 @@ QChar spinbox_t::decimalSeparator() const
 {
     if (decimal_sep_ == 0)
     {
-        QString str  = locale().toString(0.1, 'f');
+        QString str = locale().toString(0.1, 'f');
         decimal_sep_ = str[1];
     }
 
     return decimal_sep_;
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

@@ -13,8 +13,7 @@ namespace anim
 {
 namespace
 {
-template<class T>
-T clamp(T x, T lo, T hi)
+template <class T> T clamp(T x, T lo, T hi)
 {
     if (x < lo)
         return lo;
@@ -25,26 +24,26 @@ T clamp(T x, T lo, T hi)
     return x;
 }
 
-}  // unnamed
+}  // namespace
 
 float_key_t::float_key_t()
-: keyframe_t()
-, v0_(0)
-, v1_(0)
-, value_(0)
+  : keyframe_t()
+  , v0_(0)
+  , v1_(0)
+  , value_(0)
 {
     auto_v0_ = auto_v1_ = tangent_smooth;
-    tangent_cont_       = true;
+    tangent_cont_ = true;
 }
 
 float_key_t::float_key_t(time_type time, value_type value)
-: keyframe_t(time)
-, value_(value)
-, v0_(0)
-, v1_(0)
+  : keyframe_t(time)
+  , value_(value)
+  , v0_(0)
+  , v1_(0)
 {
     auto_v0_ = auto_v1_ = tangent_smooth;
-    tangent_cont_       = true;
+    tangent_cont_ = true;
 }
 
 void float_key_t::swap(float_key_t& other)
@@ -121,13 +120,17 @@ void float_key_t::set_v1_tangent(value_type slope)
     }
 }
 
-void float_key_t::calc_tangents(const float_key_t* prev, const float_key_t* next)
+void float_key_t::calc_tangents(
+    const float_key_t* prev,
+    const float_key_t* next)
 {
-    if (v0_auto_tangent() == tangent_fixed && v1_auto_tangent() == tangent_fixed)
+    if (v0_auto_tangent() == tangent_fixed &&
+        v1_auto_tangent() == tangent_fixed)
         return;
 
     // left
-    if (!prev || (v0_auto_tangent() == tangent_step) || (v0_auto_tangent() == tangent_flat))
+    if (!prev || (v0_auto_tangent() == tangent_step) ||
+        (v0_auto_tangent() == tangent_flat))
         set_v0(0);
     else
     {
@@ -140,13 +143,16 @@ void float_key_t::calc_tangents(const float_key_t* prev, const float_key_t* next
                 if (!next)
                     set_v0(0);
                 else
-                    set_v0((next->value() - prev->value()) / (next->time() - prev->time()));
+                    set_v0(
+                        (next->value() - prev->value()) /
+                        (next->time() - prev->time()));
             }
         }
     }
 
     // right
-    if (!next || (v1_auto_tangent() == tangent_step) || (v1_auto_tangent() == tangent_flat))
+    if (!next || (v1_auto_tangent() == tangent_step) ||
+        (v1_auto_tangent() == tangent_flat))
         set_v1(0);
     else
     {
@@ -159,7 +165,9 @@ void float_key_t::calc_tangents(const float_key_t* prev, const float_key_t* next
                 if (!prev)
                     set_v1(0);
                 else
-                    set_v1((next->value() - prev->value()) / (next->time() - prev->time()));
+                    set_v1(
+                        (next->value() - prev->value()) /
+                        (next->time() - prev->time()));
             }
         }
     }
@@ -177,10 +185,10 @@ void float_key_t::calc_cubic_coefficients(const float_key_t& next)
     else
     {
         float time_span = next.time() - time();
-        coeffs_[0]
-            = (2 * value()) - (2 * next.value()) + (time_span * v1()) + (time_span * next.v0());
-        coeffs_[1] = -(3 * value()) + (3 * next.value()) - (2 * time_span * v1())
-                     - (time_span * next.v0());
+        coeffs_[0] = (2 * value()) - (2 * next.value()) + (time_span * v1()) +
+                     (time_span * next.v0());
+        coeffs_[1] = -(3 * value()) + (3 * next.value()) -
+                     (2 * time_span * v1()) - (time_span * next.v0());
         coeffs_[2] = time_span * v1();
         coeffs_[3] = value();
     }
@@ -188,7 +196,8 @@ void float_key_t::calc_cubic_coefficients(const float_key_t& next)
 
 float_key_t::value_type float_key_t::evaluate_cubic(time_type t) const
 {
-    return ((((coeffs_[0] * t) + coeffs_[1]) * t + coeffs_[2]) * t) + coeffs_[3];
+    return ((((coeffs_[0] * t) + coeffs_[1]) * t + coeffs_[2]) * t) +
+           coeffs_[3];
 }
 
 float_key_t::value_type float_key_t::evaluate_derivative(time_type t) const
@@ -201,8 +210,8 @@ float_key_t::value_type float_key_t::min_slope() { return -max_slope(); }
 
 void float_key_t::str(std::stringstream& s) const
 {
-    s << time() << "," << value() << "," << v0() << "," << v1() << "," << v0_auto_tangent() << ","
-      << v1_auto_tangent();
+    s << time() << "," << value() << "," << v0() << "," << v1() << ","
+      << v0_auto_tangent() << "," << v1_auto_tangent();
 }
 
 void float_key_t::read(const serialization::yaml_node_t& in)
@@ -245,5 +254,5 @@ void float_key_t::write(serialization::yaml_oarchive_t& out) const
     out.end_seq();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

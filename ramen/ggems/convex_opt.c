@@ -16,47 +16,47 @@
 
 #include <ramen/ggems/convex_opt.h>
 
-#define ConvexCompare(delta)                                                                       \
-    ((delta[0] > 0) ? -1 :            /* x coord diff, second pt > first pt */                     \
-         (delta[0] < 0) ? 1 :         /* x coord diff, second pt < first pt */                     \
-             (delta[1] > 0) ? -1 :    /* x coord same, second pt > first pt */                     \
-                 (delta[1] < 0) ? 1 : /* x coord same, second pt > first pt */                     \
+#define ConvexCompare(delta)                                                   \
+    ((delta[0] > 0) ? -1 :            /* x coord diff, second pt > first pt */ \
+         (delta[0] < 0) ? 1 :         /* x coord diff, second pt < first pt */ \
+             (delta[1] > 0) ? -1 :    /* x coord same, second pt > first pt */ \
+                 (delta[1] < 0) ? 1 : /* x coord same, second pt > first pt */ \
                      0)               /* second pt equals first point */
 
-#define ConvexGetPointDelta(delta, pprev, pcur)                                                    \
-    /* Given a previous point 'pprev', read a new point into 'pcur' */                             \
-    /* and return delta in 'delta'.				    */                                                      \
-    pcur     = pVert[iread++];                                                                     \
-    delta[0] = pcur[0] - pprev[0];                                                                 \
+#define ConvexGetPointDelta(delta, pprev, pcur)                        \
+    /* Given a previous point 'pprev', read a new point into 'pcur' */ \
+    /* and return delta in 'delta'.				    */                          \
+    pcur = pVert[iread++];                                             \
+    delta[0] = pcur[0] - pprev[0];                                     \
     delta[1] = pcur[1] - pprev[1];
 
 #define ConvexCross(p, q) p[0] * q[1] - p[1] * q[0];
 
-#define ConvexCheckTriple                                                                          \
-    if ((thisDir = ConvexCompare(dcur)) == -curDir)                                                \
-    {                                                                                              \
-        ++dirChanges;                                                                              \
-        /* The following line will optimize for polygons that are  */                              \
-        /* not convex because of classification condition 4,	     */                               \
-        /* otherwise, this will only slow down the classification. */                              \
-        /* if ( dirChanges > 2 ) return NotConvex;		     */                                        \
-    }                                                                                              \
-    curDir = thisDir;                                                                              \
-    cross  = ConvexCross(dprev, dcur);                                                             \
-    if (cross > 0)                                                                                 \
-    {                                                                                              \
-        if (angleSign == -1)                                                                       \
-            return NotConvex;                                                                      \
-        angleSign = 1;                                                                             \
-    }                                                                                              \
-    else if (cross < 0)                                                                            \
-    {                                                                                              \
-        if (angleSign == 1)                                                                        \
-            return NotConvex;                                                                      \
-        angleSign = -1;                                                                            \
-    }                                                                                              \
-    pSecond  = pThird;  /* Remember ptr to current point. */                                       \
-    dprev[0] = dcur[0]; /* Remember current delta.	  */                                            \
+#define ConvexCheckTriple                                             \
+    if ((thisDir = ConvexCompare(dcur)) == -curDir)                   \
+    {                                                                 \
+        ++dirChanges;                                                 \
+        /* The following line will optimize for polygons that are  */ \
+        /* not convex because of classification condition 4,	     */  \
+        /* otherwise, this will only slow down the classification. */ \
+        /* if ( dirChanges > 2 ) return NotConvex;		     */           \
+    }                                                                 \
+    curDir = thisDir;                                                 \
+    cross = ConvexCross(dprev, dcur);                                 \
+    if (cross > 0)                                                    \
+    {                                                                 \
+        if (angleSign == -1)                                          \
+            return NotConvex;                                         \
+        angleSign = 1;                                                \
+    }                                                                 \
+    else if (cross < 0)                                               \
+    {                                                                 \
+        if (angleSign == 1)                                           \
+            return NotConvex;                                         \
+        angleSign = -1;                                               \
+    }                                                                 \
+    pSecond = pThird;   /* Remember ptr to current point. */          \
+    dprev[0] = dcur[0]; /* Remember current delta.	  */               \
     dprev[1] = dcur[1];
 
 PolygonClass classifyPolygon2(int nvert, float pVert[][2])
@@ -101,7 +101,7 @@ PolygonClass classifyPolygon2(int nvert, float pVert[][2])
     }
 
     /* Must check for direction changes from last vertex back to first */
-    pThird  = pVert[0]; /* Prepare for 'ConvexCheckTriple' */
+    pThird = pVert[0]; /* Prepare for 'ConvexCheckTriple' */
     dcur[0] = pThird[0] - pSecond[0];
     dcur[1] = pThird[1] - pSecond[1];
     if (ConvexCompare(dcur))

@@ -11,9 +11,9 @@ namespace ramen
 namespace ui
 {
 group_box_t::group_box_t(QWidget* parent)
-: QGroupBox(parent)
-, collapsed_(false)
-, clicked_(false)
+  : QGroupBox(parent)
+  , collapsed_(false)
+  , clicked_(false)
 {
 }
 
@@ -46,5 +46,5 @@ void group_box_t::collapse(bool b)
         setFixedSize(width(), sizeHint().height());
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

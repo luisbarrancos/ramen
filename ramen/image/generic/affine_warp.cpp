@@ -12,17 +12,18 @@ namespace image
 {
 namespace generic
 {
-void affine_warp_nearest(const Imath::Box2i&       src_area,
-                         const const_image_view_t& src,
-                         const Imath::Box2i&       dst_area,
-                         const image_view_t&       dst,
-                         const matrix3_t&          xform,
-                         const matrix3_t&          inv_xform)
+void affine_warp_nearest(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const matrix3_t&          xform,
+    const matrix3_t&          inv_xform)
 {
     point_sampler_t s(src_area, src);
     affine_warp<point_sampler_t>(s, src_area, dst_area, dst, xform, inv_xform);
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

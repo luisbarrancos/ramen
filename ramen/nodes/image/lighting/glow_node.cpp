@@ -26,7 +26,7 @@ namespace
 struct thereshold_fun
 {
     thereshold_fun(float th)
-    : th_(th)
+      : th_(th)
     {
     }
 
@@ -40,18 +40,19 @@ struct thereshold_fun
         return image::pixel_t(0, 0, 0, 0);
     }
 
-private:
+  private:
     float th_;
 };
 
 struct thereshold_and_mask_fun
 {
     thereshold_and_mask_fun(float th)
-    : th_(th)
+      : th_(th)
     {
     }
 
-    image::pixel_t operator()(const image::pixel_t& p, const image::pixel_t& m) const
+    image::pixel_t operator()(const image::pixel_t& p, const image::pixel_t& m)
+        const
     {
         float r = boost::gil::get_color(p, boost::gil::red_t());
         float g = boost::gil::get_color(p, boost::gil::green_t());
@@ -67,14 +68,14 @@ struct thereshold_and_mask_fun
         return image::pixel_t(0, 0, 0, 0);
     }
 
-private:
+  private:
     float th_;
 };
 
 struct set_intensity_fun
 {
     set_intensity_fun(const Imath::Color4f& intensity)
-    : intensity_(intensity)
+      : intensity_(intensity)
     {
     }
 
@@ -90,18 +91,20 @@ struct set_intensity_fun
         return image::pixel_t(r, g, b, a);
     }
 
-private:
+  private:
     Imath::Color4f intensity_;
 };
 
-}  // unnamed
+}  // namespace
 
 glow_node_t::glow_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("glow");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
-    add_input_plug("mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
     add_output_plug();
 }
 
@@ -152,7 +155,7 @@ void glow_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> pop(new popup_param_t("Layer Mode"));
     pop->set_id("layer_mode");
-    pop->menu_items() = std::vector<std::string>({ "Add", "Screen" });
+    pop->menu_items() = std::vector<std::string>({"Add", "Screen"});
     add_param(pop);
 
     p.reset(new float_param_t("Background"));
@@ -245,9 +248,10 @@ void glow_node_t::do_process(const render::context_t& context)
 
     Imath::V3f channel_fact = get_value<Imath::V3f>(param("channels"));
 
-    Imath::V2f r_radius = get_value<Imath::V2f>(param("radius")) / context.subsample;
-    r_radius.x          = r_radius.x / aspect_ratio() * proxy_scale().x;
-    r_radius.y          = r_radius.y / aspect_ratio() * proxy_scale().y;
+    Imath::V2f r_radius =
+        get_value<Imath::V2f>(param("radius")) / context.subsample;
+    r_radius.x = r_radius.x / aspect_ratio() * proxy_scale().x;
+    r_radius.y = r_radius.y / aspect_ratio() * proxy_scale().y;
 
     Imath::V2f g_radius = r_radius * channel_fact.y;
     Imath::V2f b_radius = r_radius * channel_fact.z;
@@ -258,7 +262,8 @@ void glow_node_t::do_process(const render::context_t& context)
     float bg = get_value<float>(param("bg"));
 
     if (bg != 0)
-        image::mul_image_scalar(in->const_subimage_view(area), bg, subimage_view(area));
+        image::mul_image_scalar(
+            in->const_subimage_view(area), bg, subimage_view(area));
 
     if (get_value<float>(param("intensity")) == 0)
         return;
@@ -283,15 +288,16 @@ void glow_node_t::do_process(const render::context_t& context)
     }
     else
     {
-        boost::gil::tbb_transform_pixels(in->const_subimage_view(area),
-                                         src.rgba_subimage_view(area),
-                                         thereshold_fun(get_value<float>(param("theresh"))));
+        boost::gil::tbb_transform_pixels(
+            in->const_subimage_view(area),
+            src.rgba_subimage_view(area),
+            thereshold_fun(get_value<float>(param("theresh"))));
     }
 
     image::buffer_t blurred(defined(), 4);
     boost::gil::fill_pixels(blurred.rgba_view(), image::pixel_t(0, 0, 0, 0));
 
-    image::buffer_t          buffer(image_view().height(), image_view().width(), 1);
+    image::buffer_t buffer(image_view().height(), image_view().width(), 1);
     image::gray_image_view_t tmp = buffer.gray_view();
 
     boost::gil::fill_pixels(tmp, 0.0f);
@@ -309,24 +315,28 @@ void glow_node_t::do_process(const render::context_t& context)
         blurred.rgba_view(), blurred.rgba_view(), set_intensity_fun(intensity));
 
     if (get_value<int>(param("layer_mode")))
-        image::composite_screen(const_image_view(), blurred.rgba_view(), image_view(), 1.0f);
+        image::composite_screen(
+            const_image_view(), blurred.rgba_view(), image_view(), 1.0f);
     else
-        image::composite_add(const_image_view(), blurred.rgba_view(), image_view(), 1.0f);
+        image::composite_add(
+            const_image_view(), blurred.rgba_view(), image_view(), 1.0f);
 }
 
-void glow_node_t::blur_channel(const image::const_image_view_t&  src,
-                               int                               ch,
-                               const boost::gil::gray32f_view_t& tmp,
-                               const Imath::V2f&                 radius,
-                               int                               iters,
-                               const image::image_view_t&        dst)
+void glow_node_t::blur_channel(
+    const image::const_image_view_t&  src,
+    int                               ch,
+    const boost::gil::gray32f_view_t& tmp,
+    const Imath::V2f&                 radius,
+    int                               iters,
+    const image::image_view_t&        dst)
 {
-    image::box_blur_channel(boost::gil::nth_channel_view(src, ch),
-                            tmp,
-                            boost::gil::nth_channel_view(dst, ch),
-                            radius.x / (float) iters,
-                            radius.y / (float) iters,
-                            iters);
+    image::box_blur_channel(
+        boost::gil::nth_channel_view(src, ch),
+        tmp,
+        boost::gil::nth_channel_view(dst, ch),
+        radius.x / (float) iters,
+        radius.y / (float) iters,
+        iters);
 }
 
 void glow_node_t::get_expand_radius(int& hradius, int& vradius) const
@@ -334,8 +344,8 @@ void glow_node_t::get_expand_radius(int& hradius, int& vradius) const
     Imath::V3f channel_fact = get_value<Imath::V3f>(param("channels"));
 
     Imath::V2f r_radius = get_value<Imath::V2f>(param("radius"));
-    r_radius.x          = r_radius.x / aspect_ratio() * proxy_scale().x;
-    r_radius.y          = r_radius.y / aspect_ratio() * proxy_scale().y;
+    r_radius.x = r_radius.x / aspect_ratio() * proxy_scale().x;
+    r_radius.y = r_radius.y / aspect_ratio() * proxy_scale().y;
 
     Imath::V2f g_radius = r_radius * channel_fact.y;
     Imath::V2f b_radius = r_radius * channel_fact.z;
@@ -348,7 +358,10 @@ void glow_node_t::get_expand_radius(int& hradius, int& vradius) const
 // factory
 node_t* create_glow_node() { return new glow_node_t(); }
 
-const node_metaclass_t* glow_node_t::metaclass() const { return &glow_node_metaclass(); }
+const node_metaclass_t* glow_node_t::metaclass() const
+{
+    return &glow_node_metaclass();
+}
 
 const node_metaclass_t& glow_node_t::glow_node_metaclass()
 {
@@ -357,21 +370,21 @@ const node_metaclass_t& glow_node_t::glow_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.glow";
+        info.id = "image.builtin.glow";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Lighting";
-        info.menu_item     = "Glow";
-        info.create        = &create_glow_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Lighting";
+        info.menu_item = "Glow";
+        info.create = &create_glow_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(glow_node_t::glow_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    glow_node_t::glow_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

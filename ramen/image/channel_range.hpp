@@ -10,7 +10,7 @@ namespace image
 {
 class channel_range_t
 {
-public:
+  public:
     channel_range_t() {}
 
     float operator()(float x) const;
@@ -20,6 +20,5 @@ public:
     float soft_lo, soft_hi;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

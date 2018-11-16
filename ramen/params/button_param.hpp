@@ -16,14 +16,14 @@ class RAMEN_API button_param_t : public param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit button_param_t(const std::string& name);
 
-protected:
+  protected:
     button_param_t(const button_param_t& other);
     void operator=(const button_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new button_param_t(*this); }
 
     void do_enable_widgets(bool e) override;
@@ -32,10 +32,9 @@ private:
 
     QPointer<QPushButton> button_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void button_pressed();
 };
 
-}  // namespace
-
+}  // namespace ramen

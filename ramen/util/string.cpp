@@ -39,7 +39,7 @@ std::string get_number(const std::string& str)
     return std::string(str, n + 1, str.length());
 }
 
-}  // unnamed
+}  // namespace
 
 bool is_string_valid_identifier(const std::string& str)
 {
@@ -61,10 +61,10 @@ void increment_string_number(std::string& str)
     {
         std::string base(str, 0, str.length() - num_str.length());
         int         num = boost::lexical_cast<int>(num_str);
-        num_str         = boost::lexical_cast<std::string>(++num);
-        str             = base + num_str;
+        num_str = boost::lexical_cast<std::string>(++num);
+        str = base + num_str;
     }
 }
 
-}  // util
-}  // ramen
+}  // namespace util
+}  // namespace ramen

@@ -22,12 +22,14 @@ namespace
 {
 class comp_settings_command_t : public undo::command_t
 {
-public:
-    comp_settings_command_t(const image::format_t& new_format, int new_frame_rate)
-    : undo::command_t("Comp Settings Changed")
+  public:
+    comp_settings_command_t(
+        const image::format_t& new_format,
+        int                    new_frame_rate)
+      : undo::command_t("Comp Settings Changed")
     {
-        old_format_     = app().document().composition().default_format();
-        new_format_     = new_format;
+        old_format_ = app().document().composition().default_format();
+        new_format_ = new_format;
         old_frame_rate_ = app().document().composition().frame_rate();
         new_frame_rate_ = new_frame_rate;
     }
@@ -46,12 +48,12 @@ public:
         undo::command_t::redo();
     }
 
-private:
+  private:
     image::format_t old_format_, new_format_;
     int             old_frame_rate_, new_frame_rate_;
 };
 
-}  // unnamed
+}  // namespace
 
 composition_settings_dialog_t& composition_settings_dialog_t::instance()
 {
@@ -60,7 +62,7 @@ composition_settings_dialog_t& composition_settings_dialog_t::instance()
 }
 
 composition_settings_dialog_t::composition_settings_dialog_t()
-: QDialog(app().ui()->main_window())
+  : QDialog(app().ui()->main_window())
 {
     setWindowTitle("Composition Settings");
     ui_.setupUi(this);
@@ -74,11 +76,13 @@ void composition_settings_dialog_t::exec_dialog()
 
     if (exec() == QDialog::Accepted)
     {
-        if (ui_.format_->value() != app().document().composition().default_format()
-            || ui_.rate_->value() != app().document().composition().frame_rate())
+        if (ui_.format_->value() !=
+                app().document().composition().default_format() ||
+            ui_.rate_->value() != app().document().composition().frame_rate())
         {
             std::auto_ptr<comp_settings_command_t> cmd(
-                new comp_settings_command_t(ui_.format_->value(), ui_.rate_->value()));
+                new comp_settings_command_t(
+                    ui_.format_->value(), ui_.rate_->value()));
             cmd->redo();
             app().document().undo_stack().push_back(cmd);
             app().ui()->update();
@@ -86,5 +90,5 @@ void composition_settings_dialog_t::exec_dialog()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

@@ -27,15 +27,15 @@
 namespace ramen
 {
 combo_group_param_t::combo_group_param_t(const std::string& name)
-: composite_param_t(name)
+  : composite_param_t(name)
 {
     set_default_value(0);
 }
 
 combo_group_param_t::combo_group_param_t(const combo_group_param_t& other)
-: composite_param_t(other)
+  : composite_param_t(other)
 {
-    menu_  = 0;
+    menu_ = 0;
     stack_ = 0;
 }
 
@@ -52,7 +52,8 @@ void combo_group_param_t::set_value(int x, change_reason reason)
 
 std::auto_ptr<undo::command_t> combo_group_param_t::do_create_command()
 {
-    return std::auto_ptr<undo::command_t>(new static_param_command_t(*param_set(), id()));
+    return std::auto_ptr<undo::command_t>(
+        new static_param_command_t(*param_set(), id()));
 }
 
 void combo_group_param_t::do_add_to_hash(hash::generator_t& hash_gen) const
@@ -122,7 +123,7 @@ QWidget* combo_group_param_t::do_create_widgets()
     layout->setSizeConstraint(QLayout::SetFixedSize);
 
     QWidget* selector = new QWidget();
-    QLabel*  label    = new QLabel(selector);
+    QLabel*  label = new QLabel(selector);
 
     menu_ = new QComboBox(selector);
     menu_->setFocusPolicy(Qt::NoFocus);
@@ -155,7 +156,8 @@ QWidget* combo_group_param_t::do_create_widgets()
     menu_->setCurrentIndex(get_value<int>(*this));
     stack_->setCurrentIndex(get_value<int>(*this));
     stack_->setEnabled(enabled());
-    connect(menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
+    connect(
+        menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
 
     selector->setMinimumSize(app().ui()->inspector().width(), s.height());
     selector->setMaximumSize(app().ui()->inspector().width(), s.height());
@@ -179,4 +181,4 @@ void combo_group_param_t::item_picked(int index)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

@@ -21,7 +21,7 @@ class splash_screen_widget_t;
 
 class splash_screen_t : boost::noncopyable
 {
-public:
+  public:
     ~splash_screen_t();
 
     int image_width() const { return 550; }
@@ -32,7 +32,7 @@ public:
 
     void finish(QWidget* w);
 
-private:
+  private:
     friend class ramen::application_t;
 
     splash_screen_t();
@@ -44,6 +44,5 @@ private:
     QImage                  image_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -22,13 +22,13 @@ class animated_param_t;
 
 class animated_param_command_t : public undo::command_t
 {
-public:
+  public:
     animated_param_command_t(param_set_t& pset, const std::string& id);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     void swap_curves();
 
     param_set_t& pset_;
@@ -38,5 +38,4 @@ private:
     std::vector<anim::float_curve_t> old_;
 };
 
-}  // namespace
-
+}  // namespace ramen

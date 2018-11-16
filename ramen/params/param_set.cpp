@@ -40,9 +40,9 @@ namespace ramen
 {
 class param_set_command_t : public undo::command_t
 {
-public:
+  public:
     param_set_command_t(const std::string& name)
-    : command_t(name)
+      : command_t(name)
     {
     }
 
@@ -51,7 +51,8 @@ public:
         if (!commands_.empty())
             return false;
 
-        for (boost::ptr_vector<undo::command_t>::const_iterator it(more_commands_.begin());
+        for (boost::ptr_vector<undo::command_t>::const_iterator it(
+                 more_commands_.begin());
              it != more_commands_.end();
              ++it)
         {
@@ -62,21 +63,32 @@ public:
         return true;
     }
 
-    bool has_command_for_param(param_t* p) { return commands_.find(p) != commands_.end(); }
+    bool has_command_for_param(param_t* p)
+    {
+        return commands_.find(p) != commands_.end();
+    }
 
-    void add_command(param_t* p, std::auto_ptr<undo::command_t> c) { commands_.insert(p, c); }
-    void add_command(std::auto_ptr<undo::command_t> c) { more_commands_.push_back(c); }
+    void add_command(param_t* p, std::auto_ptr<undo::command_t> c)
+    {
+        commands_.insert(p, c);
+    }
+    void add_command(std::auto_ptr<undo::command_t> c)
+    {
+        more_commands_.push_back(c);
+    }
 
     void undo() override
     {
         param_set_t* pset = commands_.begin()->first->param_set();
 
-        for (boost::ptr_map<param_t*, undo::command_t>::iterator it(commands_.begin());
+        for (boost::ptr_map<param_t*, undo::command_t>::iterator it(
+                 commands_.begin());
              it != commands_.end();
              ++it)
             it->second->undo();
 
-        for (boost::ptr_vector<undo::command_t>::iterator it(more_commands_.begin());
+        for (boost::ptr_vector<undo::command_t>::iterator it(
+                 more_commands_.begin());
              it != more_commands_.end();
              ++it)
             it->undo();
@@ -89,12 +101,14 @@ public:
     {
         param_set_t* pset = commands_.begin()->first->param_set();
 
-        for (boost::ptr_map<param_t*, undo::command_t>::iterator it(commands_.begin());
+        for (boost::ptr_map<param_t*, undo::command_t>::iterator it(
+                 commands_.begin());
              it != commands_.end();
              ++it)
             it->second->redo();
 
-        for (boost::ptr_vector<undo::command_t>::iterator it(more_commands_.begin());
+        for (boost::ptr_vector<undo::command_t>::iterator it(
+                 more_commands_.begin());
              it != more_commands_.end();
              ++it)
             it->redo();
@@ -103,18 +117,18 @@ public:
         undo::command_t::redo();
     }
 
-private:
+  private:
     boost::ptr_map<param_t*, undo::command_t> commands_;
     boost::ptr_vector<undo::command_t>        more_commands_;
 };
 
 param_set_t::param_set_t(parameterised_t* p)
-: parent_(p)
+  : parent_(p)
 {
 }
 
 param_set_t::param_set_t(const param_set_t& other)
-: params_(other.params_)
+  : params_(other.params_)
 {
     parent_ = 0;
 
@@ -173,7 +187,10 @@ void param_set_t::notify_parent()
         parent()->param_edit_finished();
 }
 
-void param_set_t::begin_edit() { command_.reset(new param_set_command_t("Params Changed")); }
+void param_set_t::begin_edit()
+{
+    command_.reset(new param_set_command_t("Params Changed"));
+}
 
 void param_set_t::end_edit(bool notify)
 {
@@ -191,8 +208,11 @@ void param_set_t::end_edit(bool notify)
 
 bool param_set_t::editing() const { return command_.get(); }
 
-const param_set_command_t* param_set_t::command() const { return command_.get(); }
-param_set_command_t*       param_set_t::command() { return command_.get(); }
+const param_set_command_t* param_set_t::command() const
+{
+    return command_.get();
+}
+param_set_command_t* param_set_t::command() { return command_.get(); }
 
 bool param_set_t::is_command_empty() const
 {
@@ -259,12 +279,13 @@ void param_set_t::read_param(const serialization::yaml_node_t& node)
     }
     catch (YAML::Exception& e)
     {
-        node.error_stream() << "Yaml exception: " << e.what() << " in node " << parent()->name()
-                            << "\n";
+        node.error_stream() << "Yaml exception: " << e.what() << " in node "
+                            << parent()->name() << "\n";
     }
     catch (std::runtime_error& e)
     {
-        node.error_stream() << "Unknown param " << id << " in node " << parent()->name() << "\n";
+        node.error_stream() << "Unknown param " << id << " in node "
+                            << parent()->name() << "\n";
     }
 }
 
@@ -279,4 +300,4 @@ void param_set_t::write(serialization::yaml_oarchive_t& out) const
     out.end_seq();
 }
 
-}  // namespace
+}  // namespace ramen

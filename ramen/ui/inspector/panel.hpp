@@ -24,7 +24,7 @@ class panel_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     panel_t(parameterised_t* p);
     ~panel_t() override;
 
@@ -34,12 +34,11 @@ public:
 
     void update();
 
-private:
+  private:
     parameterised_t*            p_;
     QWidget*                    panel_;
     boost::signals2::connection connection_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

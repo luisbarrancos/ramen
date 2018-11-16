@@ -16,13 +16,13 @@ namespace image
 {
 class agg_rgba32f_renderer_t
 {
-public:
+  public:
     typedef image_view_t view_type;
     typedef pixel_t      color_type;
 
     agg_rgba32f_renderer_t() {}
     explicit agg_rgba32f_renderer_t(const view_type& view)
-    : view_(view)
+      : view_(view)
     {
     }
 
@@ -38,18 +38,26 @@ public:
 
     void clear(const color_type& c) { boost::gil::fill_pixels(view_, c); }
 
-    void blend_hline(int x1, int y, int x2, const color_type& c, agg::cover_type cover);
+    void blend_hline(
+        int               x1,
+        int               y,
+        int               x2,
+        const color_type& c,
+        agg::cover_type   cover);
     void blend_solid_hspan(
-        int x, int y, int len, const color_type& c, const agg::cover_type* covers);
+        int                    x,
+        int                    y,
+        int                    len,
+        const color_type&      c,
+        const agg::cover_type* covers);
 
-private:
+  private:
     view_type view_;
 };
 
-template<class Gray32fView>
-class agg_gray32f_renderer_t
+template <class Gray32fView> class agg_gray32f_renderer_t
 {
-public:
+  public:
     // TODO: add a static assert to check Gray32fView template param
     typedef Gray32fView view_type;
 
@@ -57,8 +65,8 @@ public:
     {
         color_type() {}
         color_type(float lum, float alpha = 1.0f)
-        : l(lum)
-        , a(alpha)
+          : l(lum)
+          , a(alpha)
         {
         }
 
@@ -67,7 +75,7 @@ public:
 
     agg_gray32f_renderer_t() {}
     explicit agg_gray32f_renderer_t(const view_type& view)
-    : view_(view)
+      : view_(view)
     {
     }
 
@@ -83,13 +91,18 @@ public:
 
     void clear(const color_type& c) { boost::gil::fill_pixels(view_, c.l); }
 
-    void blend_hline(int x1, int y, int x2, const color_type& c, agg::cover_type cover)
+    void blend_hline(
+        int               x1,
+        int               y,
+        int               x2,
+        const color_type& c,
+        agg::cover_type   cover)
     {
         if (x1 > x2)
         {
             int t = x2;
-            x2    = x1;
-            x1    = t;
+            x2 = x1;
+            x1 = t;
         }
 
         if ((y > ymax()) || (y < ymin()) || (x1 > xmax()) || (x2 < xmin()))
@@ -98,8 +111,8 @@ public:
         x1 = std::max(x1, xmin());
         x2 = std::min(x2, xmax());
 
-        typename view_type::x_iterator p         = view_.row_begin(y) + x1;
-        float                          alpha     = cover / 255.0f * c.a;
+        typename view_type::x_iterator p = view_.row_begin(y) + x1;
+        float                          alpha = cover / 255.0f * c.a;
         float                          inv_alpha = 1.0f - alpha;
 
         int len = x2 - x1 + 1;
@@ -112,7 +125,11 @@ public:
     }
 
     void blend_solid_hspan(
-        int x, int y, int len, const color_type& c, const agg::cover_type* covers)
+        int                    x,
+        int                    y,
+        int                    len,
+        const color_type&      c,
+        const agg::cover_type* covers)
     {
         if (y > ymax() || y < ymin())
             return;
@@ -140,18 +157,17 @@ public:
 
         do
         {
-            float alpha     = *covers / 255.0f * c.a;
+            float alpha = *covers / 255.0f * c.a;
             float inv_alpha = 1.0f - alpha;
-            (*p)[0]         = ((*p)[0] * inv_alpha) + (c.l * alpha);
+            (*p)[0] = ((*p)[0] * inv_alpha) + (c.l * alpha);
             ++p;
             ++covers;
         } while (--len);
     }
 
-private:
+  private:
     view_type view_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

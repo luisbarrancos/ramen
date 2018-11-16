@@ -10,8 +10,8 @@ from "Graphics Gems", Academic Press, 1990
 
 #include <ramen/ggems/graphicsgems.h>
 
-extern "C" {
+extern "C"
+{
 
-Point2 NearestPointOnCurve(Point2 P, Point2* V, double* out_t);
+    Point2 NearestPointOnCurve(Point2 P, Point2* V, double* out_t);
 }
-

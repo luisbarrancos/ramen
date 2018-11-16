@@ -27,9 +27,9 @@ namespace image
 {
 class move2d_manipulator_t : public manipulator_t
 {
-public:
+  public:
     move2d_manipulator_t(param_t* param)
-    : node_(0)
+      : node_(0)
     {
         param_ = dynamic_cast<transform2_param_t*>(param);
         assert(param_);
@@ -38,32 +38,41 @@ public:
         dragx_ = dragy_ = true;
     }
 
-private:
+  private:
     void do_draw_overlay(const ui::paint_event_t& event) const override
     {
         assert(node()->composition());
 
-        move2d_node_t::matrix3_type lm(
-            param_->matrix_at_frame(node()->composition()->frame(), node()->aspect_ratio()));
+        move2d_node_t::matrix3_type lm(param_->matrix_at_frame(
+            node()->composition()->frame(), node()->aspect_ratio()));
 
         Imath::V2f p = get_absolute_value<Imath::V2f>(param_->center_param());
-        p            = p * lm;
+        p = p * lm;
         p.x *= node()->aspect_ratio();
 
         gl_line_width(default_line_width());
-        manipulators::draw_xy_axes(p,
-                                   70 / event.pixel_scale,
-                                   70 / event.pixel_scale,
-                                   get_value<float>(param_->rotate_param()),
-                                   event.aspect_ratio / node()->aspect_ratio(),
-                                   ui::palette_t::instance().color("x_axis"),
-                                   ui::palette_t::instance().color("y_axis"),
-                                   event.pixel_scale);
+        manipulators::draw_xy_axes(
+            p,
+            70 / event.pixel_scale,
+            70 / event.pixel_scale,
+            get_value<float>(param_->rotate_param()),
+            event.aspect_ratio / node()->aspect_ratio(),
+            ui::palette_t::instance().color("x_axis"),
+            ui::palette_t::instance().color("y_axis"),
+            event.pixel_scale);
 
         manipulators::draw_cross(
-            p, 3 / event.pixel_scale, 3 / event.pixel_scale, default_color(), event.pixel_scale);
+            p,
+            3 / event.pixel_scale,
+            3 / event.pixel_scale,
+            default_color(),
+            event.pixel_scale);
         manipulators::draw_ellipse(
-            p, 7 / event.pixel_scale, 7 / event.pixel_scale, Imath::Color3c(255, 255, 255), 20);
+            p,
+            7 / event.pixel_scale,
+            7 / event.pixel_scale,
+            Imath::Color3c(255, 255, 255),
+            20);
 
         // draw the boundary
         move2d_node_t::matrix3_type gm(node()->global_matrix());
@@ -91,7 +100,10 @@ private:
         gl_end();
     }
 
-    bool do_key_press_event(const ui::key_press_event_t& event) override { return false; }
+    bool do_key_press_event(const ui::key_press_event_t& event) override
+    {
+        return false;
+    }
     void do_key_release_event(const ui::key_release_event_t& event) override {}
 
     bool do_mouse_press_event(const ui::mouse_press_event_t& event) override
@@ -101,21 +113,22 @@ private:
         drag_center_ = drag_axes_ = false;
         dragx_ = dragy_ = true;
 
-        move2d_node_t::matrix3_type m(
-            param_->matrix_at_frame(node()->composition()->frame(), node()->aspect_ratio()));
+        move2d_node_t::matrix3_type m(param_->matrix_at_frame(
+            node()->composition()->frame(), node()->aspect_ratio()));
 
         // adjust for the aspect factor
         Imath::V2f c = get_absolute_value<Imath::V2f>(param_->center_param());
-        c            = c * m;
+        c = c * m;
         c.x *= node()->aspect_ratio();
 
-        switch (manipulators::pick_xy_axes(event.wpos,
-                                           c,
-                                           70 / event.pixel_scale,
-                                           70 / event.pixel_scale,
-                                           get_value<float>(param_->rotate_param()),
-                                           event.aspect_ratio / node()->aspect_ratio(),
-                                           event.pixel_scale))
+        switch (manipulators::pick_xy_axes(
+            event.wpos,
+            c,
+            70 / event.pixel_scale,
+            70 / event.pixel_scale,
+            get_value<float>(param_->rotate_param()),
+            event.aspect_ratio / node()->aspect_ratio(),
+            event.pixel_scale))
         {
             case manipulators::axes_center_picked:
             {
@@ -217,16 +230,18 @@ private:
 };
 
 move2d_node_t::move2d_node_t()
-: xform2d_node_t()
+  : xform2d_node_t()
 {
     set_name("move2d");
-    param_set().param_changed.connect(boost::bind(&move2d_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&move2d_node_t::param_changed, this, _1, _2));
 }
 
 move2d_node_t::move2d_node_t(const move2d_node_t& other)
-: xform2d_node_t(other)
+  : xform2d_node_t(other)
 {
-    param_set().param_changed.connect(boost::bind(&move2d_node_t::param_changed, this, _1, _2));
+    param_set().param_changed.connect(
+        boost::bind(&move2d_node_t::param_changed, this, _1, _2));
 }
 
 void move2d_node_t::do_create_params()
@@ -248,14 +263,17 @@ void move2d_node_t::do_create_params()
 
 void move2d_node_t::do_create_manipulators()
 {
-    std::auto_ptr<move2d_manipulator_t> m(new move2d_manipulator_t(&param("xf")));
+    std::auto_ptr<move2d_manipulator_t> m(
+        new move2d_manipulator_t(&param("xf")));
     add_manipulator(m);
 }
 
-move2d_node_t::matrix3_type move2d_node_t::do_calc_transform_matrix_at_frame(float frame,
-                                                                             int   subsample) const
+move2d_node_t::matrix3_type move2d_node_t::do_calc_transform_matrix_at_frame(
+    float frame,
+    int   subsample) const
 {
-    const transform2_param_t* p = dynamic_cast<const transform2_param_t*>(&param("xf"));
+    const transform2_param_t* p =
+        dynamic_cast<const transform2_param_t*>(&param("xf"));
     assert(p);
     return p->matrix_at_frame(frame, aspect_ratio(), subsample);
 }
@@ -270,13 +288,14 @@ void move2d_node_t::param_changed(param_t* p, param_t::change_reason reason)
         apply_track_mode mode;
         apply_track_use use;
 
-        const tracker_node_t *tracker = ui::apply_track_dialog_t::instance().exec( mode,  use);
+        const tracker_node_t *tracker =
+        ui::apply_track_dialog_t::instance().exec( mode,  use);
 
         if( tracker)
         {
-            transform2_param_t *xf = dynamic_cast<transform2_param_t*>( &param( "xf"));
-            xf->apply_track( composition()->start_frame(), composition()->end_frame(), tracker,
-        mode, use); update_widgets();
+            transform2_param_t *xf = dynamic_cast<transform2_param_t*>( &param(
+        "xf")); xf->apply_track( composition()->start_frame(),
+        composition()->end_frame(), tracker, mode, use); update_widgets();
         }
         */
     }
@@ -284,7 +303,10 @@ void move2d_node_t::param_changed(param_t* p, param_t::change_reason reason)
 
 node_t* create_move2d_node() { return new move2d_node_t(); }
 
-const node_metaclass_t* move2d_node_t::metaclass() const { return &move2d_node_metaclass(); }
+const node_metaclass_t* move2d_node_t::metaclass() const
+{
+    return &move2d_node_metaclass();
+}
 
 const node_metaclass_t& move2d_node_t::move2d_node_metaclass()
 {
@@ -293,21 +315,21 @@ const node_metaclass_t& move2d_node_t::move2d_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.move2d";
+        info.id = "image.builtin.move2d";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Move2D";
-        info.create        = &create_move2d_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Move2D";
+        info.create = &create_move2d_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(move2d_node_t::move2d_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    move2d_node_t::move2d_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

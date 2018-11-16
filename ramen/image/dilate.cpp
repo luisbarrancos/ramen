@@ -27,34 +27,40 @@ struct dilate_pixel_fun
     void  operator()(float v, float w) { value_ = std::max(value_, v * w); }
     float value() const { return value_; }
 
-private:
+  private:
     float value_;
 };
 
 struct erode_pixel_fun
 {
     erode_pixel_fun() { value_ = -std::numeric_limits<float>::max(); }
-    void  operator()(float v) { value_ = std::max(value_, 1.0f - v); }
-    void  operator()(float v, float w) { value_ = std::max(value_, (1.0f - v) * w); }
+    void operator()(float v) { value_ = std::max(value_, 1.0f - v); }
+    void operator()(float v, float w)
+    {
+        value_ = std::max(value_, (1.0f - v) * w);
+    }
     float value() const { return 1.0f - value_; }
 
-private:
+  private:
     float value_;
 };
 
-template<class ConstGrayView, class GrayView, class PixelFun>
+template <class ConstGrayView, class GrayView, class PixelFun>
 struct dilate_erode_gray_fn
 {
-    dilate_erode_gray_fn(const ConstGrayView& src, const GrayView& dst, float radius)
-    : src_(src)
-    , dst_(dst)
-    , radius_(radius)
+    dilate_erode_gray_fn(
+        const ConstGrayView& src,
+        const GrayView&      dst,
+        float                radius)
+      : src_(src)
+      , dst_(dst)
+      , radius_(radius)
     {
     }
 
     void operator()(const tbb::blocked_range<std::size_t>& r) const
     {
-        int   radius  = std::floor((double) radius_);
+        int   radius = std::floor((double) radius_);
         float fradius = radius_ - radius;
 
         for (std::size_t y = r.begin(); y != r.end(); ++y)
@@ -88,9 +94,13 @@ struct dilate_erode_gray_fn
     float                radius_;
 };
 
-template<class ConstGrayView, class TmpView, class GrayView>
+template <class ConstGrayView, class TmpView, class GrayView>
 void do_dilate_channel(
-    const ConstGrayView& src, const TmpView& tmp, const GrayView& dst, float hradius, float vradius)
+    const ConstGrayView& src,
+    const TmpView&       tmp,
+    const GrayView&      dst,
+    float                hradius,
+    float                vradius)
 {
     assert(src.dimensions() == dst.dimensions());
     assert(tmp.width() >= src.height());
@@ -100,14 +110,16 @@ void do_dilate_channel(
     {
         tbb::parallel_for(
             tbb::blocked_range<std::size_t>(0, src.height()),
-            dilate_erode_gray_fn<ConstGrayView, TmpView, dilate_pixel_fun>(src, tmp, hradius),
+            dilate_erode_gray_fn<ConstGrayView, TmpView, dilate_pixel_fun>(
+                src, tmp, hradius),
             tbb::auto_partitioner());
     }
     else
     {
         tbb::parallel_for(
             tbb::blocked_range<std::size_t>(0, src.height()),
-            dilate_erode_gray_fn<ConstGrayView, TmpView, erode_pixel_fun>(src, tmp, -hradius),
+            dilate_erode_gray_fn<ConstGrayView, TmpView, erode_pixel_fun>(
+                src, tmp, -hradius),
             tbb::auto_partitioner());
     }
 
@@ -115,24 +127,27 @@ void do_dilate_channel(
     {
         tbb::parallel_for(
             tbb::blocked_range<std::size_t>(0, tmp.height()),
-            dilate_erode_gray_fn<TmpView, GrayView, dilate_pixel_fun>(tmp, dst, vradius),
+            dilate_erode_gray_fn<TmpView, GrayView, dilate_pixel_fun>(
+                tmp, dst, vradius),
             tbb::auto_partitioner());
     }
     else
     {
         tbb::parallel_for(
             tbb::blocked_range<std::size_t>(0, tmp.height()),
-            dilate_erode_gray_fn<TmpView, GrayView, erode_pixel_fun>(tmp, dst, -vradius),
+            dilate_erode_gray_fn<TmpView, GrayView, erode_pixel_fun>(
+                tmp, dst, -vradius),
             tbb::auto_partitioner());
     }
 }
 
-}  // unnamed
+}  // namespace
 
-void dilate_channel(const const_channel_view_t& src,
-                    const channel_view_t&       dst,
-                    float                       hradius,
-                    float                       vradius)
+void dilate_channel(
+    const const_channel_view_t& src,
+    const channel_view_t&       dst,
+    float                       hradius,
+    float                       vradius)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -145,11 +160,12 @@ void dilate_channel(const const_channel_view_t& src,
     do_dilate_channel(src, boost::gil::view(buffer), dst, hradius, vradius);
 }
 
-void dilate_channel(const const_channel_view_t&       src,
-                    const boost::gil::gray32f_view_t& tmp,
-                    const channel_view_t&             dst,
-                    float                             hradius,
-                    float                             vradius)
+void dilate_channel(
+    const const_channel_view_t&       src,
+    const boost::gil::gray32f_view_t& tmp,
+    const channel_view_t&             dst,
+    float                             hradius,
+    float                             vradius)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -160,10 +176,11 @@ void dilate_channel(const const_channel_view_t&       src,
     do_dilate_channel(src, tmp, dst, hradius, vradius);
 }
 
-void dilate(const boost::gil::gray32fc_view_t& src,
-            const boost::gil::gray32f_view_t&  dst,
-            float                              hradius,
-            float                              vradius)
+void dilate(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              hradius,
+    float                              vradius)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -176,11 +193,12 @@ void dilate(const boost::gil::gray32fc_view_t& src,
     do_dilate_channel(src, boost::gil::view(buffer), dst, hradius, vradius);
 }
 
-void dilate(const boost::gil::gray32fc_view_t& src,
-            const boost::gil::gray32f_view_t&  tmp,
-            const boost::gil::gray32f_view_t&  dst,
-            float                              hradius,
-            float                              vradius)
+void dilate(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  tmp,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              hradius,
+    float                              vradius)
 {
     if (hradius == 0 && vradius == 0)
     {
@@ -191,5 +209,5 @@ void dilate(const boost::gil::gray32fc_view_t& src,
     do_dilate_channel(src, tmp, dst, hradius, vradius);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

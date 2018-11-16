@@ -18,24 +18,26 @@ namespace movieio
 {
 class RAMEN_API writer_t
 {
-public:
+  public:
     writer_t();
     virtual ~writer_t();
 
-    void write_frame(const image::const_image_view_t& view, const core::dictionary_t& params) const;
+    void write_frame(
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const;
 
-private:
+  private:
     // non-copyable
     writer_t(const writer_t&);
     writer_t& operator=(const writer_t&);
 
-    virtual void do_write_frame(const image::const_image_view_t& view,
-                                const core::dictionary_t&        params) const = 0;
+    virtual void do_write_frame(
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const = 0;
 
     boost::filesystem::path p_;
     core::dictionary_t      metadata_;
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

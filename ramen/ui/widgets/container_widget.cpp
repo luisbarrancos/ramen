@@ -9,8 +9,8 @@ namespace ramen
 namespace ui
 {
 container_widget_t::container_widget_t(QWidget* parent)
-: QStackedWidget(parent)
-, contents_(0)
+  : QStackedWidget(parent)
+  , contents_(0)
 {
 }
 
@@ -35,5 +35,5 @@ void container_widget_t::clear_contents()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

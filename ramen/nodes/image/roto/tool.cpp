@@ -11,8 +11,8 @@ namespace ramen
 namespace roto
 {
 tool_t::tool_t(image::roto_node_t& parent)
-: ui::tool_t()
-, parent_(parent)
+  : ui::tool_t()
+  , parent_(parent)
 {
 }
 
@@ -35,9 +35,10 @@ triple_t* tool_t::pick_point(shape_t* s, const ui::mouse_event_t& event)
     return 0;
 }
 
-void tool_t::select_points_in_box(shape_t*                 s,
-                                  const Imath::Box2f&      box,
-                                  const ui::mouse_event_t& event)
+void tool_t::select_points_in_box(
+    shape_t*                 s,
+    const Imath::Box2f&      box,
+    const ui::mouse_event_t& event)
 {
     Imath::Box2f bbox(box);
     bbox.min.x /= event.aspect_ratio;
@@ -54,5 +55,5 @@ void tool_t::select_points_in_box(shape_t*                 s,
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

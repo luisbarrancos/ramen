@@ -20,10 +20,10 @@ struct RAMEN_API motion_blur_info_t
     };
 
     motion_blur_info_t()
-    : shutter(0)
-    , samples(1)
-    , shutter_offset(0)
-    , filter(box_filter)
+      : shutter(0)
+      , samples(1)
+      , shutter_offset(0)
+      , filter(box_filter)
     {
     }
 
@@ -37,11 +37,12 @@ struct RAMEN_API motion_blur_info_t
 
     struct loop_data_t
     {
-        loop_data_t(float                           time,
-                    int                             samples = 1,
-                    float                           shutter = 0,
-                    float                           offset  = 0,
-                    motion_blur_info_t::filter_type f       = motion_blur_info_t::box_filter);
+        loop_data_t(
+            float                           time,
+            int                             samples = 1,
+            float                           shutter = 0,
+            float                           offset = 0,
+            motion_blur_info_t::filter_type f = motion_blur_info_t::box_filter);
 
         float weight_for_time(float t) const;
 
@@ -60,5 +61,4 @@ struct RAMEN_API motion_blur_info_t
 void           operator>>(const YAML::Node& in, motion_blur_info_t& f);
 YAML::Emitter& operator<<(YAML::Emitter& out, const motion_blur_info_t& f);
 
-}  // namespace
-
+}  // namespace ramen

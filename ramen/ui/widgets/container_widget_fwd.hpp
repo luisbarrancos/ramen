@@ -10,6 +10,5 @@ namespace ui
 {
 class container_widget_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

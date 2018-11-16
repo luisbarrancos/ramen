@@ -8,11 +8,13 @@ namespace ramen
 {
 namespace imageio
 {
-void hdr_writer_t::do_write_image(const boost::filesystem::path&   p,
-                                  const image::const_image_view_t& view,
-                                  const core::dictionary_t&        params) const
+void hdr_writer_t::do_write_image(
+    const boost::filesystem::path&   p,
+    const image::const_image_view_t& view,
+    const core::dictionary_t&        params) const
 {
-    std::auto_ptr<OIIO::ImageOutput> out(OIIO::ImageOutput::create(filesystem::file_string(p)));
+    std::auto_ptr<OIIO::ImageOutput> out(
+        OIIO::ImageOutput::create(filesystem::file_string(p)));
 
     if (!out.get())
         throw exception("Write HDR: Can't open output file");
@@ -23,16 +25,17 @@ void hdr_writer_t::do_write_image(const boost::filesystem::path&   p,
     if (!out->open(filesystem::file_string(p), spec))
         throw exception("Write HDR: Can't open output file");
 
-    char*       pixels  = (char*) boost::gil::interleaved_view_get_raw_data(view);
+    char* pixels = (char*) boost::gil::interleaved_view_get_raw_data(view);
     std::size_t xstride = 4 * sizeof(float);
     std::size_t ystride = xstride * view.width();
 
-    if (!out->write_image(OIIO::TypeDesc::FLOAT, pixels, xstride, ystride, OIIO::AutoStride))
+    if (!out->write_image(
+            OIIO::TypeDesc::FLOAT, pixels, xstride, ystride, OIIO::AutoStride))
         throw exception("Write HDR: Can't write pixels");
 
     if (!out->close())
         throw exception("Write HDR: Can't close file");
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

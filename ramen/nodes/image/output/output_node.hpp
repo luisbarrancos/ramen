@@ -12,17 +12,17 @@ namespace image
 {
 class output_node_t : public base_output_node_t
 {
-public:
+  public:
     static const node_metaclass_t& output_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     output_node_t();
 
-protected:
+  protected:
     output_node_t(const output_node_t& other);
     void operator=(const output_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new output_node_t(*this); }
 
     void do_create_params() override;
@@ -39,6 +39,5 @@ private:
     int priority() const override;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

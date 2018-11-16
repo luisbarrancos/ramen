@@ -8,5 +8,4 @@ namespace ramen
 {
 class composition_t;
 
-}  // ramen
-
+}  // namespace ramen

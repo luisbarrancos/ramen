@@ -13,4 +13,3 @@
 #elif defined(__CYGWIN__)
 #define RAMEN_CONFIG_COMPILER_CYGWIN
 #endif
-

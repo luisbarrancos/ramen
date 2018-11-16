@@ -25,11 +25,11 @@ namespace ui
 namespace viewer
 {
 viewer_context_t::viewer_context_t(QWidget* parent)
-: QGLWidget(parent)
+  : QGLWidget(parent)
 {
     first_time_ = true;
     autoupdate_ = true;
-    view_mode_  = view_active_node;
+    view_mode_ = view_active_node;
 
     setFocusPolicy(Qt::ClickFocus);
     setMouseTracking(true);
@@ -48,10 +48,12 @@ viewer_context_t::viewer_context_t(QWidget* parent)
 
     // get the palette colors
     QColor col(palette().color(QPalette::Window));
-    back_color_ = Imath::Color3f(col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
+    back_color_ = Imath::Color3f(
+        col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
 
-    col       = palette().color(QPalette::ButtonText);
-    fg_color_ = Imath::Color3f(col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
+    col = palette().color(QPalette::ButtonText);
+    fg_color_ = Imath::Color3f(
+        col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
 }
 
 viewer_context_t::~viewer_context_t() { strategy().end_active_view(); }
@@ -103,7 +105,8 @@ void viewer_context_t::set_active_node(node_t* n)
     for (; it != strategies_.rend(); ++it)
     {
         if (it->can_display_node(n))
-            it->set_active_node(n, (it == current_ && view_mode() == view_active_node));
+            it->set_active_node(
+                n, (it == current_ && view_mode() == view_active_node));
         else
             it->set_active_node(0);
     }
@@ -122,7 +125,8 @@ void viewer_context_t::set_context_node(node_t* n)
     for (; it != strategies_.rend(); ++it)
     {
         if (it->can_display_node(n))
-            it->set_context_node(n, (it == current_ && view_mode() == view_context_node));
+            it->set_context_node(
+                n, (it == current_ && view_mode() == view_context_node));
         else
             it->set_context_node(0);
     }
@@ -175,7 +179,10 @@ OCIO::DisplayTransformRcPtr viewer_context_t::ocio_transform()
     return transform;
 }
 
-std::shared_ptr<ocio::gl_lut3d_t>& viewer_context_t::display_lut() { return display_lut_; }
+std::shared_ptr<ocio::gl_lut3d_t>& viewer_context_t::display_lut()
+{
+    return display_lut_;
+}
 
 const std::string& viewer_context_t::display_device() const
 {
@@ -187,11 +194,17 @@ const std::string& viewer_context_t::display_transform() const
     return app().ui()->viewer().display_transform();
 }
 
-float viewer_context_t::exposure() const { return app().ui()->viewer().exposure(); }
+float viewer_context_t::exposure() const
+{
+    return app().ui()->viewer().exposure();
+}
 
 float viewer_context_t::gamma() const { return app().ui()->viewer().gamma(); }
 
-void viewer_context_t::display_transform_changed() { strategy().display_transform_changed(); }
+void viewer_context_t::display_transform_changed()
+{
+    strategy().display_transform_changed();
+}
 
 void viewer_context_t::exposure_changed() { strategy().exposure_changed(); }
 
@@ -230,24 +243,45 @@ void viewer_context_t::resizeGL(int w, int h)
 
 void viewer_context_t::paintGL() { strategy().paint(); }
 
-void viewer_context_t::enterEvent(QEvent* event) { strategy().enter_event(event); }
+void viewer_context_t::enterEvent(QEvent* event)
+{
+    strategy().enter_event(event);
+}
 
-void viewer_context_t::leaveEvent(QEvent* event) { strategy().leave_event(event); }
+void viewer_context_t::leaveEvent(QEvent* event)
+{
+    strategy().leave_event(event);
+}
 
-void viewer_context_t::keyPressEvent(QKeyEvent* event) { strategy().key_press_event(event); }
+void viewer_context_t::keyPressEvent(QKeyEvent* event)
+{
+    strategy().key_press_event(event);
+}
 
-void viewer_context_t::keyReleaseEvent(QKeyEvent* event) { strategy().key_release_event(event); }
+void viewer_context_t::keyReleaseEvent(QKeyEvent* event)
+{
+    strategy().key_release_event(event);
+}
 
-void viewer_context_t::mousePressEvent(QMouseEvent* event) { strategy().mouse_press_event(event); }
+void viewer_context_t::mousePressEvent(QMouseEvent* event)
+{
+    strategy().mouse_press_event(event);
+}
 
-void viewer_context_t::mouseMoveEvent(QMouseEvent* event) { strategy().mouse_move_event(event); }
+void viewer_context_t::mouseMoveEvent(QMouseEvent* event)
+{
+    strategy().mouse_move_event(event);
+}
 
 void viewer_context_t::mouseReleaseEvent(QMouseEvent* event)
 {
     strategy().mouse_release_event(event);
 }
 
-void viewer_context_t::wheelEvent(QWheelEvent* event) { strategy().wheel_event(event); }
+void viewer_context_t::wheelEvent(QWheelEvent* event)
+{
+    strategy().wheel_event(event);
+}
 
 void viewer_context_t::test_gl_extensions()
 {
@@ -261,7 +295,8 @@ void viewer_context_t::test_gl_extensions()
         app().fatal_error("Video card not supported: Not OpenGL 2.0");
 
     if (!GLEW_ARB_texture_non_power_of_two)
-        app().fatal_error("Video card not supported: Not non power of two textures");
+        app().fatal_error(
+            "Video card not supported: Not non power of two textures");
 
     if (!GLEW_ARB_texture_float)
         app().fatal_error("Video card not supported: Not float textures");
@@ -346,14 +381,18 @@ void viewer_context_t::draw_checks_background() const
     }
 }
 
-Imath::Color4f viewer_context_t::color_at(int x, int y) const { return strategy().color_at(x, y); }
+Imath::Color4f viewer_context_t::color_at(int x, int y) const
+{
+    return strategy().color_at(x, y);
+}
 
-}  // viewer
-}  // ui
-}  // ramen
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen
 
 /*
-std::pair<std::string, std::string>  viewer_context_t::get_context_pair( int index)
+std::pair<std::string, std::string>  viewer_context_t::get_context_pair( int
+index)
 {
     return app().document().composition().ocio_context_pairs()[ index];
 }

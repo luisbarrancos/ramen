@@ -15,7 +15,7 @@ namespace ramen
 namespace image
 {
 blur_channels_node_t::blur_channels_node_t()
-: base_blur_node_t()
+  : base_blur_node_t()
 {
     set_name("blur_ch");
 }
@@ -64,7 +64,7 @@ void blur_channels_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> b(new popup_param_t("Border Mode"));
     b->set_id("border");
-    b->menu_items() = std::vector<std::string>({ "Black", "Repeat", "Reflect" });
+    b->menu_items() = std::vector<std::string>({"Black", "Repeat", "Reflect"});
     add_param(b);
 }
 
@@ -74,8 +74,8 @@ bool blur_channels_node_t::do_is_identity() const
     Imath::V2f g_radius = get_value<Imath::V2f>(param("g_radius"));
     Imath::V2f b_radius = get_value<Imath::V2f>(param("b_radius"));
     Imath::V2f a_radius = get_value<Imath::V2f>(param("a_radius"));
-    return r_radius == Imath::V2f(0, 0) && g_radius == Imath::V2f(0, 0)
-           && b_radius == Imath::V2f(0, 0) && a_radius == Imath::V2f(0, 0);
+    return r_radius == Imath::V2f(0, 0) && g_radius == Imath::V2f(0, 0) &&
+           b_radius == Imath::V2f(0, 0) && a_radius == Imath::V2f(0, 0);
 }
 
 void blur_channels_node_t::get_expand_radius(int& hradius, int& vradius) const
@@ -89,9 +89,12 @@ void blur_channels_node_t::get_expand_radius(int& hradius, int& vradius) const
     g_radius = adjust_blur_size(g_radius, 1);
     b_radius = adjust_blur_size(b_radius, 1);
     a_radius = adjust_blur_size(a_radius, 1);
-    Imath::V2i radius(round_blur_size(
-        Imath::V2f(std::max(r_radius.x, std::max(g_radius.x, std::max(b_radius.x, a_radius.x))),
-                   std::max(r_radius.y, std::max(g_radius.y, std::max(b_radius.y, a_radius.y))))));
+    Imath::V2i radius(round_blur_size(Imath::V2f(
+        std::max(
+            r_radius.x, std::max(g_radius.x, std::max(b_radius.x, a_radius.x))),
+        std::max(
+            r_radius.y,
+            std::max(g_radius.y, std::max(b_radius.y, a_radius.y))))));
 
     hradius = radius.x;
     vradius = radius.y;
@@ -99,7 +102,8 @@ void blur_channels_node_t::get_expand_radius(int& hradius, int& vradius) const
 
 void blur_channels_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
@@ -116,10 +120,11 @@ void blur_channels_node_t::do_process(const render::context_t& context)
     b_radius = adjust_blur_size(b_radius, context.subsample);
     a_radius = adjust_blur_size(a_radius, context.subsample);
 
-    boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                            subimage_view(area));
+    boost::gil::copy_pixels(
+        input_as<image_node_t>()->const_subimage_view(area),
+        subimage_view(area));
 
-    image::buffer_t          buffer(image_view().height(), image_view().width(), 1);
+    image::buffer_t buffer(image_view().height(), image_view().width(), 1);
     image::gray_image_view_t tmp = buffer.gray_view();
 
     blur_border_mode bmode = (blur_border_mode) get_value<int>(param("border"));
@@ -137,12 +142,13 @@ void blur_channels_node_t::do_process(const render::context_t& context)
     blur_channel(3, area, tmp, a_radius, iters, bmode);
 }
 
-void blur_channels_node_t::blur_channel(int                               ch,
-                                        const Imath::Box2i&               area,
-                                        const boost::gil::gray32f_view_t& tmp,
-                                        const Imath::V2f&                 radius,
-                                        int                               iters,
-                                        blur_border_mode                  border)
+void blur_channels_node_t::blur_channel(
+    int                               ch,
+    const Imath::Box2i&               area,
+    const boost::gil::gray32f_view_t& tmp,
+    const Imath::V2f&                 radius,
+    int                               iters,
+    blur_border_mode                  border)
 {
     if (border != border_black)
     {
@@ -161,25 +167,28 @@ void blur_channels_node_t::blur_channel(int                               ch,
         box.max.y += border_y1;
 
         if (border == border_repeat)
-            boost::gil::repeat_border_pixels(boost::gil::nth_channel_view(subimage_view(box), ch),
-                                             border_x0,
-                                             border_y0,
-                                             border_x1,
-                                             border_y1);
+            boost::gil::repeat_border_pixels(
+                boost::gil::nth_channel_view(subimage_view(box), ch),
+                border_x0,
+                border_y0,
+                border_x1,
+                border_y1);
         else
-            boost::gil::reflect_border_pixels(boost::gil::nth_channel_view(subimage_view(box), ch),
-                                              border_x0,
-                                              border_y0,
-                                              border_x1,
-                                              border_y1);
+            boost::gil::reflect_border_pixels(
+                boost::gil::nth_channel_view(subimage_view(box), ch),
+                border_x0,
+                border_y0,
+                border_x1,
+                border_y1);
     }
 
-    image::box_blur_channel(boost::gil::nth_channel_view(const_image_view(), ch),
-                            tmp,
-                            boost::gil::nth_channel_view(image_view(), ch),
-                            radius.x,
-                            radius.y,
-                            iters);
+    image::box_blur_channel(
+        boost::gil::nth_channel_view(const_image_view(), ch),
+        tmp,
+        boost::gil::nth_channel_view(image_view(), ch),
+        radius.x,
+        radius.y,
+        iters);
 }
 
 // factory
@@ -197,14 +206,14 @@ const node_metaclass_t& blur_channels_node_t::blur_channels_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.blur_channels";
+        info.id = "image.builtin.blur_channels";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Filter";
-        info.menu_item     = "Blur Channels";
-        info.create        = &create_blur_channels_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Filter";
+        info.menu_item = "Blur Channels";
+        info.create = &create_blur_channels_node;
+        inited = true;
     }
 
     return info;
@@ -213,5 +222,5 @@ const node_metaclass_t& blur_channels_node_t::blur_channels_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     blur_channels_node_t::blur_channels_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

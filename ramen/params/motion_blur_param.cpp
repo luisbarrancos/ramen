@@ -18,22 +18,22 @@
 namespace ramen
 {
 motion_blur_param_t::motion_blur_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     value().assign(motion_blur_info_t());
-    samples_     = 0;
-    shutter_     = 0;
+    samples_ = 0;
+    shutter_ = 0;
     shutter_off_ = 0;
-    filter_      = 0;
+    filter_ = 0;
 }
 
 motion_blur_param_t::motion_blur_param_t(const motion_blur_param_t& other)
-: static_param_t(other)
+  : static_param_t(other)
 {
-    samples_     = 0;
-    shutter_     = 0;
+    samples_ = 0;
+    shutter_ = 0;
     shutter_off_ = 0;
-    filter_      = 0;
+    filter_ = 0;
 }
 
 bool motion_blur_param_t::motion_blur_enabled() const
@@ -46,23 +46,25 @@ bool motion_blur_param_t::motion_blur_enabled() const
     return true;
 }
 
-motion_blur_info_t::loop_data_t motion_blur_param_t::loop_data(float time,
-                                                               int   extra_samples,
-                                                               float shutter_factor) const
+motion_blur_info_t::loop_data_t motion_blur_param_t::loop_data(
+    float time,
+    int   extra_samples,
+    float shutter_factor) const
 {
     motion_blur_info_t info(get_value<motion_blur_info_t>(*this));
-    return motion_blur_info_t::loop_data_t(time,
-                                           info.samples + extra_samples,
-                                           info.shutter * shutter_factor,
-                                           info.shutter_offset,
-                                           info.filter);
+    return motion_blur_info_t::loop_data_t(
+        time,
+        info.samples + extra_samples,
+        info.shutter * shutter_factor,
+        info.shutter_offset,
+        info.filter);
 }
 
 void motion_blur_param_t::do_add_to_hash(hash::generator_t& hash_gen) const
 {
     motion_blur_info_t info(get_value<motion_blur_info_t>(*this));
-    hash_gen << info.samples << "," << info.shutter << "," << info.shutter_offset << ","
-             << info.filter;
+    hash_gen << info.samples << "," << info.shutter << ","
+             << info.shutter_offset << "," << info.filter;
 }
 
 void motion_blur_param_t::do_read(const serialization::yaml_node_t& node)
@@ -107,7 +109,11 @@ QWidget* motion_blur_param_t::do_create_widgets()
     samples_->move(app().ui()->inspector().left_margin(), h);
     samples_->resize(s.width(), s.height());
     samples_->setEnabled(enabled());
-    connect(samples_, SIGNAL(valueChanged(double)), this, SLOT(samples_changed(double)));
+    connect(
+        samples_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(samples_changed(double)));
     h += s.height() + 5;
 
     label = new QLabel(top);
@@ -121,7 +127,11 @@ QWidget* motion_blur_param_t::do_create_widgets()
     shutter_->move(app().ui()->inspector().left_margin(), h);
     shutter_->resize(s.width(), s.height());
     shutter_->setEnabled(enabled());
-    connect(shutter_, SIGNAL(valueChanged(double)), this, SLOT(shutter_changed(double)));
+    connect(
+        shutter_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(shutter_changed(double)));
     h += s.height() + 5;
 
     label = new QLabel(top);
@@ -138,7 +148,11 @@ QWidget* motion_blur_param_t::do_create_widgets()
     shutter_off_->move(app().ui()->inspector().left_margin(), h);
     shutter_off_->resize(s.width(), s.height());
     shutter_off_->setEnabled(enabled());
-    connect(shutter_off_, SIGNAL(valueChanged(double)), this, SLOT(shutter_changed(double)));
+    connect(
+        shutter_off_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(shutter_changed(double)));
     h += s.height() + 5;
 
     label = new QLabel(top);
@@ -148,7 +162,7 @@ QWidget* motion_blur_param_t::do_create_widgets()
     label->setText("Filter");
 
     filter_ = new QComboBox(top);
-    s       = filter_->sizeHint();
+    s = filter_->sizeHint();
     filter_->setFocusPolicy(Qt::NoFocus);
     filter_->addItem("Box");
     filter_->addItem("Triangle");
@@ -157,7 +171,11 @@ QWidget* motion_blur_param_t::do_create_widgets()
     filter_->move(app().ui()->inspector().left_margin(), h);
     filter_->resize(s.width(), s.height());
     filter_->setEnabled(enabled());
-    connect(filter_, SIGNAL(currentIndexChanged(int)), this, SLOT(filter_changed(int)));
+    connect(
+        filter_,
+        SIGNAL(currentIndexChanged(int)),
+        this,
+        SLOT(filter_changed(int)));
     h += s.height() + 5;
 
     top->setMinimumSize(app().ui()->inspector().width(), h);
@@ -214,7 +232,7 @@ void motion_blur_param_t::samples_changed(double v)
 void motion_blur_param_t::shutter_changed(double v)
 {
     motion_blur_info_t info(get_value<motion_blur_info_t>(*this));
-    info.shutter        = shutter_->value();
+    info.shutter = shutter_->value();
     info.shutter_offset = shutter_off_->value();
     param_set()->begin_edit();
     param_set()->add_command(this);
@@ -234,4 +252,4 @@ void motion_blur_param_t::filter_changed(int index)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

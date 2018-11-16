@@ -28,7 +28,7 @@ namespace imageio
 {
 class RAMEN_API reader_t
 {
-public:
+  public:
     reader_t(const boost::filesystem::path& p);
     virtual ~reader_t() {}
 
@@ -41,26 +41,28 @@ public:
 
     void read_image(const image::image_view_t& view) const;
 
-    void read_image(const image::image_view_t& view,
-                    const math::box2i_t&       crop,
-                    int                        subsample) const;
+    void read_image(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const;
 
-private:
+  private:
     // non-copyable
     reader_t(const reader_t&);
     reader_t& operator=(const reader_t&);
 
-    virtual void do_read_image(const image::image_view_t& view,
-                               const math::box2i_t&       crop,
-                               int                        subsample) const = 0;
+    virtual void do_read_image(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const = 0;
 
-protected:
-    void repeat_scanline_until_end(const image::image_view_t& view, int y) const;
+  protected:
+    void repeat_scanline_until_end(const image::image_view_t& view, int y)
+        const;
 
     boost::filesystem::path path_;
     core::dictionary_t      info_;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

@@ -14,6 +14,5 @@ namespace image
 // warning: ocio modifies the pixels in place.!
 void ocio_transform(const image_view_t& img, OCIO::ConstProcessorRcPtr proc);
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

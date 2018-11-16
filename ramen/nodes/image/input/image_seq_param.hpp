@@ -24,22 +24,24 @@ class image_seq_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     image_seq_param_t(const std::string& name, int proxy_level);
 
-    boost::signals2::signal<void(const ::boost::filesystem::path&, int, bool, bool)> file_picked;
+    boost::signals2::signal<
+        void(const ::boost::filesystem::path&, int, bool, bool)>
+        file_picked;
 
     void set_input_text(const std::string& str);
 
-protected:
+  protected:
     image_seq_param_t(const image_seq_param_t& other);
     void operator=(const image_seq_param_t& other);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void select_pushed();
 
-private:
+  private:
     param_t* do_clone() const override { return new image_seq_param_t(*this); }
 
     QWidget* do_create_widgets() override;
@@ -51,5 +53,4 @@ private:
     std::string               input_text_;
 };
 
-}  // namespace
-
+}  // namespace ramen

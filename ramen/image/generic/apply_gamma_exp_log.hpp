@@ -12,11 +12,13 @@ namespace image
 {
 namespace generic
 {
-void apply_gamma(const const_image_view_t& src, const image_view_t& dst, float gamma);
+void apply_gamma(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    float                     gamma);
 void apply_log(const const_image_view_t& src, const image_view_t& dst);
 void apply_pow10(const const_image_view_t& src, const image_view_t& dst);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

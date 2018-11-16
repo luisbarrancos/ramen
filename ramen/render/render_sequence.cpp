@@ -20,7 +20,7 @@ namespace
 struct count_outputs
 {
     count_outputs()
-    : num_outputs(0)
+      : num_outputs(0)
     {
     }
     void operator()(node_output_interface* out) { ++num_outputs; }
@@ -38,16 +38,19 @@ struct compare_outputs
 struct add_output
 {
     add_output(std::vector<node_output_interface*>& outputs)
-    : m_outputs(outputs)
+      : m_outputs(outputs)
     {
     }
 
-    void operator()(node_output_interface* out) const { m_outputs.push_back(out); }
+    void operator()(node_output_interface* out) const
+    {
+        m_outputs.push_back(out);
+    }
 
     std::vector<node_output_interface*>& m_outputs;
 };
 
-}  // unnamed
+}  // namespace
 
 int count_output_nodes(composition_t& comp, bool selected_only)
 {
@@ -56,15 +59,20 @@ int count_output_nodes(composition_t& comp, bool selected_only)
     return f.num_outputs;
 }
 
-void get_output_nodes(composition_t&                       comp,
-                      std::vector<node_output_interface*>& outputs,
-                      bool                                 selected_only)
+void get_output_nodes(
+    composition_t&                       comp,
+    std::vector<node_output_interface*>& outputs,
+    bool                                 selected_only)
 {
     for_each_output(comp, selected_only, add_output(outputs));
     std::sort(outputs.begin(), outputs.end(), compare_outputs());
 }
 
-int total_frames_to_render(composition_t& comp, int start, int end, bool selected_only)
+int total_frames_to_render(
+    composition_t& comp,
+    int            start,
+    int            end,
+    bool           selected_only)
 {
     if (end < start)
         return 0;
@@ -74,25 +82,29 @@ int total_frames_to_render(composition_t& comp, int start, int end, bool selecte
     return f.num_outputs * (end - start + 1);
 }
 
-void render_sequence(composition_t& comp,
-                     int            start,
-                     int            end,
-                     int            proxy_level,
-                     int            subsample,
-                     int            mb_extra_samples,
-                     float          mb_shutter_factor)
+void render_sequence(
+    composition_t& comp,
+    int            start,
+    int            end,
+    int            proxy_level,
+    int            subsample,
+    int            mb_extra_samples,
+    float          mb_shutter_factor)
 {
     if (end < start)
         return;
 
-    context_t new_context                  = comp.current_context();
-    new_context.mode                       = process_render;
-    new_context.proxy_level                = proxy_level;
-    new_context.subsample                  = subsample;
-    new_context.motion_blur_extra_samples  = mb_extra_samples;
+    context_t new_context = comp.current_context();
+    new_context.mode = process_render;
+    new_context.proxy_level = proxy_level;
+    new_context.subsample = subsample;
+    new_context.motion_blur_extra_samples = mb_extra_samples;
     new_context.motion_blur_shutter_factor = mb_shutter_factor;
 
-    for_each_output(comp, false, boost::bind(&node_output_interface::begin_output, _1, start, end));
+    for_each_output(
+        comp,
+        false,
+        boost::bind(&node_output_interface::begin_output, _1, start, end));
 
     int          rendered_frames = 0;
     boost::timer frame_timer, total_timer;
@@ -103,7 +115,8 @@ void render_sequence(composition_t& comp,
 
         for (node_t& n : comp.nodes())
         {
-            if (node_output_interface* out = dynamic_cast<node_output_interface*>(&n))
+            if (node_output_interface* out =
+                    dynamic_cast<node_output_interface*>(&n))
             {
                 if (n.ignored())
                     continue;
@@ -114,21 +127,25 @@ void render_sequence(composition_t& comp,
                     new_context.result_node = &n;
                     out->process_and_write(new_context);
                     std::cout << "Render: " << n.name() << ", frame = " << i
-                              << ". elapsed = " << frame_timer.elapsed() << " seconds.";
+                              << ". elapsed = " << frame_timer.elapsed()
+                              << " seconds.";
                 }
                 catch (std::exception& e)
                 {
-                    app().error(std::string("exception thrown during render sequence. what = ")
-                                + e.what());
+                    app().error(
+                        std::string("exception thrown during render sequence. "
+                                    "what = ") +
+                        e.what());
                 }
             }
         }
     }
 
-    for_each_output(comp, false, boost::bind(&node_output_interface::end_output, _1, true));
+    for_each_output(
+        comp, false, boost::bind(&node_output_interface::end_output, _1, true));
     std::cout << "\nRender done. Frames renderered = " << rendered_frames
               << ". Total time = " << total_timer.elapsed() << " seconds.\n";
 }
 
-}  // namespace
-}  // namespace
+}  // namespace render
+}  // namespace ramen

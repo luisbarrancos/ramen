@@ -27,7 +27,7 @@ namespace generic
 {
 class sampler_t
 {
-public:
+  public:
     sampler_t() {}
     sampler_t(const const_image_view_t& src);
     sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src);
@@ -35,40 +35,47 @@ public:
     const Imath::Box2i&       src_area() const { return src_area_; }
     const const_image_view_t& src_view() const { return src_; }
 
-protected:
+  protected:
     Imath::Box2i       src_area_;
     const_image_view_t src_;
 };
 
 class point_sampler_t : public sampler_t
 {
-public:
+  public:
     point_sampler_t() {}
     point_sampler_t(const const_image_view_t& src);
-    point_sampler_t(const Imath::Box2i& src_area, const const_image_view_t& src);
+    point_sampler_t(
+        const Imath::Box2i&       src_area,
+        const const_image_view_t& src);
 
     pixel_t operator()(const vector2_t& p) const;
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const;
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const;
 };
 
-template<class BaseSampler>
-class tile_sampler_t
+template <class BaseSampler> class tile_sampler_t
 {
-public:
+  public:
     tile_sampler_t() {}
     tile_sampler_t(const BaseSampler& s)
-    : s_(s)
+      : s_(s)
     {
     }
 
     pixel_t operator()(const vector2_t& p) const { return s_(tile(p)); }
 
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return s_(tile(p), du, dv);
     }
 
-private:
+  private:
     vector2_t tile(const vector2_t& p) const
     {
         typedef vector2_t::BaseType base_type;
@@ -76,68 +83,81 @@ private:
         Imath::V2i size(s_.src_area().size());
 
         base_type ix, iy;
-        base_type x = Imath::Math<base_type>::modf((p.x - s_.src_area().min.x) / size.x, &ix);
-        base_type y = Imath::Math<base_type>::modf((p.y - s_.src_area().min.y) / size.y, &iy);
+        base_type x = Imath::Math<base_type>::modf(
+            (p.x - s_.src_area().min.x) / size.x, &ix);
+        base_type y = Imath::Math<base_type>::modf(
+            (p.y - s_.src_area().min.y) / size.y, &iy);
 
         if (x < 0)
             x = base_type(1.0) + x;
         if (y < 0)
             y = base_type(1.0) + y;
 
-        return vector2_t(x * size.x + s_.src_area().min.x, y * size.y + s_.src_area().min.y);
+        return vector2_t(
+            x * size.x + s_.src_area().min.x, y * size.y + s_.src_area().min.y);
     }
 
     BaseSampler s_;
 };
 
-template<class BaseSampler>
-class repeat_sampler_t
+template <class BaseSampler> class repeat_sampler_t
 {
-public:
+  public:
     repeat_sampler_t() {}
     repeat_sampler_t(const BaseSampler& s)
-    : s_(s)
+      : s_(s)
     {
     }
 
     pixel_t operator()(const vector2_t& p) const { return s_(repeat(p)); }
 
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return s_(repeat(p), du, dv);
     }
 
-private:
+  private:
     vector2_t repeat(const vector2_t& p) const
     {
         typedef vector2_t::BaseType base_type;
 
         return vector2_t(
-            Imath::clamp(p.x, (base_type) s_.src_area().min.x, (base_type) s_.src_area().max.x),
-            Imath::clamp(p.y, (base_type) s_.src_area().min.y, (base_type) s_.src_area().max.y));
+            Imath::clamp(
+                p.x,
+                (base_type) s_.src_area().min.x,
+                (base_type) s_.src_area().max.x),
+            Imath::clamp(
+                p.y,
+                (base_type) s_.src_area().min.y,
+                (base_type) s_.src_area().max.y));
     }
 
     BaseSampler s_;
 };
 
-template<class BaseSampler>
-class mirror_sampler_t
+template <class BaseSampler> class mirror_sampler_t
 {
-public:
+  public:
     mirror_sampler_t() {}
     mirror_sampler_t(const BaseSampler& s)
-    : s_(s)
+      : s_(s)
     {
     }
 
     pixel_t operator()(const vector2_t& p) const { return s_(mirror(p)); }
 
-    pixel_t operator()(const vector2_t& p, const vector2_t& du, const vector2_t& dv) const
+    pixel_t operator()(
+        const vector2_t& p,
+        const vector2_t& du,
+        const vector2_t& dv) const
     {
         return s_(mirror(p), du, dv);
     }
 
-private:
+  private:
     vector2_t mirror(const vector2_t& p) const
     {
         typedef vector2_t::BaseType base_type;
@@ -146,22 +166,24 @@ private:
 
         base_type ix, iy;
         base_type x = Imath::Math<base_type>::modf(
-            Imath::Math<base_type>::fabs((p.x - s_.src_area().min.x) / size.x), &ix);
+            Imath::Math<base_type>::fabs((p.x - s_.src_area().min.x) / size.x),
+            &ix);
         base_type y = Imath::Math<base_type>::modf(
-            Imath::Math<base_type>::fabs((p.y - s_.src_area().min.y) / size.y), &iy);
+            Imath::Math<base_type>::fabs((p.y - s_.src_area().min.y) / size.y),
+            &iy);
 
         if ((int) ix & 1)
             x = base_type(1.0) - x;
         if ((int) iy & 1)
             y = base_type(1.0) - y;
 
-        return vector2_t(x * size.x + s_.src_area().min.x, y * size.y + s_.src_area().min.y);
+        return vector2_t(
+            x * size.x + s_.src_area().min.x, y * size.y + s_.src_area().min.y);
     }
 
     BaseSampler s_;
 };
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

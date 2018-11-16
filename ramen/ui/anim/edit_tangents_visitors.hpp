@@ -18,15 +18,16 @@ namespace ui
 {
 struct drag_tangents_visitor : public boost::static_visitor<>
 {
-    drag_tangents_visitor(const anim_curves_view_t& view,
-                          int                       index,
-                          bool                      left,
-                          const Imath::V2i&         p,
-                          bool                      break_tangent = false);
+    drag_tangents_visitor(
+        const anim_curves_view_t& view,
+        int                       index,
+        bool                      left,
+        const Imath::V2i&         p,
+        bool                      break_tangent = false);
     void operator()(anim::float_curve_t* c);
     void operator()(anim::shape_curve2f_t* c) {}
 
-private:
+  private:
     const anim_curves_view_t& view_;
     Imath::V2i                p_;
     int                       index_;
@@ -37,18 +38,20 @@ private:
 struct can_set_autotangents_visitor : public boost::static_visitor<>
 {
     can_set_autotangents_visitor(anim::keyframe_t::auto_tangent_method m)
-    : m_(m)
+      : m_(m)
     {
     }
     void operator()(const anim::float_curve_t* c) { result = true; }
     void operator()(anim::shape_curve2f_t* c)
     {
-        result = (m_ == anim::keyframe_t::tangent_step || m_ == anim::keyframe_t::tangent_linear);
+        result =
+            (m_ == anim::keyframe_t::tangent_step ||
+             m_ == anim::keyframe_t::tangent_linear);
     }
 
     bool result;
 
-private:
+  private:
     anim::keyframe_t::auto_tangent_method m_;
 };
 
@@ -58,50 +61,44 @@ struct set_autotangents_visitor : public boost::static_visitor<>
     void operator()(anim::float_curve_t* c);
     void operator()(anim::shape_curve2f_t* c);
 
-private:
+  private:
     anim::keyframe_t::auto_tangent_method m_;
 };
 
 struct can_set_extrapolation_visitor : public boost::static_visitor<>
 {
     can_set_extrapolation_visitor(anim::extrapolation_method m)
-    : m_(m)
+      : m_(m)
     {
     }
 
-    template<class K>
-    void operator()(anim::curve_t<K>* c)
-    {
-        result = false;
-    }
+    template <class K> void operator()(anim::curve_t<K>* c) { result = false; }
 
     void operator()(anim::float_curve_t* c) { result = true; }
 
     bool result;
 
-private:
+  private:
     anim::extrapolation_method m_;
 };
 
 struct set_extrapolation_visitor : public boost::static_visitor<>
 {
     set_extrapolation_visitor(anim::extrapolation_method m)
-    : m_(m)
+      : m_(m)
     {
     }
 
-    template<class K>
-    void operator()(anim::curve_t<K>* c)
+    template <class K> void operator()(anim::curve_t<K>* c)
     {
         assert(0 && "Can't set extrapolation for non float curves");
     }
 
     void operator()(anim::float_curve_t* c) { c->set_extrapolation(m_); }
 
-private:
+  private:
     anim::extrapolation_method m_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

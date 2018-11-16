@@ -13,17 +13,22 @@ namespace ramen
 namespace image
 {
 keyer_node_t::keyer_node_t(bool add_mask_input)
-: image_node_t()
+  : image_node_t()
 {
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 
     if (add_mask_input)
-        add_input_plug("mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
+        add_input_plug(
+            "mask",
+            true,
+            ui::palette_t::instance().color("matte plug"),
+            "Mask");
 }
 
 keyer_node_t::keyer_node_t(const keyer_node_t& other)
-: image_node_t(other)
+  : image_node_t(other)
 {
 }
 
@@ -32,7 +37,8 @@ void keyer_node_t::do_calc_bounds(const render::context_t& context)
     image_node_t* in0 = input_as<image_node_t>(0);
 
     if (input(1))
-        set_bounds(ImathExt::intersect(in0->bounds(), input_as<image_node_t>(1)->bounds()));
+        set_bounds(ImathExt::intersect(
+            in0->bounds(), input_as<image_node_t>(1)->bounds()));
     else
         set_bounds(in0->bounds());
 }
@@ -43,7 +49,8 @@ void keyer_node_t::do_calc_defined(const render::context_t& context)
 
     if (input(1))
     {
-        Imath::Box2i def(ImathExt::intersect(in0->defined(), input_as<image_node_t>(1)->defined()));
+        Imath::Box2i def(ImathExt::intersect(
+            in0->defined(), input_as<image_node_t>(1)->defined()));
         set_defined(def);
     }
     else
@@ -58,7 +65,7 @@ void keyer_node_t::get_input_frame()
     if (in0)
     {
         render::context_t context = composition()->current_context();
-        context.result_node       = in0;
+        context.result_node = in0;
         render::image_node_renderer_t r(context);
         r.render();
 
@@ -75,7 +82,8 @@ void keyer_node_t::free_input_frame()
     input_pixels_.clear();
 }
 
-boost::optional<Imath::Color3f> keyer_node_t::sample_input(const Imath::V2i& p) const
+boost::optional<Imath::Color3f> keyer_node_t::sample_input(
+    const Imath::V2i& p) const
 {
     if (input_pixels_.empty())
         return boost::optional<Imath::Color3f>();
@@ -86,14 +94,17 @@ boost::optional<Imath::Color3f> keyer_node_t::sample_input(const Imath::V2i& p) 
     if (p.y < input_data_window_.min.y || p.y > input_data_window_.max.y)
         return boost::optional<Imath::Color3f>();
 
-    image::pixel_t px(input_pixels_.const_rgba_view()(p.x - input_data_window_.min.x,
-                                                      p.y - input_data_window_.min.y));
-    return Imath::Color3f(boost::gil::get_color(px, boost::gil::red_t()),
-                          boost::gil::get_color(px, boost::gil::green_t()),
-                          boost::gil::get_color(px, boost::gil::blue_t()));
+    image::pixel_t px(input_pixels_.const_rgba_view()(
+        p.x - input_data_window_.min.x, p.y - input_data_window_.min.y));
+    return Imath::Color3f(
+        boost::gil::get_color(px, boost::gil::red_t()),
+        boost::gil::get_color(px, boost::gil::green_t()),
+        boost::gil::get_color(px, boost::gil::blue_t()));
 }
 
-void keyer_node_t::sample_input(const Imath::Box2i& area, std::vector<Imath::Color3f>& colors) const
+void keyer_node_t::sample_input(
+    const Imath::Box2i&          area,
+    std::vector<Imath::Color3f>& colors) const
 {
     if (input_pixels_.empty())
         return;
@@ -109,14 +120,16 @@ void keyer_node_t::sample_input(const Imath::Box2i& area, std::vector<Imath::Col
     {
         for (p.x = subarea.min.x; p.x <= subarea.max.x; ++p.x)
         {
-            image::pixel_t px(input_pixels_.const_rgba_view()(p.x - input_data_window_.min.x,
-                                                              p.y - input_data_window_.min.y));
-            colors.push_back(Imath::Color3f(boost::gil::get_color(px, boost::gil::red_t()),
-                                            boost::gil::get_color(px, boost::gil::green_t()),
-                                            boost::gil::get_color(px, boost::gil::blue_t())));
+            image::pixel_t px(input_pixels_.const_rgba_view()(
+                p.x - input_data_window_.min.x,
+                p.y - input_data_window_.min.y));
+            colors.push_back(Imath::Color3f(
+                boost::gil::get_color(px, boost::gil::red_t()),
+                boost::gil::get_color(px, boost::gil::green_t()),
+                boost::gil::get_color(px, boost::gil::blue_t())));
         }
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -54,23 +54,23 @@ class RAMEN_API param_t : public QObject
 {
     Q_OBJECT
 
-protected:
+  protected:
     enum flag_bits
     {
-        static_bit           = 1 << 0,  // param does not animate.
-        secret_bit           = 1 << 1,  // param does not show on the inspector.
-        persist_bit          = 1 << 2,  // param value is not saved to file.
-        can_undo_bit         = 1 << 3,  // param uses undo.
-        enabled_bit          = 1 << 4,  // param widgets are enabled in the inspector.
+        static_bit = 1 << 0,    // param does not animate.
+        secret_bit = 1 << 1,    // param does not show on the inspector.
+        persist_bit = 1 << 2,   // param value is not saved to file.
+        can_undo_bit = 1 << 3,  // param uses undo.
+        enabled_bit = 1 << 4,   // param widgets are enabled in the inspector.
         dont_track_mouse_bit = 1 << 5,  // notify is called on mouse up only.
-        round_to_int_bit
-        = 1 << 6,  // for float params, round to value to integer. Emulates an integer_param.
-        proportional_bit
-        = 1 << 7,  // param is a float2 or float3 and the values can be modified proportionally.
+        round_to_int_bit = 1 << 6,      // for float params, round to value to
+                                        // integer. Emulates an integer_param.
+        proportional_bit = 1 << 7,      // param is a float2 or float3 and the
+                                    // values can be modified proportionally.
         include_in_hash_bit = 1 << 8  // param is included in hash
     };
 
-public:
+  public:
     enum change_reason
     {
         silent_edit = 0,
@@ -158,9 +158,10 @@ public:
     void emit_param_changed(change_reason reason);
 
     // format
-    void format_changed(const Imath::Box2i& new_format,
-                        float               aspect,
-                        const Imath::V2f&   proxy_scale);
+    void format_changed(
+        const Imath::Box2i& new_format,
+        float               aspect,
+        const Imath::V2f&   proxy_scale);
 
     // animation
     void create_tracks(anim::track_t* parent);
@@ -174,8 +175,9 @@ public:
     std::auto_ptr<undo::command_t> create_command();
 
     // paths
-    void convert_relative_paths(const boost::filesystem::path& old_base,
-                                const boost::filesystem::path& new_base);
+    void convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base);
     void make_paths_absolute();
     void make_paths_relative();
 
@@ -191,7 +193,7 @@ public:
     void     update_widgets();
     void     enable_widgets(bool e);
 
-protected:
+  protected:
     param_t(const param_t& other);
     void operator=(const param_t& other);
 
@@ -201,9 +203,12 @@ protected:
     const poly_param_value_t& value() const { return value_; }
     poly_param_value_t&       value() { return value_; }
 
-    virtual poly_param_value_t value_at_frame(float frame) const { return value(); }
+    virtual poly_param_value_t value_at_frame(float frame) const
+    {
+        return value();
+    }
 
-private:
+  private:
     friend class param_set_t;
     friend class static_param_command_t;
     friend class static_param_reset_command_t;
@@ -214,9 +219,10 @@ private:
 
     virtual void do_init();
 
-    virtual void do_format_changed(const Imath::Box2i& new_format,
-                                   float               aspect,
-                                   const Imath::V2f&   proxy_scale);
+    virtual void do_format_changed(
+        const Imath::Box2i& new_format,
+        float               aspect,
+        const Imath::V2f&   proxy_scale);
 
     virtual void do_set_param_set(param_set_t* parent);
 
@@ -232,8 +238,9 @@ private:
     virtual void do_add_to_hash(hash::generator_t& hash_gen) const;
 
     // paths
-    virtual void do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                           const boost::filesystem::path& new_base);
+    virtual void do_convert_relative_paths(
+        const boost::filesystem::path& old_base,
+        const boost::filesystem::path& new_base);
     virtual void do_make_paths_absolute();
     virtual void do_make_paths_relative();
 
@@ -249,14 +256,12 @@ private:
     virtual void     do_update_widgets();
     virtual void     do_enable_widgets(bool e);
 
-    template<class S>
-    friend S get_value(const param_t& p);
-    template<class S>
+    template <class S> friend S get_value(const param_t& p);
+    template <class S>
     friend S get_value_at_frame(const param_t& p, float frame);
 
-    template<class S>
-    friend S get_absolute_value(const param_t& p);
-    template<class S>
+    template <class S> friend S get_absolute_value(const param_t& p);
+    template <class S>
     friend S get_absolute_value_at_frame(const param_t& p, float frame);
 
     param_set_t* param_set_;
@@ -269,8 +274,7 @@ private:
     poly_param_value_t value_;
 };
 
-template<class S>
-S get_value(const param_t& p)
+template <class S> S get_value(const param_t& p)
 {
     const poly_param_value_t& any(p.value());
 
@@ -288,8 +292,7 @@ S get_value(const param_t& p)
 #endif
 }
 
-template<class S>
-S get_value_at_frame(const param_t& p, float frame)
+template <class S> S get_value_at_frame(const param_t& p, float frame)
 {
     poly_param_value_t any(p.value_at_frame(frame));
 
@@ -309,5 +312,4 @@ S get_value_at_frame(const param_t& p, float frame)
 
 RAMEN_API param_t* new_clone(const param_t& other);
 
-}  // namespace
-
+}  // namespace ramen

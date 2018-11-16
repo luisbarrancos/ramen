@@ -21,7 +21,7 @@ namespace memory
 {
 class image_cache_t : public lru_cache_interface
 {
-public:
+  public:
     typedef hash::generator_t::digest_type digest_type;
 
     image_cache_t();
@@ -35,12 +35,14 @@ public:
 
     void insert(node_t* n, const digest_type& key, image::buffer_t& img);
 
-    boost::optional<image::buffer_t> find(const digest_type& key, const Imath::Box2i& area);
+    boost::optional<image::buffer_t> find(
+        const digest_type&  key,
+        const Imath::Box2i& area);
 
     void                     erase_lru() override;
     boost::posix_time::ptime lru_time() const override;
 
-private:
+  private:
     // non-copyable
     image_cache_t(const image_cache_t&);
     image_cache_t& operator=(const image_cache_t&);
@@ -48,7 +50,7 @@ private:
     struct entry_t
     {
         entry_t(image::buffer_t buf)
-        : buffer(buf)
+          : buffer(buf)
         {
             touch_time = boost::posix_time::microsec_clock::universal_time();
         }
@@ -71,6 +73,5 @@ private:
     std::map<node_t*, map_iterator> added_while_interacting_;
 };
 
-}  // memory
-}  // ramen
-
+}  // namespace memory
+}  // namespace ramen

@@ -30,8 +30,8 @@ void set_outputs_color(node_t& n, graph_color_t c)
 struct search_node
 {
     search_node(node_t& n)
-    : n_(&n)
-    , found(false)
+      : n_(&n)
+      , found(false)
     {
     }
 
@@ -45,8 +45,7 @@ struct search_node
     bool    found;
 };
 
-}  // detail
-
+}  // namespace detail
 
 bool node_depends_on_node(node_t& node, node_t& other)
 {
@@ -61,4 +60,4 @@ bool node_depends_on_node(node_t& node, node_t& other)
     return fun.found;
 }
 
-}  // namespace
+}  // namespace ramen

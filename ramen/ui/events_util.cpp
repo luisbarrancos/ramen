@@ -143,5 +143,5 @@ key_event_t::key_t translate_keys(QKeyEvent* event)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

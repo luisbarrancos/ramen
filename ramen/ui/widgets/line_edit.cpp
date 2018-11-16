@@ -9,16 +9,19 @@ namespace ramen
 namespace ui
 {
 line_edit_t::line_edit_t(QWidget* parent)
-: QLineEdit(parent)
+  : QLineEdit(parent)
 {
 }
 
 line_edit_t::line_edit_t(const QString& contents, QWidget* parent)
-: QLineEdit(contents, parent)
+  : QLineEdit(contents, parent)
 {
 }
 
-void line_edit_t::contextMenuEvent(QContextMenuEvent* event) { event->ignore(); }
+void line_edit_t::contextMenuEvent(QContextMenuEvent* event)
+{
+    event->ignore();
+}
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

@@ -10,6 +10,5 @@ namespace anim
 {
 double repeat_time(double t, double start_time, double end_time);
 
-}  // anim
-}  // ramen
-
+}  // namespace anim
+}  // namespace ramen

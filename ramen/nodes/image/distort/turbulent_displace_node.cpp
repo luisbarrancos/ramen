@@ -29,41 +29,43 @@ enum
     border_mirror
 };
 
-template<class TurbGen>
-struct turbulent_warp_fun
+template <class TurbGen> struct turbulent_warp_fun
 {
     typedef Imath::V2f result_type;
 
-    turbulent_warp_fun(const TurbGen&    tgen,
-                       const Imath::V2f& amplitude,
-                       const Imath::V2f& size,
-                       const Imath::V2f& shift,
-                       const Imath::V2f& depth,
-                       float             t,
-                       float             subsample,
-                       float             aspect)
-    : tgen_(tgen)
+    turbulent_warp_fun(
+        const TurbGen&    tgen,
+        const Imath::V2f& amplitude,
+        const Imath::V2f& size,
+        const Imath::V2f& shift,
+        const Imath::V2f& depth,
+        float             t,
+        float             subsample,
+        float             aspect)
+      : tgen_(tgen)
     {
         amplitude_ = 2.0f * amplitude / subsample;
-        size_      = size;
-        shift_     = shift;
-        depth_     = depth;
-        time_      = t;
+        size_ = size;
+        shift_ = shift;
+        depth_ = depth;
+        time_ = t;
         subsample_ = subsample;
-        aspect_    = aspect;
+        aspect_ = aspect;
     }
 
     Imath::V2f operator()(const Imath::V2f& p) const
     {
-        Imath::V3f q((p.x * subsample_ * aspect_ / size_.x) + shift_.x,
-                     (p.y * subsample_ / size_.y) + shift_.y,
-                     time_);
+        Imath::V3f q(
+            (p.x * subsample_ * aspect_ / size_.x) + shift_.x,
+            (p.y * subsample_ / size_.y) + shift_.y,
+            time_);
         Imath::V2f d(tgen_(q));
 
-        return Imath::V2f(p.x + (amplitude_.x * d.x), p.y + (amplitude_.y * d.y));
+        return Imath::V2f(
+            p.x + (amplitude_.x * d.x), p.y + (amplitude_.y * d.y));
     }
 
-private:
+  private:
     const TurbGen& tgen_;
     Imath::V2f     amplitude_;
     Imath::V2f     size_, shift_, depth_;
@@ -75,8 +77,8 @@ private:
 struct mask_fun
 {
     mask_fun(const image::const_image_view_t& mask, const Imath::Box2i& area)
-    : mask_(mask)
-    , area_(area)
+      : mask_(mask)
+      , area_(area)
     {
     }
 
@@ -87,24 +89,24 @@ struct mask_fun
         if ((p.x >= area_.min.x) && (p.x <= area_.max.x))
         {
             if ((p.y >= area_.min.y) && (p.y <= area_.max.y))
-                return get_color(mask_(p.x - area_.min.x, p.y - area_.min.y), alpha_t());
+                return get_color(
+                    mask_(p.x - area_.min.x, p.y - area_.min.y), alpha_t());
         }
 
         return 0.0f;
     }
 
-private:
+  private:
     const image::const_image_view_t& mask_;
     Imath::Box2i                     area_;
 };
 
-template<class WarpFun, class MaskFun>
-struct masked_warp_fun
+template <class WarpFun, class MaskFun> struct masked_warp_fun
 {
-public:
+  public:
     masked_warp_fun(WarpFun f, MaskFun mf)
-    : f_(f)
-    , mf_(mf)
+      : f_(f)
+      , mf_(mf)
     {
     }
 
@@ -121,18 +123,19 @@ public:
         return p;
     }
 
-private:
+  private:
     WarpFun f_;
     MaskFun mf_;
 };
 
-}  // unnamed
+}  // namespace
 
 turbulent_displace_node_t::turbulent_displace_node_t()
-: distort_node_t()
+  : distort_node_t()
 {
     set_name("turb_disp");
-    add_input_plug("mask", false, ui::palette_t::instance().color("matte plug"), "Mask");
+    add_input_plug(
+        "mask", false, ui::palette_t::instance().color("matte plug"), "Mask");
 }
 
 void turbulent_displace_node_t::do_create_params()
@@ -190,7 +193,7 @@ void turbulent_displace_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> r(new popup_param_t("Borders"));
     r->set_id("borders");
-    r->menu_items() = std::vector<std::string>({ "Black", "Tile", "Mirror" });
+    r->menu_items() = std::vector<std::string>({"Black", "Tile", "Mirror"});
     add_param(r);
 }
 
@@ -227,7 +230,8 @@ void turbulent_displace_node_t::do_calc_bounds(const render::context_t& context)
     set_bounds(b);
 }
 
-void turbulent_displace_node_t::do_calc_inputs_interest(const render::context_t& context)
+void turbulent_displace_node_t::do_calc_inputs_interest(
+    const render::context_t& context)
 {
     Imath::V2f amplitude = get_value<Imath::V2f>(param("amplitude"));
 
@@ -253,13 +257,14 @@ void turbulent_displace_node_t::do_calc_inputs_interest(const render::context_t&
 void turbulent_displace_node_t::do_process(const render::context_t& context)
 {
     int   octaves = get_value<float>(param("octaves"));
-    float lac     = get_value<float>(param("lacunarity"));
-    float gain    = get_value<float>(param("gain"));
+    float lac = get_value<float>(param("lacunarity"));
+    float gain = get_value<float>(param("gain"));
 
     // warp
-    typedef noise::simplex_noise_t                                         noise_gen_type;
-    typedef noise::vector_noise_adaptor2_t<noise_gen_type, noise_gen_type> vector_noise_type;
-    typedef noise::turbulence_t<vector_noise_type>                         turbulence_type;
+    typedef noise::simplex_noise_t noise_gen_type;
+    typedef noise::vector_noise_adaptor2_t<noise_gen_type, noise_gen_type>
+                                                   vector_noise_type;
+    typedef noise::turbulence_t<vector_noise_type> turbulence_type;
 
     vector_noise_type vgen(noise::global_noise, noise::global_noise1);
     turbulence_type   tgen(vgen, octaves, gain, lac);
@@ -268,16 +273,17 @@ void turbulent_displace_node_t::do_process(const render::context_t& context)
     Imath::V2f size(get_value<Imath::V2f>(param("size")));
     Imath::V2f shift(get_value<Imath::V2f>(param("shift")));
 
-    turbulent_warp_fun<turbulence_type> f(tgen,
-                                          amp,
-                                          size,
-                                          shift,
-                                          Imath::V2f(0, 2),
-                                          get_value<float>(param("time")),
-                                          context.subsample,
-                                          aspect_ratio());
+    turbulent_warp_fun<turbulence_type> f(
+        tgen,
+        amp,
+        size,
+        shift,
+        Imath::V2f(0, 2),
+        get_value<float>(param("time")),
+        context.subsample,
+        aspect_ratio());
 
-    image_node_t* in  = input_as<image_node_t>(0);
+    image_node_t* in = input_as<image_node_t>(0);
     image_node_t* msk = input_as<image_node_t>(1);
 
     if (msk)
@@ -288,33 +294,36 @@ void turbulent_displace_node_t::do_process(const render::context_t& context)
         switch (get_value<int>(param("borders")))
         {
             case border_black:
-                image::warp_bilinear(in->defined(),
-                                     in->const_image_view(),
-                                     defined(),
-                                     image_view(),
-                                     mf,
-                                     false,
-                                     false);
+                image::warp_bilinear(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    mf,
+                    false,
+                    false);
                 break;
 
             case border_tile:
-                image::warp_bilinear_tile(in->defined(),
-                                          in->const_image_view(),
-                                          defined(),
-                                          image_view(),
-                                          mf,
-                                          false,
-                                          false);
+                image::warp_bilinear_tile(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    mf,
+                    false,
+                    false);
                 break;
 
             case border_mirror:
-                image::warp_bilinear_mirror(in->defined(),
-                                            in->const_image_view(),
-                                            defined(),
-                                            image_view(),
-                                            mf,
-                                            false,
-                                            false);
+                image::warp_bilinear_mirror(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    mf,
+                    false,
+                    false);
                 break;
         }
     }
@@ -323,62 +332,69 @@ void turbulent_displace_node_t::do_process(const render::context_t& context)
         switch (get_value<int>(param("borders")))
         {
             case border_black:
-                image::warp_bilinear(in->defined(),
-                                     in->const_image_view(),
-                                     defined(),
-                                     image_view(),
-                                     f,
-                                     false,
-                                     false);
+                image::warp_bilinear(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    f,
+                    false,
+                    false);
                 break;
 
             case border_tile:
-                image::warp_bilinear_tile(in->defined(),
-                                          in->const_image_view(),
-                                          defined(),
-                                          image_view(),
-                                          f,
-                                          false,
-                                          false);
+                image::warp_bilinear_tile(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    f,
+                    false,
+                    false);
                 break;
 
             case border_mirror:
-                image::warp_bilinear_mirror(in->defined(),
-                                            in->const_image_view(),
-                                            defined(),
-                                            image_view(),
-                                            f,
-                                            false,
-                                            false);
+                image::warp_bilinear_mirror(
+                    in->defined(),
+                    in->const_image_view(),
+                    defined(),
+                    image_view(),
+                    f,
+                    false,
+                    false);
                 break;
         }
     }
 }
 
 // factory
-node_t* create_turbulent_displace_node() { return new turbulent_displace_node_t(); }
+node_t* create_turbulent_displace_node()
+{
+    return new turbulent_displace_node_t();
+}
 
 const node_metaclass_t* turbulent_displace_node_t::metaclass() const
 {
     return &turbulent_displace_node_metaclass();
 }
 
-const node_metaclass_t& turbulent_displace_node_t::turbulent_displace_node_metaclass()
+const node_metaclass_t& turbulent_displace_node_t::
+    turbulent_displace_node_metaclass()
 {
     static bool             inited(false);
     static node_metaclass_t info;
 
     if (!inited)
     {
-        info.id            = "image.builtin.turb_displace";
+        info.id = "image.builtin.turb_displace";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Distort";
-        info.menu_item     = "Turbulent Displace";
-        info.help          = "Displace the input image, using a fractal noise texture.";
-        info.create        = &create_turbulent_displace_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Distort";
+        info.menu_item = "Turbulent Displace";
+        info.help = "Displace the input image, using a fractal noise texture.";
+        info.create = &create_turbulent_displace_node;
+        inited = true;
     }
 
     return info;
@@ -387,5 +403,5 @@ const node_metaclass_t& turbulent_displace_node_t::turbulent_displace_node_metac
 static bool registered = node_factory_t::instance().register_node(
     turbulent_displace_node_t::turbulent_displace_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -21,10 +21,11 @@ inline pixel_t premultiply_pixel(const pixel_t& p)
 {
     float a = boost::gil::get_color(p, boost::gil::alpha_t());
 
-    return pixel_t(boost::gil::get_color(p, boost::gil::red_t()) * a,
-                   boost::gil::get_color(p, boost::gil::green_t()) * a,
-                   boost::gil::get_color(p, boost::gil::blue_t()) * a,
-                   a);
+    return pixel_t(
+        boost::gil::get_color(p, boost::gil::red_t()) * a,
+        boost::gil::get_color(p, boost::gil::green_t()) * a,
+        boost::gil::get_color(p, boost::gil::blue_t()) * a,
+        a);
 }
 
 inline pixel_t unpremultiply_pixel(const pixel_t& p)
@@ -33,10 +34,11 @@ inline pixel_t unpremultiply_pixel(const pixel_t& p)
 
     if (a != 0.0f)
     {
-        return pixel_t(boost::gil::get_color(p, boost::gil::red_t()) / a,
-                       boost::gil::get_color(p, boost::gil::green_t()) / a,
-                       boost::gil::get_color(p, boost::gil::blue_t()) / a,
-                       a);
+        return pixel_t(
+            boost::gil::get_color(p, boost::gil::red_t()) / a,
+            boost::gil::get_color(p, boost::gil::green_t()) / a,
+            boost::gil::get_color(p, boost::gil::blue_t()) / a,
+            a);
     }
     else
         return pixel_t(0.0f, 0.0f, 0.0f, 0.0f);
@@ -44,10 +46,14 @@ inline pixel_t unpremultiply_pixel(const pixel_t& p)
 
 inline pixel_t clamp_negative_values(const pixel_t& p)
 {
-    return pixel_t(std::max((float) boost::gil::get_color(p, boost::gil::red_t()), 0.0f),
-                   std::max((float) boost::gil::get_color(p, boost::gil::green_t()), 0.0f),
-                   std::max((float) boost::gil::get_color(p, boost::gil::blue_t()), 0.0f),
-                   clamp((float) boost::gil::get_color(p, boost::gil::alpha_t()), 0.0f, 1.0f));
+    return pixel_t(
+        std::max((float) boost::gil::get_color(p, boost::gil::red_t()), 0.0f),
+        std::max((float) boost::gil::get_color(p, boost::gil::green_t()), 0.0f),
+        std::max((float) boost::gil::get_color(p, boost::gil::blue_t()), 0.0f),
+        clamp(
+            (float) boost::gil::get_color(p, boost::gil::alpha_t()),
+            0.0f,
+            1.0f));
 }
 
 inline float luminance(float r, float g, float b)
@@ -57,22 +63,24 @@ inline float luminance(float r, float g, float b)
 
 inline float luminance(const pixel_t& p)
 {
-    return luminance(boost::gil::get_color(p, boost::gil::red_t()),
-                     boost::gil::get_color(p, boost::gil::green_t()),
-                     boost::gil::get_color(p, boost::gil::blue_t()));
+    return luminance(
+        boost::gil::get_color(p, boost::gil::red_t()),
+        boost::gil::get_color(p, boost::gil::green_t()),
+        boost::gil::get_color(p, boost::gil::blue_t()));
 }
 
 inline image::pixel_t lerp_pixels(const pixel_t& p, const pixel_t& q, float t)
 {
     float it = 1.0f - t;
-    return pixel_t(boost::gil::get_color(p, boost::gil::red_t()) * t
-                       + boost::gil::get_color(q, boost::gil::red_t()) * it,
-                   boost::gil::get_color(p, boost::gil::green_t()) * t
-                       + boost::gil::get_color(q, boost::gil::green_t()) * it,
-                   boost::gil::get_color(p, boost::gil::blue_t()) * t
-                       + boost::gil::get_color(q, boost::gil::blue_t()) * it,
-                   boost::gil::get_color(p, boost::gil::alpha_t()) * t
-                       + boost::gil::get_color(q, boost::gil::alpha_t()) * it);
+    return pixel_t(
+        boost::gil::get_color(p, boost::gil::red_t()) * t +
+            boost::gil::get_color(q, boost::gil::red_t()) * it,
+        boost::gil::get_color(p, boost::gil::green_t()) * t +
+            boost::gil::get_color(q, boost::gil::green_t()) * it,
+        boost::gil::get_color(p, boost::gil::blue_t()) * t +
+            boost::gil::get_color(q, boost::gil::blue_t()) * it,
+        boost::gil::get_color(p, boost::gil::alpha_t()) * t +
+            boost::gil::get_color(q, boost::gil::alpha_t()) * it);
 }
 
 inline float shadow_blend_function(float x)
@@ -107,8 +115,7 @@ inline float midtones_blend_function(float x)
 // function object versions of color blend functions
 struct shadow_blend_fun
 {
-    template<class T>
-    T operator()(T x) const
+    template <class T> T operator()(T x) const
     {
         return shadow_blend_function(x);
     }
@@ -116,8 +123,7 @@ struct shadow_blend_fun
 
 struct highlights_blend_fun
 {
-    template<class T>
-    T operator()(T x) const
+    template <class T> T operator()(T x) const
     {
         return highlights_blend_function(x);
     }
@@ -125,8 +131,7 @@ struct highlights_blend_fun
 
 struct midtones_blend_fun
 {
-    template<class T>
-    T operator()(T x) const
+    template <class T> T operator()(T x) const
     {
         return midtones_blend_function(x);
     }
@@ -141,6 +146,5 @@ pixel_t        hsv_to_rgb(const pixel_t& src);
 Imath::Color4f hsv_to_rgb(const Imath::Color4f& src);
 Imath::Color3f hsv_to_rgb(const Imath::Color3f& src);
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

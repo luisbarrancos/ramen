@@ -16,12 +16,12 @@ namespace roto
 {
 class triple_t
 {
-public:
+  public:
     enum flag_bits
     {
         selected_bit = 1 << 0,
-        corner_bit   = 1 << 1,
-        broken_bit   = 1 << 2
+        corner_bit = 1 << 1,
+        broken_bit = 1 << 2
     };
 
     triple_t();
@@ -60,11 +60,10 @@ public:
     void read(const serialization::yaml_node_t& node, int version = 1);
     void write(serialization::yaml_oarchive_t& out, int version = 1) const;
 
-private:
+  private:
     Imath::V2f              p0_, p1_, p2_;
     mutable boost::uint32_t flags_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace roto
+}  // namespace ramen

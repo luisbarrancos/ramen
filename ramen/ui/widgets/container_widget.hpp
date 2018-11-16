@@ -16,16 +16,15 @@ class container_widget_t : public QStackedWidget
 {
     Q_OBJECT
 
-public:
+  public:
     container_widget_t(QWidget* parent = 0);
 
     void set_contents(QWidget* w);
     void clear_contents();
 
-private:
+  private:
     QWidget* contents_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

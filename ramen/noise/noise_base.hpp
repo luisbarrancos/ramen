@@ -18,7 +18,7 @@ namespace noise
 {
 class noise_base_t
 {
-public:
+  public:
     typedef float result_type;
 
     noise_base_t();
@@ -26,7 +26,7 @@ public:
     BOOST_STATIC_CONSTANT(int, tabsize = 256);
     BOOST_STATIC_CONSTANT(int, tabmask = 256 - 1);
 
-protected:
+  protected:
     int   floor(float x) const { return math::fast_float_floor(x); }
     float smooth_step(float x) const { return (x * x * (3 - 2 * x)); }
     float lerp(float t, float x0, float x1) const { return x0 + t * (x1 - x0); }
@@ -34,6 +34,5 @@ protected:
     permutation_array_t perm_;
 };
 
-}  // noise
-}  // ramen
-
+}  // namespace noise
+}  // namespace ramen

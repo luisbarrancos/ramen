@@ -24,7 +24,7 @@ enum
 struct basic_green_spill
 {
     basic_green_spill(float amount)
-    : amount_(amount)
+      : amount_(amount)
     {
     }
 
@@ -34,27 +34,27 @@ struct basic_green_spill
 
         image::pixel_t result(p);
 
-        if (get_color(p, green_t()) > get_color(p, red_t())
-            && get_color(p, green_t()) > get_color(p, blue_t()))
+        if (get_color(p, green_t()) > get_color(p, red_t()) &&
+            get_color(p, green_t()) > get_color(p, blue_t()))
         {
-            get_color(result, green_t())
-                = (((get_color(p, red_t()) + get_color(p, blue_t())) / 2.0f)
-                   - get_color(p, green_t()))
-                      * amount_
-                  + get_color(p, green_t());
+            get_color(result, green_t()) =
+                (((get_color(p, red_t()) + get_color(p, blue_t())) / 2.0f) -
+                 get_color(p, green_t())) *
+                    amount_ +
+                get_color(p, green_t());
         }
 
         return result;
     }
 
-private:
+  private:
     float amount_;
 };
 
 struct basic_blue_spill
 {
     basic_blue_spill(float amount)
-    : amount_(amount)
+      : amount_(amount)
     {
     }
 
@@ -64,29 +64,29 @@ struct basic_blue_spill
 
         image::pixel_t result(p);
 
-        if (get_color(p, blue_t()) > get_color(p, red_t())
-            && get_color(p, blue_t()) > get_color(p, green_t()))
+        if (get_color(p, blue_t()) > get_color(p, red_t()) &&
+            get_color(p, blue_t()) > get_color(p, green_t()))
         {
-            get_color(result, blue_t())
-                = (((get_color(p, red_t()) + get_color(p, green_t())) / 2.0f)
-                   - get_color(p, blue_t()))
-                      * amount_
-                  + get_color(p, blue_t());
+            get_color(result, blue_t()) =
+                (((get_color(p, red_t()) + get_color(p, green_t())) / 2.0f) -
+                 get_color(p, blue_t())) *
+                    amount_ +
+                get_color(p, blue_t());
         }
 
         return result;
     }
 
-private:
+  private:
     float amount_;
 };
 
 struct rgb_cmy_spill
 {
-public:
+  public:
     rgb_cmy_spill(float amount, int channel_mask)
-    : amount_(amount)
-    , channel_mask_(channel_mask)
+      : amount_(amount)
+      , channel_mask_(channel_mask)
     {
     }
 
@@ -102,21 +102,21 @@ public:
         if (channel_mask_ & (1 << 0))
         {
             float m = std::max(g, b);
-            r       = r > m ? m : r;
+            r = r > m ? m : r;
         }
 
         // green
         if (channel_mask_ & (1 << 1))
         {
             float m = std::max(r, b);
-            g       = g > m ? m : g;
+            g = g > m ? m : g;
         }
 
         // blue
         if (channel_mask_ & (1 << 2))
         {
             float m = std::max(r, g);
-            b       = b > m ? m : b;
+            b = b > m ? m : b;
         }
 
         // cyan
@@ -155,21 +155,22 @@ public:
             }
         }
 
-        return image::pixel_t(r * amount_ + (1.0f - amount_) * get_color(p, red_t()),
-                              g * amount_ + (1.0f - amount_) * get_color(p, green_t()),
-                              b * amount_ + (1.0f - amount_) * get_color(p, blue_t()),
-                              get_color(p, alpha_t()));
+        return image::pixel_t(
+            r * amount_ + (1.0f - amount_) * get_color(p, red_t()),
+            g * amount_ + (1.0f - amount_) * get_color(p, green_t()),
+            b * amount_ + (1.0f - amount_) * get_color(p, blue_t()),
+            get_color(p, alpha_t()));
     }
 
-private:
+  private:
     float amount_;
     int   channel_mask_;
 };
 
-}  // unnamed
+}  // namespace
 
 spill_suppressor_node_t::spill_suppressor_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("spill");
 }
@@ -185,7 +186,7 @@ void spill_suppressor_node_t::do_create_params()
 
         std::auto_ptr<popup_param_t> p(new popup_param_t("Color"));
         p->set_id("bcolor");
-        p->menu_items() = std::vector<std::string>({ "Blue", "Green" });
+        p->menu_items() = std::vector<std::string>({"Blue", "Green"});
         group->add_param(p);
 
         std::auto_ptr<float_param_t> q(new float_param_t("Amount"));
@@ -199,7 +200,8 @@ void spill_suppressor_node_t::do_create_params()
     }
 
     {
-        std::auto_ptr<composite_param_t> group(new composite_param_t("RGB-CMY"));
+        std::auto_ptr<composite_param_t> group(
+            new composite_param_t("RGB-CMY"));
         group->set_id("rgb_cmy");
 
         std::auto_ptr<bool_param_t> p(new bool_param_t("Red"));
@@ -245,16 +247,19 @@ void spill_suppressor_node_t::do_create_params()
     add_param(top);
 }
 
-void spill_suppressor_node_t::do_process(const image::const_image_view_t& src,
-                                         const image::image_view_t&       dst,
-                                         const render::context_t&         context)
+void spill_suppressor_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     // basic
     if (get_value<int>(param("method")) == basic_spill_supress_method)
     {
         if (get_value<int>(param("bcolor")))
             boost::gil::tbb_transform_pixels(
-                src, dst, basic_green_spill(get_value<float>(param("bamount"))));
+                src,
+                dst,
+                basic_green_spill(get_value<float>(param("bamount"))));
         else
             boost::gil::tbb_transform_pixels(
                 src, dst, basic_blue_spill(get_value<float>(param("bamount"))));
@@ -275,7 +280,9 @@ void spill_suppressor_node_t::do_process(const image::const_image_view_t& src,
         if (get_value<bool>(param("dyellow")))
             channel_mask |= (1 << 5);
         boost::gil::tbb_transform_pixels(
-            src, dst, rgb_cmy_spill(get_value<float>(param("damount")), channel_mask));
+            src,
+            dst,
+            rgb_cmy_spill(get_value<float>(param("damount")), channel_mask));
     }
 }
 
@@ -288,21 +295,22 @@ const node_metaclass_t* spill_suppressor_node_t::metaclass() const
     return &spill_supressor_node_metaclass();
 }
 
-const node_metaclass_t& spill_suppressor_node_t::spill_supressor_node_metaclass()
+const node_metaclass_t& spill_suppressor_node_t::
+    spill_supressor_node_metaclass()
 {
     static bool             inited(false);
     static node_metaclass_t info;
 
     if (!inited)
     {
-        info.id            = "image.builtin.spill_suppress";
+        info.id = "image.builtin.spill_suppress";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Key";
-        info.menu_item     = "Spill Suppressor";
-        info.create        = &create_spill_suppressor_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Key";
+        info.menu_item = "Spill Suppressor";
+        info.create = &create_spill_suppressor_node;
+        inited = true;
     }
 
     return info;
@@ -311,5 +319,5 @@ const node_metaclass_t& spill_suppressor_node_t::spill_supressor_node_metaclass(
 static bool registered = node_factory_t::instance().register_node(
     spill_suppressor_node_t::spill_supressor_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

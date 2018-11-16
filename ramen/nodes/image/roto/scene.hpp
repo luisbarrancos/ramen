@@ -24,7 +24,7 @@ namespace roto
 {
 class scene_t
 {
-public:
+  public:
     scene_t(image::roto_node_t* p = 0);
     scene_t(const scene_t& other);
 
@@ -45,12 +45,12 @@ public:
     boost::ptr_vector<shape_t>&       shapes() { return shapes_; }
 
     typedef boost::ptr_vector<shape_t>::const_iterator const_iterator;
-    const_iterator                                     begin() const { return shapes().begin(); }
-    const_iterator                                     end() const { return shapes().end(); }
+    const_iterator begin() const { return shapes().begin(); }
+    const_iterator end() const { return shapes().end(); }
 
     typedef boost::ptr_vector<shape_t>::iterator iterator;
-    iterator                                     begin() { return shapes().begin(); }
-    iterator                                     end() { return shapes().end(); }
+    iterator begin() { return shapes().begin(); }
+    iterator end() { return shapes().end(); }
 
     shape_t* find_shape(const std::string& name);
     void     rename_shape(shape_t* s, const std::string& new_name);
@@ -64,7 +64,9 @@ public:
 
     // hash
     void add_to_hash_str(hash::generator_t& hash_gen) const;
-    void add_to_hash_str(const std::vector<float>& frames, hash::generator_t& hash_gen) const;
+    void add_to_hash_str(
+        const std::vector<float>& frames,
+        hash::generator_t&        hash_gen) const;
 
     // bounding boxes
     Imath::Box2f bounding_box() const;
@@ -74,7 +76,7 @@ public:
     void read(const serialization::yaml_node_t& node);
     void write(serialization::yaml_oarchive_t& out) const;
 
-private:
+  private:
     iterator iterator_for_shape(shape_t* s);
 
     void extend_bbox(Imath::Box2f& bbox, const shape_t& s) const;
@@ -85,6 +87,5 @@ private:
     unique_name_map_t<shape_t*> names_;
 };
 
-}  // roto
-}  // ramen
-
+}  // namespace roto
+}  // namespace ramen

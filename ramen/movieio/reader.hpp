@@ -30,7 +30,7 @@ namespace movieio
 {
 class RAMEN_API reader_t
 {
-public:
+  public:
     reader_t();
     explicit reader_t(const boost::filesystem::path& p);
 
@@ -39,7 +39,7 @@ public:
     // sequence
     virtual bool        is_sequence() const;
     virtual int         start_frame() const = 0;
-    virtual int         end_frame() const   = 0;
+    virtual int         end_frame() const = 0;
     virtual int         pad() const;
     virtual std::string format_string() const;
     virtual std::string string_for_current_frame() const;
@@ -53,8 +53,8 @@ public:
     float         aspect_ratio() const;
 
     // channels
-    bool                            is_multichannel() const { return !channel_list().empty(); }
-    virtual bool                    has_extra_channels() const { return false; }
+    bool         is_multichannel() const { return !channel_list().empty(); }
+    virtual bool has_extra_channels() const { return false; }
     const std::vector<std::string>& channel_list() const { return channels_; }
 
     // time
@@ -62,38 +62,41 @@ public:
 
     // read
     void read_frame(const image::image_view_t& view) const;
-    void read_frame(const image::image_view_t& view,
-                    const math::box2i_t&       crop,
-                    int                        subsample) const;
+    void read_frame(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const;
 
-    void read_frame(const image::image_view_t&              view,
-                    const math::box2i_t&                    crop,
-                    int                                     subsample,
-                    const boost::tuple<int, int, int, int>& channels) const;
+    void read_frame(
+        const image::image_view_t&              view,
+        const math::box2i_t&                    crop,
+        int                                     subsample,
+        const boost::tuple<int, int, int, int>& channels) const;
 
-private:
+  private:
     // non-copyable
     reader_t(const reader_t&);
     reader_t& operator=(const reader_t&);
 
     virtual void do_set_frame(int frame);
 
-    virtual void do_read_frame(const image::image_view_t& view,
-                               const math::box2i_t&       crop,
-                               int                        subsample) const = 0;
+    virtual void do_read_frame(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const = 0;
 
-    virtual void do_read_frame(const image::image_view_t&              view,
-                               const math::box2i_t&                    crop,
-                               int                                     subsample,
-                               const boost::tuple<int, int, int, int>& channels) const;
+    virtual void do_read_frame(
+        const image::image_view_t&              view,
+        const math::box2i_t&                    crop,
+        int                                     subsample,
+        const boost::tuple<int, int, int, int>& channels) const;
 
-protected:
+  protected:
     boost::filesystem::path  p_;
     core::dictionary_t       info_;
     std::vector<std::string> channels_;
     int                      frame_;
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

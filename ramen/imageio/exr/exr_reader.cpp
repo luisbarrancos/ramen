@@ -16,7 +16,10 @@ namespace imageio
 {
 namespace
 {
-void copy_scanline(const image::image_view_t& view, unsigned int src_line, unsigned int dst_line)
+void copy_scanline(
+    const image::image_view_t& view,
+    unsigned int               src_line,
+    unsigned int               dst_line)
 {
     assert(src_line >= 0);
     assert(src_line < view.height());
@@ -24,14 +27,18 @@ void copy_scanline(const image::image_view_t& view, unsigned int src_line, unsig
     assert(dst_line < view.height());
     assert(src_line != dst_line);
 
-    std::copy(view.row_begin(src_line), view.row_end(src_line), view.row_begin(dst_line));
+    std::copy(
+        view.row_begin(src_line),
+        view.row_end(src_line),
+        view.row_begin(dst_line));
 }
 
-void copy_subsampled_scanline(image::image_view_t::x_iterator src_begin,
-                              image::image_view_t::x_iterator src_end,
-                              image::image_view_t::x_iterator dst_begin,
-                              image::image_view_t::x_iterator dst_end,
-                              int                             subsample)
+void copy_subsampled_scanline(
+    image::image_view_t::x_iterator src_begin,
+    image::image_view_t::x_iterator src_end,
+    image::image_view_t::x_iterator dst_begin,
+    image::image_view_t::x_iterator dst_end,
+    int                             subsample)
 {
     image::image_view_t::x_iterator src_it = src_begin;
     image::image_view_t::x_iterator dst_it = dst_begin;
@@ -50,11 +57,12 @@ void copy_subsampled_scanline(image::image_view_t::x_iterator src_begin,
         *dst_it++ = *(src_end - 1);
 }
 
-void copy_and_convert_subsampled_scanline(image::image_view_t::x_iterator src_begin,
-                                          image::image_view_t::x_iterator src_end,
-                                          image::image_view_t::x_iterator dst_begin,
-                                          image::image_view_t::x_iterator dst_end,
-                                          int                             subsample)
+void copy_and_convert_subsampled_scanline(
+    image::image_view_t::x_iterator src_begin,
+    image::image_view_t::x_iterator src_end,
+    image::image_view_t::x_iterator dst_begin,
+    image::image_view_t::x_iterator dst_end,
+    int                             subsample)
 {
     image::image_view_t::x_iterator src_it = src_begin;
     image::image_view_t::x_iterator dst_it = dst_begin;
@@ -72,14 +80,15 @@ void copy_and_convert_subsampled_scanline(image::image_view_t::x_iterator src_be
 
 math::box2i_t convert_box(const Imath::Box2i& box)
 {
-    return math::box2i_t(math::point2i_t(box.min.x, box.min.y),
-                         math::point2i_t(box.max.x, box.max.y));
+    return math::box2i_t(
+        math::point2i_t(box.min.x, box.min.y),
+        math::point2i_t(box.max.x, box.max.y));
 }
 
-}  // unnamed
+}  // namespace
 
 exr_reader_t::exr_reader_t(const boost::filesystem::path& p)
-: multichannel_reader_t(p)
+  : multichannel_reader_t(p)
 {
     bool tiled;
 
@@ -90,7 +99,8 @@ exr_reader_t::exr_reader_t(const boost::filesystem::path& p)
     header_ = ifile.header();
 
     Imath::Box2i display_window(header_.displayWindow());
-    info_[core::name_t("format")] = core::variant_t(convert_box(display_window));
+    info_[core::name_t("format")] =
+        core::variant_t(convert_box(display_window));
 
     Imath::Box2i data_window(header_.dataWindow());
     info_[core::name_t("bounds")] = core::variant_t(convert_box(data_window));
@@ -122,7 +132,9 @@ exr_reader_t::exr_reader_t(const boost::filesystem::path& p)
     // add channel names
     const Imf::ChannelList& ch_list(header_.channels());
 
-    for (Imf::ChannelList::ConstIterator it(ch_list.begin()); it != ch_list.end(); ++it)
+    for (Imf::ChannelList::ConstIterator it(ch_list.begin());
+         it != ch_list.end();
+         ++it)
     {
         std::string name(it.name());
 
@@ -170,7 +182,8 @@ exr_reader_t::exr_reader_t(const boost::filesystem::path& p)
 bool exr_reader_t::is_rgb() const
 {
     const Imf::ChannelList& ch_list(header_.channels());
-    return ch_list.findChannel("R") && ch_list.findChannel("G") && ch_list.findChannel("B");
+    return ch_list.findChannel("R") && ch_list.findChannel("G") &&
+           ch_list.findChannel("B");
 }
 
 bool exr_reader_t::is_luma_chroma() const
@@ -179,10 +192,11 @@ bool exr_reader_t::is_luma_chroma() const
     return ch_list.findChannel("Y");
 }
 
-void exr_reader_t::do_read_image(const image::image_view_t&              view,
-                                 const math::box2i_t&                    crop,
-                                 int                                     subsample,
-                                 const boost::tuple<int, int, int, int>& channels) const
+void exr_reader_t::do_read_image(
+    const image::image_view_t&              view,
+    const math::box2i_t&                    crop,
+    int                                     subsample,
+    const boost::tuple<int, int, int, int>& channels) const
 {
     // this is to handle luma-chroma image
     if (!has_extra_channels())
@@ -192,36 +206,38 @@ void exr_reader_t::do_read_image(const image::image_view_t&              view,
     }
 
     const char* rchannel = 0;
-    int         indx     = boost::get<0>(channels);
+    int         indx = boost::get<0>(channels);
 
     if (indx < channel_list().size())
         rchannel = channel_list()[indx].c_str();
 
     const char* gchannel = 0;
-    indx                 = boost::get<1>(channels);
+    indx = boost::get<1>(channels);
 
     if (indx < channel_list().size())
         gchannel = channel_list()[indx].c_str();
 
     const char* bchannel = 0;
-    indx                 = boost::get<2>(channels);
+    indx = boost::get<2>(channels);
 
     if (indx < channel_list().size())
         bchannel = channel_list()[indx].c_str();
 
     const char* achannel = 0;
-    indx                 = boost::get<3>(channels);
+    indx = boost::get<3>(channels);
 
     if (indx < channel_list().size())
         achannel = channel_list()[indx].c_str();
 
-    read_exr_image(path_, view, crop, rchannel, gchannel, bchannel, achannel, subsample);
+    read_exr_image(
+        path_, view, crop, rchannel, gchannel, bchannel, achannel, subsample);
 }
 
-void exr_reader_t::read_exr_image(const boost::filesystem::path& p,
-                                  const image::image_view_t&     result_view,
-                                  const math::box2i_t&           crop,
-                                  std::size_t                    subsample) const
+void exr_reader_t::read_exr_image(
+    const boost::filesystem::path& p,
+    const image::image_view_t&     result_view,
+    const math::box2i_t&           crop,
+    std::size_t                    subsample) const
 {
     if (is_luma_chroma_image_)
         read_exr_luma_chroma_image(path_, result_view, crop, subsample);
@@ -229,53 +245,66 @@ void exr_reader_t::read_exr_image(const boost::filesystem::path& p,
         read_exr_image(p, result_view, crop, "R", "G", "B", "A", subsample);
 }
 
-void exr_reader_t::read_exr_image(const boost::filesystem::path& p,
-                                  const image::image_view_t&     result_view,
-                                  const math::box2i_t&           crop,
-                                  const char*                    rchannel,
-                                  const char*                    gchannel,
-                                  const char*                    bchannel,
-                                  const char*                    achannel,
-                                  std::size_t                    subsample) const
+void exr_reader_t::read_exr_image(
+    const boost::filesystem::path& p,
+    const image::image_view_t&     result_view,
+    const math::box2i_t&           crop,
+    const char*                    rchannel,
+    const char*                    gchannel,
+    const char*                    bchannel,
+    const char*                    achannel,
+    std::size_t                    subsample) const
 {
     Imf::InputFile file(filesystem::file_cstring(p));
     Imath::Box2i   data_window(file.header().dataWindow());
 
-    std::size_t width   = data_window.max.x - data_window.min.x + 1;
+    std::size_t width = data_window.max.x - data_window.min.x + 1;
     std::size_t xstride = 4 * sizeof(float);
     std::size_t ystride = width * xstride;
 
     boost::gil::rgba32f_image_t scan_line(width, 1);
-    boost::gil::fill_pixels(boost::gil::view(scan_line), image::pixel_t(0, 0, 0, 1));
-    float* buffer = (float*) boost::gil::interleaved_view_get_raw_data(boost::gil::view(scan_line));
+    boost::gil::fill_pixels(
+        boost::gil::view(scan_line), image::pixel_t(0, 0, 0, 1));
+    float* buffer = (float*) boost::gil::interleaved_view_get_raw_data(
+        boost::gil::view(scan_line));
 
-    assert(result_view.width() >= std::ceil((float) (crop.size().x + 1) / subsample));
-    assert(result_view.height() >= std::ceil((float) (crop.size().y + 1) / subsample));
+    assert(
+        result_view.width() >=
+        std::ceil((float) (crop.size().x + 1) / subsample));
+    assert(
+        result_view.height() >=
+        std::ceil((float) (crop.size().y + 1) / subsample));
 
     Imf::FrameBuffer frameBuffer;
 
     int dst_y = 0;
     for (int y = crop.min.y; y <= crop.max.y; y += subsample)
     {
-        char* ptr = ((char*) buffer) - (y * ystride) - (data_window.min.x * xstride);
+        char* ptr =
+            ((char*) buffer) - (y * ystride) - (data_window.min.x * xstride);
 
         if (rchannel)
-            frameBuffer.insert(rchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
+            frameBuffer.insert(
+                rchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
 
         ptr += sizeof(float);
 
         if (gchannel)
-            frameBuffer.insert(gchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
+            frameBuffer.insert(
+                gchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
 
         ptr += sizeof(float);
 
         if (bchannel)
-            frameBuffer.insert(bchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
+            frameBuffer.insert(
+                bchannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride));
 
         ptr += sizeof(float);
 
         if (achannel)
-            frameBuffer.insert(achannel, Imf::Slice(Imf::FLOAT, ptr, xstride, ystride, 1, 1, 1.0));
+            frameBuffer.insert(
+                achannel,
+                Imf::Slice(Imf::FLOAT, ptr, xstride, ystride, 1, 1, 1.0));
 
         file.setFrameBuffer(frameBuffer);
         file.readPixels(y);
@@ -283,11 +312,13 @@ void exr_reader_t::read_exr_image(const boost::filesystem::path& p,
         image::image_view_t::x_iterator dst_begin(result_view.row_begin(dst_y));
         image::image_view_t::x_iterator dst_end(result_view.row_end(dst_y));
 
-        image::image_view_t::x_iterator src_begin(boost::gil::view(scan_line).row_begin(0)
-                                                  + crop.min.x - data_window.min.x);
+        image::image_view_t::x_iterator src_begin(
+            boost::gil::view(scan_line).row_begin(0) + crop.min.x -
+            data_window.min.x);
         image::image_view_t::x_iterator src_end(src_begin + crop.size().x + 1);
 
-        copy_subsampled_scanline(src_begin, src_end, dst_begin, dst_end, subsample);
+        copy_subsampled_scanline(
+            src_begin, src_end, dst_begin, dst_end, subsample);
         ++dst_y;
     }
 
@@ -300,26 +331,32 @@ void exr_reader_t::read_exr_image(const boost::filesystem::path& p,
     }
 }
 
-void exr_reader_t::read_exr_luma_chroma_image(const boost::filesystem::path& p,
-                                              const image::image_view_t&     result_view,
-                                              const math::box2i_t&           crop,
-                                              std::size_t                    subsample) const
+void exr_reader_t::read_exr_luma_chroma_image(
+    const boost::filesystem::path& p,
+    const image::image_view_t&     result_view,
+    const math::box2i_t&           crop,
+    std::size_t                    subsample) const
 {
     // TODO: optimize this, read only scanlines needed
-    assert(result_view.width() >= std::ceil((float) (crop.size().x + 1) / subsample));
-    assert(result_view.height() >= std::ceil((float) (crop.size().y + 1) / subsample));
+    assert(
+        result_view.width() >=
+        std::ceil((float) (crop.size().x + 1) / subsample));
+    assert(
+        result_view.height() >=
+        std::ceil((float) (crop.size().y + 1) / subsample));
 
     Imf::RgbaInputFile file(filesystem::file_cstring(p));
     Imath::Box2i       data_window(file.header().dataWindow());
 
-    std::size_t width  = data_window.max.x - data_window.min.x + 1;
+    std::size_t width = data_window.max.x - data_window.min.x + 1;
     std::size_t height = data_window.max.y - data_window.min.y + 1;
 
     boost::gil::rgba16f_image_t buffer(width, height);
-    Imf::Rgba*                  ptr
-        = (Imf::Rgba*) boost::gil::interleaved_view_get_raw_data(boost::gil::view(buffer));
+    Imf::Rgba* ptr = (Imf::Rgba*) boost::gil::interleaved_view_get_raw_data(
+        boost::gil::view(buffer));
 
-    file.setFrameBuffer(ptr - data_window.min.x - (data_window.min.y * width), 1, width);
+    file.setFrameBuffer(
+        ptr - data_window.min.x - (data_window.min.y * width), 1, width);
 
     file.readPixels(data_window.min.y, data_window.max.y);
 
@@ -332,10 +369,12 @@ void exr_reader_t::read_exr_luma_chroma_image(const boost::filesystem::path& p,
         if (src_y >= src_view.height())
             return;
 
-        boost::gil::rgba16fc_view_t::x_iterator src_it = src_view.row_begin(src_y);
+        boost::gil::rgba16fc_view_t::x_iterator src_it =
+            src_view.row_begin(src_y);
         src_it += crop.min.x - data_window.min.x;
 
-        boost::gil::rgba16fc_view_t::x_iterator src_end = src_view.row_begin(src_y);
+        boost::gil::rgba16fc_view_t::x_iterator src_end =
+            src_view.row_begin(src_y);
         src_end += crop.max.x - data_window.min.x + 1;
 
         image::image_view_t::x_iterator dst_it(result_view.row_begin(j));
@@ -351,5 +390,5 @@ void exr_reader_t::read_exr_luma_chroma_image(const boost::filesystem::path& p,
     }
 }
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

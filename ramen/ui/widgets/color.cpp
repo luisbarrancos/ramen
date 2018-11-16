@@ -16,8 +16,7 @@ namespace ui
 {
 namespace
 {
-template<class T>
-T clamp_(T x, T lo, T hi)
+template <class T> T clamp_(T x, T lo, T hi)
 {
     if (x < lo)
         return lo;
@@ -28,24 +27,25 @@ T clamp_(T x, T lo, T hi)
     return x;
 }
 
-}  // unnamed
+}  // namespace
 
 color_t::color_t() {}
 
 color_t::color_t(double r, double g, double b, double a)
 {
-    red_   = r;
+    red_ = r;
     green_ = g;
-    blue_  = b;
+    blue_ = b;
     alpha_ = a;
 }
 
 color_t::operator QColor()
 {
-    return QColor(clamp_(red_, 0.0, 1.0) * 255,
-                  clamp_(green_, 0.0, 1.0) * 255,
-                  clamp_(blue_, 0.0, 1.0) * 255,
-                  clamp_(alpha_, 0.0, 1.0) * 255);
+    return QColor(
+        clamp_(red_, 0.0, 1.0) * 255,
+        clamp_(green_, 0.0, 1.0) * 255,
+        clamp_(blue_, 0.0, 1.0) * 255,
+        clamp_(alpha_, 0.0, 1.0) * 255);
 }
 
 color_t& color_t::operator*=(double s)
@@ -59,16 +59,16 @@ color_t& color_t::operator*=(double s)
 void color_t::apply_gamma(double g)
 {
     assert(g > 0.0 && "color_t::applyGamma: gamma must be > 0");
-    red_   = std::pow(std::max(red_, 0.0), g);
+    red_ = std::pow(std::max(red_, 0.0), g);
     green_ = std::pow(std::max(green_, 0.0), g);
-    blue_  = std::pow(std::max(blue_, 0.0), g);
+    blue_ = std::pow(std::max(blue_, 0.0), g);
 }
 
 void color_t::clamp()
 {
-    red_   = std::max(std::min(red_, 1.0), 0.0);
+    red_ = std::max(std::min(red_, 1.0), 0.0);
     green_ = std::max(std::min(green_, 1.0), 0.0);
-    blue_  = std::max(std::min(blue_, 1.0), 0.0);
+    blue_ = std::max(std::min(blue_, 1.0), 0.0);
 }
 
 void color_t::to_hsv(double& h, double& s, double& v) const
@@ -103,7 +103,8 @@ void color_t::to_hsv(double& h, double& s, double& v) const
 
     if (maxv != minv)
     {
-        const double f = (r == minv) ? (g - b) : ((g == minv) ? (b - r) : (r - g)),
+        const double f = (r == minv) ? (g - b)
+                                     : ((g == minv) ? (b - r) : (r - g)),
                      i = (r == minv) ? 3.0 : ((g == minv) ? 5.0 : 1.0);
 
         h = (i - f / (maxv - minv));
@@ -174,5 +175,5 @@ color_t color_t::from_hsv(double h, double s, double v)
     return color_t(r, g, b);
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

@@ -45,10 +45,13 @@ void node_graph_t::remove_edge(const edge_t& e)
 }
 
 // connections
-void node_graph_t::connect(node_t* src, node_t* dst, int port) { add_edge(edge_t(src, dst, port)); }
+void node_graph_t::connect(node_t* src, node_t* dst, int port)
+{
+    add_edge(edge_t(src, dst, port));
+}
 void node_graph_t::disconnect(node_t* src, node_t* dst, int port)
 {
     remove_edge(edge_t(src, dst, port));
 }
 
-}  // namespace
+}  // namespace ramen

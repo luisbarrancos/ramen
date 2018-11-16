@@ -21,12 +21,11 @@ namespace core
 {
 namespace
 {
-template<class Char>
-std::size_t string_length(const Char* str)
+template <class Char> std::size_t string_length(const Char* str)
 {
     assert(str);
 
-    const Char* p    = str;
+    const Char* p = str;
     std::size_t size = 0;
 
     while (*p)
@@ -38,8 +37,7 @@ std::size_t string_length(const Char* str)
     return size;
 }
 
-template<class Char>
-int string_compare(const Char* a, const Char* b)
+template <class Char> int string_compare(const Char* a, const Char* b)
 {
     assert(a);
     assert(b);
@@ -64,7 +62,7 @@ int string_compare(const Char* a, const Char* b)
     return 0;
 }
 
-}  // unnamed
+}  // namespace
 
 struct string_t::impl
 {
@@ -72,25 +70,25 @@ struct string_t::impl
 };
 
 string_t::string_t()
-: m_pimpl(0)
+  : m_pimpl(0)
 {
     init();
 }
 
 string_t::string_t(const char_type* str)
-: m_pimpl(0)
+  : m_pimpl(0)
 {
     from_c_string(str, string_length(str));
 }
 
 string_t::string_t(const char_type* str, std::size_t size)
-: m_pimpl(0)
+  : m_pimpl(0)
 {
     from_c_string(str, size);
 }
 
 string_t::string_t(const string_t& str, size_type pos, size_type n)
-: m_pimpl(0)
+  : m_pimpl(0)
 {
     init();
     size_type nn = std::min(n, str.length() - pos);
@@ -118,7 +116,7 @@ void string_t::init(impl* x)
 string_t::~string_t() { delete m_pimpl; }
 
 string_t::string_t(const string_t& other)
-: m_pimpl(0)
+  : m_pimpl(0)
 {
     assert(other.m_pimpl);
 
@@ -279,9 +277,15 @@ bool operator==(const string_t& a, const string_t& b)
     return string_compare(a.c_str(), b.c_str()) == 0;
 }
 
-bool operator==(const string_t& a, const char* b) { return string_compare(a.c_str(), b) == 0; }
+bool operator==(const string_t& a, const char* b)
+{
+    return string_compare(a.c_str(), b) == 0;
+}
 
-bool operator==(const char* a, const string_t& b) { return string_compare(a, b.c_str()) == 0; }
+bool operator==(const char* a, const string_t& b)
+{
+    return string_compare(a, b.c_str()) == 0;
+}
 
 bool operator!=(const string_t& a, const string_t& b) { return !(a == b); }
 
@@ -294,11 +298,21 @@ bool operator<(const string_t& a, const string_t& b)
     return string_compare(a.c_str(), b.c_str()) < 0;
 }
 
-bool operator<(const string_t& a, const char* b) { return string_compare(a.c_str(), b) < 0; }
+bool operator<(const string_t& a, const char* b)
+{
+    return string_compare(a.c_str(), b) < 0;
+}
 
-bool operator<(const char* a, const string_t& b) { return string_compare(a, b.c_str()) < 0; }
+bool operator<(const char* a, const string_t& b)
+{
+    return string_compare(a, b.c_str()) < 0;
+}
 
-const string_t make_string(const char* a, const char* b, const char* c, const char* d)
+const string_t make_string(
+    const char* a,
+    const char* b,
+    const char* c,
+    const char* d)
 {
     assert(a);
     assert(b);
@@ -322,5 +336,5 @@ const string_t make_string(const char* a, const char* b, const char* c, const ch
     return str;
 }
 
-}  // core
-}  // ramen
+}  // namespace core
+}  // namespace ramen

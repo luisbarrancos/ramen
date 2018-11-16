@@ -1,6 +1,5 @@
 // Copyright (c) 2010 Esteban Tovagliari
 
-
 #include <ramen/ui/render_composition.hpp>
 
 #include <boost/thread.hpp>
@@ -26,7 +25,7 @@ namespace
 struct render_callback
 {
     render_callback(QProgressDialog* p)
-    : progress_(p)
+      : progress_(p)
     {
     }
 
@@ -40,14 +39,14 @@ struct render_callback
         return progress_->wasCanceled();
     }
 
-private:
+  private:
     QProgressDialog* progress_;
 };
 
 struct cancel_callback
 {
     cancel_callback(QProgressDialog* p)
-    : progress_(p)
+      : progress_(p)
     {
     }
 
@@ -59,32 +58,38 @@ struct cancel_callback
         return progress_->wasCanceled();
     }
 
-private:
+  private:
     QProgressDialog* progress_;
 };
 
-}  // unnamed
+}  // namespace
 
-void render_composition(composition_t& comp,
-                        int            start,
-                        int            end,
-                        int            proxy_level,
-                        int            subsample,
-                        int            mb_extra_samples,
-                        float          mb_shutter_factor,
-                        bool           selected_only)
+void render_composition(
+    composition_t& comp,
+    int            start,
+    int            end,
+    int            proxy_level,
+    int            subsample,
+    int            mb_extra_samples,
+    float          mb_shutter_factor,
+    bool           selected_only)
 {
-    int num_frames = render::total_frames_to_render(comp, start, end, selected_only);
+    int num_frames =
+        render::total_frames_to_render(comp, start, end, selected_only);
 
     if (num_frames == 0)
         return;
 
     int  rendered_frames = 0;
-    bool stop            = false;
-    bool success         = false;
+    bool stop = false;
+    bool success = false;
 
     QProgressDialog progress(
-        "Rendering", "Cancel", 0, num_frames, (QWidget*) app().ui()->main_window());
+        "Rendering",
+        "Cancel",
+        0,
+        num_frames,
+        (QWidget*) app().ui()->main_window());
     progress.setWindowModality(Qt::ApplicationModal);
     progress.setWindowTitle("Rendering");
     progress.show();
@@ -100,15 +105,17 @@ void render_composition(composition_t& comp,
 
     // call begin output for each output
     render::for_each_output(
-        comp, selected_only, boost::bind(&node_output_interface::begin_output, _1, start, end));
+        comp,
+        selected_only,
+        boost::bind(&node_output_interface::begin_output, _1, start, end));
 
-    render::context_t new_context          = cur_context;
-    new_context.mode                       = render::process_render;
-    new_context.proxy_level                = proxy_level;
-    new_context.subsample                  = subsample;
-    new_context.motion_blur_extra_samples  = mb_extra_samples;
+    render::context_t new_context = cur_context;
+    new_context.mode = render::process_render;
+    new_context.proxy_level = proxy_level;
+    new_context.subsample = subsample;
+    new_context.motion_blur_extra_samples = mb_extra_samples;
     new_context.motion_blur_shutter_factor = mb_shutter_factor;
-    new_context.cancel                     = cancel_cb;
+    new_context.cancel = cancel_cb;
 
     for (int i = start; i <= end; ++i, ++rendered_frames)
     {
@@ -116,7 +123,8 @@ void render_composition(composition_t& comp,
 
         for (node_t& n : comp.nodes())
         {
-            if (node_output_interface* out = dynamic_cast<node_output_interface*>(&n))
+            if (node_output_interface* out =
+                    dynamic_cast<node_output_interface*>(&n))
             {
                 if ((selected_only && !n.selected()) || n.ignored())
                     continue;
@@ -130,7 +138,9 @@ void render_composition(composition_t& comp,
                 catch (std::exception& e)
                 {
                     app().ui()->error(
-                        std::string("exception thrown during render sequence. what = ") + e.what());
+                        std::string("exception thrown during render sequence. "
+                                    "what = ") +
+                        e.what());
                 }
             }
 
@@ -147,8 +157,10 @@ void render_composition(composition_t& comp,
 cleanup:
 
     render::for_each_output(
-        comp, selected_only, boost::bind(&node_output_interface::end_output, _1, success));
+        comp,
+        selected_only,
+        boost::bind(&node_output_interface::end_output, _1, success));
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

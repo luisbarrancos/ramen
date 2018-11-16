@@ -61,10 +61,15 @@ inline int fast_float_to_int(double v)
                      : fast_float_round(v - RAMEN_DOUBLEMAGICROUNDEPS);
 }
 
-inline int fast_float_floor(double v) { return fast_float_round(v - RAMEN_DOUBLEMAGICROUNDEPS); }
+inline int fast_float_floor(double v)
+{
+    return fast_float_round(v - RAMEN_DOUBLEMAGICROUNDEPS);
+}
 
-inline int fast_float_ceil(double v) { return fast_float_round(v + RAMEN_DOUBLEMAGICROUNDEPS); }
+inline int fast_float_ceil(double v)
+{
+    return fast_float_round(v + RAMEN_DOUBLEMAGICROUNDEPS);
+}
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

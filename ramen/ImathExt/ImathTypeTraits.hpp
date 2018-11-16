@@ -13,22 +13,22 @@
 #include <OpenEXR/ImathBox.h>
 #include <OpenEXR/ImathMatrix.h>
 
-#define RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Type)                                                   \
-    template<class T>                                                                              \
-    struct has_nothrow_constructor<Imath::Type<T>> : public true_type                              \
-    {                                                                                              \
-    };                                                                                             \
-    template<class T>                                                                              \
-    struct has_nothrow_copy<Imath::Type<T>> : public true_type                                     \
-    {                                                                                              \
-    };                                                                                             \
-    template<class T>                                                                              \
-    struct has_nothrow_assign<Imath::Type<T>> : public true_type                                   \
-    {                                                                                              \
-    };                                                                                             \
-    template<class T>                                                                              \
-    struct has_nothrow_destructor<Imath::Type<T>> : public true_type                               \
-    {                                                                                              \
+#define RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Type)                      \
+    template <class T>                                                \
+    struct has_nothrow_constructor<Imath::Type<T>> : public true_type \
+    {                                                                 \
+    };                                                                \
+    template <class T>                                                \
+    struct has_nothrow_copy<Imath::Type<T>> : public true_type        \
+    {                                                                 \
+    };                                                                \
+    template <class T>                                                \
+    struct has_nothrow_assign<Imath::Type<T>> : public true_type      \
+    {                                                                 \
+    };                                                                \
+    template <class T>                                                \
+    struct has_nothrow_destructor<Imath::Type<T>> : public true_type  \
+    {                                                                 \
     };
 
 namespace boost
@@ -45,5 +45,4 @@ RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Box)
 RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Matrix33)
 RAMEN_IMATH_SPECIALIZE_TYPE_TRAITS(Matrix44)
 
-}  // boost
-
+}  // namespace boost

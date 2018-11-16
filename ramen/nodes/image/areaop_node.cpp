@@ -11,14 +11,15 @@ namespace ramen
 namespace image
 {
 areaop_node_t::areaop_node_t()
-: image_node_t()
+  : image_node_t()
 {
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
 areaop_node_t::areaop_node_t(const areaop_node_t& other)
-: image_node_t(other)
+  : image_node_t(other)
 {
 }
 
@@ -65,7 +66,10 @@ void areaop_node_t::do_calc_defined(const render::context_t& context)
     set_defined(ImathExt::intersect(bounds(), roi));
 }
 
-void areaop_node_t::get_expand_radius(int& hradius, int& vradius) const { hradius = vradius = 0; }
+void areaop_node_t::get_expand_radius(int& hradius, int& vradius) const
+{
+    hradius = vradius = 0;
+}
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

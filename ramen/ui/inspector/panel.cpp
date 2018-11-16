@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/inspector/panel.hpp>
 
 #include <QVBoxLayout>
@@ -17,8 +16,8 @@ namespace ramen
 namespace ui
 {
 panel_t::panel_t(parameterised_t* p)
-: p_(p)
-, panel_(0)
+  : p_(p)
+  , panel_(0)
 {
     panel_ = new QWidget();
 
@@ -44,9 +43,12 @@ panel_t::~panel_t()
     panel_->deleteLater();
 }
 
-void panel_t::set_connection(const boost::signals2::connection c) { connection_ = c; }
+void panel_t::set_connection(const boost::signals2::connection c)
+{
+    connection_ = c;
+}
 
 void panel_t::update() { p_->update_widgets(); }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

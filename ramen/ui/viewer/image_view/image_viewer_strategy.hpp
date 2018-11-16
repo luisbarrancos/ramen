@@ -33,7 +33,7 @@ class image_viewer_strategy_t : public viewer_strategy_t
 {
     Q_OBJECT
 
-public:
+  public:
     image_viewer_strategy_t(viewer_context_t* p);
     ~image_viewer_strategy_t() override;
 
@@ -96,15 +96,15 @@ public:
 
     void wheel_event(QWheelEvent* event) override;
 
-
     Imath::Color4f color_at(int x, int y) const override;
-    void           pick_colors_in_box(const Imath::Box2i&                        b,
-                                      std::function<void(const Imath::Color4f&)> f) const override;
+    void           pick_colors_in_box(
+                  const Imath::Box2i&                        b,
+                  std::function<void(const Imath::Color4f&)> f) const override;
 
     virtual void center_image();
     virtual void frame_image();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void change_resolution(int index);
     void change_proxy_level(int index);
@@ -116,7 +116,7 @@ public Q_SLOTS:
     void roi_toggle(bool state);
     void overlay_toggle(bool state);
 
-private:
+  private:
     void do_begin_active_view() override;
     void do_end_active_view() override;
 
@@ -176,7 +176,6 @@ private:
     float      aspect_ratio_;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

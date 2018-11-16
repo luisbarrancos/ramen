@@ -18,7 +18,7 @@ namespace ramen
 {
 class RAMEN_API image_node_t : public node_t
 {
-public:
+  public:
     image_node_t();
 
     void cloned() override;
@@ -85,8 +85,10 @@ public:
     image::image_view_t subimage_view(int x, int y, int w, int h);
     image::image_view_t subimage_view(const Imath::Box2i& area);
 
-    image::const_image_view_t const_subimage_view(int x, int y, int w, int h) const;
-    image::const_image_view_t const_subimage_view(const Imath::Box2i& area) const;
+    image::const_image_view_t const_subimage_view(int x, int y, int w, int h)
+        const;
+    image::const_image_view_t const_subimage_view(
+        const Imath::Box2i& area) const;
 
     // processing
     void recursive_process(const render::context_t& context);
@@ -96,11 +98,15 @@ public:
     static void calc_format_fun(node_t& n, const render::context_t& context);
     static void calc_bounds_fun(node_t& n, const render::context_t& context);
     static void clear_interest_fun(node_t& n);
-    static void calc_inputs_interest_fun(node_t& n, const render::context_t& context);
+    static void calc_inputs_interest_fun(
+        node_t&                  n,
+        const render::context_t& context);
     static void calc_defined_fun(node_t& n, const render::context_t& context);
-    static void subsample_areas_fun(node_t& n, const render::context_t& context);
+    static void subsample_areas_fun(
+        node_t&                  n,
+        const render::context_t& context);
 
-protected:
+  protected:
     image_node_t(const image_node_t& other);
     void operator=(const image_node_t&);
 
@@ -112,7 +118,7 @@ protected:
     bool read_image_from_cache(const render::context_t& context);
     void write_image_to_cache(const render::context_t& context);
 
-private:
+  private:
     virtual void do_calc_format(const render::context_t& context);
     virtual void do_calc_bounds(const render::context_t& context);
     virtual void do_calc_inputs_interest(const render::context_t& context);
@@ -128,5 +134,4 @@ private:
     image::buffer_t image_;
 };
 
-}  // ramen
-
+}  // namespace ramen

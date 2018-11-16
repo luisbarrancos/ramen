@@ -13,10 +13,11 @@ namespace ramen
 namespace image
 {
 expand_node_t::expand_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("expand");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -63,15 +64,17 @@ void expand_node_t::do_calc_format(const render::context_t& context)
     int           exp_l = get_absolute_value<float>(param("left"));
     int           exp_b = get_absolute_value<float>(param("bottom"));
     int           exp_r = get_absolute_value<float>(param("right"));
-    set_format(Imath::Box2i(Imath::V2i(box.min.x - exp_l, box.min.y - exp_t),
-                            Imath::V2i(box.max.x + exp_r, box.max.y + exp_b)));
+    set_format(Imath::Box2i(
+        Imath::V2i(box.min.x - exp_l, box.min.y - exp_t),
+        Imath::V2i(box.max.x + exp_r, box.max.y + exp_b)));
     set_aspect_ratio(in->aspect_ratio());
     set_proxy_scale(in->proxy_scale());
 }
 
 void expand_node_t::do_calc_bounds(const render::context_t& context)
 {
-    Imath::Box2i bounds(ImathExt::intersect(input_as<image_node_t>()->bounds(), format()));
+    Imath::Box2i bounds(
+        ImathExt::intersect(input_as<image_node_t>()->bounds(), format()));
     set_bounds(bounds);
 }
 
@@ -83,19 +86,24 @@ void expand_node_t::do_calc_inputs_interest(const render::context_t& context)
 
 void expand_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area = ImathExt::intersect(input_as<image_node_t>()->defined(), defined());
+    Imath::Box2i area =
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined());
 
     if (area.isEmpty())
         return;
 
-    boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                            subimage_view(area));
+    boost::gil::copy_pixels(
+        input_as<image_node_t>()->const_subimage_view(area),
+        subimage_view(area));
 }
 
 // factory
 node_t* create_expand_node() { return new expand_node_t(); }
 
-const node_metaclass_t* expand_node_t::metaclass() const { return &expand_node_metaclass(); }
+const node_metaclass_t* expand_node_t::metaclass() const
+{
+    return &expand_node_metaclass();
+}
 
 const node_metaclass_t& expand_node_t::expand_node_metaclass()
 {
@@ -104,21 +112,21 @@ const node_metaclass_t& expand_node_t::expand_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.expand";
+        info.id = "image.builtin.expand";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Expand";
-        info.create        = &create_expand_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Expand";
+        info.create = &create_expand_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(expand_node_t::expand_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    expand_node_t::expand_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

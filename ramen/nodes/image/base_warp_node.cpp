@@ -15,16 +15,17 @@ namespace ramen
 namespace image
 {
 base_warp_node_t::base_warp_node_t()
-: image_node_t()
-, notify_pending_(false)
+  : image_node_t()
+  , notify_pending_(false)
 {
-    add_input_plug("Front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "Front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
 base_warp_node_t::base_warp_node_t(const base_warp_node_t& other)
-: image_node_t(other)
-, notify_pending_(false)
+  : image_node_t(other)
+  , notify_pending_(false)
 {
 }
 
@@ -89,8 +90,9 @@ void base_warp_node_t::do_calc_hash_str(const render::context_t& context)
     param_set().add_to_hash(hash_generator());
 }
 
-Imath::Box2i base_warp_node_t::expand_interest(const Imath::Box2i&      box,
-                                               const render::context_t& context) const
+Imath::Box2i base_warp_node_t::expand_interest(
+    const Imath::Box2i&      box,
+    const render::context_t& context) const
 {
     Imath::Box2i roi(box);
 
@@ -129,13 +131,15 @@ Imath::Box2i base_warp_node_t::expand_interest(const Imath::Box2i&      box,
 
 int base_warp_node_t::max_mipmap_levels() const { return 4; }
 
-void base_warp_node_t::make_mipmap(image_node_t*                 src,
-                                   mipmap_type&                  mipmap,
-                                   std::vector<image::buffer_t>& buffers) const
+void base_warp_node_t::make_mipmap(
+    image_node_t*                 src,
+    mipmap_type&                  mipmap,
+    std::vector<image::buffer_t>& buffers) const
 {
     Imath::Box2i area = src->defined();
     buffers.push_back(src->image());
-    mipmap.set_top_level(image::sse2::catrom_sampler_t(area, src->const_subimage_view(area)));
+    mipmap.set_top_level(
+        image::sse2::catrom_sampler_t(area, src->const_subimage_view(area)));
 
     std::string src_hash_str(src->hash_str());
 
@@ -143,15 +147,16 @@ void base_warp_node_t::make_mipmap(image_node_t*                 src,
     {
         area = ImathExt::scale(area, 0.5f);
 
-        if (area.size().x < mipmap.min_size() || area.size().y < mipmap.min_size())
+        if (area.size().x < mipmap.min_size() ||
+            area.size().y < mipmap.min_size())
             return;
 
         hash::generator_t gen;
         gen << src_hash_str << "mipmap" << i;
 
         /*
-        boost::optional<image::buffer_t> cached( app().memory_manager().find_in_cache( gen.digest(),
-        area));
+        boost::optional<image::buffer_t> cached(
+        app().memory_manager().find_in_cache( gen.digest(), area));
 
         if( cached)
         {
@@ -164,15 +169,18 @@ void base_warp_node_t::make_mipmap(image_node_t*                 src,
         {
             image::buffer_t buf(area, 4);
             image::resize_half(
-                buffers.back().const_rgba_view(), buffers.back().bounds(), buf.rgba_view(), area);
+                buffers.back().const_rgba_view(),
+                buffers.back().bounds(),
+                buf.rgba_view(),
+                area);
             buffers.push_back(buf);
             // app().memory_manager().insert_in_cache( src, gen.digest(), buf);
         }
 
-        mipmap.add_level(image::sse2::bilinear_sampler_t(buffers.back().bounds(),
-                                                         buffers.back().const_rgba_view()));
+        mipmap.add_level(image::sse2::bilinear_sampler_t(
+            buffers.back().bounds(), buffers.back().const_rgba_view()));
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

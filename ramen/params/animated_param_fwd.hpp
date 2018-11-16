@@ -8,5 +8,4 @@ namespace ramen
 {
 class animated_param_t;
 
-}  // namespace
-
+}  // namespace ramen

@@ -27,7 +27,7 @@ class RAMEN_API string_t
 {
     BOOST_COPYABLE_AND_MOVABLE(string_t)
 
-public:
+  public:
     typedef char             char_type;
     typedef std::size_t      size_type;
     typedef const char_type& const_reference;
@@ -40,8 +40,7 @@ public:
     string_t(const char_type* str);
     string_t(const char_type* str, std::size_t size);
 
-    template<class Iter>
-    string_t(Iter first, Iter last)
+    template <class Iter> string_t(Iter first, Iter last)
     {
         init();
         assign(first, last);
@@ -51,7 +50,7 @@ public:
 
     // from STL string
     explicit string_t(const std::string& s)
-    : m_pimpl(0)
+      : m_pimpl(0)
     {
         from_c_string(s.c_str(), s.size());
     }
@@ -71,7 +70,7 @@ public:
 
     // Move constructor
     string_t(BOOST_RV_REF(string_t) other)
-    : m_pimpl(0)
+      : m_pimpl(0)
     {
         assert(other.m_pimpl);
 
@@ -87,8 +86,7 @@ public:
         return *this;
     }
 
-    template<class Iter>
-    void assign(Iter first, Iter last)
+    template <class Iter> void assign(Iter first, Iter last)
     {
         clear();
         // TODO: check if this works ok with boost tokenizer.
@@ -140,7 +138,7 @@ public:
     char_type  operator[](size_type index) const;
     char_type& operator[](size_type index);
 
-private:
+  private:
     struct impl;
     impl* m_pimpl;
 
@@ -166,12 +164,13 @@ RAMEN_API bool operator<(const string_t& a, const string_t& b);
 RAMEN_API bool operator<(const string_t& a, const char* b);
 RAMEN_API bool operator<(const char* a, const string_t& b);
 
-RAMEN_API const string_t make_string(const char* a,
-                                     const char* b,
-                                     const char* c = 0,
-                                     const char* d = 0);
+RAMEN_API const string_t
+                make_string(const char* a, const char* b, const char* c = 0, const char* d = 0);
 
-inline std::ostream& operator<<(std::ostream& os, const string_t& str) { return os << str.c_str(); }
+inline std::ostream& operator<<(std::ostream& os, const string_t& str)
+{
+    return os << str.c_str();
+}
 
 inline std::istream& operator>>(std::istream& is, string_t& str)
 {
@@ -186,6 +185,5 @@ inline std::size_t hash_value(const string_t& str)
     return boost::hash_range(str.begin(), str.end());
 }
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

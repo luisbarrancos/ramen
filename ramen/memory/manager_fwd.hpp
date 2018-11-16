@@ -10,6 +10,5 @@ namespace memory
 {
 class manager_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace memory
+}  // namespace ramen

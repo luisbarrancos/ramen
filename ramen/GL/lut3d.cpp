@@ -11,8 +11,8 @@ namespace ramen
 namespace gl
 {
 lut3d_t::lut3d_t(int lut_size, GLenum texture_unit)
-: texture_id_(0)
-, lut_size_(lut_size)
+  : texture_id_(0)
+  , lut_size_(lut_size)
 {
     texture_unit_ = texture_unit;
     data_.reset(new Imath::Color3f[lut_size * lut_size * lut_size]);
@@ -36,7 +36,16 @@ void lut3d_t::create_gl_texture()
 
     // allocate space for the texture
     gl_tex_image3d(
-        GL_TEXTURE_3D, 0, GL_RGB32F, lut_size_, lut_size_, lut_size_, 0, GL_RGB, GL_FLOAT, 0);
+        GL_TEXTURE_3D,
+        0,
+        GL_RGB32F,
+        lut_size_,
+        lut_size_,
+        lut_size_,
+        0,
+        GL_RGB,
+        GL_FLOAT,
+        0);
     gl_bind_texture(GL_TEXTURE_3D, 0);
 }
 
@@ -61,7 +70,17 @@ void lut3d_t::update_gl_texture()
     gl_pixel_storei(GL_UNPACK_ROW_LENGTH, lut_size_);
 
     gl_tex_subimage3d(
-        GL_TEXTURE_3D, 0, 0, 0, 0, lut_size_, lut_size_, lut_size_, GL_RGB, GL_FLOAT, data());
+        GL_TEXTURE_3D,
+        0,
+        0,
+        0,
+        0,
+        lut_size_,
+        lut_size_,
+        lut_size_,
+        GL_RGB,
+        GL_FLOAT,
+        data());
     gl_bind_texture(GL_TEXTURE_3D, 0);
 }
 
@@ -78,5 +97,5 @@ void lut3d_t::unbind()
     gl_active_texture(GL_TEXTURE0);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace gl
+}  // namespace ramen

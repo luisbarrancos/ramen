@@ -30,7 +30,7 @@ namespace ramen
 */
 class composition_t : boost::noncopyable
 {
-public:
+  public:
     typedef node_graph_t graph_type;
 
     typedef graph_type::node_iterator       node_iterator;
@@ -71,20 +71,22 @@ public:
 
     // import composition needs access to this...
     const unique_name_map_t<node_t*>& node_map() const;
-    std::string                       make_name_unique(const std::string& s) const;
+    std::string make_name_unique(const std::string& s) const;
 
     // observer
     typedef boost::signals2::connection            connection_type;
     typedef boost::signals2::signal<void(node_t*)> signal_type;
 
     // called when a node is added, used in the inspector and viewer
-    connection_type attach_add_observer(signal_type::slot_function_type subscriber)
+    connection_type attach_add_observer(
+        signal_type::slot_function_type subscriber)
     {
         return added_.connect(subscriber);
     }
 
     // called when a node is released, used in the inspector and viewer
-    connection_type attach_release_observer(signal_type::slot_function_type subscriber)
+    connection_type attach_release_observer(
+        signal_type::slot_function_type subscriber)
     {
         return released_.connect(subscriber);
     }
@@ -118,10 +120,11 @@ public:
     bool autokey() const { return autokey_; }
     void set_autokey(bool b) { autokey_ = b; }
 
-    render::context_t current_context(render::render_mode mode = render::interface_render) const;
+    render::context_t current_context(
+        render::render_mode mode = render::interface_render) const;
 
     image::format_t default_format() const { return default_format_; }
-    void            set_default_format(const image::format_t& f) { default_format_ = f; }
+    void set_default_format(const image::format_t& f) { default_format_ = f; }
 
     int  frame_rate() const { return frame_rate_; }
     void set_frame_rate(int f) { frame_rate_ = f; }
@@ -130,7 +133,8 @@ public:
     typedef boost::signals2::signal<void()> selection_signal_type;
     selection_signal_type                   selection_changed;
 
-    connection_type attach_selection_observer(selection_signal_type::slot_function_type subscriber)
+    connection_type attach_selection_observer(
+        selection_signal_type::slot_function_type subscriber)
     {
         return selection_changed.connect(subscriber);
     }
@@ -146,15 +150,17 @@ public:
 
     // home directory, for relative paths
     const boost::filesystem::path& composition_dir() const;
-    void                           set_composition_dir(const boost::filesystem::path& dir);
+    void set_composition_dir(const boost::filesystem::path& dir);
 
     // convert
     void convert_all_relative_paths(const boost::filesystem::path& new_base);
     void make_all_paths_absolute();
     void make_all_paths_relative();
 
-    boost::filesystem::path relative_to_absolute(const boost::filesystem::path& p) const;
-    boost::filesystem::path absolute_to_relative(const boost::filesystem::path& p) const;
+    boost::filesystem::path relative_to_absolute(
+        const boost::filesystem::path& p) const;
+    boost::filesystem::path absolute_to_relative(
+        const boost::filesystem::path& p) const;
 
     // serialization
     void load_from_file(const boost::filesystem::path& p);
@@ -162,13 +168,16 @@ public:
     void read(serialization::yaml_iarchive_t& in);
     void write(serialization::yaml_oarchive_t& out) const;
 
-private:
+  private:
     void read_nodes(serialization::yaml_iarchive_t& in);
     void read_node(const serialization::yaml_node_t& node);
 
-    std::auto_ptr<node_t> create_node(const std::string& id, const std::pair<int, int>& version);
-    std::auto_ptr<node_t> create_unknown_node(const std::string&         id,
-                                              const std::pair<int, int>& version);
+    std::auto_ptr<node_t> create_node(
+        const std::string&         id,
+        const std::pair<int, int>& version);
+    std::auto_ptr<node_t> create_unknown_node(
+        const std::string&         id,
+        const std::pair<int, int>& version);
 
     void read_edges(const serialization::yaml_iarchive_t& in);
     void read_edge(const serialization::yaml_node_t& node);
@@ -190,5 +199,4 @@ private:
     bool            autokey_;
 };
 
-}  // ramen
-
+}  // namespace ramen

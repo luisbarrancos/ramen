@@ -38,13 +38,15 @@ void manager_t::init()
         catch (OCIO::Exception& exception)
         {
 #ifndef NDEBUG
-            std::cerr << "Couldn't read $OCIO config. Trying Ramen's default config.";
+            std::cerr
+                << "Couldn't read $OCIO config. Trying Ramen's default config.";
 #endif
         }
     }
 
     // try more paths here...
-    boost::filesystem::path ocio_path = app().system().application_path() / "ocio/config.ocio";
+    boost::filesystem::path ocio_path =
+        app().system().application_path() / "ocio/config.ocio";
     if (init_from_file(ocio_path))
         return;
 
@@ -66,8 +68,8 @@ bool manager_t::init_from_file(const boost::filesystem::path& p)
 
     try
     {
-        OCIO::ConstConfigRcPtr config
-            = OCIO::Config::CreateFromFile(filesystem::file_string(p).c_str());
+        OCIO::ConstConfigRcPtr config =
+            OCIO::Config::CreateFromFile(filesystem::file_string(p).c_str());
         OCIO::SetCurrentConfig(config);
         return true;
     }
@@ -80,8 +82,8 @@ bool manager_t::init_from_file(const boost::filesystem::path& p)
 void manager_t::get_displays()
 {
     OCIO::ConstConfigRcPtr cfg = config();
-    default_display_           = cfg->getDefaultDisplay();
-    int num_device_names       = cfg->getNumDisplays();
+    default_display_ = cfg->getDefaultDisplay();
+    int num_device_names = cfg->getNumDisplays();
 
     for (int i = 0; i < num_device_names; i++)
     {
@@ -93,14 +95,15 @@ void manager_t::get_displays()
     }
 }
 
-void manager_t::get_views(const std::string&        display,
-                          std::vector<std::string>& views,
-                          int&                      default_index) const
+void manager_t::get_views(
+    const std::string&        display,
+    std::vector<std::string>& views,
+    int&                      default_index) const
 {
-    OCIO::ConstConfigRcPtr cfg          = config();
-    int                    num_views    = cfg->getNumViews(display.c_str());
+    OCIO::ConstConfigRcPtr cfg = config();
+    int                    num_views = cfg->getNumViews(display.c_str());
     std::string            default_view = cfg->getDefaultView(display.c_str());
-    default_index                       = 0;
+    default_index = 0;
     views.clear();
 
     for (int i = 0; i < num_views; ++i)
@@ -139,7 +142,8 @@ OCIO::ConstContextRcPtr manager_t::get_context( const context_t *ctx) const
             if( !mutable_context)
                 mutable_context = context->createEditableCopy();
 
-            mutable_context->setStringVar( ctx_pair.first.c_str(), ctx_pair.second.c_str());
+            mutable_context->setStringVar( ctx_pair.first.c_str(),
+ctx_pair.second.c_str());
         }
     }
 
@@ -150,5 +154,5 @@ OCIO::ConstContextRcPtr manager_t::get_context( const context_t *ctx) const
 }
 */
 
-}  // ocio
-}  // ramen
+}  // namespace ocio
+}  // namespace ramen

@@ -18,7 +18,7 @@ namespace
 {
 enum
 {
-    exr_tonemap_method      = 0,
+    exr_tonemap_method = 0,
     rational_tonemap_method = 1
 };
 
@@ -27,23 +27,33 @@ struct exr_tonemap_fun
     typedef image::pixel_t result_type;
 
     exr_tonemap_fun(
-        float exposure, const Imath::Color4f& fog, float defog, float knee_low, float knee_high)
+        float                 exposure,
+        const Imath::Color4f& fog,
+        float                 defog,
+        float                 knee_low,
+        float                 knee_high)
     {
         exposure_ = std::pow(2.0, exposure + 2.47393);
-        fog_      = fog;
-        defog_    = defog;
+        fog_ = fog;
+        defog_ = defog;
         knee_low_ = std::pow(2.0, (double) knee_low);
-        f_        = find_knee_f(std::pow(2.0, (double) knee_high) - knee_low_,
-                         std::pow(2.0, 3.5) - knee_low_);
-        scale_    = std::pow(2.0, -3.5);
+        f_ = find_knee_f(
+            std::pow(2.0, (double) knee_high) - knee_low_,
+            std::pow(2.0, 3.5) - knee_low_);
+        scale_ = std::pow(2.0, -3.5);
     }
 
     image::pixel_t operator()(const image::pixel_t& p) const
     {
         return image::pixel_t(
-            apply(boost::gil::get_color(p, boost::gil::red_t()), fog_.r * defog_),
-            apply(boost::gil::get_color(p, boost::gil::green_t()), fog_.g * defog_),
-            apply(boost::gil::get_color(p, boost::gil::blue_t()), fog_.b * defog_),
+            apply(
+                boost::gil::get_color(p, boost::gil::red_t()), fog_.r * defog_),
+            apply(
+                boost::gil::get_color(p, boost::gil::green_t()),
+                fog_.g * defog_),
+            apply(
+                boost::gil::get_color(p, boost::gil::blue_t()),
+                fog_.b * defog_),
             boost::gil::get_color(p, boost::gil::alpha_t()));
     }
 
@@ -83,7 +93,10 @@ struct exr_tonemap_fun
         return (f0 + f1) / 2;
     }
 
-    float knee(double x, double f) const { return float(std::log(x * f + 1) / f); }
+    float knee(double x, double f) const
+    {
+        return float(std::log(x * f + 1) / f);
+    }
 
     float          exposure_, defog_, knee_low_, f_, scale_;
     Imath::Color4f fog_;
@@ -92,30 +105,32 @@ struct exr_tonemap_fun
 struct rational_tonemap_fun
 {
     rational_tonemap_fun(const Imath::Color4f& high, float p)
-    : p_(p)
+      : p_(p)
     {
-        high_val_ = (high.r * 0.212671f) + (high.g * 0.715160f) + (high.b * 0.072169f);
+        high_val_ =
+            (high.r * 0.212671f) + (high.g * 0.715160f) + (high.b * 0.072169f);
     }
 
     image::pixel_t operator()(const image::pixel_t& p) const
     {
-        return image::pixel_t(apply(boost::gil::get_color(p, boost::gil::red_t())),
-                              apply(boost::gil::get_color(p, boost::gil::green_t())),
-                              apply(boost::gil::get_color(p, boost::gil::blue_t())),
-                              boost::gil::get_color(p, boost::gil::alpha_t()));
+        return image::pixel_t(
+            apply(boost::gil::get_color(p, boost::gil::red_t())),
+            apply(boost::gil::get_color(p, boost::gil::green_t())),
+            apply(boost::gil::get_color(p, boost::gil::blue_t())),
+            boost::gil::get_color(p, boost::gil::alpha_t()));
     }
 
-private:
+  private:
     float apply(float x) const { return (x * p_) / ((x * p_) - x + high_val_); }
 
     float high_val_;
     float p_;
 };
 
-}  // unnamed
+}  // namespace
 
 global_tonemap_node_t::global_tonemap_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("global_tmap");
 }
@@ -168,7 +183,8 @@ void global_tonemap_node_t::do_create_params()
 
     // Rational
     {
-        std::auto_ptr<composite_param_t> group(new composite_param_t("Rational"));
+        std::auto_ptr<composite_param_t> group(
+            new composite_param_t("Rational"));
         group->set_id("rational");
 
         std::auto_ptr<color_param_t> q(new color_param_t("High Value"));
@@ -190,9 +206,10 @@ void global_tonemap_node_t::do_create_params()
     add_param(top);
 }
 
-void global_tonemap_node_t::do_process(const image::const_image_view_t& src,
-                                       const image::image_view_t&       dst,
-                                       const render::context_t&         context)
+void global_tonemap_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     switch (get_value<int>(param("method")))
     {
@@ -200,19 +217,21 @@ void global_tonemap_node_t::do_process(const image::const_image_view_t& src,
             boost::gil::tbb_transform_pixels(
                 src,
                 dst,
-                exr_tonemap_fun(get_value<float>(param("exr_exposure")),
-                                get_value<Imath::Color4f>(param("exr_fog")),
-                                get_value<float>(param("exr_defog")),
-                                get_value<float>(param("exr_knee_low")),
-                                get_value<float>(param("exr_knee_high"))));
+                exr_tonemap_fun(
+                    get_value<float>(param("exr_exposure")),
+                    get_value<Imath::Color4f>(param("exr_fog")),
+                    get_value<float>(param("exr_defog")),
+                    get_value<float>(param("exr_knee_low")),
+                    get_value<float>(param("exr_knee_high"))));
             break;
 
         case rational_tonemap_method:
             boost::gil::tbb_transform_pixels(
                 src,
                 dst,
-                rational_tonemap_fun(get_value<Imath::Color4f>(param("rat_high")),
-                                     get_value<float>(param("rat_response"))));
+                rational_tonemap_fun(
+                    get_value<Imath::Color4f>(param("rat_high")),
+                    get_value<float>(param("rat_response"))));
             break;
     }
 }
@@ -232,14 +251,14 @@ const node_metaclass_t& global_tonemap_node_t::global_tonemap_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.global_tonemap";
+        info.id = "image.builtin.global_tonemap";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Tonemap";
-        info.menu_item     = "Global Tonemap";
-        info.create        = &create_global_tonemap_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Tonemap";
+        info.menu_item = "Global Tonemap";
+        info.create = &create_global_tonemap_node;
+        inited = true;
     }
 
     return info;
@@ -248,5 +267,5 @@ const node_metaclass_t& global_tonemap_node_t::global_tonemap_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     global_tonemap_node_t::global_tonemap_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -16,8 +16,7 @@
 
 namespace Imath
 {
-template<class T>
-boost::optional<Matrix33<T>> inverse(const Matrix33<T>& m)
+template <class T> boost::optional<Matrix33<T>> inverse(const Matrix33<T>& m)
 {
     boost::optional<Matrix33<T>> result;
 
@@ -33,8 +32,7 @@ boost::optional<Matrix33<T>> inverse(const Matrix33<T>& m)
     return result;
 }
 
-template<class T>
-boost::optional<Matrix44<T>> inverse(const Matrix44<T>& m)
+template <class T> boost::optional<Matrix44<T>> inverse(const Matrix44<T>& m)
 {
     boost::optional<Matrix44<T>> result;
 
@@ -50,16 +48,15 @@ boost::optional<Matrix44<T>> inverse(const Matrix44<T>& m)
     return result;
 }
 
-template<class T>
-bool isAffine(const Matrix33<T>& m)
+template <class T> bool isAffine(const Matrix33<T>& m)
 {
     return m[0][2] == 0 && m[1][2] == 0 && m[2][2] == 1;
 }
 
 /*
 template<class T>
-boost::optional<Matrix33<T> > quadToQuadMatrix( const boost::array<Vec2<T> ,4>& src, const
-boost::array<Vec2<T> ,4>& dst)
+boost::optional<Matrix33<T> > quadToQuadMatrix( const boost::array<Vec2<T> ,4>&
+src, const boost::array<Vec2<T> ,4>& dst)
 {
     Eigen::Matrix<T, 8, 8> A( Eigen::Matrix<T,8,8>::Zero());
     Eigen::Matrix<T, 8, 1> b, x;
@@ -98,5 +95,4 @@ boost::array<Vec2<T> ,4>& dst)
 }
 */
 
-}  // Imath
-
+}  // namespace Imath

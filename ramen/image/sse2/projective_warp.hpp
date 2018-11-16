@@ -12,21 +12,22 @@ namespace image
 {
 namespace sse2
 {
-void projective_warp_bilinear(const Imath::Box2i&       src_area,
-                              const const_image_view_t& src,
-                              const Imath::Box2i&       dst_area,
-                              const image_view_t&       dst,
-                              const matrix3_t&          xform,
-                              const matrix3_t&          inv_xform);
+void projective_warp_bilinear(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const matrix3_t&          xform,
+    const matrix3_t&          inv_xform);
 
-void projective_warp_catrom(const Imath::Box2i&       src_area,
-                            const const_image_view_t& src,
-                            const Imath::Box2i&       dst_area,
-                            const image_view_t&       dst,
-                            const matrix3_t&          xform,
-                            const matrix3_t&          inv_xform);
+void projective_warp_catrom(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const matrix3_t&          xform,
+    const matrix3_t&          inv_xform);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

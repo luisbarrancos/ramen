@@ -16,27 +16,27 @@ namespace ocio
 {
 namespace
 {
-static const char* ocio_display_shader_source
-    = { "uniform sampler2D tex;"
-        "uniform sampler3D lut3d;"
-        "uniform float exposure;"
-        "uniform float gamma;"
-        "uniform vec4 channel_mask;"
-        "uniform float alpha;"
-        "void main( void)"
-        "{"
-        "vec4 col = texture2D(tex, gl_TexCoord[0].st);"
-        "vec4 acol = vec4(col.a, col.a, col.a, col.a);"
-        "vec4 expv = vec4(exposure, exposure, exposure, 1);"
-        "col *= expv;"
-        "col = apply_lut(col, lut3d) * channel_mask;"
-        "vec4 gammav = vec4(gamma, gamma, gamma, 1);"
-        "col = pow(col, gammav);"
-        "col = (col * (1.0 - alpha)) + (alpha * acol);"
-        "gl_FragColor = max( col, vec4(0.0, 0.0, 0.0, 0.0));"
-        "}" };
+static const char* ocio_display_shader_source = {
+    "uniform sampler2D tex;"
+    "uniform sampler3D lut3d;"
+    "uniform float exposure;"
+    "uniform float gamma;"
+    "uniform vec4 channel_mask;"
+    "uniform float alpha;"
+    "void main( void)"
+    "{"
+    "vec4 col = texture2D(tex, gl_TexCoord[0].st);"
+    "vec4 acol = vec4(col.a, col.a, col.a, col.a);"
+    "vec4 expv = vec4(exposure, exposure, exposure, 1);"
+    "col *= expv;"
+    "col = apply_lut(col, lut3d) * channel_mask;"
+    "vec4 gammav = vec4(gamma, gamma, gamma, 1);"
+    "col = pow(col, gammav);"
+    "col = (col * (1.0 - alpha)) + (alpha * acol);"
+    "gl_FragColor = max( col, vec4(0.0, 0.0, 0.0, 0.0));"
+    "}"};
 
-}  // unnamed
+}  // namespace
 
 gl_display_manager_t::gl_display_manager_t(int lut_size, GLenum texture_num)
 {
@@ -45,17 +45,17 @@ gl_display_manager_t::gl_display_manager_t(int lut_size, GLenum texture_num)
 }
 
 gl_display_manager_t::gl_display_manager_t(std::shared_ptr<gl_lut3d_t> lut)
-: lut_(lut)
+  : lut_(lut)
 {
     init();
 }
 
 void gl_display_manager_t::init()
 {
-    exposure_      = 0.0f;
-    gamma_         = 1.0f;
+    exposure_ = 0.0f;
+    gamma_ = 1.0f;
     view_channels_ = view_rgb_channels;
-    get_ctx_fun_   = &gl_display_manager_t::default_get_ctx;
+    get_ctx_fun_ = &gl_display_manager_t::default_get_ctx;
 }
 
 void gl_display_manager_t::set_context_callback(const get_context_callback_t& f)
@@ -64,13 +64,16 @@ void gl_display_manager_t::set_context_callback(const get_context_callback_t& f)
     get_ctx_fun_ = f;
 }
 
-void gl_display_manager_t::set_display_transform(OCIO::ConstConfigRcPtr      config,
-                                                 OCIO::DisplayTransformRcPtr transform)
+void gl_display_manager_t::set_display_transform(
+    OCIO::ConstConfigRcPtr      config,
+    OCIO::DisplayTransformRcPtr transform)
 {
     OCIO::ConstContextRcPtr context = get_local_context();
-    processor_ = config->getProcessor(context, transform, OCIO::TRANSFORM_DIR_FORWARD);
+    processor_ =
+        config->getProcessor(context, transform, OCIO::TRANSFORM_DIR_FORWARD);
     lut_->recreate(config, transform, processor_, "apply_lut");
-    program_.compile(lut_->lookup_function().c_str(), ocio_display_shader_source);
+    program_
+        .compile(lut_->lookup_function().c_str(), ocio_display_shader_source);
 }
 
 Imath::Color3f gl_display_manager_t::transform(const Imath::Color3f& c) const
@@ -143,7 +146,7 @@ std::pair<std::string, std::string> gl_display_manager_t::default_get_ctx(int i)
 
 OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
 {
-    OCIO::ConstConfigRcPtr  config  = OCIO::GetCurrentConfig();
+    OCIO::ConstConfigRcPtr  config = OCIO::GetCurrentConfig();
     OCIO::ConstContextRcPtr context = config->getCurrentContext();
 
     if (!get_ctx_fun_)
@@ -160,7 +163,8 @@ OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
         if (!mutable_context)
             mutable_context = context->createEditableCopy();
 
-        mutable_context->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
+        mutable_context
+            ->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
     }
 
     ctx_pair = get_ctx_fun_(1);
@@ -170,7 +174,8 @@ OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
         if (!mutable_context)
             mutable_context = context->createEditableCopy();
 
-        mutable_context->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
+        mutable_context
+            ->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
     }
 
     ctx_pair = get_ctx_fun_(2);
@@ -180,7 +185,8 @@ OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
         if (!mutable_context)
             mutable_context = context->createEditableCopy();
 
-        mutable_context->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
+        mutable_context
+            ->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
     }
 
     ctx_pair = get_ctx_fun_(3);
@@ -190,7 +196,8 @@ OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
         if (!mutable_context)
             mutable_context = context->createEditableCopy();
 
-        mutable_context->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
+        mutable_context
+            ->setStringVar(ctx_pair.first.c_str(), ctx_pair.second.c_str());
     }
 
     if (mutable_context)
@@ -199,5 +206,5 @@ OCIO::ConstContextRcPtr gl_display_manager_t::get_local_context()
     return context;
 }
 
-}  // ocio
-}  // ramen
+}  // namespace ocio
+}  // namespace ramen

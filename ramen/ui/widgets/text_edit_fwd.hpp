@@ -8,6 +8,5 @@ namespace ui
 {
 class text_edit_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

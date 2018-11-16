@@ -20,61 +20,69 @@ namespace detail
 {
 struct invert_rgba_fun
 {
-    template<class PixelRef>
+    template <class PixelRef>
     typename PixelRef::value_type operator()(const PixelRef& p)
     {
         typename PixelRef::value_type r;
-        boost::gil::get_color(r, boost::gil::red_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::red_t()));
-        boost::gil::get_color(r, boost::gil::green_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::green_t()));
-        boost::gil::get_color(r, boost::gil::blue_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::blue_t()));
-        boost::gil::get_color(r, boost::gil::alpha_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::alpha_t()));
+        boost::gil::get_color(r, boost::gil::red_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::red_t()));
+        boost::gil::get_color(r, boost::gil::green_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::green_t()));
+        boost::gil::get_color(r, boost::gil::blue_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::blue_t()));
+        boost::gil::get_color(r, boost::gil::alpha_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::alpha_t()));
         return r;
     }
 };
 
 struct invert_rgb_fun
 {
-    template<class PixelRef>
+    template <class PixelRef>
     typename PixelRef::value_type operator()(const PixelRef& p)
     {
         typename PixelRef::value_type r;
-        boost::gil::get_color(r, boost::gil::red_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::red_t()));
-        boost::gil::get_color(r, boost::gil::green_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::green_t()));
-        boost::gil::get_color(r, boost::gil::blue_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::blue_t()));
-        boost::gil::get_color(r, boost::gil::alpha_t())
-            = boost::gil::get_color(p, boost::gil::alpha_t());
+        boost::gil::get_color(r, boost::gil::red_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::red_t()));
+        boost::gil::get_color(r, boost::gil::green_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::green_t()));
+        boost::gil::get_color(r, boost::gil::blue_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::blue_t()));
+        boost::gil::get_color(r, boost::gil::alpha_t()) =
+            boost::gil::get_color(p, boost::gil::alpha_t());
         return r;
     }
 };
 
 struct invert_alpha_fun
 {
-    template<class PixelRef>
+    template <class PixelRef>
     typename PixelRef::value_type operator()(const PixelRef& p)
     {
         typename PixelRef::value_type r;
-        boost::gil::get_color(r, boost::gil::red_t())
-            = boost::gil::get_color(p, boost::gil::red_t());
-        boost::gil::get_color(r, boost::gil::green_t())
-            = boost::gil::get_color(p, boost::gil::green_t());
-        boost::gil::get_color(r, boost::gil::blue_t())
-            = boost::gil::get_color(p, boost::gil::blue_t());
-        boost::gil::get_color(r, boost::gil::alpha_t())
-            = boost::gil::channel_invert(boost::gil::get_color(p, boost::gil::alpha_t()));
+        boost::gil::get_color(r, boost::gil::red_t()) =
+            boost::gil::get_color(p, boost::gil::red_t());
+        boost::gil::get_color(r, boost::gil::green_t()) =
+            boost::gil::get_color(p, boost::gil::green_t());
+        boost::gil::get_color(r, boost::gil::blue_t()) =
+            boost::gil::get_color(p, boost::gil::blue_t());
+        boost::gil::get_color(r, boost::gil::alpha_t()) =
+            boost::gil::channel_invert(
+                boost::gil::get_color(p, boost::gil::alpha_t()));
         return r;
     }
 };
 
 struct invert_channel_fun
 {
-    template<class PixelRef>
+    template <class PixelRef>
     typename PixelRef::value_type operator()(const PixelRef& p)
     {
         typename PixelRef::value_type r;
@@ -83,7 +91,7 @@ struct invert_channel_fun
     }
 };
 
-}  // namespace
+}  // namespace detail
 
 void invert_rgba(const const_image_view_t& src, const image_view_t& dst)
 {
@@ -113,7 +121,6 @@ void invert_channel(const const_channel_view_t& src, const channel_view_t& dst)
     boost::gil::tbb_transform_pixels(src, dst, detail::invert_channel_fun());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

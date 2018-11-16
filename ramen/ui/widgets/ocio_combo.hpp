@@ -16,13 +16,12 @@ class ocio_combo_t : public QComboBox
 {
     Q_OBJECT
 
-public:
+  public:
     ocio_combo_t(QWidget* parent = 0);
 
-protected:
+  protected:
     int index_for_string(const std::string& s) const;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -15,7 +15,10 @@
 
 #include <ramen/app/application.hpp>
 
-void ramen_terminate(void) { ramen::app().fatal_error("Ramen has encountered a fatal error"); }
+void ramen_terminate(void)
+{
+    ramen::app().fatal_error("Ramen has encountered a fatal error");
+}
 
 void ramen_unexpected(void)
 {

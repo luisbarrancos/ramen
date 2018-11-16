@@ -9,12 +9,12 @@ namespace ramen
 Imath::V3f proportional_param_t::proportional_factor = Imath::V3f(0, 0, 0);
 
 proportional_param_t::proportional_param_t(const std::string& name)
-: numeric_param_t(name)
+  : numeric_param_t(name)
 {
 }
 
 proportional_param_t::proportional_param_t(const proportional_param_t& other)
-: numeric_param_t(other)
+  : numeric_param_t(other)
 {
     prop_button_ = 0;
 }
@@ -35,7 +35,9 @@ bool proportional_param_t::proportional_checked() const
     return false;
 }
 
-void proportional_param_t::create_proportional_button(QWidget* parent, int height)
+void proportional_param_t::create_proportional_button(
+    QWidget* parent,
+    int      height)
 {
     prop_button_ = new QToolButton(parent);
     prop_button_->setIcon(QIcon(":icons/link.png"));
@@ -43,7 +45,11 @@ void proportional_param_t::create_proportional_button(QWidget* parent, int heigh
     prop_button_->setChecked(true);
     prop_button_->setEnabled(enabled());
     prop_button_->resize(height, height);
-    connect(prop_button_, SIGNAL(toggled(bool)), this, SLOT(proportional_toggle(bool)));
+    connect(
+        prop_button_,
+        SIGNAL(toggled(bool)),
+        this,
+        SLOT(proportional_toggle(bool)));
 }
 
 void proportional_param_t::proportional_toggle(bool state)
@@ -54,4 +60,4 @@ void proportional_param_t::proportional_toggle(bool state)
         prop_button_->setIcon(QIcon(":icons/unlink.png"));
 }
 
-}  // namespace
+}  // namespace ramen

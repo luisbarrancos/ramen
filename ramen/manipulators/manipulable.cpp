@@ -18,7 +18,10 @@ void manipulable_t::create_manipulators() { do_create_manipulators(); }
 
 void manipulable_t::do_create_manipulators() {}
 
-void manipulable_t::draw_overlay(const ui::paint_event_t& event) const { do_draw_overlay(event); }
+void manipulable_t::draw_overlay(const ui::paint_event_t& event) const
+{
+    do_draw_overlay(event);
+}
 void manipulable_t::do_draw_overlay(const ui::paint_event_t& event) const
 {
     for (const auto& m : manipulators())
@@ -127,7 +130,8 @@ void manipulable_t::mouse_release_event(const ui::mouse_release_event_t& event)
     do_mouse_release_event(event);
 }
 
-void manipulable_t::do_mouse_release_event(const ui::mouse_release_event_t& event)
+void manipulable_t::do_mouse_release_event(
+    const ui::mouse_release_event_t& event)
 {
     if (active_ != end())
         active_->mouse_release_event(event);
@@ -135,4 +139,4 @@ void manipulable_t::do_mouse_release_event(const ui::mouse_release_event_t& even
     active_ = end();
 }
 
-}  // namespace
+}  // namespace ramen

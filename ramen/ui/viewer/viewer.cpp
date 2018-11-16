@@ -28,7 +28,7 @@ namespace ramen
 namespace ui
 {
 viewer_t::viewer_t()
-: QObject()
+  : QObject()
 {
     // TODO: don't harcode this. Get it from some widgets
     toolbar_height_ = 30;
@@ -49,7 +49,7 @@ viewer_t::viewer_t()
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setContentsMargins(5, 5, 5, 5);
 
-    QWidget*     status_bar    = new QWidget();
+    QWidget*     status_bar = new QWidget();
     QHBoxLayout* status_layout = new QHBoxLayout();
     status_layout->setContentsMargins(0, 0, 0, 0);
     status_ = new QLabel();
@@ -85,9 +85,10 @@ viewer_t::viewer_t()
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
     result_combo_ = new QComboBox();
-    result_combo_->insertItems(0,
-                               QStringList() << "Active"
-                                             << "Context");
+    result_combo_->insertItems(
+        0,
+        QStringList() << "Active"
+                      << "Context");
     QSize s = result_combo_->sizeHint();
 
     update_btn_ = new QToolButton();
@@ -98,12 +99,20 @@ viewer_t::viewer_t()
     update_btn_->setToolTip("Auto-update");
     update_btn_->setMaximumWidth(s.height());
     update_btn_->setMaximumHeight(s.height());
-    connect(update_btn_, SIGNAL(toggled(bool)), this, SLOT(autoupdate_toggle(bool)));
+    connect(
+        update_btn_,
+        SIGNAL(toggled(bool)),
+        this,
+        SLOT(autoupdate_toggle(bool)));
     horizontalLayout->addWidget(update_btn_);
 
     result_combo_->setFocusPolicy(Qt::NoFocus);
     result_combo_->setToolTip("Show result / context node");
-    connect(result_combo_, SIGNAL(activated(int)), this, SLOT(change_active_context_view(int)));
+    connect(
+        result_combo_,
+        SIGNAL(activated(int)),
+        this,
+        SLOT(change_active_context_view(int)));
     horizontalLayout->addWidget(result_combo_);
 
     separator = new QFrame();
@@ -113,17 +122,24 @@ viewer_t::viewer_t()
 
     ocio_device_combo_->setFocusPolicy(Qt::NoFocus);
     ocio_device_combo_->setToolTip("Display Device");
-    connect(ocio_device_combo_, SIGNAL(activated(int)), this, SLOT(change_display_device(int)));
+    connect(
+        ocio_device_combo_,
+        SIGNAL(activated(int)),
+        this,
+        SLOT(change_display_device(int)));
     horizontalLayout->addWidget(ocio_device_combo_);
 
     ocio_transform_combo_->setFocusPolicy(Qt::NoFocus);
     ocio_transform_combo_->setToolTip("Display Transform");
     connect(
-        ocio_transform_combo_, SIGNAL(activated(int)), this, SLOT(change_display_transform(int)));
+        ocio_transform_combo_,
+        SIGNAL(activated(int)),
+        this,
+        SLOT(change_display_transform(int)));
     horizontalLayout->addWidget(ocio_transform_combo_);
 
     exposure_input_ = new ui::double_spinbox_t();
-    s               = exposure_input_->sizeHint();
+    s = exposure_input_->sizeHint();
     exposure_input_->setMinimumSize(s);
     exposure_input_->setMaximumSize(s);
     exposure_input_->setMinimum(-30.0);
@@ -131,8 +147,16 @@ viewer_t::viewer_t()
     exposure_input_->setSingleStep(0.1);
     exposure_input_->setDecimals(3);
     exposure_input_->setToolTip("Viewer Exposure");
-    connect(exposure_input_, SIGNAL(valueChanged(double)), this, SLOT(change_exposure(double)));
-    connect(exposure_input_, SIGNAL(spinBoxDragged(double)), this, SLOT(change_exposure(double)));
+    connect(
+        exposure_input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(change_exposure(double)));
+    connect(
+        exposure_input_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(change_exposure(double)));
     horizontalLayout->addWidget(exposure_input_);
 
     gamma_input_ = new ui::double_spinbox_t();
@@ -144,8 +168,16 @@ viewer_t::viewer_t()
     gamma_input_->setSingleStep(0.1);
     gamma_input_->setDecimals(3);
     gamma_input_->setToolTip("Viewer Gamma");
-    connect(gamma_input_, SIGNAL(valueChanged(double)), this, SLOT(change_gamma(double)));
-    connect(gamma_input_, SIGNAL(spinBoxDragged(double)), this, SLOT(change_gamma(double)));
+    connect(
+        gamma_input_,
+        SIGNAL(valueChanged(double)),
+        this,
+        SLOT(change_gamma(double)));
+    connect(
+        gamma_input_,
+        SIGNAL(spinBoxDragged(double)),
+        this,
+        SLOT(change_gamma(double)));
     horizontalLayout->addWidget(gamma_input_);
 
     separator = new QFrame();
@@ -179,7 +211,7 @@ void viewer_t::get_display_devices()
     QStringList slist;
 
     std::string default_device_name = config->getDefaultDisplay();
-    int         num_device_names    = config->getNumDisplays();
+    int         num_device_names = config->getNumDisplays();
 
     for (int i = 0; i < num_device_names; i++)
     {
@@ -201,7 +233,8 @@ void viewer_t::get_display_transforms()
 {
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
 
-    std::string device_name       = display_devices_[ocio_device_combo_->currentIndex()];
+    std::string device_name =
+        display_devices_[ocio_device_combo_->currentIndex()];
     std::string default_transform = config->getDefaultView(device_name.c_str());
 
     int         index = 0;
@@ -224,17 +257,32 @@ void viewer_t::get_display_transforms()
 }
 
 const std::string& viewer_t::display_device() const { return display_device_; }
-const std::string& viewer_t::display_transform() const { return display_transform_; }
+const std::string& viewer_t::display_transform() const
+{
+    return display_transform_;
+}
 
 float viewer_t::exposure() const { return exposure_input_->value(); }
 float viewer_t::gamma() const { return gamma_input_->value(); }
 
-void viewer_t::update_display_transform() { view_->display_transform_changed(); }
+void viewer_t::update_display_transform()
+{
+    view_->display_transform_changed();
+}
 
-const viewer::viewer_strategy_t& viewer_t::current_viewer() const { return view_->strategy(); }
-viewer::viewer_strategy_t&       viewer_t::current_viewer() { return view_->strategy(); }
+const viewer::viewer_strategy_t& viewer_t::current_viewer() const
+{
+    return view_->strategy();
+}
+viewer::viewer_strategy_t& viewer_t::current_viewer()
+{
+    return view_->strategy();
+}
 
-void viewer_t::set_viewer_toolbar(QWidget* w) { viewer_toolbar_->set_contents(w); }
+void viewer_t::set_viewer_toolbar(QWidget* w)
+{
+    viewer_toolbar_->set_contents(w);
+}
 
 void viewer_t::set_active_node(node_t* n)
 {
@@ -252,7 +300,7 @@ void viewer_t::set_active_node(node_t* n)
         if (it == node_toolbars_.end())
         {
             std::auto_ptr<QWidget> toolbar = n->create_toolbar();
-            node_toolbars_[n]              = toolbar.release();
+            node_toolbars_[n] = toolbar.release();
         }
 
         current_node_toolbar_ = node_toolbars_.find(n);
@@ -308,8 +356,9 @@ void viewer_t::change_display_device(int index)
 
     OCIO::ConstConfigRcPtr config = app().ocio_manager().config();
 
-    std::string default_transform   = config->getDefaultView(display_device_.c_str());
-    int         num_transform_names = config->getNumViews(display_device_.c_str());
+    std::string default_transform =
+        config->getDefaultView(display_device_.c_str());
+    int num_transform_names = config->getNumViews(display_device_.c_str());
 
     int         default_index = 0, new_index = -1;
     QStringList slist;
@@ -333,7 +382,8 @@ void viewer_t::change_display_device(int index)
         new_index = default_index;
 
     ocio_transform_combo_->setCurrentIndex(new_index);
-    display_transform_ = ocio_transform_combo_->itemText(new_index).toStdString();
+    display_transform_ =
+        ocio_transform_combo_->itemText(new_index).toStdString();
     ocio_transform_combo_->blockSignals(false);
     view_->display_transform_changed();
 }
@@ -347,5 +397,5 @@ void viewer_t::change_display_transform(int index)
 void viewer_t::change_exposure(double d) { view_->exposure_changed(); }
 void viewer_t::change_gamma(double d) { view_->gamma_changed(); }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

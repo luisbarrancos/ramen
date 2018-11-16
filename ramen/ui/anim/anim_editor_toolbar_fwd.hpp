@@ -10,6 +10,5 @@ namespace ui
 {
 class anim_editor_toolbar_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

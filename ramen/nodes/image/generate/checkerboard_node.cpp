@@ -21,7 +21,7 @@ namespace ramen
 namespace image
 {
 checkerboard_node_t::checkerboard_node_t()
-: generator_node_t()
+  : generator_node_t()
 {
     set_name("checks");
 }
@@ -60,7 +60,8 @@ void checkerboard_node_t::do_create_params()
 void checkerboard_node_t::do_process(const render::context_t& context)
 {
     Imath::Color4f color(get_value<Imath::Color4f>(param("bgcol")));
-    boost::gil::fill_pixels(image_view(), image::pixel_t(color.r, color.g, color.b, color.a));
+    boost::gil::fill_pixels(
+        image_view(), image::pixel_t(color.r, color.g, color.b, color.a));
 
     Imath::V2f size(get_absolute_value<Imath::V2f>(param("size")));
 
@@ -137,21 +138,21 @@ const node_metaclass_t& checkerboard_node_t::checkerboard_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.checkerboard";
+        info.id = "image.builtin.checkerboard";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Input";
-        info.menu_item     = "Checkerboard";
-        info.create        = &create_checkerboard_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Input";
+        info.menu_item = "Checkerboard";
+        info.create = &create_checkerboard_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(checkerboard_node_t::checkerboard_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    checkerboard_node_t::checkerboard_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

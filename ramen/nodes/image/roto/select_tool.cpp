@@ -27,17 +27,17 @@ namespace ramen
 namespace roto
 {
 select_tool_t::select_tool_t(image::roto_node_t& parent)
-: tool_t(parent)
+  : tool_t(parent)
 {
-    box_pick_mode_      = false;
-    drag_curve_mode_    = false;
-    drag_curve_x_       = true;
-    drag_curve_y_       = true;
-    drag_points_mode_   = false;
+    box_pick_mode_ = false;
+    drag_curve_mode_ = false;
+    drag_curve_x_ = true;
+    drag_curve_y_ = true;
+    drag_points_mode_ = false;
     drag_tangents_mode_ = false;
-    left_tangent_       = false;
-    selected_           = 0;
-    active_point_       = 0;
+    left_tangent_ = false;
+    selected_ = 0;
+    active_point_ = 0;
 }
 
 void select_tool_t::draw_overlay(const ui::paint_event_t& event) const
@@ -51,7 +51,8 @@ void select_tool_t::draw_overlay(const ui::paint_event_t& event) const
 
 void select_tool_t::key_press_event(const ui::key_press_event_t& event)
 {
-    if (event.key == ui::key_event_t::backspace_key || event.key == ui::key_event_t::delete_key)
+    if (event.key == ui::key_event_t::backspace_key ||
+        event.key == ui::key_event_t::delete_key)
     {
         // delete shapes or points here.
         selected_ = parent().selected();
@@ -61,7 +62,8 @@ void select_tool_t::key_press_event(const ui::key_press_event_t& event)
 
             if (selected_->can_delete_selected_points())
             {
-                cmd.reset(new undo::modify_shape_command_t(parent(), selected_));
+                cmd.reset(
+                    new undo::modify_shape_command_t(parent(), selected_));
                 selected_->delete_selected_points();
             }
             else
@@ -79,14 +81,14 @@ void select_tool_t::key_press_event(const ui::key_press_event_t& event)
 
 void select_tool_t::mouse_press_event(const ui::mouse_press_event_t& event)
 {
-    box_pick_mode_      = false;
-    drag_curve_mode_    = false;
-    drag_curve_x_       = true;
-    drag_curve_y_       = true;
-    drag_points_mode_   = false;
+    box_pick_mode_ = false;
+    drag_curve_mode_ = false;
+    drag_curve_x_ = true;
+    drag_curve_y_ = true;
+    drag_points_mode_ = false;
     drag_tangents_mode_ = false;
-    left_tangent_       = false;
-    inv_xf_             = Imath::M33f();
+    left_tangent_ = false;
+    inv_xf_ = Imath::M33f();
 
     selected_ = parent().selected();
     if (selected_)
@@ -105,7 +107,7 @@ void select_tool_t::mouse_press_event(const ui::mouse_press_event_t& event)
         if (event.modifiers & ui::event_t::control_modifier)
         {
             box_pick_mode_ = true;
-            pick_box_      = Imath::Box2f(event.wpos);
+            pick_box_ = Imath::Box2f(event.wpos);
 
             if (!(event.modifiers & ui::event_t::shift_modifier))
                 selected_->deselect_all_points();
@@ -179,7 +181,8 @@ void select_tool_t::mouse_drag_event(const ui::mouse_drag_event_t& event)
         else
         {
             if (drag_points_mode_ || drag_tangents_mode_)
-                cmd_.reset(new undo::modify_shape_command_t(parent(), selected_));
+                cmd_.reset(
+                    new undo::modify_shape_command_t(parent(), selected_));
         }
     }
 
@@ -285,7 +288,8 @@ void select_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
                 if (cmd_.get())
                 {
                     // set a shape key here if needed
-                    if (selected_->autokey() || !selected_->anim_curve().empty())
+                    if (selected_->autokey() ||
+                        !selected_->anim_curve().empty())
                     {
                         selected_->set_shape_key();
                         app().ui()->update_anim_editors();
@@ -302,20 +306,21 @@ void select_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
         }
     }
 
-    box_pick_mode_      = false;
-    drag_curve_mode_    = false;
-    drag_points_mode_   = false;
+    box_pick_mode_ = false;
+    drag_curve_mode_ = false;
+    drag_points_mode_ = false;
     drag_tangents_mode_ = false;
-    left_tangent_       = false;
-    selected_           = 0;
-    active_point_       = 0;
+    left_tangent_ = false;
+    selected_ = 0;
+    active_point_ = 0;
     event.view->update();
 }
 
-bool select_tool_t::pick_axes(const shape_t&           s,
-                              const ui::mouse_event_t& event,
-                              bool&                    xaxis,
-                              bool&                    yaxis) const
+bool select_tool_t::pick_axes(
+    const shape_t&           s,
+    const ui::mouse_event_t& event,
+    bool&                    xaxis,
+    bool&                    yaxis) const
 {
     Imath::V2f p(event.wpos);
     p.x /= event.aspect_ratio;
@@ -332,7 +337,12 @@ bool select_tool_t::pick_axes(const shape_t&           s,
     y -= c;
 
     switch (manipulators::pick_xy_axes(
-        p, c, x, y, event.aspect_ratio / parent().aspect_ratio(), event.pixel_scale))
+        p,
+        c,
+        x,
+        y,
+        event.aspect_ratio / parent().aspect_ratio(),
+        event.pixel_scale))
     {
         case manipulators::axes_center_picked:
             xaxis = true;
@@ -354,7 +364,10 @@ bool select_tool_t::pick_axes(const shape_t&           s,
     }
 }
 
-shape_t* select_tool_t::pick_nulls(const ui::mouse_press_event_t& event, bool& xaxis, bool& yaxis)
+shape_t* select_tool_t::pick_nulls(
+    const ui::mouse_press_event_t& event,
+    bool&                          xaxis,
+    bool&                          yaxis)
 {
     for (roto::shape_t& s : parent().scene())
     {
@@ -384,8 +397,12 @@ shape_t* select_tool_t::pick_shape(const ui::mouse_press_event_t& event)
 
                 if (inside_pick_distance(box, p, event.pixel_scale * 2))
                 {
-                    if (s.for_each_span_while(
-                            boost::bind(&select_tool_t::pick_span, this, _1, p, event.pixel_scale)))
+                    if (s.for_each_span_while(boost::bind(
+                            &select_tool_t::pick_span,
+                            this,
+                            _1,
+                            p,
+                            event.pixel_scale)))
                         return &s;
                 }
             }
@@ -395,9 +412,10 @@ shape_t* select_tool_t::pick_shape(const ui::mouse_press_event_t& event)
     return 0;
 }
 
-bool select_tool_t::pick_span(const bezier::curve_t<Imath::V2f>& c,
-                              const Imath::V2f&                  p,
-                              float                              pixel_scale) const
+bool select_tool_t::pick_span(
+    const bezier::curve_t<Imath::V2f>& c,
+    const Imath::V2f&                  p,
+    float                              pixel_scale) const
 {
     if (inside_pick_distance(c.bounding_box(), p, pixel_scale))
     {
@@ -410,7 +428,10 @@ bool select_tool_t::pick_span(const bezier::curve_t<Imath::V2f>& c,
     return false;
 }
 
-triple_t* select_tool_t::pick_tangent(shape_t& s, const ui::mouse_event_t& event, bool& left)
+triple_t* select_tool_t::pick_tangent(
+    shape_t&                 s,
+    const ui::mouse_event_t& event,
+    bool&                    left)
 {
     if (s.inv_global_xform())
     {
@@ -438,5 +459,5 @@ triple_t* select_tool_t::pick_tangent(shape_t& s, const ui::mouse_event_t& event
     return 0;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

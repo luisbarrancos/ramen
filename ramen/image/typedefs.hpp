@@ -34,29 +34,38 @@ typedef boost::gil::pixel<channel_t, layout_t>&      pixel_ref_t;
 typedef boost::gil::pixel<channel_t, rgb_layout_t>&  rgb_pixel_ref_t;
 typedef boost::gil::pixel<channel_t, gray_layout_t>& gray_pixel_ref_t;
 
-typedef const boost::gil::pixel<channel_t, layout_t>&      const_pixel_ref_t;
-typedef const boost::gil::pixel<channel_t, rgb_layout_t>&  const_rgb_pixel_ref_t;
-typedef const boost::gil::pixel<channel_t, gray_layout_t>& const_gray_pixel_ref_t;
+typedef const boost::gil::pixel<channel_t, layout_t>&     const_pixel_ref_t;
+typedef const boost::gil::pixel<channel_t, rgb_layout_t>& const_rgb_pixel_ref_t;
+typedef const boost::gil::pixel<channel_t, gray_layout_t>&
+    const_gray_pixel_ref_t;
 
 typedef boost::gil::pixel<channel_t, layout_t>*      pixel_ptr_t;
 typedef boost::gil::pixel<channel_t, rgb_layout_t>*  rgb_pixel_ptr_t;
 typedef boost::gil::pixel<channel_t, gray_layout_t>* gray_pixel_ptr_t;
 
-typedef const boost::gil::pixel<channel_t, layout_t>*      const_pixel_ptr_t;
-typedef const boost::gil::pixel<channel_t, rgb_layout_t>*  const_rgb_pixel_ptr_t;
-typedef const boost::gil::pixel<channel_t, gray_layout_t>* const_gray_pixel_ptr_t;
+typedef const boost::gil::pixel<channel_t, layout_t>*     const_pixel_ptr_t;
+typedef const boost::gil::pixel<channel_t, rgb_layout_t>* const_rgb_pixel_ptr_t;
+typedef const boost::gil::pixel<channel_t, gray_layout_t>*
+    const_gray_pixel_ptr_t;
 
-typedef boost::gil::memory_based_step_iterator<pixel_ptr_t>      pixel_step_ptr_t;
-typedef boost::gil::memory_based_step_iterator<rgb_pixel_ptr_t>  rgb_pixel_step_ptr_t;
-typedef boost::gil::memory_based_step_iterator<gray_pixel_ptr_t> gray_pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<pixel_ptr_t> pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<rgb_pixel_ptr_t>
+    rgb_pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<gray_pixel_ptr_t>
+    gray_pixel_step_ptr_t;
 
-typedef boost::gil::memory_based_step_iterator<const_pixel_ptr_t>      const_pixel_step_ptr_t;
-typedef boost::gil::memory_based_step_iterator<const_rgb_pixel_ptr_t>  const_rgb_pixel_step_ptr_t;
-typedef boost::gil::memory_based_step_iterator<const_gray_pixel_ptr_t> const_gray_pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<const_pixel_ptr_t>
+    const_pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<const_rgb_pixel_ptr_t>
+    const_rgb_pixel_step_ptr_t;
+typedef boost::gil::memory_based_step_iterator<const_gray_pixel_ptr_t>
+    const_gray_pixel_step_ptr_t;
 
-typedef boost::gil::memory_based_2d_locator<boost::gil::memory_based_step_iterator<pixel_ptr_t>>
+typedef boost::gil::memory_based_2d_locator<
+    boost::gil::memory_based_step_iterator<pixel_ptr_t>>
     locator_t;
-typedef boost::gil::memory_based_2d_locator<boost::gil::memory_based_step_iterator<rgb_pixel_ptr_t>>
+typedef boost::gil::memory_based_2d_locator<
+    boost::gil::memory_based_step_iterator<rgb_pixel_ptr_t>>
     rgb_locator_t;
 typedef boost::gil::memory_based_2d_locator<
     boost::gil::memory_based_step_iterator<gray_pixel_ptr_t>>
@@ -104,17 +113,20 @@ typedef boost::gil::image_view<step_locator_t>      image_step_view_t;
 typedef boost::gil::image_view<rgb_step_locator_t>  rgb_image_step_view_t;
 typedef boost::gil::image_view<gray_step_locator_t> gray_image_step_view_t;
 
-typedef boost::gil::image_view<const_step_locator_t>      const_image_step_view_t;
-typedef boost::gil::image_view<const_rgb_step_locator_t>  const_rgb_image_step_view_t;
-typedef boost::gil::image_view<const_gray_step_locator_t> const_gray_image_step_view_t;
+typedef boost::gil::image_view<const_step_locator_t> const_image_step_view_t;
+typedef boost::gil::image_view<const_rgb_step_locator_t>
+    const_rgb_image_step_view_t;
+typedef boost::gil::image_view<const_gray_step_locator_t>
+    const_gray_image_step_view_t;
 
 // channel views
 typedef gray_layout_t      channel_layout_t;
 typedef gray_pixel_t       channel_pixel_t;
 typedef const_gray_pixel_t const_channel_pixel_t;
 
-typedef boost::gil::nth_channel_view_type<image_view_t>::type       channel_view_t;
-typedef boost::gil::nth_channel_view_type<const_image_view_t>::type const_channel_view_t;
+typedef boost::gil::nth_channel_view_type<image_view_t>::type channel_view_t;
+typedef boost::gil::nth_channel_view_type<const_image_view_t>::type
+    const_channel_view_t;
 
 // images
 typedef boost::gil::image<pixel_t, false>      image_t;
@@ -130,6 +142,5 @@ typedef Imath::V4f vector4_t;
 typedef Imath::M33d matrix3_t;
 typedef Imath::M44f matrix4_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

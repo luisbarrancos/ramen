@@ -16,12 +16,12 @@ namespace ramen
 {
 /*!
 \ingroup manips
-\brief Base class for objects that can have manipulators, react to events and draw an on-screen
-overlay using GL.
+\brief Base class for objects that can have manipulators, react to events and
+draw an on-screen overlay using GL.
 */
 class RAMEN_API manipulable_t : boost::noncopyable
 {
-public:
+  public:
     manipulable_t();
 
     virtual ~manipulable_t();
@@ -29,16 +29,18 @@ public:
     /// Create manipulators for this object.
     void create_manipulators();
 
-    template<class T>
-    void add_manipulator(std::auto_ptr<T> p)
+    template <class T> void add_manipulator(std::auto_ptr<T> p)
     {
         p->set_parent(this);
         manipulators_.push_back(p.release());
         active_ = manipulators_.end();
     }
 
-    const boost::ptr_vector<manipulator_t>& manipulators() const { return manipulators_; }
-    boost::ptr_vector<manipulator_t>&       manipulators() { return manipulators_; }
+    const boost::ptr_vector<manipulator_t>& manipulators() const
+    {
+        return manipulators_;
+    }
+    boost::ptr_vector<manipulator_t>& manipulators() { return manipulators_; }
 
     typedef boost::ptr_vector<manipulator_t>::const_iterator const_iterator;
     typedef boost::ptr_vector<manipulator_t>::iterator       iterator;
@@ -82,13 +84,14 @@ public:
     /// Called when a mouse_release_event_t is recieved.
     void mouse_release_event(const ui::mouse_release_event_t& event);
 
-protected:
+  protected:
     manipulable_t(const manipulable_t& other);
     void operator=(const manipulable_t& other);
 
     /*!
         \brief Customization hook for manipulable_t::draw_overlay.
-        Implement in subclasses to draw a visual representation of the manipulator.
+        Implement in subclasses to draw a visual representation of the
+       manipulator.
     */
     virtual void do_draw_overlay(const ui::paint_event_t& event) const;
 
@@ -140,7 +143,7 @@ protected:
     */
     virtual void do_mouse_release_event(const ui::mouse_release_event_t& event);
 
-private:
+  private:
     /*!
         \brief Customization hook for manipulable_t::create_manipulators.
         Implement in subclasses add manipulators to this object.
@@ -151,5 +154,4 @@ private:
     iterator                         active_;
 };
 
-}  // namespace
-
+}  // namespace ramen

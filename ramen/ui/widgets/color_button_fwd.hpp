@@ -10,6 +10,5 @@ namespace ui
 {
 class color_button_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -19,23 +19,24 @@ namespace
 {
 struct alpha_soft_crop_fun
 {
-    alpha_soft_crop_fun(const image::const_image_view_t& src,
-                        const image::image_view_t&       dst,
-                        const Imath::Box2i&              format,
-                        const Imath::Box2i&              area,
-                        float                            t,
-                        float                            l,
-                        float                            b,
-                        float                            r)
-    : src_(src)
-    , dst_(dst)
+    alpha_soft_crop_fun(
+        const image::const_image_view_t& src,
+        const image::image_view_t&       dst,
+        const Imath::Box2i&              format,
+        const Imath::Box2i&              area,
+        float                            t,
+        float                            l,
+        float                            b,
+        float                            r)
+      : src_(src)
+      , dst_(dst)
     {
         format_ = format;
-        area_   = area;
-        t_      = t;
-        l_      = l;
-        b_      = b;
-        r_      = r;
+        area_ = area;
+        t_ = t;
+        l_ = l;
+        b_ = b;
+        r_ = r;
     }
 
     void operator()(const tbb::blocked_range<int>& r) const
@@ -48,14 +49,14 @@ struct alpha_soft_crop_fun
             for (int i = 0; i < src_.width(); ++i)
             {
                 image::pixel_t p(*src_it++);
-                boost::gil::get_color(p, boost::gil::alpha_t())
-                    *= softness(i + area_.min.x, j + area_.min.y);
+                boost::gil::get_color(p, boost::gil::alpha_t()) *=
+                    softness(i + area_.min.x, j + area_.min.y);
                 *dst_it++ = p;
             }
         }
     }
 
-protected:
+  protected:
     float softness(int x, int y) const
     {
         float s = 1.0f;
@@ -89,15 +90,16 @@ protected:
 
 struct rgba_soft_crop_fun : public alpha_soft_crop_fun
 {
-    rgba_soft_crop_fun(const image::const_image_view_t& src,
-                       const image::image_view_t&       dst,
-                       const Imath::Box2i&              format,
-                       const Imath::Box2i&              area,
-                       float                            t,
-                       float                            l,
-                       float                            b,
-                       float                            r)
-    : alpha_soft_crop_fun(src, dst, format, area, t, l, b, r)
+    rgba_soft_crop_fun(
+        const image::const_image_view_t& src,
+        const image::image_view_t&       dst,
+        const Imath::Box2i&              format,
+        const Imath::Box2i&              area,
+        float                            t,
+        float                            l,
+        float                            b,
+        float                            r)
+      : alpha_soft_crop_fun(src, dst, format, area, t, l, b, r)
     {
     }
 
@@ -122,13 +124,14 @@ struct rgba_soft_crop_fun : public alpha_soft_crop_fun
     }
 };
 
-}  // unnamed
+}  // namespace
 
 crop_node_t::crop_node_t()
-: image_node_t()
+  : image_node_t()
 {
     set_name("crop");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
 }
 
@@ -211,15 +214,17 @@ void crop_node_t::do_calc_format(const render::context_t& context)
     int           crop_l = get_absolute_value<float>(param("left"));
     int           crop_b = get_absolute_value<float>(param("bottom"));
     int           crop_r = get_absolute_value<float>(param("right"));
-    set_format(Imath::Box2i(Imath::V2i(box.min.x + crop_l, box.min.y + crop_t),
-                            Imath::V2i(box.max.x - crop_r, box.max.y - crop_b)));
+    set_format(Imath::Box2i(
+        Imath::V2i(box.min.x + crop_l, box.min.y + crop_t),
+        Imath::V2i(box.max.x - crop_r, box.max.y - crop_b)));
     set_aspect_ratio(in->aspect_ratio());
     set_proxy_scale(in->proxy_scale());
 }
 
 void crop_node_t::do_calc_bounds(const render::context_t& context)
 {
-    Imath::Box2i bounds(ImathExt::intersect(input_as<image_node_t>()->bounds(), format()));
+    Imath::Box2i bounds(
+        ImathExt::intersect(input_as<image_node_t>()->bounds(), format()));
     set_bounds(bounds);
 }
 
@@ -231,7 +236,7 @@ void crop_node_t::do_calc_inputs_interest(const render::context_t& context)
 
 void crop_node_t::do_process(const render::context_t& context)
 {
-    image_node_t* in   = input_as<image_node_t>();
+    image_node_t* in = input_as<image_node_t>();
     Imath::Box2i  area = ImathExt::intersect(in->defined(), defined());
 
     if (area.isEmpty())
@@ -243,35 +248,40 @@ void crop_node_t::do_process(const render::context_t& context)
     float soft_r = get_absolute_value<float>(param("soft_right"));
 
     if (soft_t == 0 && soft_l == 0 && soft_b == 0 && soft_r == 0)
-        boost::gil::copy_pixels(input_as<image_node_t>()->const_subimage_view(area),
-                                subimage_view(area));
+        boost::gil::copy_pixels(
+            input_as<image_node_t>()->const_subimage_view(area),
+            subimage_view(area));
     else
     {
         if (get_value<bool>(param("alpha_only")))
         {
-            tbb::parallel_for(tbb::blocked_range<int>(0, area.size().y + 1),
-                              alpha_soft_crop_fun(in->const_subimage_view(area),
-                                                  subimage_view(area),
-                                                  format(),
-                                                  area,
-                                                  soft_t,
-                                                  soft_l,
-                                                  soft_b,
-                                                  soft_r),
-                              tbb::auto_partitioner());
+            tbb::parallel_for(
+                tbb::blocked_range<int>(0, area.size().y + 1),
+                alpha_soft_crop_fun(
+                    in->const_subimage_view(area),
+                    subimage_view(area),
+                    format(),
+                    area,
+                    soft_t,
+                    soft_l,
+                    soft_b,
+                    soft_r),
+                tbb::auto_partitioner());
         }
         else
         {
-            tbb::parallel_for(tbb::blocked_range<int>(0, area.size().y + 1),
-                              rgba_soft_crop_fun(in->const_subimage_view(area),
-                                                 subimage_view(area),
-                                                 format(),
-                                                 area,
-                                                 soft_t,
-                                                 soft_l,
-                                                 soft_b,
-                                                 soft_r),
-                              tbb::auto_partitioner());
+            tbb::parallel_for(
+                tbb::blocked_range<int>(0, area.size().y + 1),
+                rgba_soft_crop_fun(
+                    in->const_subimage_view(area),
+                    subimage_view(area),
+                    format(),
+                    area,
+                    soft_t,
+                    soft_l,
+                    soft_b,
+                    soft_r),
+                tbb::auto_partitioner());
         }
     }
 }
@@ -279,7 +289,10 @@ void crop_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_crop_node() { return new crop_node_t(); }
 
-const node_metaclass_t* crop_node_t::metaclass() const { return &crop_node_metaclass(); }
+const node_metaclass_t* crop_node_t::metaclass() const
+{
+    return &crop_node_metaclass();
+}
 
 const node_metaclass_t& crop_node_t::crop_node_metaclass()
 {
@@ -288,21 +301,21 @@ const node_metaclass_t& crop_node_t::crop_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.crop";
+        info.id = "image.builtin.crop";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Crop";
-        info.create        = &create_crop_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Crop";
+        info.create = &create_crop_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(crop_node_t::crop_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    crop_node_t::crop_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

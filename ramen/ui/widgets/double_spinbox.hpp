@@ -17,7 +17,7 @@ class double_spinbox_t : public spinbox_t
 {
     Q_OBJECT
 
-public:
+  public:
     double_spinbox_t(QWidget* parent = 0);
 
     void setSuffix(const QString& s);
@@ -25,18 +25,18 @@ public:
     double value() const;
     void   restorePreviousValue();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     bool setValue(double v);
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void valueChanged(double value);
     void spinBoxPressed();
     void spinBoxDragged(double value);
     void spinBoxReleased();
 
-protected:
+  protected:
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent* event) override;
 
@@ -46,17 +46,16 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent* event) override;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void textChanged();
 
-private:
+  private:
     void stepBy(int steps);
 
     double value_;
     double previous_value_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -22,23 +22,32 @@ namespace system
 */
 class RAMEN_API system_t
 {
-public:
+  public:
     const std::string& system_name() const { return system_name_; }
 
     const std::string& user_name() const { return user_name_; }
 
     const boost::filesystem::path& home_path() const { return home_path_; }
 
-    const boost::filesystem::path& executable_path() const { return executable_path_; }
+    const boost::filesystem::path& executable_path() const
+    {
+        return executable_path_;
+    }
 
-    const boost::filesystem::path& application_path() const { return application_path_; }
+    const boost::filesystem::path& application_path() const
+    {
+        return application_path_;
+    }
 
-    const boost::filesystem::path& application_user_path() const { return application_user_path_; }
+    const boost::filesystem::path& application_user_path() const
+    {
+        return application_user_path_;
+    }
 
     // ram
     boost::uint64_t ram_size() const { return ram_size_; }
 
-private:
+  private:
     friend class ramen::application_t;
 
     system_t();
@@ -63,6 +72,5 @@ private:
     impl* m_pimpl;
 };
 
-}  // system
-}  // ramen
-
+}  // namespace system
+}  // namespace ramen

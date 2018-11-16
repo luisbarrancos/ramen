@@ -21,7 +21,7 @@ namespace ramen
 namespace image
 {
 ocio_file_transform_node_t::ocio_file_transform_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("ocio_file");
 }
@@ -31,7 +31,8 @@ void ocio_file_transform_node_t::do_create_params()
     std::auto_ptr<file_param_t> file(new file_param_t("File"));
     file->set_id("file");
     file->set_extension_list_string(
-        "Transform files (*.3dl *.cc *.ccc *.csp *.cub *.cube *.lut *.spi1d *.spi3d *.spimtx)");
+        "Transform files (*.3dl *.cc *.ccc *.csp *.cub *.cube *.lut *.spi1d "
+        "*.spi3d *.spimtx)");
     add_param(file);
 
     std::auto_ptr<string_param_t> cccid(new string_param_t("CCC Id"));
@@ -40,12 +41,12 @@ void ocio_file_transform_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> pop(new popup_param_t("Direction"));
     pop->set_id("direction");
-    pop->menu_items() = std::vector<std::string>({ "Forward", "Inverse" });
+    pop->menu_items() = std::vector<std::string>({"Forward", "Inverse"});
     add_param(pop);
 
     pop.reset(new popup_param_t("Interpolation"));
     pop->set_id("interpolation");
-    pop->menu_items() = std::vector<std::string>({ "Nearest", "Linear" });
+    pop->menu_items() = std::vector<std::string>({"Nearest", "Linear"});
     add_param(pop);
 }
 
@@ -56,14 +57,16 @@ bool ocio_file_transform_node_t::do_is_valid() const
     return p->file_exists();
 }
 
-void ocio_file_transform_node_t::do_process(const image::const_image_view_t& src,
-                                            const image::image_view_t&       dst,
-                                            const render::context_t&         context)
+void ocio_file_transform_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     boost::gil::copy_pixels(src, dst);
 
-    boost::filesystem::path path(get_value<boost::filesystem::path>(param("file")));
-    std::string             cccid(get_value<std::string>(param("cccid")));
+    boost::filesystem::path path(
+        get_value<boost::filesystem::path>(param("file")));
+    std::string cccid(get_value<std::string>(param("cccid")));
 
     try
     {
@@ -83,8 +86,8 @@ void ocio_file_transform_node_t::do_process(const image::const_image_view_t& src
         else
             transform->setInterpolation(OCIO::INTERP_LINEAR);
 
-        OCIO::ConstProcessorRcPtr proc
-            = config->getProcessor(transform, OCIO::TRANSFORM_DIR_FORWARD);
+        OCIO::ConstProcessorRcPtr proc =
+            config->getProcessor(transform, OCIO::TRANSFORM_DIR_FORWARD);
         image::ocio_transform(dst, proc);
     }
     catch (OCIO::Exception& e)
@@ -96,29 +99,33 @@ void ocio_file_transform_node_t::do_process(const image::const_image_view_t& src
 }
 
 // factory
-node_t* create_ocio_file_transform_node() { return new ocio_file_transform_node_t(); }
+node_t* create_ocio_file_transform_node()
+{
+    return new ocio_file_transform_node_t();
+}
 
 const node_metaclass_t* ocio_file_transform_node_t::metaclass() const
 {
     return &ocio_file_transform_node_metaclass();
 }
 
-const node_metaclass_t& ocio_file_transform_node_t::ocio_file_transform_node_metaclass()
+const node_metaclass_t& ocio_file_transform_node_t::
+    ocio_file_transform_node_metaclass()
 {
     static bool             inited(false);
     static node_metaclass_t info;
 
     if (!inited)
     {
-        info.id            = "image.builtin.ocio_file_transform";
+        info.id = "image.builtin.ocio_file_transform";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "OCIO File Transform";
-        info.help          = "Uses OpenColorIO to apply a specified Lut transform.";
-        info.create        = &create_ocio_file_transform_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "OCIO File Transform";
+        info.help = "Uses OpenColorIO to apply a specified Lut transform.";
+        info.create = &create_ocio_file_transform_node;
+        inited = true;
     }
 
     return info;
@@ -127,5 +134,5 @@ const node_metaclass_t& ocio_file_transform_node_t::ocio_file_transform_node_met
 static bool registered = node_factory_t::instance().register_node(
     ocio_file_transform_node_t::ocio_file_transform_node_metaclass());
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

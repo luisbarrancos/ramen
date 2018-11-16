@@ -13,8 +13,8 @@ namespace ramen
 namespace ui
 {
 track_model_t::track_model_t()
-: QAbstractItemModel(0)
-, tracks_(0)
+  : QAbstractItemModel(0)
+  , tracks_(0)
 {
     tracks_ = new anim::track_t("Channels");
 }
@@ -29,7 +29,8 @@ anim::track_t* track_model_t::node_track()
     return tracks_->child(0);
 }
 
-QModelIndex track_model_t::index(int row, int column, const QModelIndex& parent) const
+QModelIndex track_model_t::index(int row, int column, const QModelIndex& parent)
+    const
 {
     if (!hasIndex(row, column, parent))
         return QModelIndex();
@@ -53,7 +54,8 @@ QModelIndex track_model_t::parent(const QModelIndex& index) const
     if (!index.isValid())
         return QModelIndex();
 
-    anim::track_t* childItem  = static_cast<anim::track_t*>(index.internalPointer());
+    anim::track_t* childItem =
+        static_cast<anim::track_t*>(index.internalPointer());
     anim::track_t* parentItem = childItem->parent();
 
     if (parentItem == tracks_)
@@ -99,7 +101,10 @@ Qt::ItemFlags track_model_t::flags(const QModelIndex& index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-QVariant track_model_t::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant track_model_t::headerData(
+    int             section,
+    Qt::Orientation orientation,
+    int             role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return QString(tracks_->name().c_str());
@@ -107,5 +112,5 @@ QVariant track_model_t::headerData(int section, Qt::Orientation orientation, int
     return QVariant();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

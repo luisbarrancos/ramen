@@ -14,36 +14,40 @@ namespace imageio
 {
 class exr_writer_t : public writer_t
 {
-public:
+  public:
     exr_writer_t()
-    : writer_t()
+      : writer_t()
     {
     }
 
-private:
-    void do_write_image(const boost::filesystem::path&   p,
-                        const image::const_image_view_t& view,
-                        const core::dictionary_t&        params) const override;
+  private:
+    void do_write_image(
+        const boost::filesystem::path&   p,
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const override;
 
-    void write_half(const boost::filesystem::path&   p,
-                    Imf::Header&                     header,
-                    const image::const_image_view_t& view,
-                    bool                             save_alpha = true) const;
+    void write_half(
+        const boost::filesystem::path&   p,
+        Imf::Header&                     header,
+        const image::const_image_view_t& view,
+        bool                             save_alpha = true) const;
 
-    void write_half_alpha(const boost::filesystem::path&   p,
-                          Imf::Header&                     header,
-                          const image::const_image_view_t& view) const;
+    void write_half_alpha(
+        const boost::filesystem::path&   p,
+        Imf::Header&                     header,
+        const image::const_image_view_t& view) const;
 
-    void write_float(const boost::filesystem::path&   p,
-                     Imf::Header&                     header,
-                     const image::const_image_view_t& view,
-                     bool                             save_alpha = true) const;
+    void write_float(
+        const boost::filesystem::path&   p,
+        Imf::Header&                     header,
+        const image::const_image_view_t& view,
+        bool                             save_alpha = true) const;
 
-    void write_float_alpha(const boost::filesystem::path&   p,
-                           Imf::Header&                     header,
-                           const image::const_image_view_t& view) const;
+    void write_float_alpha(
+        const boost::filesystem::path&   p,
+        Imf::Header&                     header,
+        const image::const_image_view_t& view) const;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

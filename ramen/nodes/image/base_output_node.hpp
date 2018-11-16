@@ -14,18 +14,21 @@ namespace ramen
 namespace image
 {
 class RAMEN_API base_output_node_t
-: public image_node_t
-, public node_output_interface
+  : public image_node_t
+  , public node_output_interface
 {
-public:
+  public:
     base_output_node_t();
 
     void process_and_write(const render::context_t& context) override;
 
     // by default, output nodes doesn't use the cache.
-    bool use_cache(const render::context_t& context) const override { return false; }
+    bool use_cache(const render::context_t& context) const override
+    {
+        return false;
+    }
 
-protected:
+  protected:
     base_output_node_t(const base_output_node_t& other);
     void operator=(const base_output_node_t&);
 
@@ -33,12 +36,11 @@ protected:
 
     const Imath::Box2i input_defined() const { return input_defined_; }
 
-private:
+  private:
     virtual void write(const render::context_t& context) = 0;
 
     Imath::Box2i input_defined_;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

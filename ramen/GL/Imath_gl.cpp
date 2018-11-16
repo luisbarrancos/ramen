@@ -17,7 +17,7 @@ Imath::M44f convert_to_M44(const Imath::M33f& m)
     return result;
 }
 
-}  // unnamed
+}  // namespace
 
 void gl_vertex(const Imath::V2i& p) { gl_vertex2i(p.x, p.y); }
 void gl_vertex(const Imath::V2f& p) { gl_vertex2f(p.x, p.y); }
@@ -43,8 +43,7 @@ void gl_mult_matrix(const Imath::M33f& m) { gl_mult_matrix(convert_to_M44(m)); }
 
 void gl_load_matrix(const Imath::M33f& m) { gl_load_matrix(convert_to_M44(m)); }
 
-}  // ramen
-
+}  // namespace ramen
 
 /*
     S a, b, c, w;

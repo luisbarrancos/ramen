@@ -26,25 +26,27 @@ struct palette_t::impl
 
         error_color_ = Imath::Color3c(255, 0, 255);
 
-        colors_["background"] = Imath::Color3c(bgcol.red(), bgcol.green(), bgcol.blue());
-        colors_["text"]       = Imath::Color3c(fgcol.red(), fgcol.green(), fgcol.blue());
+        colors_["background"] =
+            Imath::Color3c(bgcol.red(), bgcol.green(), bgcol.blue());
+        colors_["text"] =
+            Imath::Color3c(fgcol.red(), fgcol.green(), fgcol.blue());
 
-        colors_["front plug"]    = Imath::Color3c(255, 0, 0);
-        colors_["back plug"]     = Imath::Color3c(0, 255, 0);
-        colors_["matte plug"]    = Imath::Color3c(0, 0, 255);
-        colors_["out plug"]      = Imath::Color3c(255, 255, 0);
+        colors_["front plug"] = Imath::Color3c(255, 0, 0);
+        colors_["back plug"] = Imath::Color3c(0, 255, 0);
+        colors_["matte plug"] = Imath::Color3c(0, 0, 255);
+        colors_["out plug"] = Imath::Color3c(255, 255, 0);
         colors_["optional plug"] = Imath::Color3c(0, 255, 0);
 
-        colors_["node_shadow"]    = Imath::Color3c(64, 64, 64);
-        colors_["node_bg"]        = Imath::Color3c(150, 150, 150);
+        colors_["node_shadow"] = Imath::Color3c(64, 64, 64);
+        colors_["node_bg"] = Imath::Color3c(150, 150, 150);
         colors_["node_picked_bg"] = Imath::Color3c(200, 140, 0);
-        colors_["node_error_bg"]  = Imath::Color3c(150, 25, 0);
+        colors_["node_error_bg"] = Imath::Color3c(150, 25, 0);
 
-        colors_["node_active_out"]  = Imath::Color3c(255, 0, 0);
+        colors_["node_active_out"] = Imath::Color3c(255, 0, 0);
         colors_["node_context_out"] = Imath::Color3c(0, 0, 255);
 
         // manipulators
-        colors_["manipulator"]        = Imath::Color3c(255, 255, 0);
+        colors_["manipulator"] = Imath::Color3c(255, 255, 0);
         colors_["active_manipulator"] = Imath::Color3c(255, 0, 0);
 
         colors_["x_axis"] = Imath::Color3c(255, 0, 0);
@@ -52,7 +54,7 @@ struct palette_t::impl
         colors_["z_axis"] = Imath::Color3c(0, 0, 255);
 
         // interface elems
-        colors_["grid"]     = Imath::Color3c(132, 132, 132);
+        colors_["grid"] = Imath::Color3c(132, 132, 132);
         colors_["box_pick"] = Imath::Color3c(255, 0, 0);
     }
 
@@ -86,7 +88,10 @@ palette_t::~palette_t() { delete m_pimpl; }
 
 void palette_t::rebuild() { m_pimpl->rebuild_palette(); }
 
-const Imath::Color3c& palette_t::color(const std::string& k) const { return m_pimpl->get_color(k); }
+const Imath::Color3c& palette_t::color(const std::string& k) const
+{
+    return m_pimpl->get_color(k);
+}
 
 QColor palette_t::qcolor(const std::string& k) const
 {
@@ -112,5 +117,5 @@ void palette_t::set_color(const std::string& k, const QColor& c)
     assert(false);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

@@ -16,15 +16,19 @@ namespace math
 \ingroup math
 \brief Normal vector.
 */
-template<class T>
+template <class T>
 class normal_t
-: boost::addable<normal_t<T>,
-                 boost::multipliable2<
-                     normal_t<T>,
-                     T,
-                     boost::dividable2<normal_t<T>, T, boost::equality_comparable<normal_t<T>>>>>
+  : boost::addable<
+        normal_t<T>,
+        boost::multipliable2<
+            normal_t<T>,
+            T,
+            boost::dividable2<
+                normal_t<T>,
+                T,
+                boost::equality_comparable<normal_t<T>>>>>
 {
-public:
+  public:
     typedef T value_type;
 
     static unsigned int size() { return 3; }
@@ -33,23 +37,23 @@ public:
     normal_t() {}
 
     explicit normal_t(T xx)
-    : x(xx)
-    , y(xx)
-    , z(xx)
+      : x(xx)
+      , y(xx)
+      , z(xx)
     {
     }
 
     normal_t(T xx, T yy, T zz)
-    : x(xx)
-    , y(yy)
-    , z(zz)
+      : x(xx)
+      , y(yy)
+      , z(zz)
     {
     }
 
     explicit normal_t(const vector3_t<T>& v)
-    : x(v.x)
-    , y(v.y)
-    , z(v.z)
+      : x(v.x)
+      , y(v.y)
+      , z(v.z)
     {
     }
 
@@ -122,28 +126,24 @@ public:
     T x, y, z;
 };
 
-template<class T>
-normal_t<T> normalize(const normal_t<T>& n)
+template <class T> normal_t<T> normalize(const normal_t<T>& n)
 {
     normal_t<T> x(n);
     x.normalize();
     return x;
 }
 
-template<class T>
-T dot(const normal_t<T>& a, const vector3_t<T>& b)
+template <class T> T dot(const normal_t<T>& a, const vector3_t<T>& b)
 {
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
-template<class T>
-T dot(const vector3_t<T>& a, const normal_t<T>& b)
+template <class T> T dot(const vector3_t<T>& a, const normal_t<T>& b)
 {
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
-template<class T>
-T dot(const normal_t<T>& a, const normal_t<T>& b)
+template <class T> T dot(const normal_t<T>& a, const normal_t<T>& b)
 {
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
@@ -152,6 +152,5 @@ typedef normal_t<float>  normalf_t;
 typedef normal_t<double> normald_t;
 typedef normal_t<half>   normalh_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

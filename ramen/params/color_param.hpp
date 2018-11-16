@@ -24,7 +24,7 @@ class RAMEN_API color_param_t : public animated_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit color_param_t(const std::string& name);
 
     void set_default_value(const Imath::Color4f& x);
@@ -32,18 +32,19 @@ public:
     poly_param_value_t value_at_frame(float frame) const override;
 
     void set_value(const Imath::Color4f& x, change_reason reason = user_edited);
-    void set_value_at_frame(const Imath::Color4f& x,
-                            float                 frame,
-                            change_reason         reason = user_edited);
+    void set_value_at_frame(
+        const Imath::Color4f& x,
+        float                 frame,
+        change_reason         reason = user_edited);
 
     bool is_rgba() const { return is_rgba_; }
     void set_is_rgba(bool b) { is_rgba_ = b; }
 
-protected:
+  protected:
     color_param_t(const color_param_t& other);
     void operator=(const color_param_t& other);
 
-private:
+  private:
     void private_init();
 
     param_t* do_clone() const override { return new color_param_t(*this); }
@@ -68,7 +69,7 @@ private:
     QPointer<ui::color_button_t>      button_;
     QPointer<ui::eyedropper_button_t> eyedropper_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void value_changed(double value);
     void spinbox_pressed();
@@ -78,5 +79,4 @@ private Q_SLOTS:
     void color_button_pressed();
 };
 
-}  // namespace
-
+}  // namespace ramen

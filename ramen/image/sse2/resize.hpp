@@ -16,42 +16,45 @@ namespace sse2
 {
 void resize_bilinear(const const_image_view_t& src, const image_view_t& dst);
 
-void resize_lanczos3(const image::const_image_view_t& src,
-                     const Imath::Box2i&              src_defined,
-                     const Imath::Box2i&              src_area,
-                     const image::image_view_t&       tmp,
-                     const Imath::Box2i&              tmp_area,
-                     const image::image_view_t&       dst,
-                     const Imath::Box2i&              dst_area,
-                     const Imath::V2i&                center,
-                     const Imath::V2f&                scale);
+void resize_lanczos3(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale);
 
-void resize_mitchell(const image::const_image_view_t& src,
-                     const Imath::Box2i&              src_defined,
-                     const Imath::Box2i&              src_area,
-                     const image::image_view_t&       tmp,
-                     const Imath::Box2i&              tmp_area,
-                     const image::image_view_t&       dst,
-                     const Imath::Box2i&              dst_area,
-                     const Imath::V2i&                center,
-                     const Imath::V2f&                scale);
+void resize_mitchell(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale);
 
-void resize_catrom(const image::const_image_view_t& src,
-                   const Imath::Box2i&              src_defined,
-                   const Imath::Box2i&              src_area,
-                   const image::image_view_t&       tmp,
-                   const Imath::Box2i&              tmp_area,
-                   const image::image_view_t&       dst,
-                   const Imath::Box2i&              dst_area,
-                   const Imath::V2i&                center,
-                   const Imath::V2f&                scale);
+void resize_catrom(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_defined,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       tmp,
+    const Imath::Box2i&              tmp_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area,
+    const Imath::V2i&                center,
+    const Imath::V2f&                scale);
 
-void resize_half(const image::const_image_view_t& src,
-                 const Imath::Box2i&              src_area,
-                 const image::image_view_t&       dst,
-                 const Imath::Box2i&              dst_area);
+void resize_half(
+    const image::const_image_view_t& src,
+    const Imath::Box2i&              src_area,
+    const image::image_view_t&       dst,
+    const Imath::Box2i&              dst_area);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

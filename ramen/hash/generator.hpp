@@ -20,7 +20,7 @@ namespace hash
 {
 class RAMEN_API generator_t
 {
-public:
+  public:
     typedef std::array<boost::uint64_t, 2> digest_type;
 
     generator_t();
@@ -39,14 +39,13 @@ public:
     const digest_type& digest() const;
     std::string        digest_as_string() const;
 
-private:
+  private:
     std::stringstream                    ss_;
     mutable boost::optional<digest_type> digest_;
     bool                                 empty_;
 };
 
-template<class T>
-generator_t& operator<<(generator_t& hash_gen, const T& x)
+template <class T> generator_t& operator<<(generator_t& hash_gen, const T& x)
 {
     assert(!hash_gen.finalized());
     hash_gen.sstream() << x;
@@ -55,6 +54,5 @@ generator_t& operator<<(generator_t& hash_gen, const T& x)
     return hash_gen;
 }
 
-}  // hash
-}  // ramen
-
+}  // namespace hash
+}  // namespace ramen

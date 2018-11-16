@@ -13,14 +13,14 @@ namespace ramen
 namespace anim
 {
 keyframe_t::keyframe_t()
-: time_(0)
-, selected_(false)
+  : time_(0)
+  , selected_(false)
 {
 }
 
 keyframe_t::keyframe_t(time_type time)
-: time_(time)
-, selected_(false)
+  : time_(time)
+  , selected_(false)
 {
 }
 
@@ -58,7 +58,8 @@ std::string keyframe_t::auto_tangent_to_string(auto_tangent_method t) const
     }
 }
 
-keyframe_t::auto_tangent_method keyframe_t::string_to_auto_tangent(const std::string& s) const
+keyframe_t::auto_tangent_method keyframe_t::string_to_auto_tangent(
+    const std::string& s) const
 {
     if (s == "step")
         return tangent_step;
@@ -78,5 +79,5 @@ keyframe_t::auto_tangent_method keyframe_t::string_to_auto_tangent(const std::st
     assert(0 && "Unknown auto-tangent method");
 }
 
-}  // namespace
-}  // namespace
+}  // namespace anim
+}  // namespace ramen

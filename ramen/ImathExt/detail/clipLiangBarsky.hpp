@@ -36,8 +36,10 @@ enum clipping_flags_e
     clipping_flags_x2_clipped = 1,
     clipping_flags_y1_clipped = 8,
     clipping_flags_y2_clipped = 2,
-    clipping_flags_x_clipped  = clipping_flags_x1_clipped | clipping_flags_x2_clipped,
-    clipping_flags_y_clipped  = clipping_flags_y1_clipped | clipping_flags_y2_clipped
+    clipping_flags_x_clipped =
+        clipping_flags_x1_clipped | clipping_flags_x2_clipped,
+    clipping_flags_y_clipped =
+        clipping_flags_y1_clipped | clipping_flags_y2_clipped
 };
 
 //----------------------------------------------------------clipping_flags
@@ -58,33 +60,44 @@ enum clipping_flags_e
 //  clip_box.min.x  clip_box.max.x
 //
 //
-template<class T>
-inline unsigned clipping_flags(T x, T y, const Imath::Box<Imath::Vec2<T>>& clip_box)
+template <class T>
+inline unsigned clipping_flags(
+    T                                 x,
+    T                                 y,
+    const Imath::Box<Imath::Vec2<T>>& clip_box)
 {
-    return (x > clip_box.max.x) | ((y > clip_box.max.y) << 1) | ((x < clip_box.min.x) << 2)
-           | ((y < clip_box.min.y) << 3);
+    return (x > clip_box.max.x) | ((y > clip_box.max.y) << 1) |
+           ((x < clip_box.min.x) << 2) | ((y < clip_box.min.y) << 3);
 }
 
 //--------------------------------------------------------clipping_flags_x
-template<class T>
-inline unsigned clipping_flags_x(T x, const Imath::Box<Imath::Vec2<T>>& clip_box)
+template <class T>
+inline unsigned clipping_flags_x(
+    T                                 x,
+    const Imath::Box<Imath::Vec2<T>>& clip_box)
 {
     return (x > clip_box.max.x) | ((x < clip_box.min.x) << 2);
 }
 
-
 //--------------------------------------------------------clipping_flags_y
-template<class T>
-inline unsigned clipping_flags_y(T y, const Imath::Box<Imath::Vec2<T>>& clip_box)
+template <class T>
+inline unsigned clipping_flags_y(
+    T                                 y,
+    const Imath::Box<Imath::Vec2<T>>& clip_box)
 {
     return ((y > clip_box.max.y) << 1) | ((y < clip_box.min.y) << 3);
 }
 
-
 //-------------------------------------------------------clip_liang_barsky
-template<class T>
+template <class T>
 inline unsigned clip_liang_barsky(
-    T x1, T y1, T x2, T y2, const Imath::Box<Imath::Vec2<T>>& clip_box, T* x, T* y)
+    T                                 x1,
+    T                                 y1,
+    T                                 x2,
+    T                                 y2,
+    const Imath::Box<Imath::Vec2<T>>& clip_box,
+    T*                                x,
+    T*                                y)
 {
     const double nearzero = 1e-30;
 
@@ -118,24 +131,24 @@ inline unsigned clip_liang_barsky(
     if (deltax > 0.0)
     {
         // points to right
-        xin  = clip_box.min.x;
+        xin = clip_box.min.x;
         xout = clip_box.max.x;
     }
     else
     {
-        xin  = clip_box.max.x;
+        xin = clip_box.max.x;
         xout = clip_box.min.x;
     }
 
     if (deltay > 0.0)
     {
         // points up
-        yin  = clip_box.min.y;
+        yin = clip_box.min.y;
         yout = clip_box.max.y;
     }
     else
     {
-        yin  = clip_box.max.y;
+        yin = clip_box.max.y;
         yout = clip_box.min.y;
     }
 
@@ -230,11 +243,17 @@ inline unsigned clip_liang_barsky(
     return np;
 }
 
-
 //----------------------------------------------------------------------------
-template<class T>
+template <class T>
 bool clip_move_point(
-    T x1, T y1, T x2, T y2, const Imath::Box<Imath::Vec2<T>>& clip_box, T* x, T* y, unsigned flags)
+    T                                 x1,
+    T                                 y1,
+    T                                 x2,
+    T                                 y2,
+    const Imath::Box<Imath::Vec2<T>>& clip_box,
+    T*                                x,
+    T*                                y,
+    unsigned                          flags)
 {
     T bound;
 
@@ -244,9 +263,10 @@ bool clip_move_point(
         {
             return false;
         }
-        bound = (flags & clipping_flags_x1_clipped) ? clip_box.min.x : clip_box.max.x;
-        *y    = (T)(double(bound - x1) * (y2 - y1) / (x2 - x1) + y1);
-        *x    = bound;
+        bound = (flags & clipping_flags_x1_clipped) ? clip_box.min.x
+                                                    : clip_box.max.x;
+        *y = (T)(double(bound - x1) * (y2 - y1) / (x2 - x1) + y1);
+        *x = bound;
     }
 
     flags = clipping_flags_y(*y, clip_box);
@@ -256,9 +276,10 @@ bool clip_move_point(
         {
             return false;
         }
-        bound = (flags & clipping_flags_y1_clipped) ? clip_box.min.y : clip_box.max.y;
-        *x    = (T)(double(bound - y1) * (x2 - x1) / (y2 - y1) + x1);
-        *y    = bound;
+        bound = (flags & clipping_flags_y1_clipped) ? clip_box.min.y
+                                                    : clip_box.max.y;
+        *x = (T)(double(bound - y1) * (x2 - x1) / (y2 - y1) + x1);
+        *y = bound;
     }
     return true;
 }
@@ -268,11 +289,16 @@ bool clip_move_point(
 //          (ret & 1) != 0  - First point has been moved
 //          (ret & 2) != 0  - Second point has been moved
 //
-template<class T>
-unsigned clipLineSegment(T* x1, T* y1, T* x2, T* y2, const Imath::Box<Imath::Vec2<T>>& clip_box)
+template <class T>
+unsigned clipLineSegment(
+    T*                                x1,
+    T*                                y1,
+    T*                                x2,
+    T*                                y2,
+    const Imath::Box<Imath::Vec2<T>>& clip_box)
 {
-    unsigned f1  = clipping_flags(*x1, *y1, clip_box);
-    unsigned f2  = clipping_flags(*x2, *y2, clip_box);
+    unsigned f1 = clipping_flags(*x1, *y1, clip_box);
+    unsigned f2 = clipping_flags(*x2, *y2, clip_box);
     unsigned ret = 0;
 
     if ((f2 | f1) == 0)
@@ -281,15 +307,15 @@ unsigned clipLineSegment(T* x1, T* y1, T* x2, T* y2, const Imath::Box<Imath::Vec
         return 0;
     }
 
-    if ((f1 & clipping_flags_x_clipped) != 0
-        && (f1 & clipping_flags_x_clipped) == (f2 & clipping_flags_x_clipped))
+    if ((f1 & clipping_flags_x_clipped) != 0 &&
+        (f1 & clipping_flags_x_clipped) == (f2 & clipping_flags_x_clipped))
     {
         // Fully clipped
         return 4;
     }
 
-    if ((f1 & clipping_flags_y_clipped) != 0
-        && (f1 & clipping_flags_y_clipped) == (f2 & clipping_flags_y_clipped))
+    if ((f1 & clipping_flags_y_clipped) != 0 &&
+        (f1 & clipping_flags_y_clipped) == (f2 & clipping_flags_y_clipped))
     {
         // Fully clipped
         return 4;
@@ -326,7 +352,5 @@ unsigned clipLineSegment(T* x1, T* y1, T* x2, T* y2, const Imath::Box<Imath::Vec
     return ret;
 }
 
-
-}  // namespace
-}  // namespace
-
+}  // namespace detail
+}  // namespace Imath

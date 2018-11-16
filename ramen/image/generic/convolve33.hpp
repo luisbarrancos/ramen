@@ -14,9 +14,11 @@ namespace image
 {
 namespace generic
 {
-void convolve33(const const_image_view_t& src, const image_view_t& dst, const Imath::M33f& k);
+void convolve33(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    const Imath::M33f&        k);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

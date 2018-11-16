@@ -15,14 +15,14 @@ namespace movieio
 {
 class RAMEN_API exception : public std::exception
 {
-public:
+  public:
     exception();
     explicit exception(const std::string& msg);
     virtual ~exception() throw() {}
 
     virtual const char* what() const throw();
 
-protected:
+  protected:
     std::string what_;
 };
 
@@ -42,6 +42,5 @@ struct RAMEN_API frame_out_of_bounds : public exception
     explicit frame_out_of_bounds(int num);
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

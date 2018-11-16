@@ -19,39 +19,47 @@ namespace
 struct key_mix_layer_mode_fun
 {
     key_mix_layer_mode_fun(float opacity)
-    : opacity_(opacity)
+      : opacity_(opacity)
     {
     }
 
-    image::pixel_t operator()(const image::pixel_t& back,
-                              const image::pixel_t& front,
-                              const image::pixel_t& matte) const
+    image::pixel_t operator()(
+        const image::pixel_t& back,
+        const image::pixel_t& front,
+        const image::pixel_t& matte) const
     {
         using namespace boost::gil;
 
-        float a     = get_color(matte, alpha_t()) * opacity_;
+        float a = get_color(matte, alpha_t()) * opacity_;
         float a_inv = 1.0f - a;
 
         return image::pixel_t(
-            (get_color(front, red_t()) * a) + (get_color(back, red_t()) * a_inv),
-            (get_color(front, green_t()) * a) + (get_color(back, green_t()) * a_inv),
-            (get_color(front, blue_t()) * a) + (get_color(back, blue_t()) * a_inv),
-            (get_color(front, alpha_t()) * a) + (get_color(back, alpha_t()) * a_inv));
+            (get_color(front, red_t()) * a) +
+                (get_color(back, red_t()) * a_inv),
+            (get_color(front, green_t()) * a) +
+                (get_color(back, green_t()) * a_inv),
+            (get_color(front, blue_t()) * a) +
+                (get_color(back, blue_t()) * a_inv),
+            (get_color(front, alpha_t()) * a) +
+                (get_color(back, alpha_t()) * a_inv));
     }
 
-private:
+  private:
     float opacity_;
 };
 
-}  // unnamed
+}  // namespace
 
 key_mix_layer_node_t::key_mix_layer_node_t()
-: base_layer_node_t()
+  : base_layer_node_t()
 {
     set_name("key_mix");
-    add_input_plug("back", false, ui::palette_t::instance().color("back plug"), "Back");
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
-    add_input_plug("matte", false, ui::palette_t::instance().color("matte plug"), "Matte");
+    add_input_plug(
+        "back", false, ui::palette_t::instance().color("back plug"), "Back");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "matte", false, ui::palette_t::instance().color("matte plug"), "Matte");
     add_output_plug();
 }
 
@@ -59,7 +67,7 @@ void key_mix_layer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p(new popup_param_t("Mode"));
     p->set_id("mode");
-    p->menu_items() = std::vector<std::string>({ "Background", "Foreground" });
+    p->menu_items() = std::vector<std::string>({"Background", "Foreground"});
     add_param(p);
 
     std::auto_ptr<float_param_t> q(new float_param_t("Opacity"));
@@ -73,8 +81,9 @@ void key_mix_layer_node_t::do_create_params()
 void key_mix_layer_node_t::do_calc_bounds(const render::context_t& context)
 {
     Imath::Box2i bbox(input_as<image_node_t>(0)->bounds());
-    bbox.extendBy(ImathExt::intersect(input_as<image_node_t>(1)->bounds(),
-                                      input_as<image_node_t>(2)->bounds()));
+    bbox.extendBy(ImathExt::intersect(
+        input_as<image_node_t>(1)->bounds(),
+        input_as<image_node_t>(2)->bounds()));
     set_bounds(bbox);
 }
 
@@ -89,12 +98,13 @@ void key_mix_layer_node_t::do_process(const render::context_t& context)
     if (!bg_area.isEmpty())
     {
         render_input(0, context);
-        boost::gil::copy_pixels(bg->const_subimage_view(bg_area), subimage_view(bg_area));
+        boost::gil::copy_pixels(
+            bg->const_subimage_view(bg_area), subimage_view(bg_area));
         release_input_image(0);
     }
 
-    Imath::Box2i comp_area(
-        ImathExt::intersect(ImathExt::intersect(fg->defined(), mt->defined()), defined()));
+    Imath::Box2i comp_area(ImathExt::intersect(
+        ImathExt::intersect(fg->defined(), mt->defined()), defined()));
 
     if (!comp_area.isEmpty())
     {
@@ -138,14 +148,14 @@ const node_metaclass_t& key_mix_layer_node_t::key_mix_layer_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.keymix";
+        info.id = "image.builtin.keymix";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Layer";
-        info.menu_item     = "KeyMix";
-        info.create        = &create_key_mix_layer_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Layer";
+        info.menu_item = "KeyMix";
+        info.create = &create_key_mix_layer_node;
+        inited = true;
     }
 
     return info;
@@ -154,5 +164,5 @@ const node_metaclass_t& key_mix_layer_node_t::key_mix_layer_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     key_mix_layer_node_t::key_mix_layer_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

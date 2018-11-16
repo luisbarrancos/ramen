@@ -15,8 +15,8 @@ namespace detail
 struct count_invalid_pixels_fun
 {
     count_invalid_pixels_fun()
-    : nans(0)
-    , negs(0)
+      : nans(0)
+      , negs(0)
     {
     }
 
@@ -27,8 +27,8 @@ struct count_invalid_pixels_fun
         float b = boost::gil::get_color(p, boost::gil::blue_t());
         float a = boost::gil::get_color(p, boost::gil::alpha_t());
 
-        if (boost::math::isnan(r) || boost::math::isnan(g) || boost::math::isnan(b)
-            || boost::math::isnan(a))
+        if (boost::math::isnan(r) || boost::math::isnan(g) ||
+            boost::math::isnan(b) || boost::math::isnan(a))
         {
             nans++;
             return;
@@ -45,9 +45,12 @@ struct count_invalid_pixels_fun
     std::size_t negs;
 };
 
-}  // detail
+}  // namespace detail
 
-void count_invalid_pixels(const image_view_t& img, std::size_t& nan_pixels, std::size_t& neg_pixels)
+void count_invalid_pixels(
+    const image_view_t& img,
+    std::size_t&        nan_pixels,
+    std::size_t&        neg_pixels)
 {
     detail::count_invalid_pixels_fun f;
     f = boost::gil::for_each_pixel(img, f);
@@ -56,5 +59,5 @@ void count_invalid_pixels(const image_view_t& img, std::size_t& nan_pixels, std:
     neg_pixels = f.negs;
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

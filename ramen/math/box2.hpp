@@ -18,10 +18,9 @@ namespace math
 \ingroup math
 \brief A two dimensional bounding box.
 */
-template<class T>
-class box2_t : boost::equality_comparable<box2_t<T>>
+template <class T> class box2_t : boost::equality_comparable<box2_t<T>>
 {
-public:
+  public:
     typedef T            value_type;
     typedef point2_t<T>  point_type;
     typedef vector2_t<T> vector_type;
@@ -29,14 +28,14 @@ public:
     box2_t() { reset(); }
 
     box2_t(const point_type& p)
-    : min(p)
-    , max(p)
+      : min(p)
+      , max(p)
     {
     }
 
     box2_t(const point_type& pmin, const point_type& pmax)
-    : min(pmin)
-    , max(pmax)
+      : min(pmin)
+      , max(pmax)
     {
     }
 
@@ -52,7 +51,10 @@ public:
 
     point_type center() const { return min + (size() * T(0.5)); }
 
-    bool operator==(const box2_t<T>& other) const { return min == other.min && max == other.max; }
+    bool operator==(const box2_t<T>& other) const
+    {
+        return min == other.min && max == other.max;
+    }
 
     point_type min, max;
 };
@@ -62,6 +64,5 @@ typedef box2_t<float>  box2f_t;
 typedef box2_t<double> box2d_t;
 typedef box2_t<half>   box2h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

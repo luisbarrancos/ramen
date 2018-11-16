@@ -28,20 +28,21 @@ enum
     catrom_filter
 };
 
-}  // unnamed
+}  // namespace
 
 resize_node_t::resize_node_t()
-: image_node_t()
+  : image_node_t()
 {
-    add_input_plug("front", false, ui::palette_t::instance().color("front plug"), "Front");
+    add_input_plug(
+        "front", false, ui::palette_t::instance().color("front plug"), "Front");
     add_output_plug();
     set_name("resize");
     scale_ = Imath::V2f(0, 0);
 }
 
 resize_node_t::resize_node_t(const resize_node_t& other)
-: image_node_t(other)
-, scale_(other.scale_)
+  : image_node_t(other)
+  , scale_(other.scale_)
 {
 }
 
@@ -55,7 +56,8 @@ void resize_node_t::do_create_params()
         std::auto_ptr<composite_param_t> group(new composite_param_t("Size"));
         group->set_id("size_group");
 
-        std::auto_ptr<image_format_param_t> fp(new image_format_param_t("Size"));
+        std::auto_ptr<image_format_param_t> fp(
+            new image_format_param_t("Size"));
         fp->set_id("size");
         group->add_param(fp);
         top->add_param(group);
@@ -80,7 +82,8 @@ void resize_node_t::do_create_params()
     add_param(top);
     std::auto_ptr<popup_param_t> p(new popup_param_t("Filter"));
     p->set_id("filter");
-    p->menu_items() = std::vector<std::string>({ "Lanczos3", "Mitchell", "Catrom" });
+    p->menu_items() =
+        std::vector<std::string>({"Lanczos3", "Mitchell", "Catrom"});
     add_param(p);
 }
 
@@ -117,21 +120,26 @@ void resize_node_t::do_calc_format(const render::context_t& context)
     else
     {
         Imath::V2f scale = get_value<Imath::V2f>(param("scale"));
-        scale_.x         = scale.x;
-        scale_.y         = scale.y;
+        scale_.x = scale.x;
+        scale_.y = scale.y;
         set_aspect_ratio(in->aspect_ratio());
     }
 
-    set_format(image::resize_box(in->format(), in->format().min, 1.0f / scale_.x, 1.0f / scale_.y));
+    set_format(image::resize_box(
+        in->format(), in->format().min, 1.0f / scale_.x, 1.0f / scale_.y));
     set_proxy_scale(in->proxy_scale());
 }
 
-void resize_node_t::do_calc_bounds(const render::context_t& context) { set_bounds(format()); }
+void resize_node_t::do_calc_bounds(const render::context_t& context)
+{
+    set_bounds(format());
+}
 
 void resize_node_t::do_calc_inputs_interest(const render::context_t& context)
 {
     image_node_t* in = input_as<image_node_t>();
-    Imath::Box2i  roi(image::resize_box(interest(), in->format().min, scale_.x, scale_.y));
+    Imath::Box2i  roi(
+        image::resize_box(interest(), in->format().min, scale_.x, scale_.y));
 
     int xfilter_area, yfilter_area;
 
@@ -178,30 +186,33 @@ void resize_node_t::do_process(const render::context_t& context)
     switch (get_value<int>(param("filter")))
     {
         case lanczos3_filter:
-            image::resize_lanczos3(in->const_image_view(),
-                                   in->defined(),
-                                   image_view(),
-                                   defined(),
-                                   in->format().min,
-                                   scale_);
+            image::resize_lanczos3(
+                in->const_image_view(),
+                in->defined(),
+                image_view(),
+                defined(),
+                in->format().min,
+                scale_);
             break;
 
         case mitchell_filter:
-            image::resize_mitchell(in->const_image_view(),
-                                   in->defined(),
-                                   image_view(),
-                                   defined(),
-                                   in->format().min,
-                                   scale_);
+            image::resize_mitchell(
+                in->const_image_view(),
+                in->defined(),
+                image_view(),
+                defined(),
+                in->format().min,
+                scale_);
             break;
 
         case catrom_filter:
-            image::resize_catrom(in->const_image_view(),
-                                 in->defined(),
-                                 image_view(),
-                                 defined(),
-                                 in->format().min,
-                                 scale_);
+            image::resize_catrom(
+                in->const_image_view(),
+                in->defined(),
+                image_view(),
+                defined(),
+                in->format().min,
+                scale_);
             break;
     }
 }
@@ -209,7 +220,10 @@ void resize_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_resize_node() { return new resize_node_t(); }
 
-const node_metaclass_t* resize_node_t::metaclass() const { return &resize_node_metaclass(); }
+const node_metaclass_t* resize_node_t::metaclass() const
+{
+    return &resize_node_metaclass();
+}
 
 const node_metaclass_t& resize_node_t::resize_node_metaclass()
 {
@@ -218,21 +232,21 @@ const node_metaclass_t& resize_node_t::resize_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.resize";
+        info.id = "image.builtin.resize";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Transform";
-        info.menu_item     = "Resize";
-        info.create        = &create_resize_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Transform";
+        info.menu_item = "Resize";
+        info.create = &create_resize_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(resize_node_t::resize_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    resize_node_t::resize_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

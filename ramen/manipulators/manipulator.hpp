@@ -26,7 +26,7 @@ namespace ramen
 */
 class RAMEN_API manipulator_t : boost::noncopyable
 {
-public:
+  public:
     manipulator_t();
     virtual ~manipulator_t() {}
 
@@ -79,10 +79,11 @@ public:
     static const Imath::Color3c& default_color();
     static const Imath::Color3c& selected_color();
 
-private:
+  private:
     /*!
         \brief Customization hook for manipulator_t::draw_overlay.
-        Implement in subclasses to draw a visual representation of the manipulator.
+        Implement in subclasses to draw a visual representation of the
+       manipulator.
     */
     virtual void do_draw_overlay(const ui::paint_event_t& event) const;
 
@@ -138,7 +139,7 @@ private:
     bool           visible_;
     bool           active_;
 
-public:  // These are for the python bindings, do not use.
+  public:  // These are for the python bindings, do not use.
     void __do_draw_overlay(const ui::paint_event_t& event) const
     {
         manipulator_t::do_draw_overlay(event);
@@ -177,5 +178,4 @@ public:  // These are for the python bindings, do not use.
     }
 };
 
-}  // namespace
-
+}  // namespace ramen

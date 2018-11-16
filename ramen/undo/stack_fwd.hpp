@@ -10,6 +10,5 @@ namespace undo
 {
 class stack_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

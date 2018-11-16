@@ -29,14 +29,15 @@ void preferences_t::set_defaults()
     max_image_memory_ = 30;  // % of ram
 
     default_format_ = image::format_t();
-    frame_rate_     = 25;  // PAL by default.
+    frame_rate_ = 25;  // PAL by default.
 
     pick_distance_ = 5;
 }
 
 void preferences_t::load()
 {
-    boost::filesystem::path     p = app().system().application_user_path() / "prefs.yaml";
+    boost::filesystem::path p =
+        app().system().application_user_path() / "prefs.yaml";
     boost::filesystem::ifstream ifs(p);
     if (!ifs.is_open() || !ifs.good())
     {
@@ -69,13 +70,15 @@ void preferences_t::load()
 
 void preferences_t::save()
 {
-    boost::filesystem::path     p = app().system().application_user_path() / "prefs.yaml";
+    boost::filesystem::path p =
+        app().system().application_user_path() / "prefs.yaml";
     boost::filesystem::ofstream ofs(p);
 
     if (!ofs.is_open() || !ofs.good())
     {
-        app().error("Couldn't open preferences file for writting. file = "
-                    + filesystem::file_string(p));
+        app().error(
+            "Couldn't open preferences file for writting. file = " +
+            filesystem::file_string(p));
         return;
     }
 
@@ -83,9 +86,10 @@ void preferences_t::save()
     out << YAML::Comment("Ramen preferences") << YAML::Newline;
 
     out << YAML::BeginMap;
-    out << YAML::Key << "version" << YAML::Value << 1 << YAML::Key << "max_image_memory"
-        << YAML::Value << max_image_memory_ << YAML::Key << "default_format" << YAML::Value
-        << default_format_ << YAML::Key << "frame_rate" << YAML::Value << frame_rate_;
+    out << YAML::Key << "version" << YAML::Value << 1 << YAML::Key
+        << "max_image_memory" << YAML::Value << max_image_memory_ << YAML::Key
+        << "default_format" << YAML::Value << default_format_ << YAML::Key
+        << "frame_rate" << YAML::Value << frame_rate_;
 
     out << YAML::EndMap;
     ofs << out.c_str();
@@ -93,6 +97,9 @@ void preferences_t::save()
     ofs.close();
 }
 
-void preferences_t::set_default_format(const image::format_t& format) { default_format_ = format; }
+void preferences_t::set_default_format(const image::format_t& format)
+{
+    default_format_ = format;
+}
 
-}  // ramen
+}  // namespace ramen

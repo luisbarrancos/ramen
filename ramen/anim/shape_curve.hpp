@@ -20,10 +20,9 @@ namespace ramen
 {
 namespace anim
 {
-template<class P>
-class shape_curve_t : public curve_t<shape_key_t<P>>
+template <class P> class shape_curve_t : public curve_t<shape_key_t<P>>
 {
-public:
+  public:
     typedef curve_t<shape_key_t<P>> superclass;
 
     typedef shape_key_t<P>                key_type;
@@ -35,7 +34,7 @@ public:
     typedef typename superclass::iterator       iterator;
 
     shape_curve_t()
-    : curve_t<shape_key_t<P>>()
+      : curve_t<shape_key_t<P>>()
     {
     }
 
@@ -58,15 +57,13 @@ public:
         return *it;
     }
 
-    template<class OutIter>
-    void evaluate(time_type time, OutIter out)
+    template <class OutIter> void evaluate(time_type time, OutIter out)
     {
         // handle extrapolation here, ...
         do_evaluate(time, out);
     }
 
-    template<class OutIter>
-    void do_evaluate(time_type time, OutIter out)
+    template <class OutIter> void do_evaluate(time_type time, OutIter out)
     {
         if (this->empty())
             return;
@@ -115,7 +112,7 @@ public:
             copy_keyframe(*it, out);
         else
         {
-            time_type         t = (time - it->time()) / ((it + 1)->time() - it->time());
+            time_type t = (time - it->time()) / ((it + 1)->time() - it->time());
             const value_type& v0(it->value());
             const value_type& v1((it + 1)->value());
 
@@ -171,8 +168,8 @@ public:
         out.end_map();
     }
 
-private:
-    template<class OutIter>
+  private:
+    template <class OutIter>
     void copy_keyframe(const key_type& k, OutIter out) const
     {
         boost::range::copy(k.value(), out);
@@ -182,6 +179,5 @@ private:
 typedef shape_curve_t<Imath::V2f> shape_curve2f_t;
 typedef shape_curve_t<Imath::V3f> shape_curve3f_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

@@ -20,14 +20,22 @@ preferences_dialog_t& preferences_dialog_t::instance()
 }
 
 preferences_dialog_t::preferences_dialog_t()
-: QDialog(app().ui()->main_window())
+  : QDialog(app().ui()->main_window())
 {
     setWindowTitle("Preferences");
     ui_.setupUi(this);
 
     // connect signals
-    connect(ui_.ram_slider_, SIGNAL(valueChanged(int)), ui_.ram_spinbox_, SLOT(setValue(int)));
-    connect(ui_.ram_spinbox_, SIGNAL(valueChanged(int)), ui_.ram_slider_, SLOT(setValue(int)));
+    connect(
+        ui_.ram_slider_,
+        SIGNAL(valueChanged(int)),
+        ui_.ram_spinbox_,
+        SLOT(setValue(int)));
+    connect(
+        ui_.ram_spinbox_,
+        SIGNAL(valueChanged(int)),
+        ui_.ram_slider_,
+        SLOT(setValue(int)));
 }
 
 void preferences_dialog_t::exec_dialog()
@@ -49,5 +57,5 @@ void preferences_dialog_t::exec_dialog()
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

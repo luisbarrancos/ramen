@@ -21,10 +21,10 @@ enum
     hsv2rgb,
     lab2rgb
 };
-}  // unnamed
+}  // namespace
 
 colorspace_node_t::colorspace_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("cspace");
 }
@@ -33,14 +33,19 @@ void colorspace_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> p(new popup_param_t("Convert"));
     p->set_id("convert");
-    p->menu_items() = std::vector<std::string>(
-        { "RGB to YUV", "RGB to HSV", "RGB to Lab", "YUV to RGB", "HSV to RGB", "Lab to RGB" });
+    p->menu_items() = std::vector<std::string>({"RGB to YUV",
+                                                "RGB to HSV",
+                                                "RGB to Lab",
+                                                "YUV to RGB",
+                                                "HSV to RGB",
+                                                "Lab to RGB"});
     add_param(p);
 }
 
-void colorspace_node_t::do_process(const image::const_image_view_t& src,
-                                   const image::image_view_t&       dst,
-                                   const render::context_t&         context)
+void colorspace_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     switch (get_value<int>(param("convert")))
     {
@@ -85,22 +90,22 @@ const node_metaclass_t& colorspace_node_t::colorspace_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.colorspace";
+        info.id = "image.builtin.colorspace";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Colorspace";
-        info.help          = "Converts between RGB, HSV, Lab and other color spaces.";
-        info.create        = &create_colorspace_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Colorspace";
+        info.help = "Converts between RGB, HSV, Lab and other color spaces.";
+        info.create = &create_colorspace_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(colorspace_node_t::colorspace_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    colorspace_node_t::colorspace_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

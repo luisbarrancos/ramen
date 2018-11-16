@@ -16,15 +16,17 @@ class shape_transform_param_t : public composite_param_t
 {
     Q_OBJECT
 
-public:
-    explicit shape_transform_param_t(const std::string& name, const std::string& id);
+  public:
+    explicit shape_transform_param_t(
+        const std::string& name,
+        const std::string& id);
 
     const param_t& center_param() const;
-    void           set_center(const Imath::V2f& c, change_reason reason = user_edited);
+    void set_center(const Imath::V2f& c, change_reason reason = user_edited);
 
     const param_t& translate_param() const;
     param_t&       translate_param();
-    void           set_translate(const Imath::V2f& t, change_reason reason = user_edited);
+    void set_translate(const Imath::V2f& t, change_reason reason = user_edited);
 
     const param_t& scale_param() const;
     param_t&       scale_param();
@@ -35,13 +37,15 @@ public:
     Imath::M33f matrix() const;
     Imath::M33f matrix_at_frame(float frame) const;
 
-protected:
+  protected:
     shape_transform_param_t(const shape_transform_param_t& other);
     void operator=(const shape_transform_param_t& other);
 
-private:
-    param_t* do_clone() const override { return new shape_transform_param_t(*this); }
+  private:
+    param_t* do_clone() const override
+    {
+        return new shape_transform_param_t(*this);
+    }
 };
 
-}  // namespace
-
+}  // namespace ramen

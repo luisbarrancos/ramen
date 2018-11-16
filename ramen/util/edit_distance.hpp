@@ -15,12 +15,12 @@ namespace util
 {
 struct edit_distance_t
 {
-public:
+  public:
     edit_distance_t();
 
     int operator()(const std::string& src, const std::string& dst);
 
-private:
+  private:
     void realloc_matrix(int rows, int cols);
 
     int matrix(int i, int j) const
@@ -41,6 +41,5 @@ private:
     int                      rows_, cols_;
 };
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

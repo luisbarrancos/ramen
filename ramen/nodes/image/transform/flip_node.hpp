@@ -12,20 +12,20 @@ namespace image
 {
 class flip_node_t : public image_node_t
 {
-public:
+  public:
     static const node_metaclass_t& flip_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     flip_node_t();
 
-protected:
+  protected:
     flip_node_t(const flip_node_t& other)
-    : image_node_t(other)
+      : image_node_t(other)
     {
     }
     void operator=(const flip_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new flip_node_t(*this); }
 
     void do_create_params() override;
@@ -40,6 +40,5 @@ private:
     Imath::M33d xform_, inv_xform_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

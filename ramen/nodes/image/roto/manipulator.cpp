@@ -23,7 +23,7 @@ namespace ramen
 namespace roto
 {
 manipulator_t::manipulator_t()
-: ramen::manipulator_t()
+  : ramen::manipulator_t()
 {
 }
 
@@ -31,7 +31,8 @@ void manipulator_t::do_draw_overlay(const ui::paint_event_t& event) const
 {
     assert(parent());
 
-    const image::roto_node_t* roto = dynamic_cast<const image::roto_node_t*>(parent());
+    const image::roto_node_t* roto =
+        dynamic_cast<const image::roto_node_t*>(parent());
     assert(roto);
 
     gl_point_size(5);
@@ -100,16 +101,18 @@ void manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& event)
     roto->toolbar().active_tool().mouse_drag_event(event);
 }
 
-void manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t& event)
+void manipulator_t::do_mouse_release_event(
+    const ui::mouse_release_event_t& event)
 {
     image::roto_node_t* roto = dynamic_cast<image::roto_node_t*>(parent());
     roto->toolbar().active_tool().mouse_release_event(event);
 }
 
-void manipulator_t::draw_shape(const shape_t&           s,
-                               const ui::paint_event_t& event,
-                               float                    node_aspect,
-                               bool                     axes)
+void manipulator_t::draw_shape(
+    const shape_t&           s,
+    const ui::paint_event_t& event,
+    float                    node_aspect,
+    bool                     axes)
 {
     if (s.is_null())
     {
@@ -126,8 +129,11 @@ void manipulator_t::draw_shape(const shape_t&           s,
 
     gl_line_width(1);
     gl_color(s.display_color());
-    s.for_each_span(
-        boost::bind(&roto::manipulator_t::draw_bezier_span, _1, s.global_xform(), s.offset()));
+    s.for_each_span(boost::bind(
+        &roto::manipulator_t::draw_bezier_span,
+        _1,
+        s.global_xform(),
+        s.offset()));
 
     if (s.selected())
     {
@@ -138,10 +144,11 @@ void manipulator_t::draw_shape(const shape_t&           s,
     }
 }
 
-void manipulator_t::draw_axes(const shape_t&           s,
-                              const ui::paint_event_t& event,
-                              const Imath::Color3c&    col,
-                              float                    node_aspect)
+void manipulator_t::draw_axes(
+    const shape_t&           s,
+    const ui::paint_event_t& event,
+    const Imath::Color3c&    col,
+    float                    node_aspect)
 {
     gl_line_width(default_line_width());
 
@@ -159,20 +166,27 @@ void manipulator_t::draw_axes(const shape_t&           s,
     manipulators::draw_xy_axes(
         c, x, y, event.aspect_ratio / node_aspect, col, col, event.pixel_scale);
     manipulators::draw_cross(
-        c, 3 / event.pixel_scale, 3 / event.pixel_scale, col, event.pixel_scale);
-    manipulators::draw_ellipse(c, 7 / event.pixel_scale, 7 / event.pixel_scale, col, 20);
+        c,
+        3 / event.pixel_scale,
+        3 / event.pixel_scale,
+        col,
+        event.pixel_scale);
+    manipulators::draw_ellipse(
+        c, 7 / event.pixel_scale, 7 / event.pixel_scale, col, 20);
 }
 
 void manipulator_t::draw_control_polygon(const shape_t& s, float pixel_scale)
 {
     for (auto& t : s.triples())
-        manipulator_t::draw_triple(t, s.global_xform(), s.offset(), pixel_scale);
+        manipulator_t::draw_triple(
+            t, s.global_xform(), s.offset(), pixel_scale);
 }
 
-void manipulator_t::draw_triple(const triple_t&    t,
-                                const Imath::M33f& m,
-                                const Imath::V2f&  shape_offset,
-                                float              pixel_scale)
+void manipulator_t::draw_triple(
+    const triple_t&    t,
+    const Imath::M33f& m,
+    const Imath::V2f&  shape_offset,
+    float              pixel_scale)
 {
     Imath::V2f p0 = (t.p0() + shape_offset) * m;
     Imath::V2f p1 = (t.p1() + shape_offset) * m;
@@ -215,20 +229,23 @@ void manipulator_t::draw_triple(const triple_t&    t,
     }
 }
 
-void manipulator_t::draw_bezier_span(const bezier::curve_t<Imath::V2f>& c,
-                                     const Imath::M33f&                 m,
-                                     const Imath::V2f&                  shape_offset)
+void manipulator_t::draw_bezier_span(
+    const bezier::curve_t<Imath::V2f>& c,
+    const Imath::M33f&                 m,
+    const Imath::V2f&                  shape_offset)
 {
-    draw_bezier_curve((c.p[0] + shape_offset) * m,
-                      (c.p[1] + shape_offset) * m,
-                      (c.p[2] + shape_offset) * m,
-                      (c.p[3] + shape_offset) * m);
+    draw_bezier_curve(
+        (c.p[0] + shape_offset) * m,
+        (c.p[1] + shape_offset) * m,
+        (c.p[2] + shape_offset) * m,
+        (c.p[3] + shape_offset) * m);
 }
 
-void manipulator_t::draw_bezier_curve(const Imath::V2f& a,
-                                      const Imath::V2f& b,
-                                      const Imath::V2f& c,
-                                      const Imath::V2f& d)
+void manipulator_t::draw_bezier_curve(
+    const Imath::V2f& a,
+    const Imath::V2f& b,
+    const Imath::V2f& c,
+    const Imath::V2f& d)
 {
     GLfloat ctrlpoints[4][3];
 
@@ -258,5 +275,5 @@ void manipulator_t::draw_bezier_curve(const Imath::V2f& a,
     glEnd();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

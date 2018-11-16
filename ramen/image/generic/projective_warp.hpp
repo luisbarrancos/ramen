@@ -17,18 +17,18 @@ namespace generic
 {
 namespace detail
 {
-template<class Sampler>
-class projective_warp_fn
+template <class Sampler> class projective_warp_fn
 {
-public:
-    projective_warp_fn(const Sampler&      s,
-                       const Imath::Box2i& dst_area,
-                       const image_view_t& dst,
-                       const matrix3_t&    inv_xform)
-    : dst_area_(dst_area)
-    , dst_(dst)
-    , inv_xform_(inv_xform)
-    , s_(s)
+  public:
+    projective_warp_fn(
+        const Sampler&      s,
+        const Imath::Box2i& dst_area,
+        const image_view_t& dst,
+        const matrix3_t&    inv_xform)
+      : dst_area_(dst_area)
+      , dst_(dst)
+      , inv_xform_(inv_xform)
+      , s_(s)
     {
     }
 
@@ -38,9 +38,10 @@ public:
         {
             typedef vector2_t::BaseType    real_type;
             typedef Imath::Vec3<real_type> vector3_type;
-            vector3_type                   p(vector3_type(dst_area_.min.x, j, 1) * inv_xform_);
-            vector3_type                   p_end(vector3_type(dst_area_.max.x, j, 1) * inv_xform_);
-            vector3_type                   inc((p_end - p) / (dst_area_.max.x - dst_area_.min.x));
+            vector3_type p(vector3_type(dst_area_.min.x, j, 1) * inv_xform_);
+            vector3_type p_end(
+                vector3_type(dst_area_.max.x, j, 1) * inv_xform_);
+            vector3_type inc((p_end - p) / (dst_area_.max.x - dst_area_.min.x));
 
             vector2_t du(0, 0), dv(0, 0);
 
@@ -58,26 +59,25 @@ public:
         }
     }
 
-private:
+  private:
     Sampler             s_;
     const Imath::Box2i& dst_area_;
     const image_view_t& dst_;
     const matrix3_t&    inv_xform_;
 };
 
-
-template<class Sampler>
-class projective_warp_and_derivs_fn
+template <class Sampler> class projective_warp_and_derivs_fn
 {
-public:
-    projective_warp_and_derivs_fn(const Sampler&      s,
-                                  const Imath::Box2i& dst_area,
-                                  const image_view_t& dst,
-                                  const matrix3_t&    inv_xform)
-    : dst_area_(dst_area)
-    , dst_(dst)
-    , inv_xform_(inv_xform)
-    , s_(s)
+  public:
+    projective_warp_and_derivs_fn(
+        const Sampler&      s,
+        const Imath::Box2i& dst_area,
+        const image_view_t& dst,
+        const matrix3_t&    inv_xform)
+      : dst_area_(dst_area)
+      , dst_(dst)
+      , inv_xform_(inv_xform)
+      , s_(s)
     {
     }
 
@@ -87,17 +87,24 @@ public:
         {
             typedef vector2_t::BaseType    real_type;
             typedef Imath::Vec3<real_type> vector3_type;
-            vector3_type                   p(vector3_type(dst_area_.min.x, j, 1) * inv_xform_);
-            vector3_type                   p_end(vector3_type(dst_area_.max.x, j, 1) * inv_xform_);
-            vector3_type                   inc((p_end - p) / (dst_area_.max.x - dst_area_.min.x));
+            vector3_type p(vector3_type(dst_area_.min.x, j, 1) * inv_xform_);
+            vector3_type p_end(
+                vector3_type(dst_area_.max.x, j, 1) * inv_xform_);
+            vector3_type inc((p_end - p) / (dst_area_.max.x - dst_area_.min.x));
 
-            vector3_type pdu(vector3_type(dst_area_.min.x + 0.5, j, 1) * inv_xform_);
-            vector3_type pdu_end(vector3_type(dst_area_.max.x + 0.5, j, 1) * inv_xform_);
-            vector3_type pdu_inc((pdu_end - pdu) / (dst_area_.max.x - dst_area_.min.x));
+            vector3_type pdu(
+                vector3_type(dst_area_.min.x + 0.5, j, 1) * inv_xform_);
+            vector3_type pdu_end(
+                vector3_type(dst_area_.max.x + 0.5, j, 1) * inv_xform_);
+            vector3_type pdu_inc(
+                (pdu_end - pdu) / (dst_area_.max.x - dst_area_.min.x));
 
-            vector3_type pdv(vector3_type(dst_area_.min.x, j + 0.5, 1) * inv_xform_);
-            vector3_type pdv_end(vector3_type(dst_area_.max.x, j + 0.5, 1) * inv_xform_);
-            vector3_type pdv_inc((pdv_end - pdv) / (dst_area_.max.x - dst_area_.min.x));
+            vector3_type pdv(
+                vector3_type(dst_area_.min.x, j + 0.5, 1) * inv_xform_);
+            vector3_type pdv_end(
+                vector3_type(dst_area_.max.x, j + 0.5, 1) * inv_xform_);
+            vector3_type pdv_inc(
+                (pdv_end - pdv) / (dst_area_.max.x - dst_area_.min.x));
 
             for (int i = dst_area_.min.x; i <= dst_area_.max.x; ++i)
             {
@@ -120,7 +127,8 @@ public:
                         dv = vector2_t(pdv.x * iz, pdv.y * iz) - q;
                     }
 
-                    dst_(i - dst_area_.min.x, j - dst_area_.min.y) = s_(q, du, dv);
+                    dst_(i - dst_area_.min.x, j - dst_area_.min.y) =
+                        s_(q, du, dv);
                 }
 
                 p += inc;
@@ -130,27 +138,29 @@ public:
         }
     }
 
-private:
+  private:
     Sampler             s_;
     const Imath::Box2i& dst_area_;
     const image_view_t& dst_;
     const matrix3_t&    inv_xform_;
 };
 
-}  // detail
+}  // namespace detail
 
 // for debugging, run in only one thread
-template<class Sampler>
-void projective_warp_seq(const Sampler&      s,
-                         const Imath::Box2i& dst_area,
-                         const image_view_t& dst,
-                         const matrix3_t&    xform,
-                         const matrix3_t&    inv_xform,
-                         bool                derivs = false)
+template <class Sampler>
+void projective_warp_seq(
+    const Sampler&      s,
+    const Imath::Box2i& dst_area,
+    const image_view_t& dst,
+    const matrix3_t&    xform,
+    const matrix3_t&    inv_xform,
+    bool                derivs = false)
 {
     if (derivs)
     {
-        detail::projective_warp_and_derivs_fn<Sampler> f(s, dst_area, dst, inv_xform);
+        detail::projective_warp_and_derivs_fn<Sampler> f(
+            s, dst_area, dst, inv_xform);
         f(tbb::blocked_range<int>(dst_area.min.y, dst_area.max.y + 1));
     }
     else
@@ -160,36 +170,39 @@ void projective_warp_seq(const Sampler&      s,
     }
 }
 
-template<class Sampler>
-void projective_warp(const Sampler&      s,
-                     const Imath::Box2i& dst_area,
-                     const image_view_t& dst,
-                     const matrix3_t&    xform,
-                     const matrix3_t&    inv_xform,
-                     bool                derivs = false)
+template <class Sampler>
+void projective_warp(
+    const Sampler&      s,
+    const Imath::Box2i& dst_area,
+    const image_view_t& dst,
+    const matrix3_t&    xform,
+    const matrix3_t&    inv_xform,
+    bool                derivs = false)
 {
     if (derivs)
     {
         tbb::parallel_for(
             tbb::blocked_range<int>(dst_area.min.y, dst_area.max.y + 1),
-            detail::projective_warp_and_derivs_fn<Sampler>(s, dst_area, dst, inv_xform),
+            detail::projective_warp_and_derivs_fn<Sampler>(
+                s, dst_area, dst, inv_xform),
             tbb::auto_partitioner());
     }
     else
     {
-        tbb::parallel_for(tbb::blocked_range<int>(dst_area.min.y, dst_area.max.y + 1),
-                          detail::projective_warp_fn<Sampler>(s, dst_area, dst, inv_xform),
-                          tbb::auto_partitioner());
+        tbb::parallel_for(
+            tbb::blocked_range<int>(dst_area.min.y, dst_area.max.y + 1),
+            detail::projective_warp_fn<Sampler>(s, dst_area, dst, inv_xform),
+            tbb::auto_partitioner());
     }
 }
 
-void projective_warp_nearest(const Imath::Box2i&       src_area,
-                             const const_image_view_t& src,
-                             const Imath::Box2i&       dst_area,
-                             const image_view_t&       dst,
-                             const matrix3_t&          xform,
-                             const matrix3_t&          inv_xform);
-}  // namespace
-}  // namespace
-}  // namespace
-
+void projective_warp_nearest(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const matrix3_t&          xform,
+    const matrix3_t&          inv_xform);
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

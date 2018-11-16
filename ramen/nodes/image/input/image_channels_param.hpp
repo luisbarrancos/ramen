@@ -24,34 +24,39 @@ class image_channels_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit image_channels_param_t();
 
     void clear_channel_list();
     void set_channel_list(const std::vector<std::string>& channels);
 
-    void get_channel_names(std::string& red,
-                           std::string& green,
-                           std::string& blue,
-                           std::string& alpha) const;
+    void get_channel_names(
+        std::string& red,
+        std::string& green,
+        std::string& blue,
+        std::string& alpha) const;
 
     void set_channels(const tuple4i_t& ch);
 
-    void set_channels(const std::string& red,
-                      const std::string& green,
-                      const std::string& blue,
-                      const std::string& alpha);
+    void set_channels(
+        const std::string& red,
+        const std::string& green,
+        const std::string& blue,
+        const std::string& alpha);
 
-protected:
+  protected:
     image_channels_param_t(const image_channels_param_t& other);
     void operator=(const image_channels_param_t& other);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void channel_picked(int index);
 
-private:
-    param_t* do_clone() const override { return new image_channels_param_t(*this); }
+  private:
+    param_t* do_clone() const override
+    {
+        return new image_channels_param_t(*this);
+    }
 
     QWidget* do_create_widgets() override;
     void     do_update_widgets() override;
@@ -60,8 +65,7 @@ private:
     void update_popup(QComboBox* popup, int value);
 
     std::vector<std::string> channel_list_;
-    QPointer<QComboBox>      red_combo_, green_combo_, blue_combo_, alpha_combo_;
+    QPointer<QComboBox> red_combo_, green_combo_, blue_combo_, alpha_combo_;
 };
 
-}  // namespace
-
+}  // namespace ramen

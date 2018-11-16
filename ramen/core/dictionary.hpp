@@ -23,7 +23,7 @@ class RAMEN_API dictionary_t
 {
     BOOST_COPYABLE_AND_MOVABLE(dictionary_t)
 
-public:
+  public:
     typedef name_t    key_type;
     typedef variant_t value_type;
 
@@ -49,7 +49,7 @@ public:
 
     // Move constructor
     dictionary_t(BOOST_RV_REF(dictionary_t) other)
-    : m_pimpl(0)
+      : m_pimpl(0)
     {
         swap(other);
     }
@@ -77,30 +77,34 @@ public:
     struct dict_inserter
     {
         dict_inserter(dictionary_t& d)
-        : d_(d)
+          : d_(d)
         {
         }
 
-        const dict_inserter& operator()(const dictionary_t::key_type& key,
-                                        const value_type&             val) const
+        const dict_inserter& operator()(
+            const dictionary_t::key_type& key,
+            const value_type&             val) const
         {
             d_[key] = val;
             return *this;
         }
 
-        template<class T>
-        const dict_inserter& operator()(const dictionary_t::key_type& key, const T& val) const
+        template <class T>
+        const dict_inserter& operator()(
+            const dictionary_t::key_type& key,
+            const T&                      val) const
         {
             return (*this)(key, dictionary_t::value_type(val));
         }
 
-        template<class T>
+        template <class T>
         const dict_inserter& operator()(const char* key, const T& val) const
         {
-            return (*this)(dictionary_t::key_type(key), dictionary_t::value_type(val));
+            return (*this)(
+                dictionary_t::key_type(key), dictionary_t::value_type(val));
         }
 
-    private:
+      private:
         dictionary_t& d_;
     };
 
@@ -116,26 +120,25 @@ public:
     bool operator==(const dictionary_t& other) const;
     bool operator!=(const dictionary_t& other) const;
 
-private:
+  private:
     struct impl;
     impl* m_pimpl;
 };
 
 inline void swap(dictionary_t& x, dictionary_t& y) { x.swap(y); }
 
-template<class T>
+template <class T>
 const T& get(const dictionary_t& dic, const dictionary_t::key_type& key)
 {
     return get<T>(dic[key]);
 }
 
-template<class T>
-T& get(dictionary_t& dic, const dictionary_t::key_type& key)
+template <class T> T& get(dictionary_t& dic, const dictionary_t::key_type& key)
 {
     return get<T>(dic[key]);
 }
 
-template<class T>
+template <class T>
 const T* get(const dictionary_t* dic, const dictionary_t::key_type& key)
 {
     if (const dictionary_t::value_type* v = dic->get(key))
@@ -144,8 +147,7 @@ const T* get(const dictionary_t* dic, const dictionary_t::key_type& key)
     return 0;
 }
 
-template<class T>
-T* get(dictionary_t* dic, const dictionary_t::key_type& key)
+template <class T> T* get(dictionary_t* dic, const dictionary_t::key_type& key)
 {
     if (dictionary_t::value_type* v = dic->get(key))
         return get<T>(v);
@@ -153,7 +155,7 @@ T* get(dictionary_t* dic, const dictionary_t::key_type& key)
     return 0;
 }
 
-template<class T>
+template <class T>
 bool get(const dictionary_t& dic, const dictionary_t::key_type& key, T& val)
 {
     if (const dictionary_t::value_type* v = dic.get(key))
@@ -168,8 +170,11 @@ bool get(const dictionary_t& dic, const dictionary_t::key_type& key, T& val)
     return false;
 }
 
-template<class T>
-T get_optional(const dictionary_t& dic, const dictionary_t::key_type& key, const T& default_value)
+template <class T>
+T get_optional(
+    const dictionary_t&           dic,
+    const dictionary_t::key_type& key,
+    const T&                      default_value)
 {
     if (const dictionary_t::value_type* v = dic.get(key))
     {
@@ -180,6 +185,5 @@ T get_optional(const dictionary_t& dic, const dictionary_t::key_type& key, const
     return default_value;
 }
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

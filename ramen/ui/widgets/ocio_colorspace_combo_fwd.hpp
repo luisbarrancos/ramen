@@ -10,6 +10,5 @@ namespace ui
 {
 class ocio_colorspace_combo_t;
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

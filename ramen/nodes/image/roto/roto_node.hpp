@@ -18,7 +18,7 @@ namespace image
 {
 class roto_node_t : public image_node_t
 {
-public:
+  public:
     static const node_metaclass_t& roto_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
@@ -50,11 +50,11 @@ public:
     // params
     void for_each_param(const std::function<void(param_t*)>& f) override;
 
-protected:
+  protected:
     roto_node_t(const roto_node_t& other);
     void operator=(const roto_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new roto_node_t(*this); }
 
     void do_create_params() override;
@@ -75,11 +75,14 @@ private:
     void do_calc_inputs_interest(const render::context_t& context) override;
 
     void do_process(const render::context_t& context) override;
-    void do_process_motion_blur(const render::context_t& context, const Imath::Box2i& area);
+    void do_process_motion_blur(
+        const render::context_t& context,
+        const Imath::Box2i&      area);
 
     // serialization
-    void do_read(const serialization::yaml_node_t& node,
-                 const std::pair<int, int>&        version) override;
+    void do_read(
+        const serialization::yaml_node_t& node,
+        const std::pair<int, int>&        version) override;
     void do_write(serialization::yaml_oarchive_t& out) const override;
 
     // util functions
@@ -96,6 +99,5 @@ private:
     std::vector<float> frames_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

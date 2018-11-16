@@ -20,16 +20,16 @@ class RAMEN_API image_format_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit image_format_param_t(const std::string& name);
 
     void set_value(const image::format_t& format, change_reason = user_edited);
 
-protected:
+  protected:
     image_format_param_t(const image_format_param_t& other);
     void operator=(const image_format_param_t& other);
 
-private:
+  private:
     void     do_init() override;
     param_t* do_clone() const override;
 
@@ -45,11 +45,10 @@ private:
     QPointer<ui::double_spinbox_t> width_input_, height_input_, aspect_input_;
     QPointer<QComboBox>            menu_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void preset_picked(int v);
     void set_new_format(double unused = 0);
 };
 
-}  // namespace
-
+}  // namespace ramen

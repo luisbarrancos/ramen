@@ -23,18 +23,21 @@ namespace math
 \ingroup math
 \brief Two dimensional vector.
 */
-template<class T>
+template <class T>
 class vector2_t
-: boost::addable<
-      vector2_t<T>,
-      boost::subtractable<
-          vector2_t<T>,
-          boost::dividable2<
-              vector2_t<T>,
-              T,
-              boost::multipliable2<vector2_t<T>, T, boost::equality_comparable<vector2_t<T>>>>>>
+  : boost::addable<
+        vector2_t<T>,
+        boost::subtractable<
+            vector2_t<T>,
+            boost::dividable2<
+                vector2_t<T>,
+                T,
+                boost::multipliable2<
+                    vector2_t<T>,
+                    T,
+                    boost::equality_comparable<vector2_t<T>>>>>>
 {
-public:
+  public:
     typedef T value_type;
 
     static unsigned int size() { return 2; }
@@ -43,14 +46,14 @@ public:
     vector2_t() {}
 
     explicit vector2_t(T xx)
-    : x(xx)
-    , y(xx)
+      : x(xx)
+      , y(xx)
     {
     }
 
     vector2_t(T xx, T yy)
-    : x(xx)
-    , y(yy)
+      : x(xx)
+      , y(yy)
     {
     }
 
@@ -100,7 +103,10 @@ public:
 
     vector2_t<T> operator-() const { return vector2_t<T>(-x, -y); }
 
-    bool operator==(const vector2_t<T>& other) const { return x == other.x && y == other.y; }
+    bool operator==(const vector2_t<T>& other) const
+    {
+        return x == other.x && y == other.y;
+    }
 
     T length2() const { return dot(*this, *this); }
 
@@ -118,22 +124,19 @@ public:
     T x, y;
 };
 
-template<class T>
-vector2_t<T> normalize(const vector2_t<T>& v)
+template <class T> vector2_t<T> normalize(const vector2_t<T>& v)
 {
     vector2_t<T> x(v);
     x.normalize();
     return x;
 }
 
-template<class T>
-T dot(const vector2_t<T>& a, const vector2_t<T>& b)
+template <class T> T dot(const vector2_t<T>& a, const vector2_t<T>& b)
 {
     return (a.x * b.x) + (a.y * b.y);
 }
 
-template<class T>
-T cross(const vector2_t<T>& a, const vector2_t<T>& b)
+template <class T> T cross(const vector2_t<T>& a, const vector2_t<T>& b)
 {
     return a.x * b.y - a.y * b.x;
 }
@@ -144,6 +147,5 @@ typedef vector2_t<double> vector2d_t;
 typedef vector2_t<int>    vector2i_t;
 typedef vector2_t<half>   vector2h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

@@ -23,18 +23,21 @@ namespace math
 \ingroup math
 \brief Three dimensional vector.
 */
-template<class T>
+template <class T>
 class vector3_t
-: boost::addable<
-      vector3_t<T>,
-      boost::subtractable<
-          vector3_t<T>,
-          boost::dividable2<
-              vector3_t<T>,
-              T,
-              boost::multipliable2<vector3_t<T>, T, boost::equality_comparable<vector3_t<T>>>>>>
+  : boost::addable<
+        vector3_t<T>,
+        boost::subtractable<
+            vector3_t<T>,
+            boost::dividable2<
+                vector3_t<T>,
+                T,
+                boost::multipliable2<
+                    vector3_t<T>,
+                    T,
+                    boost::equality_comparable<vector3_t<T>>>>>>
 {
-public:
+  public:
     typedef T value_type;
 
     static unsigned int size() { return 3; }
@@ -43,16 +46,16 @@ public:
     vector3_t() {}
 
     explicit vector3_t(T xx)
-    : x(xx)
-    , y(xx)
-    , z(xx)
+      : x(xx)
+      , y(xx)
+      , z(xx)
     {
     }
 
     vector3_t(T xx, T yy, T zz)
-    : x(xx)
-    , y(yy)
-    , z(zz)
+      : x(xx)
+      , y(yy)
+      , z(zz)
     {
     }
 
@@ -130,30 +133,28 @@ public:
     T x, y, z;
 };
 
-template<class T>
-vector3_t<T> normalize(const vector3_t<T>& v)
+template <class T> vector3_t<T> normalize(const vector3_t<T>& v)
 {
     vector3_t<T> x(v);
     x.normalize();
     return x;
 }
 
-template<class T>
-T dot(const vector3_t<T>& a, const vector3_t<T>& b)
+template <class T> T dot(const vector3_t<T>& a, const vector3_t<T>& b)
 {
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
-template<class T>
+template <class T>
 vector3_t<T> cross(const vector3_t<T>& a, const vector3_t<T>& b)
 {
-    return vector3_t<T>(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+    return vector3_t<T>(
+        a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
 
 typedef vector3_t<float>  vector3f_t;
 typedef vector3_t<double> vector3d_t;
 typedef vector3_t<half>   vector3h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

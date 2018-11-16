@@ -22,7 +22,7 @@ namespace core
 */
 class RAMEN_API exception
 {
-public:
+  public:
     exception() {}
     virtual ~exception() {}
 
@@ -35,12 +35,12 @@ public:
 */
 class RAMEN_API runtime_error : public exception
 {
-public:
+  public:
     explicit runtime_error(string_t message);
 
     const char* what() const override;
 
-private:
+  private:
     string_t message_;
 };
 
@@ -50,12 +50,12 @@ private:
 */
 class RAMEN_API bad_cast : public exception
 {
-public:
+  public:
     bad_cast(const std::type_info& src_type, const std::type_info& dst_type);
 
     const char* what() const override;
 
-private:
+  private:
     string_t message_;
 };
 
@@ -65,12 +65,12 @@ private:
 */
 class RAMEN_API bad_type_cast : public exception
 {
-public:
+  public:
     bad_type_cast(const type_t& src_type, const type_t& dst_type);
 
     const char* what() const override;
 
-private:
+  private:
     core::string_t message_;
 };
 
@@ -80,13 +80,13 @@ private:
 */
 class RAMEN_API key_not_found : public exception
 {
-public:
+  public:
     explicit key_not_found(const name_t& name);
     explicit key_not_found(string_t message);
 
     const char* what() const override;
 
-private:
+  private:
     string_t message_;
 };
 
@@ -96,10 +96,9 @@ private:
 */
 class RAMEN_API not_implemented
 {
-public:
+  public:
     not_implemented();
 };
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

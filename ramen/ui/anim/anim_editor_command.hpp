@@ -25,8 +25,10 @@ namespace undo
 {
 class anim_editor_command_t : public command_t
 {
-public:
-    anim_editor_command_t(node_t* node, const std::shared_ptr<ui::track_model_t>& model);
+  public:
+    anim_editor_command_t(
+        node_t*                                   node,
+        const std::shared_ptr<ui::track_model_t>& model);
 
     bool empty() const override;
 
@@ -39,7 +41,7 @@ public:
     void undo() override;
     void redo() override;
 
-protected:
+  protected:
     void swap_curves();
 
     typedef std::map<anim::track_t*, anim::any_curve_t> map_type;
@@ -50,6 +52,5 @@ protected:
     map_type                           curves_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace undo
+}  // namespace ramen

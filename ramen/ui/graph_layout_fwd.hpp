@@ -10,6 +10,5 @@ namespace ui
 {
 class graph_layout_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

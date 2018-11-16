@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/compview/draw_pick_generic_node.hpp>
 
 #include <QPainter>
@@ -21,12 +20,12 @@ namespace ui
 {
 namespace
 {
-const int node_min_width   = 90;
+const int node_min_width = 90;
 const int node_extra_width = 20;
-const int shadow_offset    = 3;
-const int radius           = 4;
+const int shadow_offset = 3;
+const int radius = 4;
 
-}  // unnamed
+}  // namespace
 
 Imath::V2f generic_input_location(const node_t* n, std::size_t i)
 {
@@ -36,21 +35,25 @@ Imath::V2f generic_input_location(const node_t* n, std::size_t i)
 
 Imath::V2f generic_output_location(const node_t* n)
 {
-    return Imath::V2f(n->location().x + generic_node_width(n) / 2,
-                      n->location().y + generic_node_height() + 2);
+    return Imath::V2f(
+        n->location().x + generic_node_width(n) / 2,
+        n->location().y + generic_node_height() + 2);
 }
 
 int generic_node_width(const node_t* n)
 {
-    return node_min_width + node_extra_width * std::max((int) n->num_inputs() - 3, 0);
+    return node_min_width +
+           node_extra_width * std::max((int) n->num_inputs() - 3, 0);
 }
 
 int generic_node_height() { return 20; }
 
 Imath::Box2f generic_node_bbox(const node_t* n)
 {
-    return Imath::Box2f(n->location(),
-                        n->location() + Imath::V2f(generic_node_width(n), generic_node_height()));
+    return Imath::Box2f(
+        n->location(),
+        n->location() +
+            Imath::V2f(generic_node_width(n), generic_node_height()));
 }
 
 void draw_generic_node(QPainter& painter, const node_t* n)
@@ -67,15 +70,19 @@ void draw_generic_node(QPainter& painter, const node_t* n)
     painter.setBrush(brush);
     painter.drawRoundedRect(
         QRectF(
-            p.x + shadow_offset, p.y + shadow_offset, generic_node_width(n), generic_node_height()),
+            p.x + shadow_offset,
+            p.y + shadow_offset,
+            generic_node_width(n),
+            generic_node_height()),
         radius,
         radius);
 
     for (unsigned int i = 0; i < n->num_inputs(); ++i)
     {
-        brush.setColor(QColor(n->input_plugs()[i].color().x,
-                              n->input_plugs()[i].color().y,
-                              n->input_plugs()[i].color().z));
+        brush.setColor(QColor(
+            n->input_plugs()[i].color().x,
+            n->input_plugs()[i].color().y,
+            n->input_plugs()[i].color().z));
         painter.setBrush(brush);
         Imath::V2f q = generic_input_location(n, i);
         painter.drawRect(q.x - 3, q.y - 3, 6, 6);
@@ -102,7 +109,9 @@ void draw_generic_node(QPainter& painter, const node_t* n)
 
     painter.setBrush(brush);
     painter.drawRoundedRect(
-        QRectF(p.x, p.y, generic_node_width(n), generic_node_height()), radius, radius);
+        QRectF(p.x, p.y, generic_node_width(n), generic_node_height()),
+        radius,
+        radius);
 
     painter.setBrush(Qt::NoBrush);
 
@@ -118,21 +127,27 @@ void draw_generic_node(QPainter& painter, const node_t* n)
 
     painter.setPen(pen);
     painter.drawRoundedRect(
-        QRectF(p.x, p.y, generic_node_width(n), generic_node_height()), radius, radius);
+        QRectF(p.x, p.y, generic_node_width(n), generic_node_height()),
+        radius,
+        radius);
 
     pen.setColor(palette_t::instance().qcolor("text"));
     painter.setPen(pen);
-    painter.drawText(QRectF(p.x, p.y + 3, generic_node_width(n), generic_node_height() - 3),
-                     Qt::AlignCenter,
-                     QString(n->name().c_str()));
+    painter.drawText(
+        QRectF(p.x, p.y + 3, generic_node_width(n), generic_node_height() - 3),
+        Qt::AlignCenter,
+        QString(n->name().c_str()));
 
     if (n->ignored())
     {
         pen.setColor(palette_t::instance().qcolor("box_pick"));
         pen.setWidth(2);
         painter.setPen(pen);
-        painter.drawLine(QPointF(p.x - 3, p.y - 2),
-                         QPointF(p.x + generic_node_width(n) + 3, p.y + generic_node_height() + 2));
+        painter.drawLine(
+            QPointF(p.x - 3, p.y - 2),
+            QPointF(
+                p.x + generic_node_width(n) + 3,
+                p.y + generic_node_height() + 2));
     }
 }
 
@@ -153,22 +168,25 @@ bool box_pick_generic_node(const node_t* n, const Imath::Box2f& b)
     return true;
 }
 
-void pick_generic_node(node_t*                   n,
-                       const Imath::V2f&         p,
-                       const composition_view_t& view,
-                       pick_result_t&            result)
+void pick_generic_node(
+    node_t*                   n,
+    const Imath::V2f&         p,
+    const composition_view_t& view,
+    pick_result_t&            result)
 {
-    result.node      = 0;
+    result.node = 0;
     result.component = pick_result_t::no_pick;
-    result.plug_num  = -1;
+    result.plug_num = -1;
 
-    if ((p.x < n->location().x) || (p.x > n->location().x + generic_node_width(n)))
+    if ((p.x < n->location().x) ||
+        (p.x > n->location().x + generic_node_width(n)))
         return;
 
-    if ((p.y < n->location().y - 6.0) || (p.y > n->location().y + generic_node_height() + 5))
+    if ((p.y < n->location().y - 6.0) ||
+        (p.y > n->location().y + generic_node_height() + 5))
         return;
 
-    result.node      = n;
+    result.node = n;
     result.component = pick_result_t::body_picked;
 
     Imath::V2f q(generic_output_location(n));
@@ -179,23 +197,23 @@ void pick_generic_node(node_t*                   n,
     if ((pi - qi).length2() < 25)
     {
         result.component = pick_result_t::output_picked;
-        result.plug_num  = 0;
+        result.plug_num = 0;
         return;
     }
 
     for (unsigned int i = 0; i < n->num_inputs(); ++i)
     {
-        q  = generic_input_location(n, i);
+        q = generic_input_location(n, i);
         qi = view.world_to_screen(q);
 
         if ((pi - qi).length2() < 25)
         {
             result.component = pick_result_t::input_picked;
-            result.plug_num  = i;
+            result.plug_num = i;
             return;
         }
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

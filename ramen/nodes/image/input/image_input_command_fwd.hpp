@@ -10,6 +10,5 @@ namespace undo
 {
 class image_input_command_t;
 
-}  // undo
-}  // ramen
-
+}  // namespace undo
+}  // namespace ramen

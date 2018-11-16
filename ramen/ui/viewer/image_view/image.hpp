@@ -16,18 +16,19 @@ namespace viewer
 {
 class image_t
 {
-public:
+  public:
     image_t(GLenum texture_unit = GL_TEXTURE0)
-    : texture_unit_(texture_unit)
+      : texture_unit_(texture_unit)
     {
     }
 
     bool valid() const;
 
     void reset();
-    void reset(image::buffer_t     pixels,
-               const Imath::Box2i& display_window,
-               const Imath::Box2i& data_window);
+    void reset(
+        image::buffer_t     pixels,
+        const Imath::Box2i& display_window,
+        const Imath::Box2i& data_window);
 
     Imath::Box2i display_window() const;
     Imath::Box2i data_window() const;
@@ -43,10 +44,11 @@ public:
     // get colors
     boost::optional<Imath::Color4f> color_at(const Imath::V2i& p) const;
 
-private:
-    void create_strategy(const image::buffer_t& pixels,
-                         const Imath::Box2i&    display_window,
-                         const Imath::Box2i&    data_window);
+  private:
+    void create_strategy(
+        const image::buffer_t& pixels,
+        const Imath::Box2i&    display_window,
+        const Imath::Box2i&    data_window);
 
     void frame_rect(const Imath::Box2i& b) const;
     void gl_vertices_for_box(const Imath::Box2i& b) const;
@@ -55,7 +57,6 @@ private:
     std::auto_ptr<image_strategy_t> strategy_;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

@@ -18,7 +18,7 @@ namespace
 struct exposure_fun
 {
     exposure_fun(float e)
-    : m_(std::pow(2, e))
+      : m_(std::pow(2, e))
     {
     }
 
@@ -30,13 +30,14 @@ struct exposure_fun
     float m_;
 };
 
-}  // unnamed
+}  // namespace
 
 exposure_node_t::exposure_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("exposure");
-    add_input_plug("mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
+    add_input_plug(
+        "mask", true, ui::palette_t::instance().color("matte plug"), "Mask");
 }
 
 void exposure_node_t::do_create_params()
@@ -48,11 +49,15 @@ void exposure_node_t::do_create_params()
     add_param(p);
 }
 
-bool exposure_node_t::do_is_identity() const { return get_value<float>(param("exp")) == 0.0f; }
+bool exposure_node_t::do_is_identity() const
+{
+    return get_value<float>(param("exp")) == 0.0f;
+}
 
-void exposure_node_t::do_process(const image::const_image_view_t& src,
-                                 const image::image_view_t&       dst,
-                                 const render::context_t&         context)
+void exposure_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
     image::const_image_view_t src_view;
     image::image_view_t       dst_view;
@@ -61,7 +66,8 @@ void exposure_node_t::do_process(const image::const_image_view_t& src,
     if (input(1))
     {
         boost::gil::copy_pixels(src, dst);
-        area = ImathExt::intersect(input_as<image_node_t>(1)->defined(), defined());
+        area = ImathExt::intersect(
+            input_as<image_node_t>(1)->defined(), defined());
 
         if (area.isEmpty())
             return;
@@ -82,14 +88,18 @@ void exposure_node_t::do_process(const image::const_image_view_t& src,
         image::key_mix(
             src_view,
             dst_view,
-            boost::gil::nth_channel_view(input_as<image_node_t>(1)->const_subimage_view(area), 3),
+            boost::gil::nth_channel_view(
+                input_as<image_node_t>(1)->const_subimage_view(area), 3),
             dst_view);
 }
 
 // node factory
 node_t* create_exposure_node() { return new exposure_node_t(); }
 
-const node_metaclass_t* exposure_node_t::metaclass() const { return &exposure_node_metaclass(); }
+const node_metaclass_t* exposure_node_t::metaclass() const
+{
+    return &exposure_node_metaclass();
+}
 
 const node_metaclass_t& exposure_node_t::exposure_node_metaclass()
 {
@@ -98,21 +108,21 @@ const node_metaclass_t& exposure_node_t::exposure_node_metaclass()
 
     if (!inited)
     {
-        m.id            = "image.builtin.exposure";
+        m.id = "image.builtin.exposure";
         m.major_version = 1;
         m.minor_version = 0;
-        m.menu          = "Image";
-        m.submenu       = "Color";
-        m.menu_item     = "Exposure";
-        m.create        = &create_exposure_node;
-        inited          = true;
+        m.menu = "Image";
+        m.submenu = "Color";
+        m.menu_item = "Exposure";
+        m.create = &create_exposure_node;
+        inited = true;
     }
 
     return m;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(exposure_node_t::exposure_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    exposure_node_t::exposure_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

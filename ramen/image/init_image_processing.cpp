@@ -21,5 +21,5 @@ void init_image_processing()
     catrom_filter_t::init_table();
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

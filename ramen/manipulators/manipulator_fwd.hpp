@@ -8,5 +8,4 @@ namespace ramen
 {
 class manipulator_t;
 
-}  // namespace
-
+}  // namespace ramen

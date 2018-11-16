@@ -23,8 +23,8 @@ namespace ramen
 namespace roto
 {
 create_tool_t::create_tool_t(image::roto_node_t& parent)
-: tool_t(parent)
-, point_(0)
+  : tool_t(parent)
+  , point_(0)
 {
 }
 
@@ -38,7 +38,8 @@ void create_tool_t::draw_overlay(const ui::paint_event_t& event) const
         gl_scalef(event.aspect_ratio, 1);
 
         glEnable(GL_MAP1_VERTEX_3);
-        roto::manipulator_t::draw_shape(*new_shape_, event, parent().aspect_ratio(), false);
+        roto::manipulator_t::draw_shape(
+            *new_shape_, event, parent().aspect_ratio(), false);
         glDisable(GL_MAP1_VERTEX_3);
 
         // clear gl errors
@@ -84,7 +85,8 @@ void create_tool_t::mouse_press_event(const ui::mouse_press_event_t& event)
             s->select(true);
             parent().selection_changed();
 
-            std::auto_ptr<undo::command_t> cmd(new undo::modify_shape_command_t(parent(), s));
+            std::auto_ptr<undo::command_t> cmd(
+                new undo::modify_shape_command_t(parent(), s));
             s->insert_point(span_index, t);
 
             app().document().undo_stack().push_back(cmd);
@@ -128,7 +130,10 @@ void create_tool_t::mouse_drag_event(const ui::mouse_drag_event_t& event)
     }
 }
 
-void create_tool_t::mouse_release_event(const ui::mouse_release_event_t& event) { point_ = 0; }
+void create_tool_t::mouse_release_event(const ui::mouse_release_event_t& event)
+{
+    point_ = 0;
+}
 
 void create_tool_t::close_shape(bool success)
 {
@@ -142,7 +147,8 @@ void create_tool_t::close_shape(bool success)
             new_shape_->set_translation(Imath::V2f(0, 0), false);
 
             if (new_shape_->autokey())
-                new_shape_->set_shape_key(app().document().composition().frame());
+                new_shape_->set_shape_key(
+                    app().document().composition().frame());
 
             std::auto_ptr<undo::add_roto_command_t> cmd(
                 new undo::add_roto_command_t(parent(), new_shape_));
@@ -155,7 +161,10 @@ void create_tool_t::close_shape(bool success)
     new_shape_.reset();
 }
 
-shape_t* create_tool_t::pick_shape(const ui::mouse_press_event_t& event, int& span_index, float& t)
+shape_t* create_tool_t::pick_shape(
+    const ui::mouse_press_event_t& event,
+    int&                           span_index,
+    float&                         t)
 {
     for (roto::shape_t& s : parent().scene())
     {
@@ -183,7 +192,8 @@ shape_t* create_tool_t::pick_shape(const ui::mouse_press_event_t& event, int& sp
                         span.p[2] = it->p0();
                         span.p[3] = it->p1();
 
-                        Imath::V2f q(bezier::nearest_point_on_curve(span, p, t));
+                        Imath::V2f q(
+                            bezier::nearest_point_on_curve(span, p, t));
 
                         if (inside_pick_distance(q, p, event.pixel_scale))
                             return &s;
@@ -198,7 +208,8 @@ shape_t* create_tool_t::pick_shape(const ui::mouse_press_event_t& event, int& sp
                         span.p[2] = s.triples().front().p0();
                         span.p[3] = s.triples().front().p1();
 
-                        Imath::V2f q(bezier::nearest_point_on_curve(span, p, t));
+                        Imath::V2f q(
+                            bezier::nearest_point_on_curve(span, p, t));
 
                         if (inside_pick_distance(q, p, event.pixel_scale))
                             return &s;
@@ -213,5 +224,5 @@ shape_t* create_tool_t::pick_shape(const ui::mouse_press_event_t& event, int& sp
     return 0;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace roto
+}  // namespace ramen

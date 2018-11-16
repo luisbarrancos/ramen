@@ -12,8 +12,8 @@ namespace ramen
 {
 bool motion_blur_info_t::operator==(const motion_blur_info_t& other) const
 {
-    return samples == other.samples && shutter == other.shutter
-           && shutter_offset == other.shutter_offset && filter == other.filter;
+    return samples == other.samples && shutter == other.shutter &&
+           shutter_offset == other.shutter_offset && filter == other.filter;
 }
 
 bool motion_blur_info_t::operator!=(const motion_blur_info_t& other) const
@@ -22,18 +22,22 @@ bool motion_blur_info_t::operator!=(const motion_blur_info_t& other) const
 }
 
 motion_blur_info_t::loop_data_t::loop_data_t(
-    float time, int samples, float shutter, float offset, motion_blur_info_t::filter_type f)
+    float                           time,
+    int                             samples,
+    float                           shutter,
+    float                           offset,
+    motion_blur_info_t::filter_type f)
 {
     if (shutter != 0)
         num_samples = 2 * samples + 1;
     else
         num_samples = 1;
 
-    start_time  = time - (shutter / 2.0f) + (offset * shutter / 2.0f);
-    end_time    = time + (shutter / 2.0f) + (offset * shutter / 2.0f);
+    start_time = time - (shutter / 2.0f) + (offset * shutter / 2.0f);
+    end_time = time + (shutter / 2.0f) + (offset * shutter / 2.0f);
     center_time = (end_time + start_time) / 2.0f;
-    time_step   = (end_time - start_time) / num_samples;
-    filter      = f;
+    time_step = (end_time - start_time) / num_samples;
+    filter = f;
 }
 
 float motion_blur_info_t::loop_data_t::weight_for_time(float t) const
@@ -67,7 +71,8 @@ float motion_blur_info_t::loop_data_t::weight_for_time(float t) const
     }
 }
 
-std::string motion_blur_info_t::filter_to_string(motion_blur_info_t::filter_type f) const
+std::string motion_blur_info_t::filter_to_string(
+    motion_blur_info_t::filter_type f) const
 {
     switch (f)
     {
@@ -82,7 +87,8 @@ std::string motion_blur_info_t::filter_to_string(motion_blur_info_t::filter_type
     }
 }
 
-motion_blur_info_t::filter_type motion_blur_info_t::string_to_filter(const std::string& s) const
+motion_blur_info_t::filter_type motion_blur_info_t::string_to_filter(
+    const std::string& s) const
 {
     if (s == "box_filter")
         return box_filter;
@@ -112,9 +118,10 @@ void operator>>(const YAML::Node& in, motion_blur_info_t& mb)
 YAML::Emitter& operator<<(YAML::Emitter& out, const motion_blur_info_t& mb)
 {
     out << YAML::Flow << YAML::BeginSeq << 1  // version
-        << mb.samples << mb.shutter << mb.shutter_offset << mb.filter_to_string(mb.filter);
+        << mb.samples << mb.shutter << mb.shutter_offset
+        << mb.filter_to_string(mb.filter);
     out << YAML::EndSeq;
     return out;
 }
 
-}  // namespace
+}  // namespace ramen

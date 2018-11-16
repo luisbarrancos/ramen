@@ -14,7 +14,7 @@ namespace gl
 {
 class program_t : boost::noncopyable
 {
-public:
+  public:
     program_t(GLenum shader_type = GL_FRAGMENT_SHADER);
     ~program_t();
 
@@ -28,11 +28,10 @@ public:
 
     void uniform_4f(const char* param, float* v);
 
-private:
+  private:
     GLenum shader_type_;
     GLuint program_, shader_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace gl
+}  // namespace ramen

@@ -21,11 +21,12 @@ namespace detail
 {
 struct convolve33_fun
 {
-    convolve33_fun(const image::const_image_view_t& src,
-                   const image::image_view_t&       dst,
-                   const Imath::M33f&               k)
-    : src_(src)
-    , dst_(dst)
+    convolve33_fun(
+        const image::const_image_view_t& src,
+        const image::image_view_t&       dst,
+        const Imath::M33f&               k)
+      : src_(src)
+      , dst_(dst)
     {
         k_ = k;
 
@@ -45,7 +46,8 @@ struct convolve33_fun
     {
         for (int j = r.begin(); j < r.end(); ++j)
         {
-            image::const_image_view_t::x_iterator top_it(src_.row_begin(std::max(j - 1, 0)));
+            image::const_image_view_t::x_iterator top_it(
+                src_.row_begin(std::max(j - 1, 0)));
             image::const_image_view_t::x_iterator center_it(src_.row_begin(j));
             image::const_image_view_t::x_iterator bottom_it(
                 src_.row_begin(std::min(j + 1, (int) src_.height() - 1)));
@@ -124,24 +126,29 @@ struct convolve33_fun
         }
     }
 
-private:
+  private:
     const image::const_image_view_t& src_;
     const image::image_view_t&       dst_;
     Imath::M33f                      k_;
     float                            inv_sum_weights_;
 };
 
-}  // detail
+}  // namespace detail
 
-void convolve33(const const_image_view_t& src, const image_view_t& dst, const Imath::M33f& k)
+void convolve33(
+    const const_image_view_t& src,
+    const image_view_t&       dst,
+    const Imath::M33f&        k)
 {
-    assert(src.dimensions() == dst.dimensions()
-           && "convolve33: src and dst views must have the same size");
-    tbb::parallel_for(tbb::blocked_range<int>(0, dst.height()),
-                      detail::convolve33_fun(src, dst, k),
-                      tbb::auto_partitioner());
+    assert(
+        src.dimensions() == dst.dimensions() &&
+        "convolve33: src and dst views must have the same size");
+    tbb::parallel_for(
+        tbb::blocked_range<int>(0, dst.height()),
+        detail::convolve33_fun(src, dst, k),
+        tbb::auto_partitioner());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

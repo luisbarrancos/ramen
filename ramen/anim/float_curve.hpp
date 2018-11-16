@@ -19,7 +19,7 @@ namespace anim
 {
 class float_curve_t : public curve_t<float_key_t>
 {
-public:
+  public:
     typedef curve_t<float_key_t> superclass;
     typedef float_key_t          key_type;
     typedef key_type::time_type  time_type;
@@ -28,12 +28,22 @@ public:
     float_curve_t();
 
     void copy(const float_curve_t& other, time_type offset = 0.0f);
-    void copy(const float_curve_t& other, time_type offset, time_type start, time_type end);
+    void copy(
+        const float_curve_t& other,
+        time_type            offset,
+        time_type            start,
+        time_type            end);
 
     void swap(float_curve_t& other);
 
-    float_key_t::auto_tangent_method default_auto_tangents() const { return default_auto_tan_; }
-    void set_default_auto_tangents(float_key_t::auto_tangent_method m) { default_auto_tan_ = m; }
+    float_key_t::auto_tangent_method default_auto_tangents() const
+    {
+        return default_auto_tan_;
+    }
+    void set_default_auto_tangents(float_key_t::auto_tangent_method m)
+    {
+        default_auto_tan_ = m;
+    }
 
     value_type get_min() const { return min_; }
     void       set_min(value_type x) { min_ = x; }
@@ -54,9 +64,15 @@ public:
     value_type offset() const { return offset_; }
     void       set_offset(value_type x) const { offset_ = x; }
 
-    value_type relative_to_absolute(value_type x) const { return x * scale_ + offset_; }
+    value_type relative_to_absolute(value_type x) const
+    {
+        return x * scale_ + offset_;
+    }
 
-    value_type absolute_to_relative(value_type x) const { return (x - offset_) / scale_; }
+    value_type absolute_to_relative(value_type x) const
+    {
+        return (x - offset_) / scale_;
+    }
 
     iterator insert(time_type time, value_type value, bool recalc = true);
     iterator insert(const float_key_t& k, bool recalc = true);
@@ -81,7 +97,7 @@ public:
     void read(const serialization::yaml_node_t& in);
     void write(serialization::yaml_oarchive_t& out) const;
 
-private:
+  private:
     value_type do_evaluate(time_type time) const;
 
     float_key_t::auto_tangent_method default_auto_tan_;
@@ -90,6 +106,5 @@ private:
     mutable value_type offset_, scale_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace anim
+}  // namespace ramen

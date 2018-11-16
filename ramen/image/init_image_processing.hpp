@@ -10,6 +10,5 @@ namespace image
 {
 void init_image_processing();
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

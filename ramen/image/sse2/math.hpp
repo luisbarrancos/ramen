@@ -12,26 +12,33 @@ namespace image
 {
 namespace sse2
 {
-void add_images(const const_image_view_t& a,
-                const const_image_view_t& b,
-                const image_view_t&       result);
-void sub_images(const const_image_view_t& a,
-                const const_image_view_t& b,
-                const image_view_t&       result);
-void mul_images(const const_image_view_t& a,
-                const const_image_view_t& b,
-                const image_view_t&       result);
-void mul_image_scalar(const const_image_view_t& a, float f, const image_view_t& result);
-void madd_images(const const_image_view_t& a,
-                 const const_image_view_t& b,
-                 float                     f,
-                 const image_view_t&       result);
-void lerp_images(const const_image_view_t& a,
-                 const const_image_view_t& b,
-                 float                     t,
-                 const image_view_t&       result);
+void add_images(
+    const const_image_view_t& a,
+    const const_image_view_t& b,
+    const image_view_t&       result);
+void sub_images(
+    const const_image_view_t& a,
+    const const_image_view_t& b,
+    const image_view_t&       result);
+void mul_images(
+    const const_image_view_t& a,
+    const const_image_view_t& b,
+    const image_view_t&       result);
+void mul_image_scalar(
+    const const_image_view_t& a,
+    float                     f,
+    const image_view_t&       result);
+void madd_images(
+    const const_image_view_t& a,
+    const const_image_view_t& b,
+    float                     f,
+    const image_view_t&       result);
+void lerp_images(
+    const const_image_view_t& a,
+    const const_image_view_t& b,
+    float                     t,
+    const image_view_t&       result);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

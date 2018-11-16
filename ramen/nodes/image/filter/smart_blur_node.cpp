@@ -13,7 +13,7 @@ namespace ramen
 namespace image
 {
 smart_blur_node_t::smart_blur_node_t()
-: base_blur_node_t()
+  : base_blur_node_t()
 {
     set_name("smart_blur");
 }
@@ -22,7 +22,7 @@ void smart_blur_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> r(new popup_param_t("Channels"));
     r->set_id("channels");
-    r->menu_items() = std::vector<std::string>({ "RGBA", "RGB" });
+    r->menu_items() = std::vector<std::string>({"RGBA", "RGB"});
     add_param(r);
 
     std::auto_ptr<float2_param_t> q(new float2_param_t("Deviation"));
@@ -42,7 +42,7 @@ void smart_blur_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> b(new popup_param_t("Border Mode"));
     b->set_id("border");
-    b->menu_items() = std::vector<std::string>({ "Black", "Repeat", "Reflect" });
+    b->menu_items() = std::vector<std::string>({"Black", "Repeat", "Reflect"});
     add_param(b);
 }
 
@@ -55,7 +55,7 @@ bool smart_blur_node_t::do_is_identity() const
 void smart_blur_node_t::get_expand_radius(int& hradius, int& vradius) const
 {
     Imath::V2f stddev = get_value<Imath::V2f>(param("stddev"));
-    stddev            = adjust_blur_size(stddev, 1);
+    stddev = adjust_blur_size(stddev, 1);
 
     int sizex = (int) (stddev.x * 6 + 1) | 1;
 
@@ -73,46 +73,54 @@ void smart_blur_node_t::get_expand_radius(int& hradius, int& vradius) const
 
 void smart_blur_node_t::do_process(const render::context_t& context)
 {
-    Imath::Box2i area(ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
+    Imath::Box2i area(
+        ImathExt::intersect(input_as<image_node_t>()->defined(), defined()));
 
     if (area.isEmpty())
         return;
 
     Imath::V2f stddev = get_value<Imath::V2f>(param("stddev"));
-    stddev            = adjust_blur_size(stddev, context.subsample);
+    stddev = adjust_blur_size(stddev, context.subsample);
 
     copy_src_image(0, area, (blur_border_mode) get_value<int>(param("border")));
 
-    blur_channels_mode channels = (blur_channels_mode) get_value<int>(param("channels"));
+    blur_channels_mode channels =
+        (blur_channels_mode) get_value<int>(param("channels"));
 
     switch (channels)
     {
         case channels_rgba:
         {
-            image::buffer_t tmp(const_image_view().height(), const_image_view().width(), 4);
-            image::smart_blur_rgba(const_image_view(),
-                                   tmp.rgba_view(),
-                                   image_view(),
-                                   stddev.x,
-                                   stddev.y,
-                                   get_value<float>(param("theresh")));
+            image::buffer_t tmp(
+                const_image_view().height(), const_image_view().width(), 4);
+            image::smart_blur_rgba(
+                const_image_view(),
+                tmp.rgba_view(),
+                image_view(),
+                stddev.x,
+                stddev.y,
+                get_value<float>(param("theresh")));
         }
         break;
 
         case channels_rgb:
         {
-            image::buffer_t tmp(const_image_view().height(), const_image_view().width(), 4);
-            image::smart_blur_rgba(const_image_view(),
-                                   tmp.rgba_view(),
-                                   image_view(),
-                                   stddev.x,
-                                   stddev.y,
-                                   get_value<float>(param("theresh")));
-            boost::gil::fill_pixels(boost::gil::nth_channel_view(image_view(), 3),
-                                    boost::gil::gray32f_pixel_t(0));
-            boost::gil::copy_pixels(boost::gil::nth_channel_view(
-                                        input_as<image_node_t>()->const_subimage_view(area), 3),
-                                    boost::gil::nth_channel_view(subimage_view(area), 3));
+            image::buffer_t tmp(
+                const_image_view().height(), const_image_view().width(), 4);
+            image::smart_blur_rgba(
+                const_image_view(),
+                tmp.rgba_view(),
+                image_view(),
+                stddev.x,
+                stddev.y,
+                get_value<float>(param("theresh")));
+            boost::gil::fill_pixels(
+                boost::gil::nth_channel_view(image_view(), 3),
+                boost::gil::gray32f_pixel_t(0));
+            boost::gil::copy_pixels(
+                boost::gil::nth_channel_view(
+                    input_as<image_node_t>()->const_subimage_view(area), 3),
+                boost::gil::nth_channel_view(subimage_view(area), 3));
         }
         break;
     }
@@ -133,21 +141,21 @@ const node_metaclass_t& smart_blur_node_t::smart_blur_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.smart_blur";
+        info.id = "image.builtin.smart_blur";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Filter";
-        info.menu_item     = "Smart Blur";
-        info.create        = &create_smart_blur_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Filter";
+        info.menu_item = "Smart Blur";
+        info.create = &create_smart_blur_node;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(smart_blur_node_t::smart_blur_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    smart_blur_node_t::smart_blur_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

@@ -9,5 +9,5 @@ namespace noise
 {
 noise_base_t::noise_base_t() {}
 
-}  // noise
-}  // ramen
+}  // namespace noise
+}  // namespace ramen

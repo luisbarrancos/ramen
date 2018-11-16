@@ -16,39 +16,38 @@ namespace math
 \ingroup math
 \brief Homogeneous three dimensional point.
 */
-template<class T>
-class hpoint3_t : boost::equality_comparable<hpoint3_t<T>>
+template <class T> class hpoint3_t : boost::equality_comparable<hpoint3_t<T>>
 {
-public:
+  public:
     typedef T value_type;
 
-    static const unsigned int dimensions    = 3;
+    static const unsigned int dimensions = 3;
     static const bool         is_homogeneus = true;
     static unsigned int       size() { return 4; }
 
     hpoint3_t() {}
 
     explicit hpoint3_t(T xx)
-    : x(xx)
-    , y(xx)
-    , z(xx)
-    , w(1)
+      : x(xx)
+      , y(xx)
+      , z(xx)
+      , w(1)
     {
     }
 
     hpoint3_t(T xx, T yy, T zz, T ww = T(1))
-    : x(xx)
-    , y(yy)
-    , z(zz)
-    , w(ww)
+      : x(xx)
+      , y(yy)
+      , z(zz)
+      , w(ww)
     {
     }
 
     explicit hpoint3_t(const point3_t<T>& p)
-    : x(p.x)
-    , y(p.y)
-    , z(p.z)
-    , w(T(1))
+      : x(p.x)
+      , y(p.y)
+      , z(p.z)
+      , w(T(1))
     {
     }
 
@@ -74,8 +73,7 @@ public:
     T x, y, z, w;
 };
 
-template<class T>
-point3_t<T> project(const hpoint3_t<T>& p)
+template <class T> point3_t<T> project(const hpoint3_t<T>& p)
 {
     assert(p.w != T(0));
 
@@ -87,6 +85,5 @@ typedef hpoint3_t<float>  hpoint3f_t;
 typedef hpoint3_t<double> hpoint3d_t;
 typedef hpoint3_t<half>   hpoint3h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

@@ -15,10 +15,11 @@ namespace ui
 {
 namespace
 {
-void drag_left_tangent(const anim_curves_view_t& view,
-                       anim::float_curve_t*      c,
-                       anim::float_key_t&        key,
-                       const Imath::V2i&         loc)
+void drag_left_tangent(
+    const anim_curves_view_t& view,
+    anim::float_curve_t*      c,
+    anim::float_key_t&        key,
+    const Imath::V2i&         loc)
 {
     float      v = c->relative_to_absolute(key.value());
     Imath::V2i p(view.world_to_screen(Imath::V2f(key.time(), v)));
@@ -44,10 +45,11 @@ void drag_left_tangent(const anim_curves_view_t& view,
     key.set_v0_tangent(slope / c->scale());
 }
 
-void drag_right_tangent(const anim_curves_view_t& view,
-                        anim::float_curve_t*      c,
-                        anim::float_key_t&        key,
-                        const Imath::V2i&         loc)
+void drag_right_tangent(
+    const anim_curves_view_t& view,
+    anim::float_curve_t*      c,
+    anim::float_key_t&        key,
+    const Imath::V2i&         loc)
 {
     float      v = c->relative_to_absolute(key.value());
     Imath::V2i p(view.world_to_screen(Imath::V2f(key.time(), v)));
@@ -73,17 +75,21 @@ void drag_right_tangent(const anim_curves_view_t& view,
     key.set_v1_tangent(slope / c->scale());
 }
 
-}  // unnamed
+}  // namespace
 
 drag_tangents_visitor::drag_tangents_visitor(
-    const anim_curves_view_t& view, int index, bool left, const Imath::V2i& p, bool break_tangent)
-: view_(view)
+    const anim_curves_view_t& view,
+    int                       index,
+    bool                      left,
+    const Imath::V2i&         p,
+    bool                      break_tangent)
+  : view_(view)
 {
     assert(index >= 0);
 
-    index_         = index;
-    left_          = left;
-    p_             = p;
+    index_ = index;
+    left_ = left;
+    p_ = p;
     break_tangent_ = break_tangent;
 }
 
@@ -103,8 +109,9 @@ void drag_tangents_visitor::operator()(anim::float_curve_t* c)
     c->recalc_tangents_and_coefficients(it);
 }
 
-set_autotangents_visitor::set_autotangents_visitor(anim::keyframe_t::auto_tangent_method m)
-: m_(m)
+set_autotangents_visitor::set_autotangents_visitor(
+    anim::keyframe_t::auto_tangent_method m)
+  : m_(m)
 {
 }
 void set_autotangents_visitor::operator()(anim::float_curve_t* c)
@@ -127,7 +134,8 @@ void set_autotangents_visitor::operator()(anim::float_curve_t* c)
                 it->set_v0_auto_tangent(m_);
                 it->set_v1_auto_tangent(m_);
 
-                if (m_ == anim::keyframe_t::tangent_smooth || m_ == anim::keyframe_t::tangent_flat)
+                if (m_ == anim::keyframe_t::tangent_smooth ||
+                    m_ == anim::keyframe_t::tangent_flat)
                     it->set_tangent_continuity(true);
             }
         }
@@ -153,5 +161,5 @@ void set_autotangents_visitor::operator()(anim::shape_curve2f_t* c)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

@@ -14,9 +14,9 @@ namespace ramen
 namespace undo
 {
 add_node_command_t::add_node_command_t(std::auto_ptr<node_t> n, node_t* src)
-: command_t("Add Node")
-, storage_(n)
-, src_(src)
+  : command_t("Add Node")
+  , storage_(n)
+  , src_(src)
 {
     node_ = storage_.get();
 }
@@ -47,7 +47,7 @@ void add_node_command_t::redo()
 }
 
 add_nodes_command_t::add_nodes_command_t()
-: command_t("Add Nodes")
+  : command_t("Add Nodes")
 {
 }
 
@@ -59,9 +59,12 @@ void add_nodes_command_t::add_node(std::auto_ptr<node_t> n)
 
 void add_nodes_command_t::undo()
 {
-    for (std::vector<node_t*>::const_iterator it(nodes_.begin()); it != nodes_.end(); ++it)
+    for (std::vector<node_t*>::const_iterator it(nodes_.begin());
+         it != nodes_.end();
+         ++it)
     {
-        std::auto_ptr<node_t> ptr(app().document().composition().release_node(*it));
+        std::auto_ptr<node_t> ptr(
+            app().document().composition().release_node(*it));
         node_storage_.push_back(ptr);
     }
 
@@ -79,5 +82,5 @@ void add_nodes_command_t::redo()
     command_t::redo();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

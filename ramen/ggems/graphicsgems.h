@@ -33,7 +33,6 @@ typedef struct Box2dStruct
     Point2 min, max;
 } Box2;
 
-
 /*********************/
 /* 3d geometry types */
 /*********************/
@@ -49,7 +48,6 @@ typedef struct IntPoint3Struct
     int x, y, z;
 } IntPoint3;
 
-
 typedef struct Matrix4Struct
 { /* 4-by-4 matrix */
     double element[4][4];
@@ -59,7 +57,6 @@ typedef struct Box3dStruct
 { /* 3d box */
     Point3 min, max;
 } Box3;
-
 
 /***********************/
 /* one-argument macros */
@@ -78,13 +75,12 @@ typedef struct Box3dStruct
 #define SGN(a) (((a) < 0) ? -1 : 1)
 
 /* shout if something that should be true isn't */
-#define ASSERT(x)                                                                                  \
-    if (!(x))                                                                                      \
+#define ASSERT(x) \
+    if (!(x))     \
         fprintf(stderr, " Assert failed: x\n");
 
 /* square a */
 #define SQR(a) ((a) * (a))
-
 
 /***********************/
 /* two-argument macros */
@@ -97,11 +93,11 @@ typedef struct Box3dStruct
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 /* swap a and b (see Gem by Wyvill) */
-#define SWAP(a, b)                                                                                 \
-    {                                                                                              \
-        a ^= b;                                                                                    \
-        b ^= a;                                                                                    \
-        a ^= b;                                                                                    \
+#define SWAP(a, b) \
+    {              \
+        a ^= b;    \
+        b ^= a;    \
+        a ^= b;    \
     }
 
 /* linear interpolation from l (when a=0) to h (when a=1)*/
@@ -110,7 +106,6 @@ typedef struct Box3dStruct
 
 /* clamp the input to the specified range */
 #define CLAMP(v, l, h) ((v) < (l) ? (l) : (v) > (h) ? (h) : v)
-
 
 /****************************/
 /* memory allocation macros */
@@ -121,7 +116,6 @@ typedef struct Box3dStruct
 
 /* create a new instance of a type */
 #define NEWTYPE(x) (x*) (malloc((unsigned) sizeof(x)))
-
 
 /********************/
 /* useful constants */
@@ -136,7 +130,6 @@ typedef struct Box3dStruct
 #define GOLDEN 1.618034   /* the golden ratio */
 #define DTOR 0.017453     /* convert degrees to radians */
 #define RTOD 57.29578     /* convert radians to degrees */
-
 
 /************/
 /* booleans */

@@ -12,8 +12,7 @@ namespace ramen
 {
 namespace math
 {
-template<class T>
-struct cmath
+template <class T> struct cmath
 {
     static T sqrt(T x) { return ::sqrt(static_cast<double>(x)); }
     static T fabs(T x) { return ::fabs(static_cast<double>(x)); }
@@ -23,7 +22,10 @@ struct cmath
     static T tan(T x) { return ::tan(static_cast<double>(x)); }
 
     static T exp(T x) { return ::exp(static_cast<double>(x)); }
-    static T atan2(T x, T y) { return ::atan2(static_cast<double>(x), static_cast<double>(y)); }
+    static T atan2(T x, T y)
+    {
+        return ::atan2(static_cast<double>(x), static_cast<double>(y));
+    }
 
     static T floor(T x) { return ::floor(x); }
     static T ceil(T x) { return ::ceil(x); }
@@ -34,8 +36,7 @@ struct cmath
 };
 
 // float specialization.
-template<>
-struct cmath<float>
+template <> struct cmath<float>
 {
     static float sqrt(float x) { return ::sqrtf(x); }
     static float fabs(float x) { return ::fabsf(x); }
@@ -55,6 +56,5 @@ struct cmath<float>
     static float log10(float x) { return ::log10f(x); }
 };
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

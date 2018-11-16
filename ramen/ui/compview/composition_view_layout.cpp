@@ -18,13 +18,16 @@ namespace ramen
 namespace ui
 {
 composition_view_layout_t::composition_view_layout_t()
-: rng_(0)
+  : rng_(0)
 {
 }
 
 void composition_view_layout_t::set_world(const Imath::Box2f& w) { world_ = w; }
 
-void composition_view_layout_t::set_interest_point(const Imath::V2f& p) { interest_point_ = p; }
+void composition_view_layout_t::set_interest_point(const Imath::V2f& p)
+{
+    interest_point_ = p;
+}
 
 void composition_view_layout_t::place_node(node_t* n) const
 {
@@ -39,8 +42,9 @@ void composition_view_layout_t::place_node(node_t* n) const
     /*
     if( interest_point_ && world_.intersects( *interest_point_))
     {
-        float u = Imath::lerpfactor( interest_point_->x, world_.min.x, world_.max.x);
-        float v = Imath::lerpfactor( interest_point_->y, world_.min.y, world_.max.y);
+        float u = Imath::lerpfactor( interest_point_->x, world_.min.x,
+    world_.max.x); float v = Imath::lerpfactor( interest_point_->y,
+    world_.min.y, world_.max.y);
     }
     else
     */
@@ -51,14 +55,18 @@ void composition_view_layout_t::place_node(node_t* n) const
         float umargin = world_.size().x / 10;
         float vmargin = world_.size().y / 10;
 
-        p = Imath::V2f(world_.min.x + umargin + (u * (world_.size().x - umargin - umargin)),
-                       world_.min.y + vmargin + (v * (world_.size().y - vmargin - vmargin)));
+        p = Imath::V2f(
+            world_.min.x + umargin +
+                (u * (world_.size().x - umargin - umargin)),
+            world_.min.y + vmargin +
+                (v * (world_.size().y - vmargin - vmargin)));
     }
 
     do_place_node(n, p);
 }
 
-void composition_view_layout_t::place_node_near_node(node_t* n, node_t* other) const
+void composition_view_layout_t::place_node_near_node(node_t* n, node_t* other)
+    const
 {
     // TODO: this could be much better
     Imath::V2f p(other->location());
@@ -77,7 +85,8 @@ Imath::Box2f composition_view_layout_t::get_node_bbox(node_t* n) const
     return box;
 }
 
-bool composition_view_layout_t::box_intersects_any_node(const Imath::Box2f& box) const
+bool composition_view_layout_t::box_intersects_any_node(
+    const Imath::Box2f& box) const
 {
     for (node_t& n : app().document().composition().nodes())
     {
@@ -91,7 +100,8 @@ bool composition_view_layout_t::box_intersects_any_node(const Imath::Box2f& box)
     return false;
 }
 
-void composition_view_layout_t::do_place_node(node_t* n, const Imath::V2f& p) const
+void composition_view_layout_t::do_place_node(node_t* n, const Imath::V2f& p)
+    const
 {
     Imath::V2f q(p);
 
@@ -99,10 +109,12 @@ void composition_view_layout_t::do_place_node(node_t* n, const Imath::V2f& p) co
     n->set_location(Imath::V2f(0, 0));
     Imath::V2f size = get_node_bbox(n).max;
 
-    if (box_intersects_any_node(Imath::Box2f(q, q + size))) {}
+    if (box_intersects_any_node(Imath::Box2f(q, q + size)))
+    {
+    }
 
     n->set_location(q);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

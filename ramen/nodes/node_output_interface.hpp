@@ -10,7 +10,7 @@ namespace ramen
 {
 class node_output_interface
 {
-public:
+  public:
     virtual int priority() const { return 100; }
 
     virtual void begin_output(float start_frame, float end_frame);
@@ -18,5 +18,4 @@ public:
     virtual void end_output(bool success);
 };
 
-}  // ramen
-
+}  // namespace ramen

@@ -86,8 +86,8 @@ bool get_jpeg_size(const char* filename, int& width, int& height)
 
         switch (marker)
         {
-                /* Note that marker codes 0xC4, 0xC8, 0xCC are not, and must not be,
-                 * treated as SOFn.  C4 in particular is actually DHT.
+                /* Note that marker codes 0xC4, 0xC8, 0xCC are not, and must not
+                 * be, treated as SOFn.  C4 in particular is actually DHT.
                  */
             case M_SOF0:  /* Baseline */
             case M_SOF1:  /* Extended sequential, Huffman */
@@ -130,7 +130,6 @@ bool get_jpeg_size(const char* filename, int& width, int& height)
 
     return false;
 }
-
 
 /*
  * Read the initial marker, which should be SOI.
@@ -185,7 +184,8 @@ bool next_marker(int* res)
             return false;
     } while (c == 0xFF);
 
-    //  if( discarded_bytes != 0) { cout << "Warning: garbage data found in JPEG file\n"; }
+    //  if( discarded_bytes != 0) { cout << "Warning: garbage data found in JPEG
+    //  file\n"; }
 
     *res = c;
     return true;
@@ -257,11 +257,11 @@ bool process_SOFn(int& width, int& height)
     unsigned int image_height, image_width;
     int          data_precision;
 
-    if (!read_2_bytes(&length) || !read_1_byte(&data_precision) || !read_2_bytes(&image_height)
-        || !read_2_bytes(&image_width))
+    if (!read_2_bytes(&length) || !read_1_byte(&data_precision) ||
+        !read_2_bytes(&image_height) || !read_2_bytes(&image_width))
         return false;
 
-    width  = (int) image_width;
+    width = (int) image_width;
     height = (int) image_height;
     return true;
 }

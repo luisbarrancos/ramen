@@ -19,7 +19,7 @@ class spinbox_t : public QLineEdit
 {
     Q_OBJECT
 
-public:
+  public:
     spinbox_t(QWidget* parent = 0);
 
     QSize sizeHint() const override;
@@ -50,7 +50,7 @@ public:
     bool trackMouse() const { return track_mouse_; }
     void setTrackMouse(bool b) { track_mouse_ = b; }
 
-protected:
+  protected:
     void setLineEditContents(double v);
 
     const util::calculator_t& calc() const { return calc_; }
@@ -73,7 +73,7 @@ protected:
     bool dragged_;
     int  push_x_, last_x_;
 
-private:
+  private:
     static util::calculator_t calc_;
     static QChar              thousand_sep_;
     static QChar              decimal_sep_;
@@ -85,6 +85,5 @@ private:
     bool track_mouse_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

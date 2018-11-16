@@ -10,23 +10,23 @@ namespace ui
 {
 class nice_numbers_t
 {
-public:
+  public:
     nice_numbers_t(double imin, double imax, int num_ticks);
 
     struct iterator
     {
         iterator(double x, double imax, double d)
         {
-            x_    = x;
+            x_ = x;
             imax_ = imax;
-            d_    = d;
+            d_ = d;
         }
 
         iterator(double imax, double d)
         {
-            x_    = imax;
+            x_ = imax;
             imax_ = imax;
-            d_    = d;
+            d_ = d;
         }
 
         iterator& operator++()
@@ -55,11 +55,14 @@ public:
         double d_;
     };
 
-    iterator begin() const { return iterator(graphmin_, graphmax_ + 0.5 * d_, d_); }
+    iterator begin() const
+    {
+        return iterator(graphmin_, graphmax_ + 0.5 * d_, d_);
+    }
 
     iterator end() const { return iterator(graphmax_ + 0.5 * d_, d_); }
 
-private:
+  private:
     double nice_num(double x, bool round) const;
 
     int    nticks_;
@@ -69,6 +72,5 @@ private:
     double nfrac_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

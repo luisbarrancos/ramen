@@ -12,11 +12,15 @@ namespace manipulators
 {
 int pick_distance();
 
-bool inside_pick_distance(const Imath::V2f& p, const Imath::V2f& q, float pixel_scale);
-bool inside_pick_distance(const Imath::V2f& p,
-                          const Imath::V2f& p0,
-                          const Imath::V2f& p1,
-                          float             pixel_scale);
+bool inside_pick_distance(
+    const Imath::V2f& p,
+    const Imath::V2f& q,
+    float             pixel_scale);
+bool inside_pick_distance(
+    const Imath::V2f& p,
+    const Imath::V2f& p0,
+    const Imath::V2f& p1,
+    float             pixel_scale);
 
 enum pick_axes_result
 {
@@ -26,19 +30,21 @@ enum pick_axes_result
     axes_y_picked
 };
 
-pick_axes_result pick_xy_axes(const Imath::V2f& p,
-                              const Imath::V2f& c,
-                              const Imath::V2f& x,
-                              const Imath::V2f& y,
-                              float             xscale,
-                              float             pixel_scale);
-pick_axes_result pick_xy_axes(const Imath::V2f& p,
-                              const Imath::V2f& c,
-                              float             xsize,
-                              float             ysize,
-                              float             angle,
-                              float             xscale,
-                              float             pixel_scale);
+pick_axes_result pick_xy_axes(
+    const Imath::V2f& p,
+    const Imath::V2f& c,
+    const Imath::V2f& x,
+    const Imath::V2f& y,
+    float             xscale,
+    float             pixel_scale);
+pick_axes_result pick_xy_axes(
+    const Imath::V2f& p,
+    const Imath::V2f& c,
+    float             xsize,
+    float             ysize,
+    float             angle,
+    float             xscale,
+    float             pixel_scale);
 
 enum pick_box_result
 {
@@ -54,15 +60,16 @@ enum pick_box_result
     box_right_edge_picked
 };
 
-pick_box_result pick_box(const Imath::V2f&   p,
-                         const Imath::Box2i& box,
-                         float               pixel_scale,
-                         bool                pick_edges = true);
-pick_box_result pick_box(const Imath::V2f&   p,
-                         const Imath::Box2f& box,
-                         float               pixel_scale,
-                         bool                pick_edges = true);
+pick_box_result pick_box(
+    const Imath::V2f&   p,
+    const Imath::Box2i& box,
+    float               pixel_scale,
+    bool                pick_edges = true);
+pick_box_result pick_box(
+    const Imath::V2f&   p,
+    const Imath::Box2f& box,
+    float               pixel_scale,
+    bool                pick_edges = true);
 
-}  // namespace
-}  // namespace
-
+}  // namespace manipulators
+}  // namespace ramen

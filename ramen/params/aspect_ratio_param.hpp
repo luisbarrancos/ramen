@@ -21,7 +21,7 @@ class RAMEN_API aspect_ratio_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit aspect_ratio_param_t(const std::string& name);
 
     void set_default_value(float x);
@@ -31,12 +31,15 @@ public:
     static void init_presets();
     static void add_preset(const std::pair<std::string, float>& p);
 
-protected:
+  protected:
     aspect_ratio_param_t(const aspect_ratio_param_t& other);
     void operator=(const aspect_ratio_param_t& other);
 
-private:
-    param_t* do_clone() const override { return new aspect_ratio_param_t(*this); }
+  private:
+    param_t* do_clone() const override
+    {
+        return new aspect_ratio_param_t(*this);
+    }
 
     void do_add_to_hash(hash::generator_t& hash_gen) const override;
 
@@ -58,11 +61,10 @@ private:
     QPointer<QComboBox>            menu_;
     QPointer<ui::double_spinbox_t> input_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void item_picked(int index);
     void value_changed(double value);
 };
 
-}  // namespace
-
+}  // namespace ramen

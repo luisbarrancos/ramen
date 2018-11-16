@@ -21,20 +21,22 @@ namespace generic
 {
 namespace
 {
-template<class ConstGrayView, class GrayView>
-struct box_blur_gray_fn
+template <class ConstGrayView, class GrayView> struct box_blur_gray_fn
 {
-    box_blur_gray_fn(const ConstGrayView& src, const GrayView& dst, float radius)
-    : src_(src)
-    , dst_(dst)
-    , radius_(radius)
+    box_blur_gray_fn(
+        const ConstGrayView& src,
+        const GrayView&      dst,
+        float                radius)
+      : src_(src)
+      , dst_(dst)
+      , radius_(radius)
     {
     }
 
     void operator()(const tbb::blocked_range<std::size_t>& r) const
     {
-        int   radius      = std::floor((double) radius_);
-        float fradius     = radius_ - radius;
+        int   radius = std::floor((double) radius_);
+        float fradius = radius_ - radius;
         float inv_fradius = 1.0f - fradius;
 
         float norm = 1.0f / ((2 * radius + 1) + (2 * fradius));
@@ -44,7 +46,7 @@ struct box_blur_gray_fn
             typename ConstGrayView::x_iterator src_it(src_.row_begin(y));
             typename GrayView::y_iterator      dst_it(dst_.col_begin(y));
 
-            int   indx  = clamp(-(radius + 1), 0, (int) src_.width() - 1);
+            int   indx = clamp(-(radius + 1), 0, (int) src_.width() - 1);
             float accum = src_it[indx][0] * fradius;
 
             for (int i = -radius; i <= radius; i++)
@@ -85,65 +87,73 @@ struct box_blur_gray_fn
     float                radius_;
 };
 
-template<class ConstGrayView, class GrayView>
-box_blur_gray_fn<ConstGrayView, GrayView> make_box_blur_gray_fn(const ConstGrayView& src,
-                                                                const GrayView&      dst,
-                                                                float                radius)
+template <class ConstGrayView, class GrayView>
+box_blur_gray_fn<ConstGrayView, GrayView> make_box_blur_gray_fn(
+    const ConstGrayView& src,
+    const GrayView&      dst,
+    float                radius)
 {
     return box_blur_gray_fn<ConstGrayView, GrayView>(src, dst, radius);
 }
 
-template<class ConstGrayView, class TmpView, class GrayView>
-void do_box_blur_channel(const ConstGrayView& src,
-                         const TmpView&       tmp,
-                         const GrayView&      dst,
-                         float                hradius,
-                         float                vradius,
-                         int                  iters)
+template <class ConstGrayView, class TmpView, class GrayView>
+void do_box_blur_channel(
+    const ConstGrayView& src,
+    const TmpView&       tmp,
+    const GrayView&      dst,
+    float                hradius,
+    float                vradius,
+    int                  iters)
 {
     // run first iter
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, src.height()),
-                      make_box_blur_gray_fn(src, tmp, hradius),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, src.height()),
+        make_box_blur_gray_fn(src, tmp, hradius),
+        tbb::auto_partitioner());
 
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
-                      make_box_blur_gray_fn(tmp, dst, vradius),
-                      tbb::auto_partitioner());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, tmp.height()),
+        make_box_blur_gray_fn(tmp, dst, vradius),
+        tbb::auto_partitioner());
 
     for (int i = 1; i < iters; ++i)
     {
-        tbb::parallel_for(tbb::blocked_range<std::size_t>(0, dst.height()),
-                          make_box_blur_gray_fn(dst, tmp, hradius),
-                          tbb::auto_partitioner());
+        tbb::parallel_for(
+            tbb::blocked_range<std::size_t>(0, dst.height()),
+            make_box_blur_gray_fn(dst, tmp, hradius),
+            tbb::auto_partitioner());
 
-        tbb::parallel_for(tbb::blocked_range<std::size_t>(0, tmp.height()),
-                          make_box_blur_gray_fn(tmp, dst, vradius),
-                          tbb::auto_partitioner());
+        tbb::parallel_for(
+            tbb::blocked_range<std::size_t>(0, tmp.height()),
+            make_box_blur_gray_fn(tmp, dst, vradius),
+            tbb::auto_partitioner());
     }
 }
 
-}  // unnamed
+}  // namespace
 
-void box_blur_channel(const const_channel_view_t&       src,
-                      const boost::gil::gray32f_view_t& tmp,
-                      const channel_view_t&             dst,
-                      float                             hradius,
-                      float                             vradius,
-                      int                               iters)
+void box_blur_channel(
+    const const_channel_view_t&       src,
+    const boost::gil::gray32f_view_t& tmp,
+    const channel_view_t&             dst,
+    float                             hradius,
+    float                             vradius,
+    int                               iters)
 {
     do_box_blur_channel(src, tmp, dst, hradius, vradius, iters);
 }
 
-void box_blur_gray(const boost::gil::gray32fc_view_t& src,
-                   const boost::gil::gray32f_view_t&  tmp,
-                   const boost::gil::gray32f_view_t&  dst,
-                   float                              hradius,
-                   float                              vradius,
-                   int                                iters)
+void box_blur_gray(
+    const boost::gil::gray32fc_view_t& src,
+    const boost::gil::gray32f_view_t&  tmp,
+    const boost::gil::gray32f_view_t&  dst,
+    float                              hradius,
+    float                              vradius,
+    int                                iters)
 {
     do_box_blur_channel(src, tmp, dst, hradius, vradius, iters);
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

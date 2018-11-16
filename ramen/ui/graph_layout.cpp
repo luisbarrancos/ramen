@@ -2,7 +2,6 @@
 // Licensed under the terms of the CDDL License.
 // See CDDL_LICENSE.txt for a copy of the license.
 
-
 #include <ramen/ui/graph_layout.hpp>
 
 #include <cassert>
@@ -29,7 +28,7 @@ struct bbox_node_visitor : public generic_node_visitor
     Imath::Box2f bbox;
 };
 
-}  // unnamed
+}  // namespace
 
 graph_layout_t::graph_layout_t() {}
 graph_layout_t::graph_layout_t(const graph_layout_t& other) {}
@@ -50,16 +49,19 @@ Imath::Box2f graph_layout_t::node_bbox(const node_t& n) const
 /*************************************************************************/
 
 simple_graph_layout_t::simple_graph_layout_t()
-: graph_layout_t()
+  : graph_layout_t()
 {
 }
 
 simple_graph_layout_t::simple_graph_layout_t(const simple_graph_layout_t& other)
-: graph_layout_t(other)
+  : graph_layout_t(other)
 {
 }
 
-graph_layout_t* simple_graph_layout_t::do_clone() const { return new simple_graph_layout_t(*this); }
+graph_layout_t* simple_graph_layout_t::do_clone() const
+{
+    return new simple_graph_layout_t(*this);
+}
 
 void simple_graph_layout_t::place_node(node_t& n, const node_graph_t& g)
 {
@@ -73,5 +75,5 @@ void simple_graph_layout_t::layout_selected_nodes(node_graph_t& g)
     assert(false);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

@@ -12,18 +12,18 @@ namespace imageio
 {
 class jpg_writer_t : public writer_t
 {
-public:
+  public:
     jpg_writer_t()
-    : writer_t()
+      : writer_t()
     {
     }
 
-private:
-    void do_write_image(const boost::filesystem::path&   p,
-                        const image::const_image_view_t& view,
-                        const core::dictionary_t&        params) const override;
+  private:
+    void do_write_image(
+        const boost::filesystem::path&   p,
+        const image::const_image_view_t& view,
+        const core::dictionary_t&        params) const override;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

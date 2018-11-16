@@ -14,7 +14,7 @@ namespace memory
 {
 class pool_t
 {
-public:
+  public:
     pool_t();
     ~pool_t();
 
@@ -25,7 +25,7 @@ public:
     unsigned char* allocate(std::size_t& size);
     void           deallocate(unsigned char* p, std::size_t size);
 
-private:
+  private:
     // non-copyable
     pool_t(const pool_t&);
     pool_t& operator=(const pool_t&);
@@ -36,6 +36,5 @@ private:
     std::size_t                        allocated_;
 };
 
-}  // memory
-}  // ramen
-
+}  // namespace memory
+}  // namespace ramen

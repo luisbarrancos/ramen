@@ -10,21 +10,24 @@ namespace image
 {
 class add_mix_layer_node_t : public base_layer_node_t
 {
-public:
+  public:
     static const node_metaclass_t& add_mix_layer_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     add_mix_layer_node_t();
 
-protected:
+  protected:
     add_mix_layer_node_t(const add_mix_layer_node_t& other)
-    : base_layer_node_t(other)
+      : base_layer_node_t(other)
     {
     }
     void operator=(const add_mix_layer_node_t&);
 
-private:
-    node_t* do_clone() const override { return new add_mix_layer_node_t(*this); }
+  private:
+    node_t* do_clone() const override
+    {
+        return new add_mix_layer_node_t(*this);
+    }
 
     void do_create_params() override;
 
@@ -33,6 +36,5 @@ private:
     void do_process(const render::context_t& context) override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

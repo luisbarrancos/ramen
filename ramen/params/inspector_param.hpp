@@ -20,7 +20,7 @@ class RAMEN_API inspector_param_t : public param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit inspector_param_t(const std::string& id);
     ~inspector_param_t() override;
 
@@ -29,11 +29,11 @@ public:
 
     void set_parameterised(parameterised_t* p);
 
-protected:
+  protected:
     inspector_param_t(const inspector_param_t& other);
     void operator=(const inspector_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new inspector_param_t(*this); }
 
     QWidget* do_create_widgets() override;
@@ -45,5 +45,4 @@ private:
     boost::signals2::connection      connection_;
 };
 
-}  // namespace
-
+}  // namespace ramen

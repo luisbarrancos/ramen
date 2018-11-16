@@ -58,7 +58,6 @@ extern const unsigned short expTable[];
 
 inline float log10_h(half x) { return *(float*) (&log10Table[x.bits()]); }
 
-
 inline float log_h(half x) { return *(float*) (&logTable[x.bits()]); }
 
 inline half exp_h(float x)
@@ -94,9 +93,6 @@ inline half exp_h(float x)
     }
 }
 
-
 inline half pow10_h(float x) { return exp_h(x * 2.30258509f); }
 
-
 inline half pow_h(half x, float y) { return exp_h(y * log_h(x)); }
-

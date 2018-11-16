@@ -16,8 +16,7 @@ struct pick_tangents_visitor : public boost::static_visitor<>
 
     void operator()(const anim::float_curve_t* c);
 
-    template<class K>
-    void operator()(const anim::shape_curve_t<K>* c)
+    template <class K> void operator()(const anim::shape_curve_t<K>* c)
     {
         key_index = -1;
     }
@@ -25,7 +24,7 @@ struct pick_tangents_visitor : public boost::static_visitor<>
     int  key_index;
     bool left;
 
-private:
+  private:
     const anim_curves_view_t& view_;
     Imath::V2i                p_;
 };
@@ -39,25 +38,26 @@ struct pick_keyframe_visitor : public boost::static_visitor<>
 
     int key_index;
 
-private:
+  private:
     const anim_curves_view_t& view_;
     Imath::V2i                p_;
 };
 
 struct box_pick_keyframes_visitor : public boost::static_visitor<>
 {
-    box_pick_keyframes_visitor(const anim_curves_view_t& view, const Imath::Box2i& box);
+    box_pick_keyframes_visitor(
+        const anim_curves_view_t& view,
+        const Imath::Box2i&       box);
 
     void operator()(const anim::float_curve_t* c);
     void operator()(const anim::shape_curve2f_t* c);
 
     bool any_picked;
 
-private:
+  private:
     const anim_curves_view_t& view_;
     Imath::Box2i              box_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

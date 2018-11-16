@@ -22,22 +22,22 @@ class color_picker_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     color_picker_t(QWidget* parent, const color_t& c);
 
     const color_t& color() const { return color_; }
 
-Q_SIGNALS:
+  Q_SIGNALS:
 
     void color_changed(const ramen::ui::color_t&);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_hue(double h);
     void set_exposure(double e);
     void set_saturation_value(double s, double v);
 
-private:
+  private:
     void update_color();
 
     color_t prev_color_;
@@ -52,6 +52,5 @@ private:
     QDoubleSpinBox*            blue_spinbox_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

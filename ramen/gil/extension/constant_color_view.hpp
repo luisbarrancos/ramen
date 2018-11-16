@@ -15,8 +15,7 @@ namespace gil
 {
 namespace detail
 {
-template<class Pixel>
-struct constant_color_fn
+template <class Pixel> struct constant_color_fn
 {
     typedef point2<ptrdiff_t> point_t;
     typedef constant_color_fn const_t;
@@ -28,33 +27,35 @@ struct constant_color_fn
     BOOST_STATIC_CONSTANT(bool, is_mutable = false);
 
     constant_color_fn(const point_t& sz, const Pixel& color)
-    : size_(sz)
-    , color_(color)
+      : size_(sz)
+      , color_(color)
     {
     }
 
     result_type operator()(const point_t& p) const { return color_; }
 
-private:
+  private:
     point_t size_;
     Pixel   color_;
 };
 
-}  // detail
+}  // namespace detail
 
-template<class Pixel>
-image_view<virtual_2d_locator<detail::constant_color_fn<Pixel>, false>> make_constant_color_view(
-    const point2<ptrdiff_t>& dims, const Pixel& color)
+template <class Pixel>
+image_view<virtual_2d_locator<detail::constant_color_fn<Pixel>, false>>
+make_constant_color_view(const point2<ptrdiff_t>& dims, const Pixel& color)
 {
-    typedef virtual_2d_locator<detail::constant_color_fn<Pixel>, false> locator_t;
-    typedef image_view<locator_t>                                       constant_color_view_t;
+    typedef virtual_2d_locator<detail::constant_color_fn<Pixel>, false>
+                                  locator_t;
+    typedef image_view<locator_t> constant_color_view_t;
 
-    return constant_color_view_t(dims,
-                                 locator_t(point2<ptrdiff_t>(0, 0),
-                                           point2<ptrdiff_t>(1, 1),
-                                           detail::constant_color_fn<Pixel>(dims, color)));
+    return constant_color_view_t(
+        dims,
+        locator_t(
+            point2<ptrdiff_t>(0, 0),
+            point2<ptrdiff_t>(1, 1),
+            detail::constant_color_fn<Pixel>(dims, color)));
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace gil
+}  // namespace boost

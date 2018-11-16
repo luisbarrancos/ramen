@@ -24,8 +24,8 @@ factory_t& factory_t::instance()
 }
 
 factory_t::factory_t()
-: detect_size_(0)
-, detect_buffer_(0)
+  : detect_size_(0)
+  , detect_buffer_(0)
 {
     imageio_extensions_added_ = false;
 }
@@ -44,7 +44,8 @@ const std::vector<std::string>& factory_t::extensions() const
 {
     if (!imageio_extensions_added_)
     {
-        for (const std::string& ext : imageio::factory_t::instance().extensions())
+        for (const std::string& ext :
+             imageio::factory_t::instance().extensions())
             extensions_.push_back(ext);
 
         imageio_extensions_added_ = true;
@@ -53,8 +54,9 @@ const std::vector<std::string>& factory_t::extensions() const
     return extensions_;
 }
 
-core::auto_ptr_t<reader_t> factory_t::create_reader(const boost::filesystem::path& p,
-                                                    bool                           sequence) const
+core::auto_ptr_t<reader_t> factory_t::create_reader(
+    const boost::filesystem::path& p,
+    bool                           sequence) const
 {
     assert(p.is_absolute());
 
@@ -77,13 +79,15 @@ core::auto_ptr_t<reader_t> factory_t::create_reader(const boost::filesystem::pat
     return core::auto_ptr_t<reader_t>();
 }
 
-core::auto_ptr_t<reader_t> factory_t::create_reader(const filesystem::path_sequence_t& seq) const
+core::auto_ptr_t<reader_t> factory_t::create_reader(
+    const filesystem::path_sequence_t& seq) const
 {
     // TODO: we need to do something better when we add movie formats.
     return core::auto_ptr_t<reader_t>(new image_seq_reader_t(seq));
 }
 
-core::auto_ptr_t<writer_t> factory_t::writer_for_tag(const std::string& tag) const
+core::auto_ptr_t<writer_t> factory_t::writer_for_tag(
+    const std::string& tag) const
 {
     if (imageio::factory_t::instance().is_image_format_tag(tag))
     {
@@ -99,7 +103,8 @@ core::auto_ptr_t<writer_t> factory_t::writer_for_tag(const std::string& tag) con
     return core::auto_ptr_t<writer_t>();
 }
 
-factory_t::const_iterator factory_t::format_for_extension(const boost::filesystem::path& p) const
+factory_t::const_iterator factory_t::format_for_extension(
+    const boost::filesystem::path& p) const
 {
     std::string ext(p.extension().string());
 
@@ -140,7 +145,8 @@ factory_t::const_iterator factory_t::format_for_file_contents(
     return formats_.end();
 }
 
-factory_t::const_iterator factory_t::format_for_tag(const std::string& tag) const
+factory_t::const_iterator factory_t::format_for_tag(
+    const std::string& tag) const
 {
     for (const_iterator it(formats_.begin()); it != formats_.end(); ++it)
     {
@@ -151,5 +157,5 @@ factory_t::const_iterator factory_t::format_for_tag(const std::string& tag) cons
     return formats_.end();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace movieio
+}  // namespace ramen

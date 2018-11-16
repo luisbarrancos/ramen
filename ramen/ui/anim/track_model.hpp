@@ -16,14 +16,15 @@ class track_model_t : public QAbstractItemModel
 {
     Q_OBJECT
 
-public:
+  public:
     track_model_t();
     ~track_model_t() override;
 
     anim::track_t* root_track();
     anim::track_t* node_track();
 
-    QModelIndex index(int row, int column, const QModelIndex& parent) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent)
+        const override;
     QModelIndex parent(const QModelIndex& index) const override;
 
     int rowCount(const QModelIndex& parent) const override;
@@ -31,12 +32,12 @@ public:
 
     QVariant      data(const QModelIndex& index, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    QVariant      headerData(int section, Qt::Orientation orientation, int role) const override;
+    QVariant      headerData(int section, Qt::Orientation orientation, int role)
+        const override;
 
-private:
+  private:
     anim::track_t* tracks_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

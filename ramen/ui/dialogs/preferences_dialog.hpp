@@ -16,17 +16,16 @@ class preferences_dialog_t : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     static preferences_dialog_t& instance();
 
     void exec_dialog();
 
-private:
+  private:
     preferences_dialog_t();
 
     Ui::preferences ui_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

@@ -16,12 +16,12 @@
 namespace ramen
 {
 button_param_t::button_param_t(const std::string& name)
-: param_t(name)
+  : param_t(name)
 {
     set_static(true);
 }
 button_param_t::button_param_t(const button_param_t& other)
-: param_t(other)
+  : param_t(other)
 {
     button_ = 0;
 }
@@ -54,4 +54,4 @@ QWidget* button_param_t::do_create_widgets()
 
 void button_param_t::button_pressed() { emit_param_changed(user_edited); }
 
-}  // namespace
+}  // namespace ramen

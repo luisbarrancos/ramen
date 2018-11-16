@@ -2,13 +2,11 @@
 
 #pragma once
 
-
 namespace ramen
 {
 namespace ui
 {
 class composition_view_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -14,13 +14,15 @@ namespace image
 {
 class RAMEN_API keyer_node_t : public image_node_t
 {
-public:
+  public:
     keyer_node_t(bool add_mask_input = true);
 
     boost::optional<Imath::Color3f> sample_input(const Imath::V2i& p) const;
-    void sample_input(const Imath::Box2i& area, std::vector<Imath::Color3f>& colors) const;
+    void                            sample_input(
+                                   const Imath::Box2i&          area,
+                                   std::vector<Imath::Color3f>& colors) const;
 
-protected:
+  protected:
     keyer_node_t(const keyer_node_t& other);
     void operator=(const keyer_node_t&);
 
@@ -30,11 +32,10 @@ protected:
     void get_input_frame();
     void free_input_frame();
 
-private:
+  private:
     Imath::Box2i    input_data_window_;
     image::buffer_t input_pixels_;
 };
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

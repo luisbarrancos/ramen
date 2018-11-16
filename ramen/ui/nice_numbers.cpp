@@ -10,20 +10,20 @@ namespace ramen
 namespace ui
 {
 nice_numbers_t::nice_numbers_t(double imin, double imax, int num_ticks)
-: nticks_(num_ticks)
+  : nticks_(num_ticks)
 {
-    range_    = nice_num(imax - imin, false);
-    d_        = nice_num(range_ / (nticks_ - 1), true);
+    range_ = nice_num(imax - imin, false);
+    d_ = nice_num(range_ / (nticks_ - 1), true);
     graphmin_ = std::floor(imin / d_) * d_;
     graphmax_ = std::ceil(imax / d_) * d_;
-    nfrac_    = std::max(-std::floor(std::log10(d_)), 0.0);
+    nfrac_ = std::max(-std::floor(std::log10(d_)), 0.0);
 }
 
 double nice_numbers_t::nice_num(double x, bool round) const
 {
     int    expv = std::floor(std::log10(x));
-    double f    = x / std::pow(10.0, expv); /* between 1 and 10 */
-    double nf;                              /* nice, rounded fraction */
+    double f = x / std::pow(10.0, expv); /* between 1 and 10 */
+    double nf;                           /* nice, rounded fraction */
 
     if (round)
     {
@@ -51,5 +51,5 @@ double nice_numbers_t::nice_num(double x, bool round) const
     return nf * std::pow(10.0, expv);
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

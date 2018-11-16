@@ -23,12 +23,12 @@ class image_view_toolbar_t : public QWidget
 {
     Q_OBJECT
 
-public:
+  public:
     image_view_toolbar_t(image_viewer_strategy_t* image_viewer);
 
     void update_widgets(node_t* n);
 
-private:
+  private:
     image_viewer_strategy_t* image_viewer_;
 
     QComboBox*   resolution_combo_;
@@ -40,7 +40,6 @@ private:
     QToolButton* show_overlay_btn_;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

@@ -21,17 +21,18 @@
 
 namespace ramen
 {
-quad_manipulator_t::quad_manipulator_t(float2_param_t* topleft,
-                                       float2_param_t* topright,
-                                       float2_param_t* botleft,
-                                       float2_param_t* botright)
-: manipulator_t()
+quad_manipulator_t::quad_manipulator_t(
+    float2_param_t* topleft,
+    float2_param_t* topright,
+    float2_param_t* botleft,
+    float2_param_t* botright)
+  : manipulator_t()
 {
     assert(topleft && topright && botleft && botright);
-    topleft_       = topleft;
-    topright_      = topright;
-    botleft_       = botleft;
-    botright_      = botright;
+    topleft_ = topleft;
+    topright_ = topright;
+    botleft_ = botleft;
+    botright_ = botright;
     picked_corner_ = -1;
 }
 
@@ -78,7 +79,8 @@ void quad_manipulator_t::do_draw_overlay(const ui::paint_event_t& event) const
     }
 }
 
-bool quad_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& event)
+bool quad_manipulator_t::do_mouse_press_event(
+    const ui::mouse_press_event_t& event)
 {
     picked_corner_ = -1;
 
@@ -87,7 +89,8 @@ bool quad_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& eve
 
     for (int i = 0; i < 4; ++i)
     {
-        if (manipulators::inside_pick_distance(event.wpos, dst_pts[i], event.pixel_scale))
+        if (manipulators::inside_pick_distance(
+                event.wpos, dst_pts[i], event.pixel_scale))
         {
             picked_corner_ = i;
             break;
@@ -98,7 +101,8 @@ bool quad_manipulator_t::do_mouse_press_event(const ui::mouse_press_event_t& eve
     return picked_corner_ != -1;
 }
 
-void quad_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& event)
+void quad_manipulator_t::do_mouse_drag_event(
+    const ui::mouse_drag_event_t& event)
 {
     assert(picked_corner_ != -1);
 
@@ -140,7 +144,8 @@ void quad_manipulator_t::do_mouse_drag_event(const ui::mouse_drag_event_t& event
     event.view->update();
 }
 
-void quad_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t& event)
+void quad_manipulator_t::do_mouse_release_event(
+    const ui::mouse_release_event_t& event)
 {
     picked_corner_ = -1;
 
@@ -151,7 +156,10 @@ void quad_manipulator_t::do_mouse_release_event(const ui::mouse_release_event_t&
     }
 }
 
-void quad_manipulator_t::get_corners(std::array<Imath::V2f, 4>& pts, float aspect, int scale) const
+void quad_manipulator_t::get_corners(
+    std::array<Imath::V2f, 4>& pts,
+    float                      aspect,
+    int                        scale) const
 {
     pts[0] = get_absolute_value<Imath::V2f>(*topleft_) * scale;
     pts[1] = get_absolute_value<Imath::V2f>(*topright_) * scale;
@@ -162,4 +170,4 @@ void quad_manipulator_t::get_corners(std::array<Imath::V2f, 4>& pts, float aspec
         pts[i].x *= aspect;
 }
 
-}  // namespace
+}  // namespace ramen

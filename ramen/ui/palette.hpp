@@ -14,7 +14,7 @@ namespace ui
 {
 class palette_t
 {
-public:
+  public:
     static palette_t& instance();
 
     void rebuild();
@@ -27,7 +27,7 @@ public:
     void set_color(const std::string& k, const Imath::Color3c& c);
     void set_color(const std::string& k, const QColor& c);
 
-private:
+  private:
     palette_t();
     ~palette_t();
 
@@ -39,6 +39,5 @@ private:
     impl* m_pimpl;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -13,20 +13,21 @@ namespace gil
 {
 struct rgba_premultiplied_color_converter
 {
-    template<class SrcP, class DstP>
+    template <class SrcP, class DstP>
     void operator()(const SrcP& src, DstP& dst)
     {
         // BOOST_STATIC_ASSERT( SrcP::layout == rgba_t);
         typedef typename channel_type<P1>::type channel_type;
         cc_(pixel<channel_type, rgb_layout_t>(
-                get_color(src, red_t()), get_color(src, green_t()), get_color(src, blue_t())),
+                get_color(src, red_t()),
+                get_color(src, green_t()),
+                get_color(src, blue_t())),
             dst);
     }
 
-private:
+  private:
     default_color_converter cc_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace gil
+}  // namespace boost

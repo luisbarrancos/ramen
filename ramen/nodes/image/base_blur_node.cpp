@@ -17,13 +17,15 @@ namespace ramen
 namespace image
 {
 base_blur_node_t::base_blur_node_t()
-: areaop_node_t()
+  : areaop_node_t()
 {
 }
 
 bool base_blur_node_t::expand_defined() const { return true; }
 
-Imath::V2f base_blur_node_t::adjust_blur_size(const Imath::V2f& size, int subsample) const
+Imath::V2f base_blur_node_t::adjust_blur_size(
+    const Imath::V2f& size,
+    int               subsample) const
 {
     Imath::V2f result;
     result.x = size.x / aspect_ratio() / subsample * proxy_scale().x;
@@ -33,13 +35,18 @@ Imath::V2f base_blur_node_t::adjust_blur_size(const Imath::V2f& size, int subsam
 
 Imath::V2i base_blur_node_t::round_blur_size(const Imath::V2f& size) const
 {
-    return Imath::V2i(Imath::Math<float>::ceil(size.x), Imath::Math<float>::ceil(size.y));
+    return Imath::V2i(
+        Imath::Math<float>::ceil(size.x), Imath::Math<float>::ceil(size.y));
 }
 
-void base_blur_node_t::copy_src_image(int in, const Imath::Box2i& area, blur_border_mode bmode)
+void base_blur_node_t::copy_src_image(
+    int                 in,
+    const Imath::Box2i& area,
+    blur_border_mode    bmode)
 {
-    boost::gil::copy_pixels(input_as<image_node_t>(in)->const_subimage_view(area),
-                            subimage_view(area));
+    boost::gil::copy_pixels(
+        input_as<image_node_t>(in)->const_subimage_view(area),
+        subimage_view(area));
 
     if (bmode != border_black)
     {
@@ -58,5 +65,5 @@ void base_blur_node_t::copy_src_image(int in, const Imath::Box2i& area, blur_bor
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

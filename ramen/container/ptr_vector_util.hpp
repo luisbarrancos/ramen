@@ -15,16 +15,20 @@ namespace ramen
 {
 namespace container
 {
-template<class T, class C, class A>
+template <class T, class C, class A>
 std::auto_ptr<T> release_ptr(T* p, boost::ptr_vector<T, C, A>& vec)
 {
     std::auto_ptr<T> result;
 
-    for (typename boost::ptr_vector<T, C, A>::iterator it(vec.begin()), e(vec.end()); it != e; ++it)
+    for (typename boost::ptr_vector<T, C, A>::iterator it(vec.begin()),
+         e(vec.end());
+         it != e;
+         ++it)
     {
         if (&(*it) == p)
         {
-            typename boost::ptr_vector<T, C, A>::auto_type ptr = vec.release(it);
+            typename boost::ptr_vector<T, C, A>::auto_type ptr =
+                vec.release(it);
             result.reset(ptr.release());
             break;
         }
@@ -33,12 +37,11 @@ std::auto_ptr<T> release_ptr(T* p, boost::ptr_vector<T, C, A>& vec)
     return result;
 }
 
-template<class Iter, class T, class C, class A>
+template <class Iter, class T, class C, class A>
 void swap_elements(Iter first, Iter second, boost::ptr_vector<T, C, A>& vec)
 {
     std::swap(*first.base(), *second.base());
 }
 
-}  // container
-}  // ramen
-
+}  // namespace container
+}  // namespace ramen

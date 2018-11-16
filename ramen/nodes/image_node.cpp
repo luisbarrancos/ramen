@@ -22,11 +22,11 @@
 namespace ramen
 {
 image_node_t::image_node_t()
-: node_t()
+  : node_t()
 {
 }
 image_node_t::image_node_t(const image_node_t& other)
-: node_t(other)
+  : node_t(other)
 {
 }
 
@@ -36,21 +36,23 @@ void image_node_t::accept(node_visitor& v) { v.visit(this); }
 
 void image_node_t::add_output_plug()
 {
-    node_t::add_output_plug("output", ui::palette_t::instance().color("out plug"), "output");
+    node_t::add_output_plug(
+        "output", ui::palette_t::instance().color("out plug"), "output");
 }
 
 void image_node_t::do_notify()
 {
     // keep the format up to date
     Imath::Box2i old_format(full_format());
-    float        old_aspect      = aspect_ratio();
+    float        old_aspect = aspect_ratio();
     Imath::V2f   old_proxy_scale = proxy_scale();
 
     render::context_t context = composition()->current_context();
-    context.subsample         = 1;
+    context.subsample = 1;
     calc_format(context);
 
-    if (old_format != format() || old_aspect != aspect_ratio() || old_proxy_scale != proxy_scale())
+    if (old_format != format() || old_aspect != aspect_ratio() ||
+        old_proxy_scale != proxy_scale())
         format_changed();
 
     node_t::do_notify();
@@ -72,7 +74,7 @@ void image_node_t::set_format(const Imath::Box2i& d) { format_ = d; }
 
 void image_node_t::calc_format(const render::context_t& context)
 {
-    is_valid_    = is_valid();
+    is_valid_ = is_valid();
     is_identity_ = false;
 
     if (is_valid_)
@@ -80,7 +82,7 @@ void image_node_t::calc_format(const render::context_t& context)
 
     // init with invalid values, to catch the case
     // when we forget to set them.
-    aspect_      = 0.0f;
+    aspect_ = 0.0f;
     proxy_scale_ = Imath::V2f(0, 0);
 
     if (is_valid_ && !is_identity_)
@@ -108,9 +110,11 @@ void image_node_t::do_calc_format(const render::context_t& context)
     else
     {
         // init with default values
-        set_format(Imath::Box2i(Imath::V2i(0, 0),
-                                Imath::V2i(context.default_format.area().max.x - 1,
-                                           context.default_format.area().max.y - 1)));
+        set_format(Imath::Box2i(
+            Imath::V2i(0, 0),
+            Imath::V2i(
+                context.default_format.area().max.x - 1,
+                context.default_format.area().max.y - 1)));
         set_aspect_ratio(context.default_format.aspect);
         set_proxy_scale(Imath::V2f(1.0f, 1.0f));
     }
@@ -149,7 +153,10 @@ void image_node_t::do_calc_bounds(const render::context_t& context)
 void image_node_t::clear_interest() { interest_ = Imath::Box2i(); }
 
 void image_node_t::set_interest(const Imath::Box2i& roi) { interest_ = roi; }
-void image_node_t::add_interest(const Imath::Box2i& roi) { interest_.extendBy(roi); }
+void image_node_t::add_interest(const Imath::Box2i& roi)
+{
+    interest_.extendBy(roi);
+}
 
 void image_node_t::calc_inputs_interest(const render::context_t& context)
 {
@@ -190,7 +197,9 @@ void image_node_t::calc_defined(const render::context_t& context)
             else
             {
                 // this should never happen.
-                assert(0 && "calc_defined: is_identity == true but first input is 0");
+                assert(
+                    0 &&
+                    "calc_defined: is_identity == true but first input is 0");
             }
         }
         else
@@ -202,7 +211,8 @@ void image_node_t::calc_defined(const render::context_t& context)
         defined_.max.x = defined_.min.x + app().preferences().max_image_width();
 
     if (defined_.size().y > app().preferences().max_image_height())
-        defined_.max.y = defined_.min.y + app().preferences().max_image_height();
+        defined_.max.y =
+            defined_.min.y + app().preferences().max_image_height();
 }
 
 void image_node_t::do_calc_defined(const render::context_t& context)
@@ -214,26 +224,31 @@ void image_node_t::subsample_areas(const render::context_t& context)
 {
     if (context.subsample != 1)
     {
-        format_   = ImathExt::scale(format_, 1.0f / context.subsample);
-        bounds_   = ImathExt::scale(bounds_, 1.0f / context.subsample);
+        format_ = ImathExt::scale(format_, 1.0f / context.subsample);
+        bounds_ = ImathExt::scale(bounds_, 1.0f / context.subsample);
         interest_ = ImathExt::scale(interest_, 1.0f / context.subsample);
-        defined_  = ImathExt::scale(defined_, 1.0f / context.subsample);
+        defined_ = ImathExt::scale(defined_, 1.0f / context.subsample);
     }
 }
 
 void image_node_t::recursive_calc_format(const render::context_t& context)
 {
-    depth_first_inputs_search(*this, boost::bind(&image_node_t::calc_format_fun, _1, context));
+    depth_first_inputs_search(
+        *this, boost::bind(&image_node_t::calc_format_fun, _1, context));
 }
 
-bool image_node_t::use_cache(const render::context_t& context) const { return true; }
+bool image_node_t::use_cache(const render::context_t& context) const
+{
+    return true;
+}
 
 bool image_node_t::read_image_from_cache(const render::context_t& context)
 {
     if (!cacheable() || !use_cache(context))
     {
 #ifndef NDEBUG
-        std::cout << "cache miss, node " << name() << " not cacheable\n" << std::endl;
+        std::cout << "cache miss, node " << name() << " not cacheable\n"
+                  << std::endl;
 #endif
 
         return false;
@@ -249,7 +264,8 @@ bool image_node_t::read_image_from_cache(const render::context_t& context)
     }
 
 #ifndef NDEBUG
-    std::cout << "cache miss: " << name() << ", " << hash_generator().digest_as_string() << "\n"
+    std::cout << "cache miss: " << name() << ", "
+              << hash_generator().digest_as_string() << "\n"
               << std::endl;
 #endif
 
@@ -276,7 +292,10 @@ void image_node_t::alloc_image()
 
 void image_node_t::release_image() { image_ = image::buffer_t(); }
 
-image::image_view_t image_node_t::image_view() { return image_.rgba_subimage_view(defined()); }
+image::image_view_t image_node_t::image_view()
+{
+    return image_.rgba_subimage_view(defined());
+}
 
 image::const_image_view_t image_node_t::const_image_view() const
 {
@@ -285,7 +304,8 @@ image::const_image_view_t image_node_t::const_image_view() const
 
 image::image_view_t image_node_t::subimage_view(int x, int y, int w, int h)
 {
-    return image_.rgba_subimage_view(Imath::Box2i(Imath::V2i(x, y), Imath::V2i(w - 1, h - 1)));
+    return image_.rgba_subimage_view(
+        Imath::Box2i(Imath::V2i(x, y), Imath::V2i(w - 1, h - 1)));
 }
 
 image::image_view_t image_node_t::subimage_view(const Imath::Box2i& area)
@@ -293,13 +313,18 @@ image::image_view_t image_node_t::subimage_view(const Imath::Box2i& area)
     return image_.rgba_subimage_view(area);
 }
 
-image::const_image_view_t image_node_t::const_subimage_view(int x, int y, int w, int h) const
+image::const_image_view_t image_node_t::const_subimage_view(
+    int x,
+    int y,
+    int w,
+    int h) const
 {
     return image_.const_rgba_subimage_view(
         Imath::Box2i(Imath::V2i(x, y), Imath::V2i(w - 1, h - 1)));
 }
 
-image::const_image_view_t image_node_t::const_subimage_view(const Imath::Box2i& area) const
+image::const_image_view_t image_node_t::const_subimage_view(
+    const Imath::Box2i& area) const
 {
     return image_.const_rgba_subimage_view(area);
 }
@@ -438,7 +463,9 @@ void image_node_t::clear_interest_fun(node_t& n)
         in->clear_interest();
 }
 
-void image_node_t::calc_inputs_interest_fun(node_t& n, const render::context_t& context)
+void image_node_t::calc_inputs_interest_fun(
+    node_t&                  n,
+    const render::context_t& context)
 {
     if (image_node_t* in = dynamic_cast<image_node_t*>(&n))
         in->calc_inputs_interest(context);
@@ -450,10 +477,12 @@ void image_node_t::calc_defined_fun(node_t& n, const render::context_t& context)
         in->calc_defined(context);
 }
 
-void image_node_t::subsample_areas_fun(node_t& n, const render::context_t& context)
+void image_node_t::subsample_areas_fun(
+    node_t&                  n,
+    const render::context_t& context)
 {
     if (image_node_t* in = dynamic_cast<image_node_t*>(&n))
         in->subsample_areas(context);
 }
 
-}  // namespace
+}  // namespace ramen

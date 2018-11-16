@@ -12,9 +12,14 @@ namespace boost
 namespace gil
 {
 // fill pixels around border
-template<typename View, typename Pixel>
+template <typename View, typename Pixel>
 void fill_border_pixels(
-    const View& view, int border_x0, int border_y0, int border_x1, int border_y1, const Pixel& val)
+    const View&  view,
+    int          border_x0,
+    int          border_y0,
+    int          border_x1,
+    int          border_y1,
+    const Pixel& val)
 {
     assert(border_x0 >= 0);
     assert(border_y0 >= 0);
@@ -55,7 +60,8 @@ void fill_border_pixels(
     // right
     for (int j = 0; j < border_x1; ++j)
     {
-        typename View::y_iterator right_it(view.col_begin(view.width() - j - 1));
+        typename View::y_iterator right_it(
+            view.col_begin(view.width() - j - 1));
 
         for (std::ptrdiff_t y = 0; y < view.height(); ++y)
             right_it[y] = val;
@@ -63,9 +69,13 @@ void fill_border_pixels(
 }
 
 // reflect pixels around border
-template<typename View>
+template <typename View>
 void reflect_border_pixels(
-    const View& view, int border_x0, int border_y0, int border_x1, int border_y1)
+    const View& view,
+    int         border_x0,
+    int         border_y0,
+    int         border_x1,
+    int         border_y1)
 {
     assert(border_x0 >= 0);
     assert(border_y0 >= 0);
@@ -90,7 +100,8 @@ void reflect_border_pixels(
     for (int j = 0; j < border_y1; ++j)
     {
         typename View::x_iterator dst_it(view.row_begin(view.height() - j - 1));
-        typename View::x_iterator src_it(view.row_begin(view.height() - (2 * border_y1) + j - 1));
+        typename View::x_iterator src_it(
+            view.row_begin(view.height() - (2 * border_y1) + j - 1));
 
         for (std::ptrdiff_t x = 0; x < view.width(); ++x)
             dst_it[x] = src_it[x];
@@ -110,7 +121,8 @@ void reflect_border_pixels(
     for (int j = 0; j < border_x1; ++j)
     {
         typename View::y_iterator dst_it(view.col_begin(view.width() - j - 1));
-        typename View::y_iterator src_it(view.col_begin(view.width() - (2 * border_x1) + j - 1));
+        typename View::y_iterator src_it(
+            view.col_begin(view.width() - (2 * border_x1) + j - 1));
 
         for (std::ptrdiff_t y = 0; y < view.height(); ++y)
             dst_it[y] = src_it[y];
@@ -118,9 +130,13 @@ void reflect_border_pixels(
 }
 
 // repeat pixels around border
-template<typename View>
+template <typename View>
 void repeat_border_pixels(
-    const View& view, int border_x0, int border_y0, int border_x1, int border_y1)
+    const View& view,
+    int         border_x0,
+    int         border_y0,
+    int         border_x1,
+    int         border_y1)
 {
     assert(border_x0 >= 0);
     assert(border_y0 >= 0);
@@ -143,11 +159,13 @@ void repeat_border_pixels(
     }
 
     // bottom
-    typename View::x_iterator bot_src_it(view.row_begin(view.height() - border_y1 - 1));
+    typename View::x_iterator bot_src_it(
+        view.row_begin(view.height() - border_y1 - 1));
 
     for (int j = 0; j < border_y1; ++j)
     {
-        typename View::x_iterator bot_dst_it(view.row_begin(view.height() - j - 1));
+        typename View::x_iterator bot_dst_it(
+            view.row_begin(view.height() - j - 1));
 
         for (std::ptrdiff_t x = 0; x < view.width(); ++x)
             bot_dst_it[x] = bot_src_it[x];
@@ -165,17 +183,18 @@ void repeat_border_pixels(
     }
 
     // right
-    typename View::y_iterator rig_src_it(view.col_begin(view.width() - border_x1 - 1));
+    typename View::y_iterator rig_src_it(
+        view.col_begin(view.width() - border_x1 - 1));
 
     for (int j = 0; j < border_x1; ++j)
     {
-        typename View::y_iterator rig_dst_it(view.col_begin(view.width() - j - 1));
+        typename View::y_iterator rig_dst_it(
+            view.col_begin(view.width() - j - 1));
 
         for (std::ptrdiff_t y = 0; y < view.height(); ++y)
             rig_dst_it[y] = rig_src_it[y];
     }
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace gil
+}  // namespace boost

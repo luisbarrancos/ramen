@@ -10,20 +10,20 @@ namespace image
 {
 class displace_node_t : public distort_node_t
 {
-public:
+  public:
     static const node_metaclass_t& displace_node_metaclass();
     const node_metaclass_t*        metaclass() const override;
 
     displace_node_t();
 
-protected:
+  protected:
     displace_node_t(const displace_node_t& other)
-    : distort_node_t(other)
+      : distort_node_t(other)
     {
     }
     void operator=(const displace_node_t&);
 
-private:
+  private:
     node_t* do_clone() const override { return new displace_node_t(*this); }
 
     void do_create_params() override;
@@ -36,6 +36,5 @@ private:
     void do_process(const render::context_t& context) override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

@@ -16,13 +16,13 @@ namespace undo
 {
 class image_input_command_t : public undo::command_t
 {
-public:
+  public:
     image_input_command_t(image::input_node_t& node, int proxy_level);
 
     void undo() override;
     void redo() override;
 
-private:
+  private:
     void swap_values();
 
     image::input_node_t& node_;
@@ -34,6 +34,5 @@ private:
     float                            aspect_;
 };
 
-}  // undo
-}  // ramen
-
+}  // namespace undo
+}  // namespace ramen

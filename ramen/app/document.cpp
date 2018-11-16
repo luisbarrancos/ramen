@@ -16,7 +16,7 @@
 namespace ramen
 {
 document_t::document_t()
-: dirty_(false)
+  : dirty_(false)
 {
     undo_.reset(new undo::stack_t());
 }
@@ -45,4 +45,4 @@ void document_t::save(serialization::yaml_oarchive_t& out) const
     composition().write(out);
 }
 
-}  // namespace
+}  // namespace ramen

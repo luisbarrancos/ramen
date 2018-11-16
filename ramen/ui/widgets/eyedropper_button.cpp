@@ -19,7 +19,7 @@ namespace ramen
 namespace ui
 {
 eyedropper_button_t::eyedropper_button_t(QWidget* parent)
-: QPushButton(QIcon(":icons/eyedropper.png"), "", parent)
+  : QPushButton(QIcon(":icons/eyedropper.png"), "", parent)
 {
     setFocusPolicy(Qt::NoFocus);
     setCheckable(true);
@@ -45,16 +45,17 @@ bool eyedropper_button_t::eventFilter(QObject* watched, QEvent* event)
     {
         QMouseEvent* mouse_event = dynamic_cast<QMouseEvent*>(event);
 
-        if (const ui::viewer::viewer_context_t* view
-            = dynamic_cast<const ui::viewer::viewer_context_t*>(watched))
+        if (const ui::viewer::viewer_context_t* view =
+                dynamic_cast<const ui::viewer::viewer_context_t*>(watched))
         {
-            QPoint         local_pos = view->mapFromGlobal(mouse_event->globalPos());
-            Imath::Color4f col       = view->color_at(local_pos.x(), local_pos.y());
-            value_                   = color_t(col.r, col.g, col.b, col.a);
+            QPoint local_pos = view->mapFromGlobal(mouse_event->globalPos());
+            Imath::Color4f col = view->color_at(local_pos.x(), local_pos.y());
+            value_ = color_t(col.r, col.g, col.b, col.a);
         }
         else
         {
-            if (const color_button_t* but = dynamic_cast<const color_button_t*>(watched))
+            if (const color_button_t* but =
+                    dynamic_cast<const color_button_t*>(watched))
             {
                 color_t col = but->value();
                 col.apply_gamma(2.2);
@@ -86,5 +87,5 @@ void eyedropper_button_t::tool_selected(bool b)
     }
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

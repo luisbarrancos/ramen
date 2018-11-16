@@ -9,7 +9,7 @@ namespace ramen
 namespace ui
 {
 ocio_combo_t::ocio_combo_t(QWidget* parent)
-: QComboBox(parent)
+  : QComboBox(parent)
 {
     setFocusPolicy(Qt::NoFocus);
 }
@@ -19,5 +19,5 @@ int ocio_combo_t::index_for_string(const std::string& s) const
     return findText(QString::fromStdString(s));
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

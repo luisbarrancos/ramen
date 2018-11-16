@@ -46,7 +46,7 @@ class main_window_t : public QMainWindow
 {
     Q_OBJECT
 
-public:
+  public:
     main_window_t();
     ~main_window_t() override;
 
@@ -69,10 +69,10 @@ public:
 
     void update_recent_files_menu(const boost::filesystem::path& p);
 
-protected:
+  protected:
     void closeEvent(QCloseEvent* event) override;
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void new_document();
     void open_document();
@@ -109,7 +109,7 @@ public Q_SLOTS:
 
     void create_node();
 
-private:
+  private:
     QToolBar* create_time_toolbar();
 
     void create_actions();
@@ -174,6 +174,5 @@ private:
     const static int max_recently_opened_files;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

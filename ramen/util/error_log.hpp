@@ -12,11 +12,10 @@ namespace util
 {
 class error_log_t
 {
-public:
+  public:
     error_log_t();
 
-    template<class T>
-    error_log_t& operator<<(const T& x)
+    template <class T> error_log_t& operator<<(const T& x)
     {
         error_stream() << x;
         return *this;
@@ -25,10 +24,9 @@ public:
     std::stringstream& error_stream();
     std::string        errors() const;
 
-private:
+  private:
     std::stringstream error_stream_;
 };
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

@@ -19,7 +19,7 @@ namespace ui
 {
 class anim_editor_select_tool_t : public anim_editor_tool_t
 {
-public:
+  public:
     anim_editor_select_tool_t();
 
     void draw_overlay(anim_curves_view_t& view) const override;
@@ -27,12 +27,16 @@ public:
     void key_press_event(anim_curves_view_t& view, QKeyEvent* event) override;
     void key_release_event(anim_curves_view_t& view, QKeyEvent* event) override;
 
-    void mouse_press_event(anim_curves_view_t& view, QMouseEvent* event) override;
-    void mouse_move_event(anim_curves_view_t& view, QMouseEvent* event) override;
-    void mouse_drag_event(anim_curves_view_t& view, QMouseEvent* event) override;
-    void mouse_release_event(anim_curves_view_t& view, QMouseEvent* event) override;
+    void mouse_press_event(anim_curves_view_t& view, QMouseEvent* event)
+        override;
+    void mouse_move_event(anim_curves_view_t& view, QMouseEvent* event)
+        override;
+    void mouse_drag_event(anim_curves_view_t& view, QMouseEvent* event)
+        override;
+    void mouse_release_event(anim_curves_view_t& view, QMouseEvent* event)
+        override;
 
-private:
+  private:
     void select_keyframe(anim::any_curve_ptr_t& c, int index);
     void toggle_select_keyframe(anim::any_curve_ptr_t& c, int index);
     bool keyframe_is_selected(anim::any_curve_ptr_t& c, int index) const;
@@ -56,6 +60,5 @@ private:
     undo::drag_keys_command_t* drag_command_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

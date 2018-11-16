@@ -12,7 +12,7 @@ namespace imageio
 {
 class tga_format_t : public format_t
 {
-public:
+  public:
     tga_format_t();
     ~tga_format_t() override;
 
@@ -27,10 +27,10 @@ public:
 
     bool is_multichannel() const override { return false; }
 
-    core::auto_ptr_t<reader_t> reader(const boost::filesystem::path& p) const override;
+    core::auto_ptr_t<reader_t> reader(
+        const boost::filesystem::path& p) const override;
     core::auto_ptr_t<writer_t> writer() const override;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

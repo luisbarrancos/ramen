@@ -11,12 +11,12 @@ namespace ramen
 namespace movieio
 {
 reader_t::reader_t()
-: frame_(0)
+  : frame_(0)
 {
 }
 reader_t::reader_t(const boost::filesystem::path& p)
-: p_(p)
-, frame_(0)
+  : p_(p)
+  , frame_(0)
 {
 }
 
@@ -27,7 +27,10 @@ bool reader_t::is_sequence() const { return true; }
 
 int reader_t::pad() const { return 0; }
 
-std::string reader_t::format_string() const { return filesystem::file_string(p_); }
+std::string reader_t::format_string() const
+{
+    return filesystem::file_string(p_);
+}
 
 std::string reader_t::string_for_current_frame() const
 {
@@ -66,7 +69,7 @@ void reader_t::set_frame(int frame)
     if (is_sequence())
     {
         int start = start_frame();
-        int end   = end_frame();
+        int end = end_frame();
 
         if (frame >= start && frame <= end)
         {
@@ -80,30 +83,37 @@ void reader_t::set_frame(int frame)
 
 void reader_t::do_set_frame(int frame) {}
 
-void reader_t::read_frame(const image::image_view_t& view) const { read_frame(view, bounds(), 1); }
+void reader_t::read_frame(const image::image_view_t& view) const
+{
+    read_frame(view, bounds(), 1);
+}
 
-void reader_t::read_frame(const image::image_view_t& view,
-                          const math::box2i_t&       crop,
-                          int                        subsample) const
+void reader_t::read_frame(
+    const image::image_view_t& view,
+    const math::box2i_t&       crop,
+    int                        subsample) const
 {
     do_read_frame(view, crop, subsample);
 }
 
-void reader_t::read_frame(const image::image_view_t&              view,
-                          const math::box2i_t&                    crop,
-                          int                                     subsample,
-                          const boost::tuple<int, int, int, int>& channels) const
+void reader_t::read_frame(
+    const image::image_view_t&              view,
+    const math::box2i_t&                    crop,
+    int                                     subsample,
+    const boost::tuple<int, int, int, int>& channels) const
 {
     do_read_frame(view, crop, subsample, channels);
 }
 
-void reader_t::do_read_frame(const image::image_view_t&              view,
-                             const math::box2i_t&                    crop,
-                             int                                     subsample,
-                             const boost::tuple<int, int, int, int>& channels) const
+void reader_t::do_read_frame(
+    const image::image_view_t&              view,
+    const math::box2i_t&                    crop,
+    int                                     subsample,
+    const boost::tuple<int, int, int, int>& channels) const
 {
-    throw movieio::exception("Movie format does not support multichannel reading");
+    throw movieio::exception(
+        "Movie format does not support multichannel reading");
 }
 
-}  // movieio
-}  // ramen
+}  // namespace movieio
+}  // namespace ramen

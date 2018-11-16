@@ -17,8 +17,7 @@ namespace detail
 {
 void set_inputs_color(node_t& n, graph_color_t c);
 
-template<class Range>
-void set_multiple_inputs_color(Range& r, graph_color_t c)
+template <class Range> void set_multiple_inputs_color(Range& r, graph_color_t c)
 {
     typedef typename boost::range_iterator<Range>::type iter;
 
@@ -28,7 +27,7 @@ void set_multiple_inputs_color(Range& r, graph_color_t c)
 
 void set_outputs_color(node_t& n, graph_color_t c);
 
-template<class Range>
+template <class Range>
 void set_multiple_outputs_color(Range& r, graph_color_t c)
 {
     typedef typename boost::range_iterator<Range>::type iter;
@@ -37,7 +36,7 @@ void set_multiple_outputs_color(Range& r, graph_color_t c)
         set_outputs_color(*(*it), c);
 }
 
-template<class Visitor>
+template <class Visitor>
 void depth_first_inputs_recursive_search(node_t& n, Visitor f)
 {
     for (unsigned int i = 0; i < n.num_inputs(); ++i)
@@ -53,7 +52,7 @@ void depth_first_inputs_recursive_search(node_t& n, Visitor f)
     }
 }
 
-template<class Visitor>
+template <class Visitor>
 void breadth_first_inputs_recursive_search(node_t& n, Visitor f)
 {
     if (n.graph_color() == black)
@@ -69,7 +68,7 @@ void breadth_first_inputs_recursive_search(node_t& n, Visitor f)
     }
 }
 
-template<class Visitor>
+template <class Visitor>
 void depth_first_outputs_recursive_search(node_t& n, Visitor f)
 {
     for (unsigned int i = 0; i < n.num_outputs(); ++i)
@@ -82,7 +81,7 @@ void depth_first_outputs_recursive_search(node_t& n, Visitor f)
     }
 }
 
-template<class Visitor>
+template <class Visitor>
 void breadth_first_outputs_recursive_search(node_t& n, Visitor f)
 {
     if (n.graph_color() == black)
@@ -95,10 +94,13 @@ void breadth_first_outputs_recursive_search(node_t& n, Visitor f)
         breadth_first_outputs_recursive_search(*n.output(i), f);
 }
 
-}  // detail
+}  // namespace detail
 
-template<class Visitor>
-void breadth_first_inputs_search(node_t& first, Visitor f, bool search_first = true)
+template <class Visitor>
+void breadth_first_inputs_search(
+    node_t& first,
+    Visitor f,
+    bool    search_first = true)
 {
     detail::set_inputs_color(first, black);
 
@@ -108,7 +110,7 @@ void breadth_first_inputs_search(node_t& first, Visitor f, bool search_first = t
     detail::breadth_first_inputs_recursive_search(first, f);
 }
 
-template<class Visitor>
+template <class Visitor>
 void breadth_first_inputs_apply(node_t& n, Visitor f, bool apply_first = true)
 {
     if (apply_first)
@@ -121,8 +123,11 @@ void breadth_first_inputs_apply(node_t& n, Visitor f, bool apply_first = true)
     }
 }
 
-template<class Visitor>
-void depth_first_inputs_search(node_t& first, Visitor f, bool search_first = true)
+template <class Visitor>
+void depth_first_inputs_search(
+    node_t& first,
+    Visitor f,
+    bool    search_first = true)
 {
     detail::set_inputs_color(first, black);
 
@@ -132,8 +137,11 @@ void depth_first_inputs_search(node_t& first, Visitor f, bool search_first = tru
     detail::depth_first_inputs_recursive_search(first, f);
 }
 
-template<class Visitor>
-void breadth_first_outputs_search(node_t& first, Visitor f, bool search_first = true)
+template <class Visitor>
+void breadth_first_outputs_search(
+    node_t& first,
+    Visitor f,
+    bool    search_first = true)
 {
     detail::set_outputs_color(first, black);
 
@@ -143,8 +151,11 @@ void breadth_first_outputs_search(node_t& first, Visitor f, bool search_first = 
     detail::breadth_first_outputs_recursive_search(first, f);
 }
 
-template<class Range, class Visitor>
-void breadth_first_multiple_outputs_search(Range& r, Visitor f, bool search_first = true)
+template <class Range, class Visitor>
+void breadth_first_multiple_outputs_search(
+    Range&  r,
+    Visitor f,
+    bool    search_first = true)
 {
     typedef typename boost::range_iterator<Range>::type iter;
 
@@ -160,8 +171,11 @@ void breadth_first_multiple_outputs_search(Range& r, Visitor f, bool search_firs
         detail::breadth_first_outputs_recursive_search(*(*it), f);
 }
 
-template<class Visitor>
-void depth_first_outputs_search(node_t& first, Visitor f, bool search_first = true)
+template <class Visitor>
+void depth_first_outputs_search(
+    node_t& first,
+    Visitor f,
+    bool    search_first = true)
 {
     detail::set_outputs_color(first, black);
 
@@ -173,12 +187,12 @@ void depth_first_outputs_search(node_t& first, Visitor f, bool search_first = tr
 
 bool node_depends_on_node(node_t& node, node_t& other);
 
-template<class Visitor>
+template <class Visitor>
 void breadth_first_out_edges_apply(node_t& n, Visitor f)
 {
     for (unsigned int i = 0; i < n.num_outputs(); ++i)
     {
-        node_t* dst  = boost::get<0>(n.output_plug().connections()[i]);
+        node_t* dst = boost::get<0>(n.output_plug().connections()[i]);
         int     port = boost::get<2>(n.output_plug().connections()[i]);
         edge_t  e(&n, dst, port);
         f(e);
@@ -187,5 +201,4 @@ void breadth_first_out_edges_apply(node_t& n, Visitor f)
     }
 }
 
-}  // namespace
-
+}  // namespace ramen

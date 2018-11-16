@@ -22,16 +22,17 @@
 namespace ramen
 {
 image_channels_param_t::image_channels_param_t()
-: static_param_t(std::string())
+  : static_param_t(std::string())
 {
     value().assign(tuple4i_t(0, 1, 2, 3));
 }
 
-image_channels_param_t::image_channels_param_t(const image_channels_param_t& other)
-: static_param_t(other)
+image_channels_param_t::image_channels_param_t(
+    const image_channels_param_t& other)
+  : static_param_t(other)
 {
     red_combo_ = green_combo_ = blue_combo_ = alpha_combo_ = 0;
-    channel_list_                                          = other.channel_list_;
+    channel_list_ = other.channel_list_;
 }
 
 void image_channels_param_t::clear_channel_list()
@@ -48,7 +49,8 @@ void image_channels_param_t::clear_channel_list()
     }
 }
 
-void image_channels_param_t::set_channel_list(const std::vector<std::string>& channels)
+void image_channels_param_t::set_channel_list(
+    const std::vector<std::string>& channels)
 {
     if (!channel_list_.empty())
     {
@@ -74,10 +76,11 @@ void image_channels_param_t::set_channel_list(const std::vector<std::string>& ch
     }
 }
 
-void image_channels_param_t::get_channel_names(std::string& red,
-                                               std::string& green,
-                                               std::string& blue,
-                                               std::string& alpha) const
+void image_channels_param_t::get_channel_names(
+    std::string& red,
+    std::string& green,
+    std::string& blue,
+    std::string& alpha) const
 {
     tuple4i_t ch(get_value<tuple4i_t>(*this));
 
@@ -102,12 +105,16 @@ void image_channels_param_t::get_channel_names(std::string& red,
         alpha = "A";
 }
 
-void image_channels_param_t::set_channels(const tuple4i_t& ch) { value().assign(ch); }
+void image_channels_param_t::set_channels(const tuple4i_t& ch)
+{
+    value().assign(ch);
+}
 
-void image_channels_param_t::set_channels(const std::string& red,
-                                          const std::string& green,
-                                          const std::string& blue,
-                                          const std::string& alpha)
+void image_channels_param_t::set_channels(
+    const std::string& red,
+    const std::string& green,
+    const std::string& blue,
+    const std::string& alpha)
 {
     assert(!channel_list_.empty());
 
@@ -153,13 +160,13 @@ void image_channels_param_t::set_channels(const std::string& red,
 // ui
 QWidget* image_channels_param_t::do_create_widgets()
 {
-    QWidget* top            = new QWidget();
+    QWidget* top = new QWidget();
     int      current_height = 0;
 
     // popups
     {
         QLabel* label = new QLabel(top);
-        red_combo_    = new QComboBox(top);
+        red_combo_ = new QComboBox(top);
         red_combo_->setFocusPolicy(Qt::NoFocus);
         QSize s = red_combo_->sizeHint();
 
@@ -169,16 +176,21 @@ QWidget* image_channels_param_t::do_create_widgets()
         label->setText("Red");
 
         red_combo_->move(app().ui()->inspector().left_margin(), current_height);
-        red_combo_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                               - 10,
-                           s.height());
-        connect(red_combo_, SIGNAL(currentIndexChanged(int)), this, SLOT(channel_picked(int)));
+        red_combo_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height());
+        connect(
+            red_combo_,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(channel_picked(int)));
         current_height = s.height() + 5;
     }
 
     {
         QLabel* label = new QLabel(top);
-        green_combo_  = new QComboBox(top);
+        green_combo_ = new QComboBox(top);
         green_combo_->setFocusPolicy(Qt::NoFocus);
 
         QSize s = green_combo_->sizeHint();
@@ -188,17 +200,23 @@ QWidget* image_channels_param_t::do_create_widgets()
         label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
         label->setText("Green");
 
-        green_combo_->move(app().ui()->inspector().left_margin(), current_height);
-        green_combo_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                                 - 10,
-                             s.height());
-        connect(green_combo_, SIGNAL(currentIndexChanged(int)), this, SLOT(channel_picked(int)));
+        green_combo_
+            ->move(app().ui()->inspector().left_margin(), current_height);
+        green_combo_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height());
+        connect(
+            green_combo_,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(channel_picked(int)));
         current_height += s.height() + 5;
     }
 
     {
         QLabel* label = new QLabel(top);
-        blue_combo_   = new QComboBox(top);
+        blue_combo_ = new QComboBox(top);
         blue_combo_->setFocusPolicy(Qt::NoFocus);
 
         QSize s = blue_combo_->sizeHint();
@@ -208,17 +226,23 @@ QWidget* image_channels_param_t::do_create_widgets()
         label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
         label->setText("Blue");
 
-        blue_combo_->move(app().ui()->inspector().left_margin(), current_height);
-        blue_combo_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                                - 10,
-                            s.height());
-        connect(blue_combo_, SIGNAL(currentIndexChanged(int)), this, SLOT(channel_picked(int)));
+        blue_combo_
+            ->move(app().ui()->inspector().left_margin(), current_height);
+        blue_combo_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height());
+        connect(
+            blue_combo_,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(channel_picked(int)));
         current_height += s.height() + 5;
     }
 
     {
         QLabel* label = new QLabel(top);
-        alpha_combo_  = new QComboBox(top);
+        alpha_combo_ = new QComboBox(top);
         alpha_combo_->setFocusPolicy(Qt::NoFocus);
 
         QSize s = alpha_combo_->sizeHint();
@@ -228,11 +252,17 @@ QWidget* image_channels_param_t::do_create_widgets()
         label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
         label->setText("Alpha");
 
-        alpha_combo_->move(app().ui()->inspector().left_margin(), current_height);
-        alpha_combo_->resize(app().ui()->inspector().width() - app().ui()->inspector().left_margin()
-                                 - 10,
-                             s.height());
-        connect(alpha_combo_, SIGNAL(currentIndexChanged(int)), this, SLOT(channel_picked(int)));
+        alpha_combo_
+            ->move(app().ui()->inspector().left_margin(), current_height);
+        alpha_combo_->resize(
+            app().ui()->inspector().width() -
+                app().ui()->inspector().left_margin() - 10,
+            s.height());
+        connect(
+            alpha_combo_,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(channel_picked(int)));
         current_height += s.height() + 5;
     }
 
@@ -331,4 +361,4 @@ void image_channels_param_t::channel_picked(int index)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

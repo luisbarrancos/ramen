@@ -19,15 +19,15 @@
 namespace ramen
 {
 popup_param_t::popup_param_t(const std::string& name)
-: static_param_t(name)
+  : static_param_t(name)
 {
     set_default_value(0);
 }
 
 popup_param_t::popup_param_t(const popup_param_t& other)
-: static_param_t(other)
-, menu_items_(other.menu_items_)
-, menu_(0)
+  : static_param_t(other)
+  , menu_items_(other.menu_items_)
+  , menu_(0)
 {
 }
 
@@ -42,7 +42,10 @@ void popup_param_t::set_value(int x, change_reason reason)
     emit_param_changed(reason);
 }
 
-void popup_param_t::add_menu_item(const std::string& item) { menu_items_.push_back(item); }
+void popup_param_t::add_menu_item(const std::string& item)
+{
+    menu_items_.push_back(item);
+}
 
 void popup_param_t::do_add_to_hash(hash::generator_t& hash_gen) const
 {
@@ -86,9 +89,9 @@ int popup_param_t::find_index_for_string(const std::string& s) const
 
 QWidget* popup_param_t::do_create_widgets()
 {
-    QWidget* top   = new QWidget();
+    QWidget* top = new QWidget();
     QLabel*  label = new QLabel(top);
-    menu_          = new QComboBox(top);
+    menu_ = new QComboBox(top);
     menu_->setFocusPolicy(Qt::NoFocus);
 
     for (int i = 0; i < menu_items_.size(); ++i)
@@ -111,7 +114,8 @@ QWidget* popup_param_t::do_create_widgets()
     menu_->resize(s.width(), s.height());
     menu_->setCurrentIndex(get_value<int>(*this));
     menu_->setEnabled(enabled());
-    connect(menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
+    connect(
+        menu_, SIGNAL(currentIndexChanged(int)), this, SLOT(item_picked(int)));
 
     top->setMinimumSize(app().ui()->inspector().width(), s.height());
     top->setMaximumSize(app().ui()->inspector().width(), s.height());
@@ -142,4 +146,4 @@ void popup_param_t::item_picked(int index)
     param_set()->end_edit();
 }
 
-}  // namespace
+}  // namespace ramen

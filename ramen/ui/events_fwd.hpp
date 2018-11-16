@@ -19,6 +19,5 @@ struct key_release_event_t;
 
 struct paint_event_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

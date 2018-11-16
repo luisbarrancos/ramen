@@ -42,13 +42,13 @@ namespace ramen
 namespace ui
 {
 composition_view_t::composition_view_t(QWidget* parent)
-: QWidget(parent)
+  : QWidget(parent)
 {
     setFocusPolicy(Qt::ClickFocus);
-    font_          = QFont("Helvetica", 10);
-    scroll_mode_   = false;
-    first_resize_  = true;
-    connect_mode_  = false;
+    font_ = QFont("Helvetica", 10);
+    scroll_mode_ = false;
+    first_resize_ = true;
+    connect_mode_ = false;
     box_pick_mode_ = false;
     setMouseTracking(true);
     toolbar_ = 0;
@@ -91,8 +91,10 @@ bool composition_view_t::event(QEvent* event)
         QHelpEvent* help_event = static_cast<QHelpEvent*>(event);
 
         pick_result_t picked;
-        pick_node(screen_to_world(Imath::V2i(help_event->pos().x(), help_event->pos().y())),
-                  picked);
+        pick_node(
+            screen_to_world(
+                Imath::V2i(help_event->pos().x(), help_event->pos().y())),
+            picked);
 
         switch (picked.component)
         {
@@ -111,7 +113,8 @@ bool composition_view_t::event(QEvent* event)
                     s << " [ " << n->full_format().size().x + 1 << ", "
                       << n->full_format().size().y + 1 << "]";
 
-                QToolTip::showText(help_event->globalPos(), QString::fromStdString(s.str()));
+                QToolTip::showText(
+                    help_event->globalPos(), QString::fromStdString(s.str()));
             }
             break;
 
@@ -121,8 +124,11 @@ bool composition_view_t::event(QEvent* event)
                 break;
 
             default:
-                QToolTip::showText(help_event->globalPos(),
-                                   picked.node->input_plugs()[picked.plug_num].tooltip().c_str());
+                QToolTip::showText(
+                    help_event->globalPos(),
+                    picked.node->input_plugs()[picked.plug_num]
+                        .tooltip()
+                        .c_str());
         }
 
         return true;
@@ -229,10 +235,10 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
 {
     event->accept();
 
-    drag_handler_    = std::function<void(QMouseEvent*)>();
+    drag_handler_ = std::function<void(QMouseEvent*)>();
     release_handler_ = std::function<void(QMouseEvent*)>();
-    connect_mode_    = false;
-    box_pick_mode_   = false;
+    connect_mode_ = false;
+    box_pick_mode_ = false;
 
     push_x_ = event->x();
     push_y_ = event->y();
@@ -240,7 +246,7 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
     last_y_ = event->y();
 
     scroll_mode_ = false;
-    zoom_mode_   = false;
+    zoom_mode_ = false;
 
     Imath::V2f wpos = screen_to_world(Imath::V2i(push_x_, push_y_));
 
@@ -248,18 +254,20 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
     {
         if (event->modifiers() & Qt::ShiftModifier)
         {
-            zoom_mode_    = true;
-            zoom_center_  = wpos;
-            drag_handler_ = boost::bind(&composition_view_t::zoom_drag_handler, this, _1);
-            release_handler_
-                = boost::bind(&composition_view_t::scroll_zoom_release_handler, this, _1);
+            zoom_mode_ = true;
+            zoom_center_ = wpos;
+            drag_handler_ =
+                boost::bind(&composition_view_t::zoom_drag_handler, this, _1);
+            release_handler_ = boost::bind(
+                &composition_view_t::scroll_zoom_release_handler, this, _1);
         }
         else
         {
-            scroll_mode_  = true;
-            drag_handler_ = boost::bind(&composition_view_t::scroll_drag_handler, this, _1);
-            release_handler_
-                = boost::bind(&composition_view_t::scroll_zoom_release_handler, this, _1);
+            scroll_mode_ = true;
+            drag_handler_ =
+                boost::bind(&composition_view_t::scroll_drag_handler, this, _1);
+            release_handler_ = boost::bind(
+                &composition_view_t::scroll_zoom_release_handler, this, _1);
         }
 
         return;
@@ -269,14 +277,15 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
 
     if (event->modifiers() & Qt::ControlModifier)
     {
-        node_t* src  = 0;
-        node_t* dst  = 0;
+        node_t* src = 0;
+        node_t* dst = 0;
         int     port = -1;
 
         if (pick_edge(wpos, src, dst, port))
         {
             // TODO: if either src or dest are groups, resolve the real nodes.
-            std::auto_ptr<undo::command_t> c(new undo::disconnect_command_t(src, dst, port));
+            std::auto_ptr<undo::command_t> c(
+                new undo::disconnect_command_t(src, dst, port));
             c->redo();
             app().document().undo_stack().push_back(c);
             app().ui()->update();
@@ -284,21 +293,26 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
         }
     }
 
-    if ((last_pick_.component != pick_result_t::no_pick)
-        && (last_pick_.component != pick_result_t::body_picked))
+    if ((last_pick_.component != pick_result_t::no_pick) &&
+        (last_pick_.component != pick_result_t::body_picked))
     {
-        connect_mode_    = true;
-        drag_handler_    = boost::bind(&composition_view_t::connect_drag_handler, this, _1);
-        release_handler_ = boost::bind(&composition_view_t::connect_release_handler, this, _1);
+        connect_mode_ = true;
+        drag_handler_ =
+            boost::bind(&composition_view_t::connect_drag_handler, this, _1);
+        release_handler_ =
+            boost::bind(&composition_view_t::connect_release_handler, this, _1);
     }
 
     // single push
-    if (last_pick_.component == pick_result_t::no_pick && !(event->modifiers() & Qt::ShiftModifier))
+    if (last_pick_.component == pick_result_t::no_pick &&
+        !(event->modifiers() & Qt::ShiftModifier))
     {
         app().document().composition().deselect_all();
-        box_pick_mode_   = true;
-        drag_handler_    = boost::bind(&composition_view_t::box_pick_drag_handler, this, _1);
-        release_handler_ = boost::bind(&composition_view_t::box_pick_release_handler, this, _1);
+        box_pick_mode_ = true;
+        drag_handler_ =
+            boost::bind(&composition_view_t::box_pick_drag_handler, this, _1);
+        release_handler_ = boost::bind(
+            &composition_view_t::box_pick_release_handler, this, _1);
     }
     else
     {
@@ -310,15 +324,16 @@ void composition_view_t::mousePressEvent(QMouseEvent* event)
                     app().document().composition().deselect_all();
 
                 last_pick_.node->toggle_selection();
-                drag_handler_ = boost::bind(&composition_view_t::move_nodes_drag_handler, this, _1);
+                drag_handler_ = boost::bind(
+                    &composition_view_t::move_nodes_drag_handler, this, _1);
             }
             else
             {
                 if (event->modifiers() & Qt::ShiftModifier)
                     last_pick_.node->select(false);
                 else
-                    drag_handler_
-                        = boost::bind(&composition_view_t::move_nodes_drag_handler, this, _1);
+                    drag_handler_ = boost::bind(
+                        &composition_view_t::move_nodes_drag_handler, this, _1);
             }
         }
     }
@@ -351,7 +366,7 @@ void composition_view_t::mouseReleaseEvent(QMouseEvent* event)
         release_handler_(event);
 
     scroll_mode_ = false;
-    zoom_mode_   = false;
+    zoom_mode_ = false;
     event->accept();
 }
 
@@ -369,14 +384,15 @@ void composition_view_t::wheelEvent(QWheelEvent* event)
 
 void composition_view_t::scroll_drag_handler(QMouseEvent* event)
 {
-    viewport().scroll(Imath::V2i(-(event->x() - last_x_), -(event->y() - last_y_)));
+    viewport().scroll(
+        Imath::V2i(-(event->x() - last_x_), -(event->y() - last_y_)));
     update();
 }
 
 void composition_view_t::zoom_drag_handler(QMouseEvent* event)
 {
     const float zoom_speed = 0.05f;
-    float       zoom       = 1.0f + (zoom_speed * (event->x() - last_x_));
+    float       zoom = 1.0f + (zoom_speed * (event->x() - last_x_));
     viewport().zoom(zoom_center_, zoom, zoom);
     update();
 }
@@ -388,11 +404,14 @@ void composition_view_t::scroll_zoom_release_handler(QMouseEvent* event)
 
 void composition_view_t::move_nodes_drag_handler(QMouseEvent* event)
 {
-    float      xoffset = (event->x() - last_x_) / (width() / viewport().world().size().x);
-    float      yoffset = (event->y() - last_y_) / (height() / viewport().world().size().y);
+    float xoffset =
+        (event->x() - last_x_) / (width() / viewport().world().size().x);
+    float yoffset =
+        (event->y() - last_y_) / (height() / viewport().world().size().y);
     Imath::V2f offset(xoffset, yoffset);
 
-    for (composition_t::node_iterator it(app().document().composition().nodes().begin());
+    for (composition_t::node_iterator it(
+             app().document().composition().nodes().begin());
          it != app().document().composition().nodes().end();
          ++it)
     {
@@ -418,7 +437,7 @@ void composition_view_t::frame_selected_nodes()
 
     float xzf = viewport().world().size().x / (box.size().x + edge_offset);
     float yzf = viewport().world().size().y / (box.size().y + edge_offset);
-    float zf  = xzf < yzf ? xzf : yzf;
+    float zf = xzf < yzf ? xzf : yzf;
     viewport().zoom(viewport().world().center(), 1.0f / zf);
 }
 
@@ -433,14 +452,15 @@ void composition_view_t::connect_release_handler(QMouseEvent* event)
     pick_result_t dest;
     pick_node(p, dest);
 
-    if (dest.component == pick_result_t::no_pick || dest.component == pick_result_t::body_picked)
+    if (dest.component == pick_result_t::no_pick ||
+        dest.component == pick_result_t::body_picked)
     {
         update();
         return;
     }
 
-    node_t* src  = 0;
-    node_t* dst  = 0;
+    node_t* src = 0;
+    node_t* dst = 0;
     int     port = -1;
 
     if (last_pick_.component == pick_result_t::output_picked)
@@ -451,8 +471,8 @@ void composition_view_t::connect_release_handler(QMouseEvent* event)
             return;
         }
 
-        src  = last_pick_.node;
-        dst  = dest.node;
+        src = last_pick_.node;
+        dst = dest.node;
         port = dest.plug_num;
     }
     else
@@ -463,15 +483,16 @@ void composition_view_t::connect_release_handler(QMouseEvent* event)
             return;
         }
 
-        dst  = last_pick_.node;
-        src  = dest.node;
+        dst = last_pick_.node;
+        src = dest.node;
         port = last_pick_.plug_num;
     }
 
     // TODO: if either source or dest are groups, resolve the real nodes here.
     if (app().document().composition().can_connect(src, dst, port))
     {
-        std::auto_ptr<undo::command_t> c(new undo::connect_command_t(src, dst, port));
+        std::auto_ptr<undo::command_t> c(
+            new undo::connect_command_t(src, dst, port));
         c->redo();
         app().document().undo_stack().push_back(c);
         app().ui()->update();
@@ -581,9 +602,10 @@ void composition_view_t::draw_nodes(QPainter& p)
         n.accept(visitor);
 }
 
-void composition_view_t::draw_bezier_edge(QPainter&         painter,
-                                          const Imath::V2f& p0,
-                                          const Imath::V2f& p1) const
+void composition_view_t::draw_bezier_edge(
+    QPainter&         painter,
+    const Imath::V2f& p0,
+    const Imath::V2f& p1) const
 {
     bezier::curve_t<Imath::V2f> c;
     bezier_edge(p0, p1, c);
@@ -595,16 +617,19 @@ void composition_view_t::draw_bezier_edge(QPainter&         painter,
 }
 
 // pick
-void composition_view_t::pick_node(const Imath::V2f& p, pick_result_t& result) const
+void composition_view_t::pick_node(const Imath::V2f& p, pick_result_t& result)
+    const
 {
-    result.node      = 0;
+    result.node = 0;
     result.component = pick_result_t::no_pick;
-    result.plug_num  = -1;
+    result.plug_num = -1;
 
     pick_node_visitor visitor(*this, p, result);
 
-    composition_t::reverse_node_iterator it(app().document().composition().nodes().rbegin());
-    composition_t::reverse_node_iterator last(app().document().composition().nodes().rend());
+    composition_t::reverse_node_iterator it(
+        app().document().composition().nodes().rbegin());
+    composition_t::reverse_node_iterator last(
+        app().document().composition().nodes().rend());
 
     for (; it != last; ++it)
     {
@@ -622,7 +647,11 @@ bool composition_view_t::box_pick_node(node_t* n, const Imath::Box2f& b) const
     return visitor.result;
 }
 
-bool composition_view_t::pick_edge(const Imath::V2f& p, node_t*& src, node_t*& dst, int& port) const
+bool composition_view_t::pick_edge(
+    const Imath::V2f& p,
+    node_t*&          src,
+    node_t*&          dst,
+    int&              port) const
 {
     pick_edge_visitor visitor(*this, p);
 
@@ -632,8 +661,8 @@ bool composition_view_t::pick_edge(const Imath::V2f& p, node_t*& src, node_t*& d
 
         if (visitor.src != 0)
         {
-            src  = visitor.src;
-            dst  = visitor.dst;
+            src = visitor.src;
+            dst = visitor.dst;
             port = visitor.port;
             return true;
         }
@@ -642,9 +671,10 @@ bool composition_view_t::pick_edge(const Imath::V2f& p, node_t*& src, node_t*& d
     return false;
 }
 
-bool composition_view_t::pick_bezier_edge(const Imath::V2f& p0,
-                                          const Imath::V2f& p1,
-                                          const Imath::V2f& q) const
+bool composition_view_t::pick_bezier_edge(
+    const Imath::V2f& p0,
+    const Imath::V2f& p1,
+    const Imath::V2f& q) const
 {
     bezier::curve_t<Imath::V2f> c;
     bezier_edge(p0, p1, c);
@@ -663,15 +693,16 @@ bool composition_view_t::pick_bezier_edge(const Imath::V2f& p0,
         return false;
 
     Imath::V2f nearest = bezier::nearest_point_on_curve(c, q);
-    float      dist2   = (nearest - q).length2();
+    float      dist2 = (nearest - q).length2();
 
     return dist2 < (dist_tol * dist_tol);
 }
 
 // util
-void composition_view_t::bezier_edge(const Imath::V2f&            p0,
-                                     const Imath::V2f&            p1,
-                                     bezier::curve_t<Imath::V2f>& c) const
+void composition_view_t::bezier_edge(
+    const Imath::V2f&            p0,
+    const Imath::V2f&            p1,
+    bezier::curve_t<Imath::V2f>& c) const
 {
     const float tangent_offset = 40;
 
@@ -685,9 +716,15 @@ void composition_view_t::bezier_edge(const Imath::V2f&            p0,
     c[2].y -= tangent_offset;
 }
 
-void composition_view_t::contextMenuEvent(QContextMenuEvent* event) { event->accept(); }
+void composition_view_t::contextMenuEvent(QContextMenuEvent* event)
+{
+    event->accept();
+}
 
-void composition_view_t::delete_selected_nodes() { app().ui()->main_window()->delete_nodes(); }
+void composition_view_t::delete_selected_nodes()
+{
+    app().ui()->main_window()->delete_nodes();
+}
 
 Imath::Box2f composition_view_t::nodes_bounding_box()
 {
@@ -695,7 +732,8 @@ Imath::Box2f composition_view_t::nodes_bounding_box()
 
     bool any_selected = app().document().composition().any_selected();
 
-    for (composition_t::node_iterator it(app().document().composition().nodes().begin());
+    for (composition_t::node_iterator it(
+             app().document().composition().nodes().begin());
          it != app().document().composition().nodes().end();
          ++it)
     {
@@ -706,5 +744,5 @@ Imath::Box2f composition_view_t::nodes_bounding_box()
     return box;
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

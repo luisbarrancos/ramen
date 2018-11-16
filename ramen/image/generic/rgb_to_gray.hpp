@@ -24,14 +24,15 @@ struct rgb_to_gray
     }
 };
 
-}  // namespace
+}  // namespace detail
 
-void convert_rgb_to_gray(const const_image_view_t& src, const gray_image_view_t& dst)
+void convert_rgb_to_gray(
+    const const_image_view_t& src,
+    const gray_image_view_t&  dst)
 {
     boost::gil::tbb_transform_pixels(src, dst, detail::rgb_to_gray());
 }
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

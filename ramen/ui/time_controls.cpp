@@ -26,8 +26,8 @@ namespace ramen
 namespace ui
 {
 time_controls_t::time_controls_t()
-: window_(0)
-, stop_playing_(true)
+  : window_(0)
+  , stop_playing_(true)
 {
     window_ = new QWidget();
     window_->resize(width(), height());
@@ -97,8 +97,8 @@ time_controls_t::time_controls_t()
     connect(end_, SIGNAL(pressed()), this, SLOT(goto_end()));
     layout->addWidget(end_);
 
-    QSpacerItem* horizontal_spacer
-        = new QSpacerItem(40, height(), QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* horizontal_spacer = new QSpacerItem(
+        40, height(), QSizePolicy::Expanding, QSizePolicy::Minimum);
     layout->addItem(horizontal_spacer);
 
     flipbook_ = new QPushButton();
@@ -115,7 +115,10 @@ time_controls_t::time_controls_t()
     layout->addWidget(autokey_);
 }
 
-int time_controls_t::width() const { return app().ui()->inspector().widget()->width(); }
+int time_controls_t::width() const
+{
+    return app().ui()->inspector().widget()->width();
+}
 
 int time_controls_t::height() const { return 64; }
 
@@ -143,7 +146,7 @@ bool time_controls_t::eventFilter(QObject* watched, QEvent* event)
 
 void time_controls_t::update()
 {
-    node_t*             n  = app().document().composition().selected_node();
+    node_t*             n = app().document().composition().selected_node();
     const image_node_t* in = dynamic_cast<const image_node_t*>(n);
     flipbook_->setEnabled(in != 0);
 
@@ -152,7 +155,10 @@ void time_controls_t::update()
     autokey_->blockSignals(false);
 }
 
-void time_controls_t::goto_start() { app().ui()->set_frame(app().ui()->start_frame()); }
+void time_controls_t::goto_start()
+{
+    app().ui()->set_frame(app().ui()->start_frame());
+}
 
 void time_controls_t::prev_frame()
 {
@@ -222,7 +228,10 @@ void time_controls_t::next_frame()
     app().ui()->set_frame(frame);
 }
 
-void time_controls_t::goto_end() { app().ui()->set_frame(app().ui()->end_frame()); }
+void time_controls_t::goto_end()
+{
+    app().ui()->set_frame(app().ui()->end_frame());
+}
 
 void time_controls_t::stop_playing()
 {
@@ -238,7 +247,10 @@ void time_controls_t::stop_playing()
     stop_playing_ = true;
 }
 
-void time_controls_t::set_autokey(bool b) { app().document().composition().set_autokey(b); }
+void time_controls_t::set_autokey(bool b)
+{
+    app().document().composition().set_autokey(b);
+}
 
 void time_controls_t::make_flipbook()
 {
@@ -267,16 +279,16 @@ void time_controls_t::make_flipbook()
     std::string display_device = app().ui()->viewer().display_device();
     std::string display_transform = app().ui()->viewer().display_transform();
 
-    flipbook::flipbook_t *flip = flipbook::factory_t::instance().create( frame_rate, display_device,
-    display_transform);
+    flipbook::flipbook_t *flip = flipbook::factory_t::instance().create(
+    frame_rate, display_device, display_transform);
 
     if( flip)
     {
-        if( flipbook::render_flipbook( flip, inode, start, end, proxy_level, subsample, 0,
-    mb_shutter_factor)) flip->play();
+        if( flipbook::render_flipbook( flip, inode, start, end, proxy_level,
+    subsample, 0, mb_shutter_factor)) flip->play();
     }
     */
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

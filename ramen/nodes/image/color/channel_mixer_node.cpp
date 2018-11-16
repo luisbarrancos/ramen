@@ -27,14 +27,14 @@ struct channel_mixer_fun
         return image::pixel_t(val, val, val, src[3]);
     }
 
-private:
+  private:
     float mr_, mg_, mb_;
 };
 
-}  // unnamed
+}  // namespace
 
 channel_mixer_node_t::channel_mixer_node_t()
-: pointop_node_t()
+  : pointop_node_t()
 {
     set_name("ch mix");
 }
@@ -63,15 +63,18 @@ void channel_mixer_node_t::do_create_params()
     add_param(p);
 }
 
-void channel_mixer_node_t::do_process(const image::const_image_view_t& src,
-                                      const image::image_view_t&       dst,
-                                      const render::context_t&         context)
+void channel_mixer_node_t::do_process(
+    const image::const_image_view_t& src,
+    const image::image_view_t&       dst,
+    const render::context_t&         context)
 {
-    boost::gil::tbb_transform_pixels(src,
-                                     dst,
-                                     channel_mixer_fun(get_value<float>(param("red")),
-                                                       get_value<float>(param("green")),
-                                                       get_value<float>(param("blue"))));
+    boost::gil::tbb_transform_pixels(
+        src,
+        dst,
+        channel_mixer_fun(
+            get_value<float>(param("red")),
+            get_value<float>(param("green")),
+            get_value<float>(param("blue"))));
 }
 
 // factory
@@ -89,15 +92,15 @@ const node_metaclass_t& channel_mixer_node_t::channel_mixer_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.channel_mixer";
+        info.id = "image.builtin.channel_mixer";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Color";
-        info.menu_item     = "Channel Mixer";
-        info.help          = "Converts the input image to gray scale";
-        info.create        = &create_channel_mixer_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Color";
+        info.menu_item = "Channel Mixer";
+        info.help = "Converts the input image to gray scale";
+        info.create = &create_channel_mixer_node;
+        inited = true;
     }
 
     return info;
@@ -106,5 +109,5 @@ const node_metaclass_t& channel_mixer_node_t::channel_mixer_node_metaclass()
 static bool registered = node_factory_t::instance().register_node(
     channel_mixer_node_t::channel_mixer_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

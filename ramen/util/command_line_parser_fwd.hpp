@@ -10,6 +10,5 @@ namespace util
 {
 class command_line_parser_t;
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

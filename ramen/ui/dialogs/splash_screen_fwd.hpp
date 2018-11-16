@@ -10,6 +10,5 @@ namespace ui
 {
 class splash_screen_t;
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

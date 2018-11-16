@@ -11,9 +11,9 @@ namespace ramen
 bool inside_gl_begin_ = false;
 
 #ifndef NDEBUG
-GLuint current_texture      = 0;
+GLuint current_texture = 0;
 GLenum current_texture_unit = GL_TEXTURE0;
-int    num_push_matrix      = 0;
+int    num_push_matrix = 0;
 #endif
 
 void clear_gl_errors()
@@ -31,10 +31,10 @@ void check_gl_errors()
     {
         /*
         DLOG( FATAL) << "OpenGL error: " << err << "\n" <<
-                        "inside begin block = " << inside_begin_block() << "\n" <<
-                        "current texture unit = " << current_texture_unit << "\n" <<
-                        "current texture = " << current_texture << "\n" <<
-                        "push / pop num = " << num_push_matrix << "\n";
+                        "inside begin block = " << inside_begin_block() << "\n"
+        << "current texture unit = " << current_texture_unit << "\n" << "current
+        texture = " << current_texture << "\n" << "push / pop num = " <<
+        num_push_matrix << "\n";
         */
     }
 #endif
@@ -106,7 +106,12 @@ void gl_uniform1f(GLint location, GLfloat v0)
     check_gl_errors();
 }
 
-void gl_uniform4f(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
+void gl_uniform4f(
+    GLint   location,
+    GLfloat v0,
+    GLfloat v1,
+    GLfloat v2,
+    GLfloat v3)
 {
     glUniform4f(location, v0, v1, v2, v3);
     check_gl_errors();
@@ -129,7 +134,11 @@ void gl_delete_shader(GLuint shader)
     }
 }
 
-void gl_shader_source(GLuint shader, GLsizei count, const GLchar** string, const GLint* length)
+void gl_shader_source(
+    GLuint         shader,
+    GLsizei        count,
+    const GLchar** string,
+    const GLint*   length)
 {
     glShaderSource(shader, count, string, length);
     check_gl_errors();
@@ -212,67 +221,106 @@ void gl_tex_envf(GLenum target, GLenum pname, GLfloat param)
     check_gl_errors();
 }
 
-void gl_tex_image2d(GLenum        target,
-                    GLint         level,
-                    GLint         internal_format,
-                    GLsizei       width,
-                    GLsizei       height,
-                    GLint         border,
-                    GLenum        format,
-                    GLenum        type,
-                    const GLvoid* data)
+void gl_tex_image2d(
+    GLenum        target,
+    GLint         level,
+    GLint         internal_format,
+    GLsizei       width,
+    GLsizei       height,
+    GLint         border,
+    GLenum        format,
+    GLenum        type,
+    const GLvoid* data)
 {
-    glTexImage2D(target, level, internal_format, width, height, border, format, type, data);
+    glTexImage2D(
+        target,
+        level,
+        internal_format,
+        width,
+        height,
+        border,
+        format,
+        type,
+        data);
     check_gl_errors();
 }
 
-void gl_tex_subimage2d(GLenum        target,
-                       GLint         level,
-                       GLint         xoffset,
-                       GLint         yoffset,
-                       GLsizei       width,
-                       GLsizei       height,
-                       GLenum        format,
-                       GLenum        type,
-                       const GLvoid* data)
+void gl_tex_subimage2d(
+    GLenum        target,
+    GLint         level,
+    GLint         xoffset,
+    GLint         yoffset,
+    GLsizei       width,
+    GLsizei       height,
+    GLenum        format,
+    GLenum        type,
+    const GLvoid* data)
 {
-    glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, data);
+    glTexSubImage2D(
+        target, level, xoffset, yoffset, width, height, format, type, data);
     check_gl_errors();
 }
 
-void gl_tex_image3d(GLenum        target,
-                    GLint         level,
-                    GLint         internal_format,
-                    GLsizei       width,
-                    GLsizei       height,
-                    GLsizei       depth,
-                    GLint         border,
-                    GLenum        format,
-                    GLenum        type,
-                    const GLvoid* data)
+void gl_tex_image3d(
+    GLenum        target,
+    GLint         level,
+    GLint         internal_format,
+    GLsizei       width,
+    GLsizei       height,
+    GLsizei       depth,
+    GLint         border,
+    GLenum        format,
+    GLenum        type,
+    const GLvoid* data)
 {
-    glTexImage3D(target, level, internal_format, width, height, depth, border, format, type, data);
+    glTexImage3D(
+        target,
+        level,
+        internal_format,
+        width,
+        height,
+        depth,
+        border,
+        format,
+        type,
+        data);
     check_gl_errors();
 }
 
-void gl_tex_subimage3d(GLenum        target,
-                       GLint         level,
-                       GLint         xoffset,
-                       GLint         yoffset,
-                       GLint         zoffset,
-                       GLsizei       width,
-                       GLsizei       height,
-                       GLsizei       depth,
-                       GLenum        format,
-                       GLenum        type,
-                       const GLvoid* data)
+void gl_tex_subimage3d(
+    GLenum        target,
+    GLint         level,
+    GLint         xoffset,
+    GLint         yoffset,
+    GLint         zoffset,
+    GLsizei       width,
+    GLsizei       height,
+    GLsizei       depth,
+    GLenum        format,
+    GLenum        type,
+    const GLvoid* data)
 {
     glTexSubImage3D(
-        target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, data);
+        target,
+        level,
+        xoffset,
+        yoffset,
+        zoffset,
+        width,
+        height,
+        depth,
+        format,
+        type,
+        data);
     check_gl_errors();
 }
 
-void gl_get_tex_image(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img)
+void gl_get_tex_image(
+    GLenum  target,
+    GLint   level,
+    GLenum  format,
+    GLenum  type,
+    GLvoid* img)
 {
     glGetTexImage(target, level, format, type, img);
     check_gl_errors();
@@ -371,7 +419,10 @@ void gl_vertex2f(GLfloat x, GLfloat y) { glVertex2f(x, y); }
 
 void gl_color3ub(GLubyte r, GLubyte g, GLubyte b) { glColor3ub(r, g, b); }
 void gl_color3f(GLfloat r, GLfloat g, GLfloat b) { glColor3f(r, g, b); }
-void gl_color4f(GLfloat r, GLfloat g, GLfloat b, GLfloat a) { glColor4f(r, g, b, a); }
+void gl_color4f(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+{
+    glColor4f(r, g, b, a);
+}
 
 void gl_tex_coord2f(GLfloat s, GLfloat t) { glTexCoord2f(s, t); }
 
@@ -380,7 +431,12 @@ void gl_line_width(GLfloat width) { glLineWidth(width); }
 
 // map & eval
 void gl_map1f(
-    GLenum target, GLfloat u1, GLfloat u2, GLint stride, GLint order, const GLfloat* points)
+    GLenum         target,
+    GLfloat        u1,
+    GLfloat        u2,
+    GLint          stride,
+    GLint          order,
+    const GLfloat* points)
 {
     glMap1f(target, u1, u2, stride, order, points);
     check_gl_errors();
@@ -440,4 +496,4 @@ void gl_textured_quad(int x0, int y0, int x1, int y1, bool flip_tex_v)
     gl_end();
 }
 
-}  // ramen
+}  // namespace ramen

@@ -25,22 +25,28 @@ namespace core
 \ingroup core
 \brief Copy on write holder.
 */
-template<typename T>  // T models Regular
+template <typename T>  // T models Regular
 class copy_on_write_t
 {
     BOOST_CONCEPT_ASSERT((RegularConcept<T>) );
 
-public:
+  public:
     typedef T value_type;
 
-    copy_on_write_t() { object_.reset(new implementation_t(), capture_deleter_t()); }
+    copy_on_write_t()
+    {
+        object_.reset(new implementation_t(), capture_deleter_t());
+    }
 
     explicit copy_on_write_t(const T& x)
     {
         object_.reset(new implementation_t(x), capture_deleter_t());
     }
 
-    explicit copy_on_write_t(T&& x) { object_.reset(new implementation_t(x), capture_deleter_t()); }
+    explicit copy_on_write_t(T&& x)
+    {
+        object_.reset(new implementation_t(x), capture_deleter_t());
+    }
 
     const value_type& read() const
     {
@@ -58,7 +64,8 @@ public:
         assert(object_);
 
         if (!unique_instance())
-            object_.reset(new implementation_t(object_->value_), capture_deleter_t());
+            object_.reset(
+                new implementation_t(object_->value_), capture_deleter_t());
 
         return object_->value_;
     }
@@ -67,18 +74,18 @@ public:
 
     void swap(copy_on_write_t& other) { boost::swap(object_, other.object_); }
 
-private:
+  private:
     struct implementation_t
     {
         implementation_t() {}
 
         explicit implementation_t(const value_type& x)
-        : value_(x)
+          : value_(x)
         {
         }
 
         explicit implementation_t(value_type&& x)
-        : value_(std::move(x))
+          : value_(std::move(x))
         {
         }
 
@@ -95,26 +102,27 @@ private:
     implementation_ptr_t object_;
 };
 
-template<class T>
+template <class T>
 inline void swap(copy_on_write_t<T>& x, copy_on_write_t<T>& y)
 {
     x.swap(y);
 }
 
-template<class T>
+template <class T>
 typename boost::enable_if<boost::has_equal_to<T>, bool>::type operator==(
-    const copy_on_write_t<T>& a, const copy_on_write_t<T>& b)
+    const copy_on_write_t<T>& a,
+    const copy_on_write_t<T>& b)
 {
     return a.read() == b.read();
 }
 
-template<class T>
+template <class T>
 typename boost::enable_if<boost::has_not_equal_to<T>, bool>::type operator!=(
-    const copy_on_write_t<T>& a, const copy_on_write_t<T>& b)
+    const copy_on_write_t<T>& a,
+    const copy_on_write_t<T>& b)
 {
     return a.read() != b.read();
 }
 
-}  // core
-}  // ramen
-
+}  // namespace core
+}  // namespace ramen

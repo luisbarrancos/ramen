@@ -15,29 +15,31 @@ namespace imageio
 {
 class oiio_reader_t : public reader_t
 {
-public:
+  public:
     oiio_reader_t(const boost::filesystem::path& p);
 
-private:
-    void do_read_image(const image::image_view_t& view,
-                       const math::box2i_t&       crop,
-                       int                        subsample) const override;
+  private:
+    void do_read_image(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const override;
 
-    void do_read_tiled_image(const image::image_view_t& view,
-                             const math::box2i_t&       crop,
-                             int                        subsample) const;
+    void do_read_tiled_image(
+        const image::image_view_t& view,
+        const math::box2i_t&       crop,
+        int                        subsample) const;
 
-    void copy_tile(int                        x,
-                   int                        y,
-                   const OIIO::ImageSpec&     spec,
-                   float*                     data,
-                   const math::box2i_t&       crop,
-                   const image::image_view_t& view,
-                   int                        subsample) const;
+    void copy_tile(
+        int                        x,
+        int                        y,
+        const OIIO::ImageSpec&     spec,
+        float*                     data,
+        const math::box2i_t&       crop,
+        const image::image_view_t& view,
+        int                        subsample) const;
 
     bool is_tiled_;
 };
 
-}  // imageio
-}  // ramen
-
+}  // namespace imageio
+}  // namespace ramen

@@ -22,8 +22,9 @@ namespace ocio
 {
 class gl_display_manager_t : boost::noncopyable
 {
-public:
-    typedef std::function<std::pair<std::string, std::string>(int)> get_context_callback_t;
+  public:
+    typedef std::function<std::pair<std::string, std::string>(int)>
+        get_context_callback_t;
 
     enum view_channels_t
     {
@@ -39,8 +40,9 @@ public:
 
     void set_context_callback(const get_context_callback_t& f);
 
-    void set_display_transform(OCIO::ConstConfigRcPtr      config,
-                               OCIO::DisplayTransformRcPtr transform);
+    void set_display_transform(
+        OCIO::ConstConfigRcPtr      config,
+        OCIO::DisplayTransformRcPtr transform);
 
     Imath::Color3f transform(const Imath::Color3f& c) const;
     Imath::Color4f transform(const Imath::Color4f& c) const;
@@ -59,7 +61,7 @@ public:
     void activate();
     void deactivate();
 
-private:
+  private:
     void init();
 
     static std::pair<std::string, std::string> default_get_ctx(int i);
@@ -78,6 +80,5 @@ private:
     view_channels_t view_channels_;
 };
 
-}  // ocio
-}  // ramen
-
+}  // namespace ocio
+}  // namespace ramen

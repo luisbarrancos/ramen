@@ -19,18 +19,18 @@
 namespace ramen
 {
 composite_param_t::composite_param_t()
-: param_t()
-, create_track_(true)
+  : param_t()
+  , create_track_(true)
 {
 }
 composite_param_t::composite_param_t(const std::string& name)
-: param_t(name)
-, create_track_(true)
+  : param_t(name)
+  , create_track_(true)
 {
 }
 composite_param_t::composite_param_t(const composite_param_t& other)
-: param_t(other)
-, params_(other.params_)
+  : param_t(other)
+  , params_(other.params_)
 {
     create_track_ = other.create_track_;
 }
@@ -56,7 +56,8 @@ void composite_param_t::do_add_param(param_t* p)
         try
         {
             param_set()->find(p->id());
-            throw std::runtime_error(std::string("Duplicated param id found: ").append(p->id()));
+            throw std::runtime_error(
+                std::string("Duplicated param id found: ").append(p->id()));
         }
         catch (std::runtime_error& e)
         {
@@ -65,7 +66,8 @@ void composite_param_t::do_add_param(param_t* p)
     else
     {
         if (find(p->id()))
-            throw std::runtime_error(std::string("Duplicated param id found: ").append(p->id()));
+            throw std::runtime_error(
+                std::string("Duplicated param id found: ").append(p->id()));
     }
 
     params().push_back(p);
@@ -145,16 +147,18 @@ void composite_param_t::do_enable_widgets(bool e)
         p.enable_widgets(e);
 }
 
-void composite_param_t::do_format_changed(const Imath::Box2i& new_format,
-                                          float               aspect,
-                                          const Imath::V2f&   proxy_scale)
+void composite_param_t::do_format_changed(
+    const Imath::Box2i& new_format,
+    float               aspect,
+    const Imath::V2f&   proxy_scale)
 {
     for (auto& p : params())
         p.format_changed(new_format, aspect, proxy_scale);
 }
 
-void composite_param_t::do_convert_relative_paths(const boost::filesystem::path& old_base,
-                                                  const boost::filesystem::path& new_base)
+void composite_param_t::do_convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     for (auto& p : params())
         p.convert_relative_paths(old_base, new_base);
@@ -173,7 +177,8 @@ void composite_param_t::do_make_paths_relative()
 }
 
 // util
-void composite_param_t::do_apply_function(const std::function<void(param_t*)>& f)
+void composite_param_t::do_apply_function(
+    const std::function<void(param_t*)>& f)
 {
     for (auto& p : params())
         p.apply_function(f);
@@ -229,4 +234,4 @@ void composite_param_t::create_widgets_inside_widget(QWidget* parent)
     parent->setLayout(layout);
 }
 
-}  // namespace
+}  // namespace ramen

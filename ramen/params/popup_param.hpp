@@ -23,7 +23,7 @@ class RAMEN_API popup_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit popup_param_t(const std::string& name);
 
     void set_default_value(int x);
@@ -35,11 +35,11 @@ public:
     const std::vector<std::string>& menu_items() const { return menu_items_; }
     std::vector<std::string>&       menu_items() { return menu_items_; }
 
-protected:
+  protected:
     popup_param_t(const popup_param_t& other);
     void operator=(const popup_param_t& other);
 
-private:
+  private:
     param_t* do_clone() const override { return new popup_param_t(*this); }
 
     void do_evaluate(float time) override {}
@@ -59,10 +59,9 @@ private:
 
     QPointer<QComboBox> menu_;
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void item_picked(int index);
 };
 
-}  // namespace
-
+}  // namespace ramen

@@ -17,7 +17,7 @@ struct alpha_add_layer_mode_fun
     alpha_add_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -26,7 +26,7 @@ struct alpha_mul_layer_mode_fun
     alpha_mul_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -35,7 +35,7 @@ struct alpha_sub_layer_mode_fun
     alpha_sub_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -44,7 +44,7 @@ struct alpha_mix_layer_mode_fun
     alpha_mix_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -53,7 +53,7 @@ struct alpha_max_layer_mode_fun
     alpha_max_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
@@ -62,11 +62,10 @@ struct alpha_min_layer_mode_fun
     alpha_min_layer_mode_fun(float opacity = 1.0f);
     pixel_t operator()(const pixel_t& back, const pixel_t& front) const;
 
-private:
+  private:
     float opacity_;
 };
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

@@ -13,8 +13,7 @@ namespace ui
 {
 namespace
 {
-template<class T>
-T clamp(T x, T lo, T hi)
+template <class T> T clamp(T x, T lo, T hi)
 {
     if (x < lo)
         return lo;
@@ -25,12 +24,12 @@ T clamp(T x, T lo, T hi)
     return x;
 }
 
-}  // unnamed
+}  // namespace
 
 double_spinbox_t::double_spinbox_t(QWidget* parent)
-: spinbox_t(parent)
+  : spinbox_t(parent)
 {
-    value_          = 0;
+    value_ = 0;
     previous_value_ = 0;
     setText("0");
     connect(this, SIGNAL(editingFinished()), this, SLOT(textChanged()));
@@ -59,7 +58,7 @@ bool double_spinbox_t::setValue(double v)
         return false;
 
     previous_value_ = new_val;
-    value_          = new_val;
+    value_ = new_val;
     return true;
 }
 
@@ -97,13 +96,14 @@ void double_spinbox_t::keyReleaseEvent(QKeyEvent* event)
 
 void double_spinbox_t::mousePressEvent(QMouseEvent* event)
 {
-    drag_       = false;
-    dragged_    = false;
+    drag_ = false;
+    dragged_ = false;
     first_drag_ = true;
 
-    if ((event->button() == Qt::LeftButton) && (event->modifiers() & Qt::AltModifier))
+    if ((event->button() == Qt::LeftButton) &&
+        (event->modifiers() & Qt::AltModifier))
     {
-        drag_   = true;
+        drag_ = true;
         push_x_ = event->x();
         last_x_ = push_x_;
     }
@@ -126,7 +126,7 @@ void double_spinbox_t::mouseMoveEvent(QMouseEvent* event)
                         spinBoxPressed();
 
                     first_drag_ = false;
-                    dragged_    = true;
+                    dragged_ = true;
                 }
                 else
                     return;
@@ -153,8 +153,8 @@ void double_spinbox_t::mouseReleaseEvent(QMouseEvent* event)
                 valueChanged(value_);
         }
 
-        dragged_    = false;
-        drag_       = false;
+        dragged_ = false;
+        drag_ = false;
         first_drag_ = true;
     }
     else
@@ -200,5 +200,5 @@ void double_spinbox_t::stepBy(int steps)
     }
 }
 
-}  // ui
-}  // ramen
+}  // namespace ui
+}  // namespace ramen

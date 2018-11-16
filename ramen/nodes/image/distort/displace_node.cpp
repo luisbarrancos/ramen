@@ -36,14 +36,15 @@ enum
 
 struct displace_fun
 {
-    displace_fun(const image::const_channel_view_t& xmap,
-                 const image::const_channel_view_t& ymap,
-                 const Imath::Box2i&                map_bounds,
-                 const Imath::V2f&                  amplitude)
-    : xmap_(xmap)
-    , ymap_(ymap)
+    displace_fun(
+        const image::const_channel_view_t& xmap,
+        const image::const_channel_view_t& ymap,
+        const Imath::Box2i&                map_bounds,
+        const Imath::V2f&                  amplitude)
+      : xmap_(xmap)
+      , ymap_(ymap)
     {
-        bounds_    = map_bounds;
+        bounds_ = map_bounds;
         amplitude_ = amplitude;
     }
 
@@ -59,28 +60,33 @@ struct displace_fun
                 dx = xmap_(p.x - bounds_.min.x, p.y - bounds_.min.y)[0];
                 dy = ymap_(p.x - bounds_.min.x, p.y - bounds_.min.y)[0];
 
-                dx = (clamp(dx, 0.0f, 1.0f) - 0.5f) * 2.0f;  // map 0 .. 1 to -1 .. 1
-                dy = (clamp(dy, 0.0f, 1.0f) - 0.5f) * 2.0f;  // map 0 .. 1 to -1 .. 1
+                dx = (clamp(dx, 0.0f, 1.0f) - 0.5f) *
+                     2.0f;  // map 0 .. 1 to -1 .. 1
+                dy = (clamp(dy, 0.0f, 1.0f) - 0.5f) *
+                     2.0f;  // map 0 .. 1 to -1 .. 1
             }
         }
 
         return Imath::V2f(p.x + (dx * amplitude_.x), p.y + (dy * amplitude_.y));
     }
 
-private:
+  private:
     const image::const_channel_view_t &xmap_, ymap_;
     Imath::Box2i                       bounds_;
     Imath::V2f                         amplitude_;
 };
 
-}  // unnamed
+}  // namespace
 
 displace_node_t::displace_node_t()
-: distort_node_t()
+  : distort_node_t()
 {
     set_name("displace");
     add_input_plug(
-        "displacement", false, ui::palette_t::instance().color("front plug"), "Displacement Map");
+        "displacement",
+        false,
+        ui::palette_t::instance().color("front plug"),
+        "Displacement Map");
 }
 
 void displace_node_t::do_create_params()
@@ -95,19 +101,21 @@ void displace_node_t::do_create_params()
 
     std::auto_ptr<popup_param_t> q(new popup_param_t("X channel"));
     q->set_id("xchannel");
-    q->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha" });
+    q->menu_items() =
+        std::vector<std::string>({"Red", "Green", "Blue", "Alpha"});
     q->set_default_value(0);
     add_param(q);
 
     q.reset(new popup_param_t("Y channel"));
     q->set_id("ychannel");
-    q->menu_items() = std::vector<std::string>({ "Red", "Green", "Blue", "Alpha" });
+    q->menu_items() =
+        std::vector<std::string>({"Red", "Green", "Blue", "Alpha"});
     q->set_default_value(1);
     add_param(q);
 
     q.reset(new popup_param_t("Borders"));
     q->set_id("borders");
-    q->menu_items() = std::vector<std::string>({ "Black", "Tile", "Mirror" });
+    q->menu_items() = std::vector<std::string>({"Black", "Tile", "Mirror"});
     add_param(q);
 }
 
@@ -159,32 +167,53 @@ void displace_node_t::do_process(const render::context_t& context)
     using namespace boost::gil;
 
     Imath::V2f amplitude = get_value<Imath::V2f>(param("amplitude"));
-    amplitude.x          = amplitude.x / context.subsample / aspect_ratio();
+    amplitude.x = amplitude.x / context.subsample / aspect_ratio();
     amplitude.y /= context.subsample;
 
-    image_node_t* in   = input_as<image_node_t>(0);
+    image_node_t* in = input_as<image_node_t>(0);
     image_node_t* dmap = input_as<image_node_t>(1);
 
-    displace_fun f(nth_channel_view(dmap->const_image_view(), get_value<int>(param("xchannel"))),
-                   nth_channel_view(dmap->const_image_view(), get_value<int>(param("ychannel"))),
-                   dmap->defined(),
-                   amplitude);
+    displace_fun f(
+        nth_channel_view(
+            dmap->const_image_view(), get_value<int>(param("xchannel"))),
+        nth_channel_view(
+            dmap->const_image_view(), get_value<int>(param("ychannel"))),
+        dmap->defined(),
+        amplitude);
 
     switch (get_value<int>(param("borders")))
     {
         case border_black:
             image::warp_bilinear(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
 
         case border_tile:
             image::warp_bilinear_tile(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
 
         case border_mirror:
             image::warp_bilinear_mirror(
-                in->defined(), in->const_image_view(), defined(), image_view(), f, false, false);
+                in->defined(),
+                in->const_image_view(),
+                defined(),
+                image_view(),
+                f,
+                false,
+                false);
             break;
     }
 }
@@ -192,7 +221,10 @@ void displace_node_t::do_process(const render::context_t& context)
 // factory
 node_t* create_displace_node() { return new displace_node_t(); }
 
-const node_metaclass_t* displace_node_t::metaclass() const { return &displace_node_metaclass(); }
+const node_metaclass_t* displace_node_t::metaclass() const
+{
+    return &displace_node_metaclass();
+}
 
 const node_metaclass_t& displace_node_t::displace_node_metaclass()
 {
@@ -201,26 +233,28 @@ const node_metaclass_t& displace_node_t::displace_node_metaclass()
 
     if (!inited)
     {
-        info.id            = "image.builtin.displace";
+        info.id = "image.builtin.displace";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Distort";
-        info.menu_item     = "Displace";
-        info.help
-            = "Displaces the input image, using the second input as the displacement map."
-              "A value of 0.5 in the displacement map means no displacement,"
-              "Black values warp the image to the left / top and white to the right / bottom.";
+        info.menu = "Image";
+        info.submenu = "Distort";
+        info.menu_item = "Displace";
+        info.help =
+            "Displaces the input image, using the second input as the "
+            "displacement map."
+            "A value of 0.5 in the displacement map means no displacement,"
+            "Black values warp the image to the left / top and white to the "
+            "right / bottom.";
 
         info.create = &create_displace_node;
-        inited      = true;
+        inited = true;
     }
 
     return info;
 }
 
-static bool registered
-    = node_factory_t::instance().register_node(displace_node_t::displace_node_metaclass());
+static bool registered = node_factory_t::instance().register_node(
+    displace_node_t::displace_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

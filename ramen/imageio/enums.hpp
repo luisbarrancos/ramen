@@ -37,6 +37,5 @@ enum compression_type
     lzw_compression
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace imageio
+}  // namespace ramen

@@ -12,13 +12,13 @@ namespace image
 {
 namespace generic
 {
-void gaussian_blur_rgb(const const_rgb_image_view_t& src,
-                       const rgb_image_view_t&       tmp,
-                       const rgb_image_view_t&       dst,
-                       float                         stddevx,
-                       float                         stddevy);
+void gaussian_blur_rgb(
+    const const_rgb_image_view_t& src,
+    const rgb_image_view_t&       tmp,
+    const rgb_image_view_t&       dst,
+    float                         stddevx,
+    float                         stddevy);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace generic
+}  // namespace image
+}  // namespace ramen

@@ -46,7 +46,7 @@ struct format_t
     int   width, height;
     float aspect;
 
-private:
+  private:
     static std::vector<preset_type> presets_;
 };
 
@@ -55,6 +55,5 @@ std::ostream& operator<<(std::ostream& os, const format_t& f);
 void           operator>>(const YAML::Node& in, format_t& f);
 YAML::Emitter& operator<<(YAML::Emitter& out, const format_t& f);
 
-}  // image
-}  // ramen
-
+}  // namespace image
+}  // namespace ramen

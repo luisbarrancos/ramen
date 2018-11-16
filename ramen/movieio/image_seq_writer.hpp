@@ -12,13 +12,12 @@ namespace movieio
 {
 class RAMEN_API image_seq_writer_t : public writer_t
 {
-public:
+  public:
     image_seq_writer_t();
 
-private:
+  private:
     std::string tag_;
 };
 
-}  // movieio
-}  // ramen
-
+}  // namespace movieio
+}  // namespace ramen

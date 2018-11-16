@@ -24,12 +24,13 @@ namespace ramen
 namespace image
 {
 xform2d_node_t::xform2d_node_t()
-: xform_node_t()
+  : xform_node_t()
 {
 }
 
-xform2d_node_t::matrix3_type xform2d_node_t::calc_transform_matrix_at_frame(float frame,
-                                                                            int   subsample) const
+xform2d_node_t::matrix3_type xform2d_node_t::calc_transform_matrix_at_frame(
+    float frame,
+    int   subsample) const
 {
     if (ignored())
         return matrix3_type();
@@ -38,24 +39,28 @@ xform2d_node_t::matrix3_type xform2d_node_t::calc_transform_matrix_at_frame(floa
 }
 
 xform2d_node_t::matrix3_type xform2d_node_t::global_matrix_at_frame(
-    float frame, const std::vector<const xform2d_node_t*>& xforms, int subsample) const
+    float                                     frame,
+    const std::vector<const xform2d_node_t*>& xforms,
+    int                                       subsample) const
 {
     matrix3_type global;
     global.makeIdentity();
 
     for (int i = xforms.size() - 1; i >= 0; --i)
     {
-        matrix3_type local(xforms[i]->calc_transform_matrix_at_frame(frame, subsample));
+        matrix3_type local(
+            xforms[i]->calc_transform_matrix_at_frame(frame, subsample));
         global *= local;
     }
 
     return global;
 }
 
-Imath::Box2i xform2d_node_t::transform_box(const Imath::Box2i& box,
-                                           const matrix3_type& m,
-                                           int                 step,
-                                           bool                round_up) const
+Imath::Box2i xform2d_node_t::transform_box(
+    const Imath::Box2i& box,
+    const matrix3_type& m,
+    int                 step,
+    bool                round_up) const
 {
     if (box.isEmpty())
         return box;
@@ -64,10 +69,10 @@ Imath::Box2i xform2d_node_t::transform_box(const Imath::Box2i& box,
         return ImathExt::transform(box, m, round_up);
     else
     {
-        // TODO: this is really strange. The direct way of transforming the corners
-        // does not work ( I don't know why).
-        // For now, we transform all boundary points, just like we do in warp nodes.
-        // Review this code later.
+        // TODO: this is really strange. The direct way of transforming the
+        // corners does not work ( I don't know why). For now, we transform all
+        // boundary points, just like we do in warp nodes. Review this code
+        // later.
 
         Imath::Box<vector2_type> b;
         vector2_type             p, q;
@@ -101,13 +106,16 @@ Imath::Box2i xform2d_node_t::transform_box(const Imath::Box2i& box,
 void xform2d_node_t::do_calc_bounds(const render::context_t& context)
 {
     std::vector<const xform2d_node_t*> xforms;
-    const image_node_t*                src = get_img_source_and_xform_list<xform2d_node_t>(xforms);
+    const image_node_t*                src =
+        get_img_source_and_xform_list<xform2d_node_t>(xforms);
 
     if (!src)
         return;
 
     motion_blur_info_t::loop_data_t d(motion_blur_loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     float        t = d.start_time;
     Imath::Box2i area;
@@ -132,13 +140,16 @@ void xform2d_node_t::do_calc_inputs_interest(const render::context_t& context)
         return;
 
     std::vector<const xform2d_node_t*> xforms;
-    const image_node_t*                src = get_img_source_and_xform_list<xform2d_node_t>(xforms);
+    const image_node_t*                src =
+        get_img_source_and_xform_list<xform2d_node_t>(xforms);
 
     if (!src)
         return;
 
     motion_blur_info_t::loop_data_t d(motion_blur_loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     float        t = d.start_time;
     Imath::Box2i roi;
@@ -192,28 +203,34 @@ void xform2d_node_t::do_process(const render::context_t& context)
     }
 
     std::vector<const xform2d_node_t*> xforms;
-    const image_node_t*                src = get_img_source_and_xform_list<xform2d_node_t>(xforms);
+    const image_node_t*                src =
+        get_img_source_and_xform_list<xform2d_node_t>(xforms);
 
     motion_blur_info_t::loop_data_t d(motion_blur_loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     if (d.num_samples == 1)
     {
-        matrix3_type xf(global_matrix_at_frame(context.frame, xforms, context.subsample));
+        matrix3_type xf(
+            global_matrix_at_frame(context.frame, xforms, context.subsample));
         do_process(context, src, image_view(), xf);
     }
     else
     {
         image::rgba_accumulator_t acc(image_view());
-        image::buffer_t           tmp(image_view().width(), image_view().height(), 4);
+        image::buffer_t tmp(image_view().width(), image_view().height(), 4);
 
-        float t    = d.start_time;
+        float t = d.start_time;
         float sumw = 0.0f;
 
         for (int i = 0; i < d.num_samples; ++i)
         {
-            matrix3_type xf(global_matrix_at_frame(t, xforms, context.subsample));
-            boost::gil::fill_pixels(tmp.rgba_view(), image::pixel_t(0, 0, 0, 0));
+            matrix3_type xf(
+                global_matrix_at_frame(t, xforms, context.subsample));
+            boost::gil::fill_pixels(
+                tmp.rgba_view(), image::pixel_t(0, 0, 0, 0));
             do_process(context, src, tmp.rgba_view(), xf);
 
             float w = d.weight_for_time(t);
@@ -227,10 +244,11 @@ void xform2d_node_t::do_process(const render::context_t& context)
     }
 }
 
-void xform2d_node_t::do_process(const render::context_t&   context,
-                                const image_node_t*        src,
-                                const image::image_view_t& dst,
-                                const matrix3_type&        xf)
+void xform2d_node_t::do_process(
+    const render::context_t&   context,
+    const image_node_t*        src,
+    const image::image_view_t& dst,
+    const matrix3_type&        xf)
 {
     if (src->defined().isEmpty())
         return;
@@ -247,17 +265,32 @@ void xform2d_node_t::do_process(const render::context_t&   context,
             {
                 case filter_point:
                     image::affine_warp_nearest(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
 
                 case filter_bilinear:
                     image::affine_warp_bilinear(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
 
                 case filter_catrom:
                     image::affine_warp_catrom(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
             }
         }
@@ -267,17 +300,32 @@ void xform2d_node_t::do_process(const render::context_t&   context,
             {
                 case filter_point:
                     image::projective_warp_nearest(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
 
                 case filter_bilinear:
                     image::projective_warp_bilinear(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
 
                 case filter_catrom:
                     image::projective_warp_catrom(
-                        src->defined(), src->const_image_view(), defined(), dst, xf, inv_xf);
+                        src->defined(),
+                        src->const_image_view(),
+                        defined(),
+                        dst,
+                        xf,
+                        inv_xf);
                     break;
             }
         }
@@ -290,32 +338,38 @@ void xform2d_node_t::do_process(const render::context_t&   context,
 void xform2d_node_t::do_process_mipmap(const render::context_t& context)
 {
     std::vector<const xform2d_node_t*> xforms;
-    const image_node_t*                src = get_img_source_and_xform_list<xform2d_node_t>(xforms);
+    const image_node_t*                src =
+        get_img_source_and_xform_list<xform2d_node_t>(xforms);
 
     std::vector<image::buffer_t> buffers;
     mipmap_type                  sampler;
     make_mipmap(const_cast<image_node_t*>(src), sampler, buffers);
 
     motion_blur_info_t::loop_data_t d(motion_blur_loop_data(
-        context.frame, context.motion_blur_extra_samples, context.motion_blur_shutter_factor));
+        context.frame,
+        context.motion_blur_extra_samples,
+        context.motion_blur_shutter_factor));
 
     if (d.num_samples == 1)
     {
-        matrix3_type xf(global_matrix_at_frame(context.frame, xforms, context.subsample));
+        matrix3_type xf(
+            global_matrix_at_frame(context.frame, xforms, context.subsample));
         do_process_mipmap(context, src, image_view(), xf, sampler);
     }
     else
     {
         image::rgba_accumulator_t acc(image_view());
-        image::buffer_t           tmp(image_view().width(), image_view().height(), 4);
+        image::buffer_t tmp(image_view().width(), image_view().height(), 4);
 
-        float t    = d.start_time;
+        float t = d.start_time;
         float sumw = 0.0f;
 
         for (int i = 0; i < d.num_samples; ++i)
         {
-            matrix3_type xf(global_matrix_at_frame(t, xforms, context.subsample));
-            boost::gil::fill_pixels(tmp.rgba_view(), image::pixel_t(0, 0, 0, 0));
+            matrix3_type xf(
+                global_matrix_at_frame(t, xforms, context.subsample));
+            boost::gil::fill_pixels(
+                tmp.rgba_view(), image::pixel_t(0, 0, 0, 0));
             do_process_mipmap(context, src, tmp.rgba_view(), xf, sampler);
 
             float w = d.weight_for_time(t);
@@ -329,11 +383,12 @@ void xform2d_node_t::do_process_mipmap(const render::context_t& context)
     }
 }
 
-void xform2d_node_t::do_process_mipmap(const render::context_t&   context,
-                                       const image_node_t*        src,
-                                       const image::image_view_t& dst,
-                                       const matrix3_type&        xf,
-                                       mipmap_type&               sampler)
+void xform2d_node_t::do_process_mipmap(
+    const render::context_t&   context,
+    const image_node_t*        src,
+    const image::image_view_t& dst,
+    const matrix3_type&        xf,
+    mipmap_type&               sampler)
 {
     if (src->defined().isEmpty())
         return;
@@ -363,7 +418,8 @@ void xform2d_node_t::do_process_mipmap(const render::context_t&   context,
             switch (filt)
             {
                 case filter_mipmap:
-                    image::generic::projective_warp(sampler, defined(), dst, xf, inv_xf, true);
+                    image::generic::projective_warp(
+                        sampler, defined(), dst, xf, inv_xf, true);
                     break;
 
                 default:
@@ -377,7 +433,8 @@ void xform2d_node_t::do_process_mipmap(const render::context_t&   context,
     }
 }
 
-bool xform2d_node_t::quad_is_convex(const std::array<vector2_type, 4>& quad) const
+bool xform2d_node_t::quad_is_convex(
+    const std::array<vector2_type, 4>& quad) const
 {
     float verts[4][2];
 
@@ -399,13 +456,15 @@ xform2d_node_t::matrix3_type xform2d_node_t::global_matrix(int subsample) const
     return global_matrix_at_frame(frame, subsample);
 }
 
-xform2d_node_t::matrix3_type xform2d_node_t::global_matrix_at_frame(float frame,
-                                                                    int   subsample) const
+xform2d_node_t::matrix3_type xform2d_node_t::global_matrix_at_frame(
+    float frame,
+    int   subsample) const
 {
     std::vector<const xform2d_node_t*> xforms;
-    const image_node_t*                src = get_img_source_and_xform_list<xform2d_node_t>(xforms);
+    const image_node_t*                src =
+        get_img_source_and_xform_list<xform2d_node_t>(xforms);
     return global_matrix_at_frame(frame, xforms, subsample);
 }
 
-}  // image
-}  // ramen
+}  // namespace image
+}  // namespace ramen

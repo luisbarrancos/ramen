@@ -15,12 +15,11 @@ namespace gil
 {
 namespace detail
 {
-template<class View, class Fun>
-struct tbb_for_each_pixel_fun
+template <class View, class Fun> struct tbb_for_each_pixel_fun
 {
     tbb_for_each_pixel_fun(const View& view, Fun f)
-    : view_(view)
-    , f_(f)
+      : view_(view)
+      , f_(f)
     {
     }
 
@@ -34,22 +33,24 @@ struct tbb_for_each_pixel_fun
     Fun         f_;
 };
 
-template<class View, class Fun>
-tbb_for_each_pixel_fun<View, Fun> make_tbb_for_each_pixel_fun(const View& view, Fun f)
+template <class View, class Fun>
+tbb_for_each_pixel_fun<View, Fun> make_tbb_for_each_pixel_fun(
+    const View& view,
+    Fun         f)
 {
     return tbb_for_each_pixel_fun<View, Fun>(view, f);
 }
 
-}  // detail
+}  // namespace detail
 
-template<class View, class Fun>
+template <class View, class Fun>
 GIL_FORCEINLINE void tbb_for_each_pixel(const View& v, Fun f)
 {
-    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, v.height()),
-                      detail::make_tbb_for_each_pixel_fun(v, f),
-                      GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER());
+    tbb::parallel_for(
+        tbb::blocked_range<std::size_t>(0, v.height()),
+        detail::make_tbb_for_each_pixel_fun(v, f),
+        GIL_TBB_ALGORITHMS_DEFAULT_PARTITIONER());
 }
 
-}  // namespace
-}  // namespace
-
+}  // namespace gil
+}  // namespace boost

@@ -37,7 +37,7 @@ class viewer_context_t : public QGLWidget
 {
     Q_OBJECT
 
-public:
+  public:
     enum view_mode_t
     {
         view_active_node = 0,
@@ -93,7 +93,7 @@ public:
     const viewer_strategy_t& strategy() const { return *current_; }
     viewer_strategy_t&       strategy() { return *current_; }
 
-protected:
+  protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
@@ -110,8 +110,9 @@ protected:
 
     void wheelEvent(QWheelEvent* event) override;
 
-private:
-    typedef boost::ptr_vector<viewer_strategy_t>::reverse_iterator strategy_iterator;
+  private:
+    typedef boost::ptr_vector<viewer_strategy_t>::reverse_iterator
+        strategy_iterator;
 
     void test_gl_extensions();
 
@@ -131,7 +132,6 @@ private:
     Imath::Color3f back_color_, fg_color_;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

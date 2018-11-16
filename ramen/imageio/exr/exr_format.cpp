@@ -34,7 +34,8 @@ void exr_format_t::add_extensions(std::vector<std::string>& ext) const
     ext.push_back("EXR");
 }
 
-core::auto_ptr_t<reader_t> exr_format_t::reader(const boost::filesystem::path& p) const
+core::auto_ptr_t<reader_t> exr_format_t::reader(
+    const boost::filesystem::path& p) const
 {
     return core::auto_ptr_t<reader_t>(new exr_reader_t(p));
 }
@@ -44,8 +45,8 @@ core::auto_ptr_t<writer_t> exr_format_t::writer() const
     return core::auto_ptr_t<writer_t>(new exr_writer_t());
 }
 
-static bool registered
-    = factory_t::instance().register_image_format(core::auto_ptr_t<format_t>(new exr_format_t()));
+static bool registered = factory_t::instance().register_image_format(
+    core::auto_ptr_t<format_t>(new exr_format_t()));
 
-}  // imageio
-}  // ramen
+}  // namespace imageio
+}  // namespace ramen

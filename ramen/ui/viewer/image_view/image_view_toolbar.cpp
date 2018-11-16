@@ -19,8 +19,9 @@ namespace ui
 {
 namespace viewer
 {
-image_view_toolbar_t::image_view_toolbar_t(image_viewer_strategy_t* image_viewer)
-: QWidget()
+image_view_toolbar_t::image_view_toolbar_t(
+    image_viewer_strategy_t* image_viewer)
+  : QWidget()
 {
     image_viewer_ = image_viewer;
 
@@ -33,26 +34,36 @@ image_view_toolbar_t::image_view_toolbar_t(image_viewer_strategy_t* image_viewer
 
     resolution_combo_ = new QComboBox();
     resolution_combo_->setFocusPolicy(Qt::NoFocus);
-    resolution_combo_->insertItems(0,
-                                   QStringList() << "Full"
-                                                 << "Half"
-                                                 << "Third"
-                                                 << "Quarter");
+    resolution_combo_->insertItems(
+        0,
+        QStringList() << "Full"
+                      << "Half"
+                      << "Third"
+                      << "Quarter");
     resolution_combo_->setMinimumSize(resolution_combo_->sizeHint());
     resolution_combo_->setToolTip("Preview resolution");
-    connect(resolution_combo_, SIGNAL(activated(int)), image_viewer_, SLOT(change_resolution(int)));
+    connect(
+        resolution_combo_,
+        SIGNAL(activated(int)),
+        image_viewer_,
+        SLOT(change_resolution(int)));
     horizontalLayout->addWidget(resolution_combo_);
 
     channels_combo_ = new QComboBox();
     channels_combo_->setFocusPolicy(Qt::NoFocus);
-    channels_combo_->insertItems(0,
-                                 QStringList() << "RGB"
-                                               << "Red"
-                                               << "Green"
-                                               << "Blue"
-                                               << "Alpha");
+    channels_combo_->insertItems(
+        0,
+        QStringList() << "RGB"
+                      << "Red"
+                      << "Green"
+                      << "Blue"
+                      << "Alpha");
     channels_combo_->setToolTip("Display channels");
-    connect(channels_combo_, SIGNAL(activated(int)), image_viewer_, SLOT(change_channels(int)));
+    connect(
+        channels_combo_,
+        SIGNAL(activated(int)),
+        image_viewer_,
+        SLOT(change_channels(int)));
     channels_combo_->setMinimumSize(channels_combo_->sizeHint());
     horizontalLayout->addWidget(channels_combo_);
     QSize s = channels_combo_->sizeHint();
@@ -64,7 +75,11 @@ image_view_toolbar_t::image_view_toolbar_t(image_viewer_strategy_t* image_viewer
     mblur_btn_->setToolTip("Motion blur on/off");
     mblur_btn_->setMaximumWidth(s.height());
     mblur_btn_->setMaximumHeight(s.height());
-    connect(mblur_btn_, SIGNAL(toggled(bool)), image_viewer_, SLOT(mblur_toggle(bool)));
+    connect(
+        mblur_btn_,
+        SIGNAL(toggled(bool)),
+        image_viewer_,
+        SLOT(mblur_toggle(bool)));
     horizontalLayout->addWidget(mblur_btn_);
 
     show_checks_btn_ = new QToolButton();
@@ -74,7 +89,11 @@ image_view_toolbar_t::image_view_toolbar_t(image_viewer_strategy_t* image_viewer
     show_checks_btn_->setToolTip("Show checks background");
     show_checks_btn_->setMaximumWidth(s.height());
     show_checks_btn_->setMaximumHeight(s.height());
-    connect(show_checks_btn_, SIGNAL(toggled(bool)), image_viewer_, SLOT(checks_toggle(bool)));
+    connect(
+        show_checks_btn_,
+        SIGNAL(toggled(bool)),
+        image_viewer_,
+        SLOT(checks_toggle(bool)));
     horizontalLayout->addWidget(show_checks_btn_);
 
     show_overlay_btn_ = new QToolButton();
@@ -85,11 +104,15 @@ image_view_toolbar_t::image_view_toolbar_t(image_viewer_strategy_t* image_viewer
     show_overlay_btn_->setToolTip("Show overlay");
     show_overlay_btn_->setMaximumWidth(s.height());
     show_overlay_btn_->setMaximumHeight(s.height());
-    connect(show_overlay_btn_, SIGNAL(toggled(bool)), image_viewer_, SLOT(overlay_toggle(bool)));
+    connect(
+        show_overlay_btn_,
+        SIGNAL(toggled(bool)),
+        image_viewer_,
+        SLOT(overlay_toggle(bool)));
     horizontalLayout->addWidget(show_overlay_btn_);
 
-    QSpacerItem* horizontalSpacer
-        = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QSpacerItem* horizontalSpacer =
+        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     horizontalLayout->addItem(horizontalSpacer);
 
     setLayout(horizontalLayout);
@@ -115,6 +138,6 @@ void image_view_toolbar_t::update_widgets(node_t* n)
     }
 }
 
-}  // viewer
-}  // ui
-}  // ramen
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

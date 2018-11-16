@@ -39,5 +39,5 @@ void stack_t::redo()
     undo_stack_.push_back(c.release());
 }
 
-}  // namespace
-}  // namespace
+}  // namespace undo
+}  // namespace ramen

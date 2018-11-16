@@ -23,10 +23,12 @@ namespace math
 \ingroup math
 \brief A 4x4 matrix.
 */
-template<class T>
-class matrix44_t : boost::multipliable<matrix44_t<T>, boost::equality_comparable<matrix44_t<T>>>
+template <class T>
+class matrix44_t
+  : boost::
+        multipliable<matrix44_t<T>, boost::equality_comparable<matrix44_t<T>>>
 {
-public:
+  public:
     typedef T        value_type;
     typedef const T* const_iterator;
     typedef T*       iterator;
@@ -37,22 +39,23 @@ public:
 
     matrix44_t() {}
 
-    matrix44_t(T a00,
-               T a01,
-               T a02,
-               T a03,
-               T a10,
-               T a11,
-               T a12,
-               T a13,
-               T a20,
-               T a21,
-               T a22,
-               T a23,
-               T a30,
-               T a31,
-               T a32,
-               T a33)
+    matrix44_t(
+        T a00,
+        T a01,
+        T a02,
+        T a03,
+        T a10,
+        T a11,
+        T a12,
+        T a13,
+        T a20,
+        T a21,
+        T a22,
+        T a23,
+        T a30,
+        T a31,
+        T a32,
+        T a33)
     {
         data_[0][0] = a00;
         data_[0][1] = a01;
@@ -72,8 +75,7 @@ public:
         data_[3][3] = a33;
     }
 
-    template<class Iter>
-    explicit matrix44_t(Iter it)
+    template <class Iter> explicit matrix44_t(Iter it)
     {
         std::copy(it, it + size(), begin());
     }
@@ -143,7 +145,8 @@ public:
 
     static matrix44_t<T> translation_matrix(const vector3_t<T>& t)
     {
-        return matrix44_t<T>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, t.x, t.y, t.z, 1);
+        return matrix44_t<T>(
+            1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, t.x, t.y, t.z, 1);
     }
 
     static matrix44_t<T> scale_matrix(T s)
@@ -153,15 +156,18 @@ public:
 
     static matrix44_t<T> scale_matrix(const vector3_t<T>& s)
     {
-        return matrix44_t<T>(s.x, 0, 0, 0, 0, s.y, 0, 0, 0, 0, s.z, 0, 0, 0, 0, 1);
+        return matrix44_t<T>(
+            s.x, 0, 0, 0, 0, s.y, 0, 0, 0, 0, s.z, 0, 0, 0, 0, 1);
     }
 
-    static matrix44_t<T> axis_angle_rotation_matrix(vector3_t<T> axis, T angle_in_deg)
+    static matrix44_t<T> axis_angle_rotation_matrix(
+        vector3_t<T> axis,
+        T            angle_in_deg)
     {
         vector3_t<T> unit(axis.normalized());
         T            angle_in_rad = angle_in_deg * constants<T>::deg2rad();
-        T            sine         = cmath<T>::sin(angle_in_rad);
-        T            cosine       = cmath<T>::cos(angle_in_rad);
+        T            sine = cmath<T>::sin(angle_in_rad);
+        T            cosine = cmath<T>::cos(angle_in_rad);
 
         matrix44_t<T> m;
         m(0, 0) = unit(0) * unit(0) * (1 - cosine) + cosine;
@@ -233,38 +239,40 @@ public:
         return result;
     }
 
-private:
+  private:
     T data_[4][4];
 };
 
-template<class T, class S>
+template <class T, class S>
 vector3_t<S> operator*(const vector3_t<S>& v, const matrix44_t<T>& m)
 {
-    return vector3_t<S>(v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0),
-                        v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1),
-                        v.x * m(0, 2) + v.y * m(1, 2) + v.z * m(2, 2));
+    return vector3_t<S>(
+        v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0),
+        v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1),
+        v.x * m(0, 2) + v.y * m(1, 2) + v.z * m(2, 2));
 }
 
-template<class T, class S>
+template <class T, class S>
 point3_t<S> operator*(const point3_t<S>& p, const matrix44_t<T>& m)
 {
     S w = p.x * m(0, 3) + p.y * m(1, 3) + p.z * m(2, 3) + m(3, 3);
-    return point3_t<S>((p.x * m(0, 0) + p.y * m(1, 0) + p.z * m(2, 0) + m(3, 0)) / w,
-                       (p.x * m(0, 1) + p.y * m(1, 1) + p.z * m(2, 1) + m(3, 1)) / w,
-                       (p.x * m(0, 2) + p.y * m(1, 2) + p.z * m(2, 2) + m(3, 2)) / w);
+    return point3_t<S>(
+        (p.x * m(0, 0) + p.y * m(1, 0) + p.z * m(2, 0) + m(3, 0)) / w,
+        (p.x * m(0, 1) + p.y * m(1, 1) + p.z * m(2, 1) + m(3, 1)) / w,
+        (p.x * m(0, 2) + p.y * m(1, 2) + p.z * m(2, 2) + m(3, 2)) / w);
 }
 
-template<class T, class S>
+template <class T, class S>
 hpoint3_t<S> operator*(const hpoint3_t<S>& p, const matrix44_t<T>& m)
 {
-    return hpoint3_t<S>(p.x * m(0, 0) + p.y * m(1, 0) + p.z * m(2, 0) + p.w * m(3, 0),
-                        p.x * m(0, 1) + p.y * m(1, 1) + p.z * m(2, 1) + p.w * m(3, 1),
-                        p.x * m(0, 2) + p.y * m(1, 2) + p.z * m(2, 2) + p.w * m(3, 2),
-                        p.x * m(0, 3) + p.y * m(1, 3) + p.z * m(2, 3) + p.w * m(3, 3));
+    return hpoint3_t<S>(
+        p.x * m(0, 0) + p.y * m(1, 0) + p.z * m(2, 0) + p.w * m(3, 0),
+        p.x * m(0, 1) + p.y * m(1, 1) + p.z * m(2, 1) + p.w * m(3, 1),
+        p.x * m(0, 2) + p.y * m(1, 2) + p.z * m(2, 2) + p.w * m(3, 2),
+        p.x * m(0, 3) + p.y * m(1, 3) + p.z * m(2, 3) + p.w * m(3, 3));
 }
 
-template<class T>
-matrix44_t<T> transpose(const matrix44_t<T>& m)
+template <class T> matrix44_t<T> transpose(const matrix44_t<T>& m)
 {
     matrix44_t<T> x(m);
     x.transpose();
@@ -272,7 +280,7 @@ matrix44_t<T> transpose(const matrix44_t<T>& m)
 }
 
 // Adapted from ILM's Imath library.
-template<class T>
+template <class T>
 boost::optional<matrix44_t<T>> invert_gauss_jordan(const matrix44_t<T>& m)
 {
     int           i, j, k;
@@ -282,7 +290,7 @@ boost::optional<matrix44_t<T>> invert_gauss_jordan(const matrix44_t<T>& m)
     // Forward elimination
     for (i = 0; i < 3; ++i)
     {
-        int pivot     = i;
+        int pivot = i;
         T   pivotsize = t(i, i);
 
         if (pivotsize < 0)
@@ -297,7 +305,7 @@ boost::optional<matrix44_t<T>> invert_gauss_jordan(const matrix44_t<T>& m)
 
             if (tmp > pivotsize)
             {
-                pivot     = j;
+                pivot = j;
                 pivotsize = tmp;
             }
         }
@@ -311,12 +319,12 @@ boost::optional<matrix44_t<T>> invert_gauss_jordan(const matrix44_t<T>& m)
             {
                 T tmp;
 
-                tmp         = t(i, j);
-                t(i, j)     = t(pivot, j);
+                tmp = t(i, j);
+                t(i, j) = t(pivot, j);
                 t(pivot, j) = tmp;
 
-                tmp         = s(i, j);
-                s(i, j)     = s(pivot, j);
+                tmp = s(i, j);
+                s(i, j) = s(pivot, j);
                 s(pivot, j) = tmp;
             }
         }
@@ -363,31 +371,31 @@ boost::optional<matrix44_t<T>> invert_gauss_jordan(const matrix44_t<T>& m)
 }
 
 // Adapted from ILM's Imath library.
-template<class T>
-boost::optional<matrix44_t<T>> invert(const matrix44_t<T>& m)
+template <class T> boost::optional<matrix44_t<T>> invert(const matrix44_t<T>& m)
 {
     if (m(0, 3) != 0 || m(1, 3) != 0 || m(2, 3) != 0 || m(3, 3) != 1)
         return invert_gauss_jordan(m);
 
-    matrix44_t<T> s(m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2),
-                    m(2, 1) * m(0, 2) - m(0, 1) * m(2, 2),
-                    m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2),
-                    0,
+    matrix44_t<T> s(
+        m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2),
+        m(2, 1) * m(0, 2) - m(0, 1) * m(2, 2),
+        m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2),
+        0,
 
-                    m(2, 0) * m(1, 2) - m(1, 0) * m(2, 2),
-                    m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2),
-                    m(1, 0) * m(0, 2) - m(0, 0) * m(1, 2),
-                    0,
+        m(2, 0) * m(1, 2) - m(1, 0) * m(2, 2),
+        m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2),
+        m(1, 0) * m(0, 2) - m(0, 0) * m(1, 2),
+        0,
 
-                    m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1),
-                    m(2, 0) * m(0, 1) - m(0, 0) * m(2, 1),
-                    m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1),
-                    0,
+        m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1),
+        m(2, 0) * m(0, 1) - m(0, 0) * m(2, 1),
+        m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1),
+        0,
 
-                    0,
-                    0,
-                    0,
-                    1);
+        0,
+        0,
+        0,
+        1);
 
     T r = m(0, 0) * s(0, 0) + m(0, 1) * s(1, 0) + m(0, 2) * s(2, 0);
 
@@ -425,6 +433,5 @@ typedef matrix44_t<float>  matrix44f_t;
 typedef matrix44_t<double> matrix44d_t;
 typedef matrix44_t<half>   matrix44h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

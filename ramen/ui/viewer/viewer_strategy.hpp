@@ -35,7 +35,7 @@ class viewer_strategy_t : public QObject
 {
     Q_OBJECT
 
-public:
+  public:
     viewer_strategy_t(viewer_context_t* p);
     ~viewer_strategy_t() override;
 
@@ -95,14 +95,15 @@ public:
 
     // eyedropper & color picking
     virtual Imath::Color4f color_at(int x, int y) const;
-    virtual void           pick_colors_in_box(const Imath::Box2i&                        b,
-                                              std::function<void(const Imath::Color4f&)> f) const;
+    virtual void           pick_colors_in_box(
+                  const Imath::Box2i&                        b,
+                  std::function<void(const Imath::Color4f&)> f) const;
 
     // utils
     virtual void frame_rect(const Imath::Box2f& b) const;
     virtual void frame_rect(const Imath::Box2i& b) const;
 
-private:
+  private:
     virtual void do_begin_active_view() {}
     virtual void do_end_active_view() {}
 
@@ -114,7 +115,7 @@ class default_viewer_strategy_t : public viewer_strategy_t
 {
     Q_OBJECT
 
-public:
+  public:
     default_viewer_strategy_t(viewer_context_t* p);
 
     virtual void set_active_node(node_t* n);
@@ -123,7 +124,6 @@ public:
     bool can_display_node(node_t* n) const override;
 };
 
-}  // viewer
-}  // ui
-}  // ramen
-
+}  // namespace viewer
+}  // namespace ui
+}  // namespace ramen

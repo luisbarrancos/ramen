@@ -12,16 +12,15 @@ namespace util
 {
 class command_line_parser_t
 {
-public:
+  public:
     command_line_parser_t(int cmd_argc, char** cmd_argv);
     ~command_line_parser_t();
 
     int    argc;
     char** argv;
 
-private:
+  private:
 };
 
-}  // util
-}  // ramen
-
+}  // namespace util
+}  // namespace ramen

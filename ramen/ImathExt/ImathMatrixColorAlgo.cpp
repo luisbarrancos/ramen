@@ -28,8 +28,8 @@ void matrixmult(float a[4][4], float b[4][4], float c[4][4])
     for (y = 0; y < 4; y++)
         for (x = 0; x < 4; x++)
         {
-            temp[y][x]
-                = b[y][0] * a[0][x] + b[y][1] * a[1][x] + b[y][2] * a[2][x] + b[y][3] * a[3][x];
+            temp[y][x] = b[y][0] * a[0][x] + b[y][1] * a[1][x] +
+                         b[y][2] * a[2][x] + b[y][3] * a[3][x];
         }
     for (y = 0; y < 4; y++)
         for (x = 0; x < 4; x++)
@@ -64,7 +64,14 @@ void identmat(float* matrix)
  *	xformpnt -
  *		transform a 3D point using a matrix
  */
-void xformpnt(float matrix[4][4], float x, float y, float z, float* tx, float* ty, float* tz)
+void xformpnt(
+    float  matrix[4][4],
+    float  x,
+    float  y,
+    float  z,
+    float* tx,
+    float* ty,
+    float* tz)
 {
     *tx = x * matrix[0][0] + y * matrix[1][0] + z * matrix[2][0] + matrix[3][0];
     *ty = x * matrix[0][1] + y * matrix[1][1] + z * matrix[2][1] + matrix[3][1];
@@ -187,7 +194,6 @@ void zshearmat(float mat[4][4], float dx, float dy)
     matrixmult(mmat, mat, mat);
 }
 
-
 /*
  *	huerotatemat -
  *		rotate the hue, while maintaining luminance.
@@ -239,7 +245,7 @@ void huerotatemat(float mat[4][4], float rot)
     matrixmult(mmat, mat, mat);
 }
 
-}  // unnamed
+}  // namespace
 
 Imath::M44f hueRotationMatrix(float angle)
 {
@@ -281,5 +287,5 @@ Imath::M44f gainMatrix(const Imath::V3f& g)
 
 Imath::M44f gainMatrix(float g) { return gainMatrix(Imath::V3f(g, g, g)); }
 
-}  // ImathExt
-}  // ramen
+}  // namespace ImathExt
+}  // namespace ramen

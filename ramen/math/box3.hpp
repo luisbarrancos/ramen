@@ -22,10 +22,9 @@ namespace math
 \ingroup math
 \brief A three dimensional bounding box.
 */
-template<class T>
-class box3_t : boost::equality_comparable<box3_t<T>>
+template <class T> class box3_t : boost::equality_comparable<box3_t<T>>
 {
-public:
+  public:
     typedef T            value_type;
     typedef point3_t<T>  point_type;
     typedef vector3_t<T> vector_type;
@@ -33,14 +32,14 @@ public:
     box3_t() { reset(); }
 
     box3_t(const point_type& p)
-    : min(p)
-    , max(p)
+      : min(p)
+      , max(p)
     {
     }
 
     box3_t(const point_type& pmin, const point_type& pmax)
-    : min(pmin)
-    , max(pmax)
+      : min(pmin)
+      , max(pmax)
     {
     }
 
@@ -50,7 +49,10 @@ public:
         max.x = max.y = max.z = -std::numeric_limits<T>::max();
     }
 
-    bool empty() const { return max.x < min.x || max.y < min.y || max.z < min.z; }
+    bool empty() const
+    {
+        return max.x < min.x || max.y < min.y || max.z < min.z;
+    }
 
     vector_type size() const { return max - min; }
 
@@ -91,12 +93,15 @@ public:
     }
 
     // regular concept
-    bool operator==(const box3_t<T>& other) const { return min == other.min && max == other.max; }
+    bool operator==(const box3_t<T>& other) const
+    {
+        return min == other.min && max == other.max;
+    }
 
     point_type min, max;
 };
 
-template<class T>
+template <class T>
 box3_t<T> transform(const box3_t<T>& box, const matrix44_t<T>& m)
 {
     box3_t<T> x(box);
@@ -109,6 +114,5 @@ typedef box3_t<float>  box3f_t;
 typedef box3_t<double> box3d_t;
 typedef box3_t<half>   box3h_t;
 
-}  // math
-}  // ramen
-
+}  // namespace math
+}  // namespace ramen

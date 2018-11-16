@@ -24,10 +24,9 @@ namespace ramen
 {
 namespace memory
 {
-template<class MemPool>
-class pool_allocator_t : boost::noncopyable
+template <class MemPool> class pool_allocator_t : boost::noncopyable
 {
-public:
+  public:
     explicit pool_allocator_t(boost::uint64_t size) { pool_.init(size); }
 
     void add_cache(lru_cache_interface* c) { caches_.push_back(c); }
@@ -52,7 +51,8 @@ public:
                 break;
         }
 
-        // if we get here, it means there's not enough memory & all caches are empty.
+        // if we get here, it means there's not enough memory & all caches are
+        // empty.
         throw boost::enable_error_info(std::bad_alloc());
         s = 0;
         return 0;
@@ -69,11 +69,12 @@ public:
         pool_.deallocate(p, s);
     }
 
-private:
+  private:
     bool erase_lru()
     {
         int                      lru_cache = -1;
-        boost::posix_time::ptime oldest    = boost::posix_time::microsec_clock::universal_time();
+        boost::posix_time::ptime oldest =
+            boost::posix_time::microsec_clock::universal_time();
 
         for (int i = 0, ie = caches_.size(); i < ie; ++i)
         {
@@ -84,7 +85,7 @@ private:
                 if (touch_time < oldest)
                 {
                     lru_cache = i;
-                    oldest    = touch_time;
+                    oldest = touch_time;
                 }
             }
         }
@@ -102,6 +103,5 @@ private:
     std::vector<lru_cache_interface*> caches_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace memory
+}  // namespace ramen

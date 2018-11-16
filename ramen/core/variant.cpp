@@ -8,8 +8,7 @@ namespace ramen
 {
 namespace core
 {
-template<class T>
-struct variant_t::vtable_impl
+template <class T> struct variant_t::vtable_impl
 {
     static type_t type() { return type_traits<T>::type(); }
 
@@ -34,8 +33,7 @@ struct variant_t::vtable_impl
 };
 
 // Needs special handling, as string_t copy constructor can throw.
-template<>
-struct variant_t::vtable_impl<string_t>
+template <> struct variant_t::vtable_impl<string_t>
 {
     static type_t type() { return type_traits<string_t>::type(); }
 
@@ -55,7 +53,7 @@ struct variant_t::vtable_impl<string_t>
             // From here, nothing can throw.
             new (dst.storage()) string_t();
             string_t& dst_str(*reinterpret_cast<string_t*>(dst.storage()));
-            dst_str   = std::move(tmp);
+            dst_str = std::move(tmp);
             dst.vptr_ = src.vptr_;
         }
         catch (...)
@@ -66,8 +64,10 @@ struct variant_t::vtable_impl<string_t>
 
     static bool equals(const variant_t& a, const variant_t& b)
     {
-        const string_t& a_data = *reinterpret_cast<const string_t*>(a.storage());
-        const string_t& b_data = *reinterpret_cast<const string_t*>(b.storage());
+        const string_t& a_data =
+            *reinterpret_cast<const string_t*>(a.storage());
+        const string_t& b_data =
+            *reinterpret_cast<const string_t*>(b.storage());
         return a_data == b_data;
     }
 };
@@ -86,7 +86,10 @@ variant_t::variant_t(const char* x) { init<string_t>(x); }
 variant_t::variant_t(char* x) { init<string_t>(x); }
 variant_t::variant_t(const math::box2i_t& x) { init<math::box2i_t>(x); }
 
-variant_t::variant_t(const variant_t& other) { other.vptr_->clone(other, *this); }
+variant_t::variant_t(const variant_t& other)
+{
+    other.vptr_->clone(other, *this);
+}
 
 variant_t::~variant_t() { vptr_->destroy(*this); }
 
@@ -99,15 +102,14 @@ variant_t& variant_t::operator=(const variant_t& other)
 
 type_t variant_t::type() const { return vptr_->type(); }
 
-template<class T>
-void variant_t::init(const T& x)
+template <class T> void variant_t::init(const T& x)
 {
     new (storage()) T(x);
 
-    static vtable vtbl = { &vtable_impl<T>::type,
-                           &vtable_impl<T>::destroy,
-                           &vtable_impl<T>::clone,
-                           &vtable_impl<T>::equals };
+    static vtable vtbl = {&vtable_impl<T>::type,
+                          &vtable_impl<T>::destroy,
+                          &vtable_impl<T>::clone,
+                          &vtable_impl<T>::equals};
 
     vptr_ = &vtbl;
 }
@@ -117,7 +119,10 @@ bool variant_t::operator==(const variant_t& other) const
     return type() == other.type() && vptr_->equals(*this, other);
 }
 
-bool variant_t::operator!=(const variant_t& other) const { return !(*this == other); }
+bool variant_t::operator!=(const variant_t& other) const
+{
+    return !(*this == other);
+}
 
 const unsigned char* variant_t::storage() const { return &storage_[0]; }
 
@@ -154,5 +159,5 @@ std::ostream& operator<<(std::ostream& os, const variant_t& x)
     return os;
 }
 
-}  // core
-}  // ramen
+}  // namespace core
+}  // namespace ramen

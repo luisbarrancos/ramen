@@ -19,8 +19,10 @@
 
 namespace ramen
 {
-shape_transform_param_t::shape_transform_param_t(const std::string& name, const std::string& id)
-: composite_param_t(name)
+shape_transform_param_t::shape_transform_param_t(
+    const std::string& name,
+    const std::string& id)
+  : composite_param_t(name)
 {
     set_id(id);
 
@@ -50,14 +52,20 @@ shape_transform_param_t::shape_transform_param_t(const std::string& name, const 
     set_create_track(false);
 }
 
-shape_transform_param_t::shape_transform_param_t(const shape_transform_param_t& other)
-: composite_param_t(other)
+shape_transform_param_t::shape_transform_param_t(
+    const shape_transform_param_t& other)
+  : composite_param_t(other)
 {
 }
 
-const param_t& shape_transform_param_t::center_param() const { return params()[0]; }
+const param_t& shape_transform_param_t::center_param() const
+{
+    return params()[0];
+}
 
-void shape_transform_param_t::set_center(const Imath::V2f& c, change_reason reason)
+void shape_transform_param_t::set_center(
+    const Imath::V2f& c,
+    change_reason     reason)
 {
     float2_param_t* p = dynamic_cast<float2_param_t*>(&params()[0]);
     assert(p);
@@ -66,10 +74,15 @@ void shape_transform_param_t::set_center(const Imath::V2f& c, change_reason reas
     p->update_widgets();
 }
 
-const param_t& shape_transform_param_t::translate_param() const { return params()[1]; }
-param_t&       shape_transform_param_t::translate_param() { return params()[1]; }
+const param_t& shape_transform_param_t::translate_param() const
+{
+    return params()[1];
+}
+param_t& shape_transform_param_t::translate_param() { return params()[1]; }
 
-void shape_transform_param_t::set_translate(const Imath::V2f& t, change_reason reason)
+void shape_transform_param_t::set_translate(
+    const Imath::V2f& t,
+    change_reason     reason)
 {
     float2_param_t* p = dynamic_cast<float2_param_t*>(&params()[1]);
     assert(p);
@@ -78,57 +91,67 @@ void shape_transform_param_t::set_translate(const Imath::V2f& t, change_reason r
     p->update_widgets();
 }
 
-const param_t& shape_transform_param_t::scale_param() const { return params()[2]; }
-param_t&       shape_transform_param_t::scale_param() { return params()[2]; }
+const param_t& shape_transform_param_t::scale_param() const
+{
+    return params()[2];
+}
+param_t& shape_transform_param_t::scale_param() { return params()[2]; }
 
-const param_t& shape_transform_param_t::rotate_param() const { return params()[3]; }
-param_t&       shape_transform_param_t::rotate_param() { return params()[3]; }
+const param_t& shape_transform_param_t::rotate_param() const
+{
+    return params()[3];
+}
+param_t& shape_transform_param_t::rotate_param() { return params()[3]; }
 
 Imath::M33f shape_transform_param_t::matrix_at_frame(float frame) const
 {
-    Imath::V2f c     = get_value_at_frame<Imath::V2f>(center_param(), frame);
-    Imath::V2f t     = get_value_at_frame<Imath::V2f>(translate_param(), frame);
+    Imath::V2f c = get_value_at_frame<Imath::V2f>(center_param(), frame);
+    Imath::V2f t = get_value_at_frame<Imath::V2f>(translate_param(), frame);
     float      angle = get_value_at_frame<float>(rotate_param(), frame);
-    Imath::V2f s     = get_value_at_frame<Imath::V2f>(scale_param(), frame);
+    Imath::V2f s = get_value_at_frame<Imath::V2f>(scale_param(), frame);
 
-    Imath::M33f m = Imath::M33f().setTranslation(-c) * Imath::M33f().setScale(s)
-                    * Imath::M33f().setRotation(angle * math::constants<float>::deg2rad())
-                    * Imath::M33f().setTranslation(t) * Imath::M33f().setTranslation(c);
+    Imath::M33f m =
+        Imath::M33f().setTranslation(-c) * Imath::M33f().setScale(s) *
+        Imath::M33f().setRotation(angle * math::constants<float>::deg2rad()) *
+        Imath::M33f().setTranslation(t) * Imath::M33f().setTranslation(c);
 
     return m;
 }
 
 Imath::M33f shape_transform_param_t::matrix() const
 {
-    Imath::V2f c     = get_value<Imath::V2f>(center_param());
-    Imath::V2f t     = get_value<Imath::V2f>(translate_param());
+    Imath::V2f c = get_value<Imath::V2f>(center_param());
+    Imath::V2f t = get_value<Imath::V2f>(translate_param());
     float      angle = get_value<float>(rotate_param());
-    Imath::V2f s     = get_value<Imath::V2f>(scale_param());
+    Imath::V2f s = get_value<Imath::V2f>(scale_param());
 
-    Imath::M33f m = Imath::M33f().setTranslation(-c) * Imath::M33f().setScale(s)
-                    * Imath::M33f().setRotation(angle * math::constants<float>::deg2rad())
-                    * Imath::M33f().setTranslation(t) * Imath::M33f().setTranslation(c);
+    Imath::M33f m =
+        Imath::M33f().setTranslation(-c) * Imath::M33f().setScale(s) *
+        Imath::M33f().setRotation(angle * math::constants<float>::deg2rad()) *
+        Imath::M33f().setTranslation(t) * Imath::M33f().setTranslation(c);
 
     return m;
 }
 
 /*
-void shape_transform_param_t::apply_track( float start_frame, float end_frame, const
-image::tracker_node_t *tracker, image::apply_track_mode mode, image::apply_track_use use)
+void shape_transform_param_t::apply_track( float start_frame, float end_frame,
+const image::tracker_node_t *tracker, image::apply_track_mode mode,
+image::apply_track_use use)
 {
-    Imath::V2f center = get_absolute_value_at_frame<Imath::V2f>( center_param(), start_frame);
+    Imath::V2f center = get_absolute_value_at_frame<Imath::V2f>( center_param(),
+start_frame);
 
     float2_param_t *trans = dynamic_cast<float2_param_t*>( &translate_param());
     float_param_t *rot = dynamic_cast<float_param_t*>( &rotate_param());
     float2_param_t *scale = dynamic_cast<float2_param_t*>( &scale_param());
 
     param_set()->begin_edit();
-    tracker->apply_track( start_frame, end_frame, mode, use, center, trans, rot, scale);
-    param_set()->end_edit( true);
+    tracker->apply_track( start_frame, end_frame, mode, use, center, trans, rot,
+scale); param_set()->end_edit( true);
 
     parameterised()->update_widgets();
     app().ui()->update_anim_editors();
 }
 */
 
-}  // ramen
+}  // namespace ramen

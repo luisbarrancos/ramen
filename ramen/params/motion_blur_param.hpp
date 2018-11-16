@@ -20,27 +20,31 @@ class RAMEN_API motion_blur_param_t : public static_param_t
 {
     Q_OBJECT
 
-public:
+  public:
     explicit motion_blur_param_t(const std::string& name);
 
     bool motion_blur_enabled() const;
 
-    motion_blur_info_t::loop_data_t loop_data(float time,
-                                              int   extra_samples,
-                                              float shutter_factor) const;
+    motion_blur_info_t::loop_data_t loop_data(
+        float time,
+        int   extra_samples,
+        float shutter_factor) const;
 
-protected:
+  protected:
     motion_blur_param_t(const motion_blur_param_t& other);
     void operator=(const motion_blur_param_t& other);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
     void samples_changed(double v);
     void shutter_changed(double v);
     void filter_changed(int index);
 
-private:
-    param_t* do_clone() const override { return new motion_blur_param_t(*this); }
+  private:
+    param_t* do_clone() const override
+    {
+        return new motion_blur_param_t(*this);
+    }
 
     void do_add_to_hash(hash::generator_t& hash_gen) const override;
 
@@ -55,5 +59,4 @@ private:
     QPointer<QComboBox>            filter_;
 };
 
-}  // namespace
-
+}  // namespace ramen

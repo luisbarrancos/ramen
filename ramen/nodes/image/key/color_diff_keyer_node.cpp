@@ -19,21 +19,22 @@ namespace
 {
 struct color_diff_key_fun
 {
-    color_diff_key_fun(const Imath::Color4f& key,
-                       float                 screen,
-                       float                 complement,
-                       float                 shadows,
-                       float                 alpha_low,
-                       float                 alpha_high,
-                       int                   output)
+    color_diff_key_fun(
+        const Imath::Color4f& key,
+        float                 screen,
+        float                 complement,
+        float                 shadows,
+        float                 alpha_low,
+        float                 alpha_high,
+        int                   output)
     {
-        key_        = key;
-        screen_     = screen;
+        key_ = key;
+        screen_ = screen;
         complement_ = complement;
-        shadows_    = shadows;
-        alpha_low_  = alpha_low;
+        shadows_ = shadows;
+        alpha_low_ = alpha_low;
         alpha_high_ = alpha_high;
-        output_     = output;
+        output_ = output;
     }
 
     image::pixel_t operator()(const image::pixel_t& p) const
@@ -42,7 +43,9 @@ struct color_diff_key_fun
         return (*this)(p, one);
     }
 
-    image::pixel_t operator()(const image::pixel_t& p, const image::pixel_t& msk) const
+    image::pixel_t operator()(
+        const image::pixel_t& p,
+        const image::pixel_t& msk) const
     {
         float rix, gix, bix, rsc, gsc, bsc;
 
@@ -66,7 +69,10 @@ struct color_diff_key_fun
         }
 
         float ax = 1.0f - (screen_ * clamp(gix, 0.0f, 1.0f));
-        ax += (complement_ * std::max(clamp(rix - rsc, 0.0f, 1.0f), clamp(bix - bsc, 0.0f, 1.0f)));
+        ax +=
+            (complement_ *
+             std::max(
+                 clamp(rix - rsc, 0.0f, 1.0f), clamp(bix - bsc, 0.0f, 1.0f)));
 
         if (gsc != 0 && gix < gsc)
             ax += shadows_ * (1.0f - gix / gsc);
@@ -88,29 +94,29 @@ struct color_diff_key_fun
         switch (output_)
         {
             case 0:
-                boost::gil::get_color(result, boost::gil::red_t())
-                    = boost::gil::get_color(p, boost::gil::red_t()) * ax;
-                boost::gil::get_color(result, boost::gil::green_t())
-                    = boost::gil::get_color(p, boost::gil::green_t()) * ax;
-                boost::gil::get_color(result, boost::gil::blue_t())
-                    = boost::gil::get_color(p, boost::gil::blue_t()) * ax;
+                boost::gil::get_color(result, boost::gil::red_t()) =
+                    boost::gil::get_color(p, boost::gil::red_t()) * ax;
+                boost::gil::get_color(result, boost::gil::green_t()) =
+                    boost::gil::get_color(p, boost::gil::green_t()) * ax;
+                boost::gil::get_color(result, boost::gil::blue_t()) =
+                    boost::gil::get_color(p, boost::gil::blue_t()) * ax;
                 boost::gil::get_color(result, boost::gil::alpha_t()) = ax;
                 break;
 
             case 1:
-                boost::gil::get_color(result, boost::gil::red_t())
-                    = boost::gil::get_color(p, boost::gil::red_t());
-                boost::gil::get_color(result, boost::gil::green_t())
-                    = boost::gil::get_color(p, boost::gil::green_t());
-                boost::gil::get_color(result, boost::gil::blue_t())
-                    = boost::gil::get_color(p, boost::gil::blue_t());
+                boost::gil::get_color(result, boost::gil::red_t()) =
+                    boost::gil::get_color(p, boost::gil::red_t());
+                boost::gil::get_color(result, boost::gil::green_t()) =
+                    boost::gil::get_color(p, boost::gil::green_t());
+                boost::gil::get_color(result, boost::gil::blue_t()) =
+                    boost::gil::get_color(p, boost::gil::blue_t());
                 boost::gil::get_color(result, boost::gil::alpha_t()) = ax;
                 break;
 
             case 2:  // alpha
-                boost::gil::get_color(result, boost::gil::red_t())   = ax;
+                boost::gil::get_color(result, boost::gil::red_t()) = ax;
                 boost::gil::get_color(result, boost::gil::green_t()) = ax;
-                boost::gil::get_color(result, boost::gil::blue_t())  = ax;
+                boost::gil::get_color(result, boost::gil::blue_t()) = ax;
                 boost::gil::get_color(result, boost::gil::alpha_t()) = ax;
                 break;
 
@@ -118,9 +124,9 @@ struct color_diff_key_fun
                 if (ax > 0.0f && ax < 1.0f)
                     ax = 0.5f;
 
-                boost::gil::get_color(result, boost::gil::red_t())   = ax;
+                boost::gil::get_color(result, boost::gil::red_t()) = ax;
                 boost::gil::get_color(result, boost::gil::green_t()) = ax;
-                boost::gil::get_color(result, boost::gil::blue_t())  = ax;
+                boost::gil::get_color(result, boost::gil::blue_t()) = ax;
                 boost::gil::get_color(result, boost::gil::alpha_t()) = ax;
                 break;
         }
@@ -128,7 +134,7 @@ struct color_diff_key_fun
         return result;
     }
 
-private:
+  private:
     Imath::Color4f key_;
     float          screen_;
     float          complement_;
@@ -138,10 +144,10 @@ private:
     int            output_;
 };
 
-}  // unnamed
+}  // namespace
 
 color_diff_keyer_node_t::color_diff_keyer_node_t()
-: keyer_node_t()
+  : keyer_node_t()
 {
     set_name("cdiff_key");
 }
@@ -150,8 +156,8 @@ void color_diff_keyer_node_t::do_create_params()
 {
     std::auto_ptr<popup_param_t> r(new popup_param_t("Output"));
     r->set_id("output");
-    r->menu_items()
-        = std::vector<std::string>({ "Premultiplied", "Unpremultiplied", "Alpha", "Status" });
+    r->menu_items() = std::vector<std::string>(
+        {"Premultiplied", "Unpremultiplied", "Alpha", "Status"});
     add_param(r);
 
     std::auto_ptr<color_param_t> p(new color_param_t("Color"));
@@ -210,20 +216,21 @@ void color_diff_keyer_node_t::do_process(const render::context_t& context)
         boost::gil::tbb_transform_pixels(
             in0->const_subimage_view(area),
             subimage_view(area),
-            color_diff_key_fun(get_value<Imath::Color4f>(param("color")),
-                               get_value<float>(param("screen_mult")),
-                               get_value<float>(param("comp_mult")),
-                               get_value<float>(param("shd_mult")),
-                               get_value<float>(param("alpha_low")),
-                               get_value<float>(param("alpha_high")),
-                               get_value<int>(param("output"))));
+            color_diff_key_fun(
+                get_value<Imath::Color4f>(param("color")),
+                get_value<float>(param("screen_mult")),
+                get_value<float>(param("comp_mult")),
+                get_value<float>(param("shd_mult")),
+                get_value<float>(param("alpha_low")),
+                get_value<float>(param("alpha_high")),
+                get_value<int>(param("output"))));
     }
     else
     {
         image_node_t* in1 = input_as<image_node_t>(1);
 
-        Imath::Box2i area(
-            ImathExt::intersect(ImathExt::intersect(defined(), in0->defined()), in1->defined()));
+        Imath::Box2i area(ImathExt::intersect(
+            ImathExt::intersect(defined(), in0->defined()), in1->defined()));
 
         if (area.isEmpty())
             return;
@@ -232,13 +239,14 @@ void color_diff_keyer_node_t::do_process(const render::context_t& context)
             in0->const_subimage_view(area),
             in1->const_subimage_view(area),
             subimage_view(area),
-            color_diff_key_fun(get_value<Imath::Color4f>(param("color")),
-                               get_value<float>(param("screen_mult")),
-                               get_value<float>(param("comp_mult")),
-                               get_value<float>(param("shd_mult")),
-                               get_value<float>(param("alpha_low")),
-                               get_value<float>(param("alpha_high")),
-                               get_value<int>(param("output"))));
+            color_diff_key_fun(
+                get_value<Imath::Color4f>(param("color")),
+                get_value<float>(param("screen_mult")),
+                get_value<float>(param("comp_mult")),
+                get_value<float>(param("shd_mult")),
+                get_value<float>(param("alpha_low")),
+                get_value<float>(param("alpha_high")),
+                get_value<int>(param("output"))));
     }
 }
 
@@ -251,21 +259,22 @@ const node_metaclass_t* color_diff_keyer_node_t::metaclass() const
     return &color_diff_keyer_node_metaclass();
 }
 
-const node_metaclass_t& color_diff_keyer_node_t::color_diff_keyer_node_metaclass()
+const node_metaclass_t& color_diff_keyer_node_t::
+    color_diff_keyer_node_metaclass()
 {
     static bool             inited(false);
     static node_metaclass_t info;
 
     if (!inited)
     {
-        info.id            = "image.builtin.cdiff_keyer";
+        info.id = "image.builtin.cdiff_keyer";
         info.major_version = 1;
         info.minor_version = 0;
-        info.menu          = "Image";
-        info.submenu       = "Key";
-        info.menu_item     = "Color Diff Keyer";
-        info.create        = &create_color_diff_keyer_node;
-        inited             = true;
+        info.menu = "Image";
+        info.submenu = "Key";
+        info.menu_item = "Color Diff Keyer";
+        info.create = &create_color_diff_keyer_node;
+        inited = true;
     }
 
     return info;
@@ -274,5 +283,5 @@ const node_metaclass_t& color_diff_keyer_node_t::color_diff_keyer_node_metaclass
 static bool registered = node_factory_t::instance().register_node(
     color_diff_keyer_node_t::color_diff_keyer_node_metaclass());
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

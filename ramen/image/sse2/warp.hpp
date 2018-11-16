@@ -16,39 +16,42 @@ namespace image
 {
 namespace sse2
 {
-void warp_bilinear(const Imath::Box2i&       src_area,
-                   const const_image_view_t& src,
-                   const Imath::Box2i&       dst_area,
-                   const image_view_t&       dst,
-                   const warp_function_t&    wfun,
-                   bool                      uv_derivs,
-                   bool                      sequential);
+void warp_bilinear(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const warp_function_t&    wfun,
+    bool                      uv_derivs,
+    bool                      sequential);
 
-void warp_bilinear_tile(const Imath::Box2i&       src_area,
-                        const const_image_view_t& src,
-                        const Imath::Box2i&       dst_area,
-                        const image_view_t&       dst,
-                        const warp_function_t&    wfun,
-                        bool                      uv_derivs,
-                        bool                      sequential);
+void warp_bilinear_tile(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const warp_function_t&    wfun,
+    bool                      uv_derivs,
+    bool                      sequential);
 
-void warp_bilinear_mirror(const Imath::Box2i&       src_area,
-                          const const_image_view_t& src,
-                          const Imath::Box2i&       dst_area,
-                          const image_view_t&       dst,
-                          const warp_function_t&    wfun,
-                          bool                      uv_derivs,
-                          bool                      sequential);
+void warp_bilinear_mirror(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const warp_function_t&    wfun,
+    bool                      uv_derivs,
+    bool                      sequential);
 
-void warp_bicubic(const Imath::Box2i&       src_area,
-                  const const_image_view_t& src,
-                  const Imath::Box2i&       dst_area,
-                  const image_view_t&       dst,
-                  const warp_function_t&    wfun,
-                  bool                      uv_derivs,
-                  bool                      sequential);
+void warp_bicubic(
+    const Imath::Box2i&       src_area,
+    const const_image_view_t& src,
+    const Imath::Box2i&       dst_area,
+    const image_view_t&       dst,
+    const warp_function_t&    wfun,
+    bool                      uv_derivs,
+    bool                      sequential);
 
-}  // namespace
-}  // namespace
-}  // namespace
-
+}  // namespace sse2
+}  // namespace image
+}  // namespace ramen

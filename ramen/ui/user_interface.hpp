@@ -41,12 +41,12 @@ namespace ui
 \brief user interface class.
 */
 class RAMEN_API user_interface_t
-: public QObject
-, boost::noncopyable
+  : public QObject
+  , boost::noncopyable
 {
     Q_OBJECT
 
-public:
+  public:
     user_interface_t();
     ~user_interface_t() override;
 
@@ -105,14 +105,16 @@ public:
     bool question(const std::string& what, bool default_answer = true) const;
 
     // sequence file selector
-    bool image_sequence_file_selector(boost::filesystem::path& p,
-                                      bool&                    sequence,
-                                      bool&                    relative) const;
-    bool image_sequence_file_selector(const std::string&       title,
-                                      const std::string&       types,
-                                      boost::filesystem::path& p,
-                                      bool&                    sequence,
-                                      bool&                    relative) const;
+    bool image_sequence_file_selector(
+        boost::filesystem::path& p,
+        bool&                    sequence,
+        bool&                    relative) const;
+    bool image_sequence_file_selector(
+        const std::string&       title,
+        const std::string&       types,
+        boost::filesystem::path& p,
+        bool&                    sequence,
+        bool&                    relative) const;
 
     // serialization
     void read_ui_state(const serialization::yaml_iarchive_t& in);
@@ -127,8 +129,9 @@ public:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
     // render
-    boost::unique_future<bool>& render_image(render::context_t              context,
-                                             render::image_node_renderer_t& renderer);
+    boost::unique_future<bool>& render_image(
+        render::context_t              context,
+        render::image_node_renderer_t& renderer);
 
     bool rendering() const { return rendering_; }
 
@@ -139,13 +142,13 @@ public:
 
     QFont get_fixed_width_code_font();
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
     void set_start_frame(int t);
     void set_end_frame(int t);
     void set_frame(int t);
 
-private:
+  private:
     void init_ui_style();
     void save_window_state();
     void restore_window_state();
@@ -167,6 +170,5 @@ private:
     bool cancelled_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

@@ -16,7 +16,7 @@ namespace ui
 {
 class node_menu_t
 {
-public:
+  public:
     node_menu_t(const std::string& name);
 
     const std::string& name() const { return name_; }
@@ -28,7 +28,7 @@ public:
 
     void add_action(const std::string& submenu, QAction* action);
 
-private:
+  private:
     std::vector<QMenu*>::iterator find_submenu(const std::string& name);
 
     std::string         name_;
@@ -36,6 +36,5 @@ private:
     std::vector<QMenu*> submenus_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen

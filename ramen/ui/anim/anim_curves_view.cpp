@@ -41,18 +41,19 @@ namespace ramen
 namespace ui
 {
 anim_curves_view_t::anim_curves_view_t(QWidget* parent)
-: QWidget(parent)
-, first_resize_(true)
+  : QWidget(parent)
+  , first_resize_(true)
 {
     setFocusPolicy(Qt::ClickFocus);
     viewport_.set_y_down(true);
-    scroll_mode_        = false;
+    scroll_mode_ = false;
     handle_mouse_event_ = false;
-    snap_               = false;
-    show_tangents_      = true;
+    snap_ = false;
+    show_tangents_ = true;
 
     frame_selected_ = new QAction("Frame Selected", this);
-    connect(frame_selected_, SIGNAL(triggered()), this, SLOT(frame_selection()));
+    connect(
+        frame_selected_, SIGNAL(triggered()), this, SLOT(frame_selection()));
 
     frame_all_ = new QAction("Frame All", this);
     connect(frame_all_, SIGNAL(triggered()), this, SLOT(frame_all()));
@@ -60,12 +61,20 @@ anim_curves_view_t::anim_curves_view_t(QWidget* parent)
     snap_frames_ = new QAction("Snap Frames", this);
     snap_frames_->setCheckable(true);
     snap_frames_->setChecked(false);
-    connect(snap_frames_, SIGNAL(triggered(bool)), this, SLOT(set_snap_frames(bool)));
+    connect(
+        snap_frames_,
+        SIGNAL(triggered(bool)),
+        this,
+        SLOT(set_snap_frames(bool)));
 
     show_tans_ = new QAction("Show Tangents", this);
     show_tans_->setCheckable(true);
     show_tans_->setChecked(true);
-    connect(show_tans_, SIGNAL(triggered(bool)), this, SLOT(set_show_tangents(bool)));
+    connect(
+        show_tans_,
+        SIGNAL(triggered(bool)),
+        this,
+        SLOT(set_show_tangents(bool)));
 }
 
 float anim_curves_view_t::time_scale() const { return viewport_.zoom_x(); }
@@ -93,7 +102,8 @@ void anim_curves_view_t::keyPressEvent(QKeyEvent* event)
 
         case Qt::Key_Comma:
         {
-            Imath::V2f p(viewport_.screen_to_world(viewport_.device().center()));
+            Imath::V2f p(
+                viewport_.screen_to_world(viewport_.device().center()));
             viewport_.zoom(p, 1.33f);
             update();
             event->accept();
@@ -102,7 +112,8 @@ void anim_curves_view_t::keyPressEvent(QKeyEvent* event)
 
         case Qt::Key_Period:
         {
-            Imath::V2f p(viewport_.screen_to_world(viewport_.device().center()));
+            Imath::V2f p(
+                viewport_.screen_to_world(viewport_.device().center()));
             viewport_.zoom(p, 0.66f);
             update();
             event->accept();
@@ -116,7 +127,8 @@ void anim_curves_view_t::keyPressEvent(QKeyEvent* event)
             break;
 
         default:
-            app().ui()->anim_editor().toolbar().tool()->key_press_event(*this, event);
+            app().ui()->anim_editor().toolbar().tool()->key_press_event(
+                *this, event);
             break;
     }
 }
@@ -134,7 +146,8 @@ void anim_curves_view_t::keyReleaseEvent(QKeyEvent* event)
             break;
 
         default:
-            app().ui()->anim_editor().toolbar().tool()->key_release_event(*this, event);
+            app().ui()->anim_editor().toolbar().tool()->key_release_event(
+                *this, event);
             break;
     }
 }
@@ -149,21 +162,21 @@ void anim_curves_view_t::mousePressEvent(QMouseEvent* event)
     }
 
     handle_mouse_event_ = true;
-    push_x_             = event->x();
-    push_y_             = event->y();
-    last_x_             = event->x();
-    last_y_             = event->y();
+    push_x_ = event->x();
+    push_y_ = event->y();
+    last_x_ = event->x();
+    last_y_ = event->y();
 
-    scroll_mode_    = false;
-    zoom_mode_      = false;
-    zoom_center_    = screen_to_world(Imath::V2i(push_x_, push_y_));
+    scroll_mode_ = false;
+    zoom_mode_ = false;
+    zoom_center_ = screen_to_world(Imath::V2i(push_x_, push_y_));
     move_time_mode_ = false;
 
     if (event->modifiers() & Qt::AltModifier)
     {
         if (event->modifiers() & Qt::ShiftModifier)
         {
-            zoom_mode_   = true;
+            zoom_mode_ = true;
             zoom_center_ = screen_to_world(Imath::V2i(push_x_, push_y_));
         }
         else
@@ -184,7 +197,8 @@ void anim_curves_view_t::mousePressEvent(QMouseEvent* event)
     else
     {
         app().ui()->begin_interaction();
-        app().ui()->anim_editor().toolbar().tool()->mouse_press_event(*this, event);
+        app().ui()->anim_editor().toolbar().tool()->mouse_press_event(
+            *this, event);
     }
 }
 
@@ -200,7 +214,8 @@ void anim_curves_view_t::mouseMoveEvent(QMouseEvent* event)
     {
         if (scroll_mode_)
         {
-            viewport_.scroll(Imath::V2i(-(event->x() - last_x_), -(event->y() - last_y_)));
+            viewport_.scroll(
+                Imath::V2i(-(event->x() - last_x_), -(event->y() - last_y_)));
             update();
             event->accept();
         }
@@ -209,8 +224,8 @@ void anim_curves_view_t::mouseMoveEvent(QMouseEvent* event)
             if (zoom_mode_)
             {
                 const float zoom_speed = 0.05f;
-                float       zoomx      = 1.0f + (zoom_speed * (event->x() - last_x_));
-                float       zoomy      = 1.0f + (zoom_speed * (event->y() - last_y_));
+                float zoomx = 1.0f + (zoom_speed * (event->x() - last_x_));
+                float zoomy = 1.0f + (zoom_speed * (event->y() - last_y_));
 
                 viewport_.zoom(zoom_center_, zoomx, zoomy);
                 update();
@@ -233,7 +248,12 @@ void anim_curves_view_t::mouseMoveEvent(QMouseEvent* event)
                         app().ui()->set_frame(q.x);
                 }
                 else
-                    app().ui()->anim_editor().toolbar().tool()->mouse_drag_event(*this, event);
+                    app()
+                        .ui()
+                        ->anim_editor()
+                        .toolbar()
+                        .tool()
+                        ->mouse_drag_event(*this, event);
             }
         }
 
@@ -252,14 +272,15 @@ void anim_curves_view_t::mouseReleaseEvent(QMouseEvent* event)
 
     if (!scroll_mode_ && !zoom_mode_ && !move_time_mode_)
     {
-        app().ui()->anim_editor().toolbar().tool()->mouse_release_event(*this, event);
+        app().ui()->anim_editor().toolbar().tool()->mouse_release_event(
+            *this, event);
         app().ui()->end_interaction();
     }
     else
         event->accept();
 
-    scroll_mode_    = false;
-    zoom_mode_      = false;
+    scroll_mode_ = false;
+    zoom_mode_ = false;
     move_time_mode_ = false;
 }
 
@@ -274,12 +295,13 @@ void anim_curves_view_t::paintEvent(QPaintEvent* event)
 
     // draw in world space
     Imath::M33f view_xform_ = viewport_.world_to_screen_matrix();
-    QMatrix     qm(view_xform_[0][0],
-               view_xform_[0][1],
-               view_xform_[1][0],
-               view_xform_[1][1],
-               view_xform_[2][0],
-               view_xform_[2][1]);
+    QMatrix     qm(
+        view_xform_[0][0],
+        view_xform_[0][1],
+        view_xform_[1][0],
+        view_xform_[1][1],
+        view_xform_[2][0],
+        view_xform_[2][1]);
     painter.setWorldTransform(QTransform(qm));
 
     QPen pen;
@@ -344,10 +366,12 @@ void anim_curves_view_t::contextMenuEvent(QContextMenuEvent* event)
 void anim_curves_view_t::reset_view()
 {
     int start_frame = app().document().composition().start_frame();
-    int end_frame   = app().document().composition().end_frame();
+    int end_frame = app().document().composition().end_frame();
 
-    viewport_.reset(Imath::Box2i(Imath::V2i(0, 0), Imath::V2i(width() - 1, height() - 1)),
-                    Imath::Box2f(Imath::V2i(start_frame - 5, 0), Imath::V2i(end_frame + 5, 10)));
+    viewport_.reset(
+        Imath::Box2i(Imath::V2i(0, 0), Imath::V2i(width() - 1, height() - 1)),
+        Imath::Box2f(
+            Imath::V2i(start_frame - 5, 0), Imath::V2i(end_frame + 5, 10)));
 }
 
 void anim_curves_view_t::draw_grid() const
@@ -361,9 +385,10 @@ void anim_curves_view_t::draw_grid() const
 
     // vertical
     {
-        int    nticks   = std::floor((double) width() / spacing);
-        double range    = nice_num(viewport_.world().max.x - viewport_.world().min.x, 0);
-        double d        = nice_num(range / (nticks - 1), 1);
+        int    nticks = std::floor((double) width() / spacing);
+        double range =
+            nice_num(viewport_.world().max.x - viewport_.world().min.x, 0);
+        double d = nice_num(range / (nticks - 1), 1);
         double graphmin = std::floor((double) viewport_.world().min.x / d) * d;
         double graphmax = std::ceil((double) viewport_.world().max.x / d) * d;
 
@@ -377,9 +402,10 @@ void anim_curves_view_t::draw_grid() const
 
     // horizontal
     {
-        int    nticks   = std::floor((double) height() / spacing);
-        double range    = nice_num(viewport_.world().max.y - viewport_.world().min.y, 0);
-        double d        = nice_num(range / (nticks - 1), 1);
+        int    nticks = std::floor((double) height() / spacing);
+        double range =
+            nice_num(viewport_.world().max.y - viewport_.world().min.y, 0);
+        double d = nice_num(range / (nticks - 1), 1);
         double graphmin = std::floor((double) viewport_.world().min.y / d) * d;
         double graphmax = std::ceil((double) viewport_.world().max.y / d) * d;
 
@@ -403,11 +429,14 @@ void anim_curves_view_t::draw_axes() const
 
     // horizontal
     {
-        painter_->drawLine(QPointF(0, height() - spacing), QPointF(width(), height() - spacing));
+        painter_->drawLine(
+            QPointF(0, height() - spacing),
+            QPointF(width(), height() - spacing));
 
-        int    nticks   = std::floor((double) width() / spacing);
-        double range    = nice_num(viewport_.world().max.x - viewport_.world().min.x, 0);
-        double d        = nice_num(range / (nticks - 1), 1);
+        int    nticks = std::floor((double) width() / spacing);
+        double range =
+            nice_num(viewport_.world().max.x - viewport_.world().min.x, 0);
+        double d = nice_num(range / (nticks - 1), 1);
         double graphmin = std::floor((double) viewport_.world().min.x / d) * d;
         double graphmax = std::ceil((double) viewport_.world().max.x / d) * d;
 
@@ -415,19 +444,22 @@ void anim_curves_view_t::draw_axes() const
         {
             Imath::V2f p(x, 0);
             Imath::V2i q(world_to_screen(p));
-            painter_->drawLine(QPointF(q.x, height() - spacing - 3),
-                               QPointF(q.x, height() - spacing + 3));
+            painter_->drawLine(
+                QPointF(q.x, height() - spacing - 3),
+                QPointF(q.x, height() - spacing + 3));
             painter_->drawText(QPoint(q.x, height() - 10), QString::number(x));
         }
     }
 
     // vertical
     {
-        painter_->drawLine(QPointF(spacing * 2, 0), QPointF(spacing * 2, height()));
+        painter_
+            ->drawLine(QPointF(spacing * 2, 0), QPointF(spacing * 2, height()));
 
-        int    nticks   = std::floor((double) height() / spacing);
-        double range    = nice_num(viewport_.world().max.y - viewport_.world().min.y, 0);
-        double d        = nice_num(range / (nticks - 1), 1);
+        int    nticks = std::floor((double) height() / spacing);
+        double range =
+            nice_num(viewport_.world().max.y - viewport_.world().min.y, 0);
+        double d = nice_num(range / (nticks - 1), 1);
         double graphmin = std::floor((double) viewport_.world().min.y / d) * d;
         double graphmax = std::ceil((double) viewport_.world().max.y / d) * d;
 
@@ -435,7 +467,8 @@ void anim_curves_view_t::draw_axes() const
         {
             Imath::V2f p(0, y);
             Imath::V2i q(world_to_screen(p));
-            painter_->drawLine(QPointF(spacing * 2 - 3, q.y), QPointF(spacing * 2 + 3, q.y));
+            painter_->drawLine(
+                QPointF(spacing * 2 - 3, q.y), QPointF(spacing * 2 + 3, q.y));
             painter_->drawText(QPointF(20, q.y), QString::number(y));
         }
     }
@@ -456,8 +489,8 @@ void anim_curves_view_t::draw_time_bar() const
 double anim_curves_view_t::nice_num(double x, bool round) const
 {
     int    expv = std::floor(std::log10((double) x));
-    double f    = x / std::pow(10.0, expv); /* between 1 and 10 */
-    double nf;                              /* nice, rounded fraction */
+    double f = x / std::pow(10.0, expv); /* between 1 and 10 */
+    double nf;                           /* nice, rounded fraction */
 
     if (round)
         if (f < 1.5)
@@ -527,32 +560,36 @@ void anim_curves_view_t::draw_small_box(const Imath::V2i& p) const
 
 float anim_curves_view_t::tangent_length() const { return 20.0f; }
 
-Imath::V2f anim_curves_view_t::left_tangent_dir(float tangent, float yscale) const
+Imath::V2f anim_curves_view_t::left_tangent_dir(float tangent, float yscale)
+    const
 {
     Imath::V2f tv(-time_scale(), tangent * value_scale() * yscale);
     tv.normalize();
     return tv;
 }
 
-Imath::V2f anim_curves_view_t::right_tangent_dir(float tangent, float yscale) const
+Imath::V2f anim_curves_view_t::right_tangent_dir(float tangent, float yscale)
+    const
 {
     Imath::V2f tv(time_scale(), -tangent * value_scale() * yscale);
     tv.normalize();
     return tv;
 }
 
-Imath::V2i anim_curves_view_t::left_tangent_pos(const Imath::V2i& p,
-                                                float             tangent,
-                                                float             yscale) const
+Imath::V2i anim_curves_view_t::left_tangent_pos(
+    const Imath::V2i& p,
+    float             tangent,
+    float             yscale) const
 {
     Imath::V2f tv(left_tangent_dir(tangent, yscale));
     tv *= tangent_length();
     return Imath::V2i(p.x + tv.x, p.y + tv.y);
 }
 
-Imath::V2i anim_curves_view_t::right_tangent_pos(const Imath::V2i& p,
-                                                 float             tangent,
-                                                 float             yscale) const
+Imath::V2i anim_curves_view_t::right_tangent_pos(
+    const Imath::V2i& p,
+    float             tangent,
+    float             yscale) const
 {
     Imath::V2f tv(right_tangent_dir(tangent, yscale));
     tv *= tangent_length();
@@ -560,9 +597,14 @@ Imath::V2i anim_curves_view_t::right_tangent_pos(const Imath::V2i& p,
 }
 
 int anim_curves_view_t::pick_distance() const { return 5; }
-int anim_curves_view_t::pick_distance2() const { return pick_distance() * pick_distance(); }
+int anim_curves_view_t::pick_distance2() const
+{
+    return pick_distance() * pick_distance();
+}
 
-bool anim_curves_view_t::inside_pick_distance(const Imath::V2i& p, const Imath::V2i& q) const
+bool anim_curves_view_t::inside_pick_distance(
+    const Imath::V2i& p,
+    const Imath::V2i& q) const
 {
     int l = (p - q).length2();
     int m = pick_distance2();
@@ -598,5 +640,5 @@ void anim_curves_view_t::set_show_tangents(bool b)
     update();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace ui
+}  // namespace ramen

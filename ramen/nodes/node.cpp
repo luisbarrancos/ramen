@@ -26,7 +26,8 @@ namespace
 {
 struct frames_needed_less
 {
-    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) const
+    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b)
+        const
     {
         if (a.first < b.first)
             return true;
@@ -38,25 +39,25 @@ struct frames_needed_less
     }
 };
 
-}  // unnamed
+}  // namespace
 
 node_t::node_t()
-: composite_parameterised_t()
-, flags_(0)
-, composition_(0)
+  : composite_parameterised_t()
+  , flags_(0)
+  , composition_(0)
 {
 }
 
 node_t::node_t(const node_t& other)
-: composite_parameterised_t(other)
-, inputs_(other.inputs_)
-, outputs_(other.outputs_)
+  : composite_parameterised_t(other)
+  , inputs_(other.inputs_)
+  , outputs_(other.outputs_)
 {
     for (auto& output : outputs_)
         output.set_parent_node(this);
 
-    flags_       = other.flags_;
-    loc_         = other.loc_;
+    flags_ = other.flags_;
+    loc_ = other.loc_;
     composition_ = other.composition_;
 }
 
@@ -96,20 +97,41 @@ void node_t::toggle_selection() { select(!selected()); }
 bool node_t::ignored() const { return util::test_flag(flags_, ignored_bit); }
 void node_t::set_ignored(bool b) { util::set_flag(flags_, ignored_bit, b); }
 
-bool node_t::plugin_error() const { return util::test_flag(flags_, plugin_error_bit); }
-void node_t::set_plugin_error(bool b) { util::set_flag(flags_, plugin_error_bit, b); }
+bool node_t::plugin_error() const
+{
+    return util::test_flag(flags_, plugin_error_bit);
+}
+void node_t::set_plugin_error(bool b)
+{
+    util::set_flag(flags_, plugin_error_bit, b);
+}
 
-bool node_t::autolayout() const { return util::test_flag(flags_, autolayout_bit); }
-void node_t::set_autolayout(bool b) { util::set_flag(flags_, autolayout_bit, b); }
+bool node_t::autolayout() const
+{
+    return util::test_flag(flags_, autolayout_bit);
+}
+void node_t::set_autolayout(bool b)
+{
+    util::set_flag(flags_, autolayout_bit, b);
+}
 
 bool node_t::cacheable() const { return flags_ & cacheable_bit; }
 void node_t::set_cacheable(bool b) { util::set_flag(flags_, cacheable_bit, b); }
 
-bool node_t::notify_dirty() const { return util::test_flag(flags_, notify_dirty_bit); }
-void node_t::set_notify_dirty(bool b) { util::set_flag(flags_, notify_dirty_bit, b); }
+bool node_t::notify_dirty() const
+{
+    return util::test_flag(flags_, notify_dirty_bit);
+}
+void node_t::set_notify_dirty(bool b)
+{
+    util::set_flag(flags_, notify_dirty_bit, b);
+}
 
 bool node_t::ui_invisible() const { return flags_ & ui_invisible_bit; }
-void node_t::set_ui_invisible(bool b) { util::set_flag(flags_, ui_invisible_bit, b); }
+void node_t::set_ui_invisible(bool b)
+{
+    util::set_flag(flags_, ui_invisible_bit, b);
+}
 
 bool node_t::is_active() const { return util::test_flag(flags_, active_bit); }
 bool node_t::is_context() const { return util::test_flag(flags_, context_bit); }
@@ -142,10 +164,11 @@ node_t* node_t::input(std::size_t i)
     return inputs_[i].input_node();
 }
 
-void node_t::add_input_plug(const std::string&    id,
-                            bool                  optional,
-                            const Imath::Color3c& color,
-                            const std::string&    tooltip)
+void node_t::add_input_plug(
+    const std::string&    id,
+    bool                  optional,
+    const Imath::Color3c& color,
+    const std::string&    tooltip)
 {
     inputs_.push_back(node_input_plug_t(id, optional, color, tooltip));
 }
@@ -184,9 +207,10 @@ node_t* node_t::output(std::size_t i)
     return boost::get<0>(outputs_[0].connections()[i]);
 }
 
-void node_t::add_output_plug(const std::string&    id,
-                             const Imath::Color3c& color,
-                             const std::string&    tooltip)
+void node_t::add_output_plug(
+    const std::string&    id,
+    const Imath::Color3c& color,
+    const std::string&    tooltip)
 {
     assert(!has_output_plug());
     outputs_.push_back(new node_output_plug_t(this, id, color, tooltip));
@@ -208,8 +232,8 @@ void node_t::add_new_input_plug()
 {
     assert(0);
     /*
-    add_input_plug( input_plug_info_t( ui::palette_t::instance().color("back plug")), true);
-    reconnect_node();
+    add_input_plug( input_plug_info_t( ui::palette_t::instance().color("back
+    plug")), true); reconnect_node();
     */
 }
 
@@ -230,7 +254,10 @@ void node_t::reconnect_node()
 // params
 void node_t::param_edit_finished() { notify(); }
 
-void node_t::notify() { breadth_first_outputs_search(*this, boost::bind(&node_t::do_notify, _1)); }
+void node_t::notify()
+{
+    breadth_first_outputs_search(*this, boost::bind(&node_t::do_notify, _1));
+}
 
 void node_t::do_notify()
 {
@@ -245,7 +272,10 @@ void node_t::calc_frames_needed(const render::context_t& context)
     do_calc_frames_needed(context);
 
     if (!frames_needed().empty())
-        std::sort(frames_needed().begin(), frames_needed().end(), frames_needed_less());
+        std::sort(
+            frames_needed().begin(),
+            frames_needed().end(),
+            frames_needed_less());
 }
 
 void node_t::do_calc_frames_needed(const render::context_t& context) {}
@@ -302,7 +332,7 @@ bool node_t::is_valid() const
             return false;
 
         // handle the all inputs optional case
-        bool all_optional     = true;
+        bool all_optional = true;
         bool all_disconnected = true;
 
         for (const node_input_plug_t& i : input_plugs())
@@ -393,7 +423,7 @@ void node_t::calc_hash_str(const render::context_t& context)
     // handle the case when all inputs are optional and disconnected.
     if (num_inputs() != 0)
     {
-        bool all_optional  = true;
+        bool all_optional = true;
         bool not_connected = true;
 
         for (int i = 0; i < num_inputs(); ++i)
@@ -431,7 +461,10 @@ void node_t::do_calc_hash_str(const render::context_t& context)
 
 std::string node_t::hash_str() const { return hash_generator().str(); }
 
-const hash::generator_t::digest_type& node_t::digest() { return hash_generator().digest(); }
+const hash::generator_t::digest_type& node_t::digest()
+{
+    return hash_generator().digest();
+}
 
 void node_t::add_context_to_hash_string(const render::context_t& context)
 {
@@ -444,7 +477,8 @@ bool node_t::include_input_in_hash(int num) const { return true; }
 
 void node_t::add_needed_frames_to_hash(const render::context_t& context)
 {
-    const_frames_needed_iterator it(frames_needed().begin()), end(frames_needed().end());
+    const_frames_needed_iterator it(frames_needed().begin()),
+        end(frames_needed().end());
 
     while (it != end)
     {
@@ -455,9 +489,11 @@ void node_t::add_needed_frames_to_hash(const render::context_t& context)
         while (1)
         {
             node_t* n = input(it->second);
-            depth_first_inputs_search(*n, boost::bind(&node_t::set_frame, _1, cur_frame));
+            depth_first_inputs_search(
+                *n, boost::bind(&node_t::set_frame, _1, cur_frame));
             depth_first_inputs_search(*n, boost::bind(&node_t::clear_hash, _1));
-            depth_first_inputs_search(*n, boost::bind(&node_t::calc_hash_str, _1, new_context));
+            depth_first_inputs_search(
+                *n, boost::bind(&node_t::calc_hash_str, _1, new_context));
             hash_generator() << it->second << n->hash_str();
             ++it;
 
@@ -471,9 +507,11 @@ void node_t::add_needed_frames_to_hash(const render::context_t& context)
     {
         if (node_t* n = input(i))
         {
-            depth_first_inputs_search(*n, boost::bind(&node_t::set_frame, _1, context.frame));
+            depth_first_inputs_search(
+                *n, boost::bind(&node_t::set_frame, _1, context.frame));
             depth_first_inputs_search(*n, boost::bind(&node_t::clear_hash, _1));
-            depth_first_inputs_search(*n, boost::bind(&node_t::calc_hash_str, _1, context));
+            depth_first_inputs_search(
+                *n, boost::bind(&node_t::calc_hash_str, _1, context));
         }
     }
 }
@@ -489,8 +527,9 @@ const char* node_t::help_string() const
     return metaclass()->help;
 }
 
-void node_t::convert_relative_paths(const boost::filesystem::path& old_base,
-                                    const boost::filesystem::path& new_base)
+void node_t::convert_relative_paths(
+    const boost::filesystem::path& old_base,
+    const boost::filesystem::path& new_base)
 {
     for (auto& param : param_set())
         param.convert_relative_paths(old_base, new_base);
@@ -509,7 +548,9 @@ void node_t::make_paths_relative()
 }
 
 // serialization
-void node_t::read(const serialization::yaml_node_t& in, const std::pair<int, int>& version)
+void node_t::read(
+    const serialization::yaml_node_t& in,
+    const std::pair<int, int>&        version)
 {
     std::string n;
     in.get_value("name", n);
@@ -544,7 +585,11 @@ void node_t::read(const serialization::yaml_node_t& in, const std::pair<int, int
     do_read(in, version);
 }
 
-void node_t::do_read(const serialization::yaml_node_t& in, const std::pair<int, int>& version) {}
+void node_t::do_read(
+    const serialization::yaml_node_t& in,
+    const std::pair<int, int>&        version)
+{
+}
 
 void node_t::write(serialization::yaml_oarchive_t& out) const
 {
@@ -563,7 +608,8 @@ void node_t::write_node_info(serialization::yaml_oarchive_t& out) const
     out << YAML::Key << "class" << YAML::Value;
     out.flow();
     out.begin_seq();
-    out << metaclass()->id << metaclass()->major_version << metaclass()->minor_version;
+    out << metaclass()->id << metaclass()->major_version
+        << metaclass()->minor_version;
     out.end_seq();
 
     out << YAML::Key << "name" << YAML::DoubleQuoted << YAML::Value << name();
@@ -578,7 +624,8 @@ void node_t::write_node_info(serialization::yaml_oarchive_t& out) const
 
 node_t* new_clone(const node_t& other)
 {
-    return dynamic_cast<node_t*>(new_clone(dynamic_cast<const parameterised_t&>(other)));
+    return dynamic_cast<node_t*>(
+        new_clone(dynamic_cast<const parameterised_t&>(other)));
 }
 
-}  // ramen
+}  // namespace ramen

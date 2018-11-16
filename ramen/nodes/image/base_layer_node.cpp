@@ -9,12 +9,12 @@ namespace ramen
 namespace image
 {
 base_layer_node_t::base_layer_node_t()
-: image_node_t()
+  : image_node_t()
 {
 }
 
 base_layer_node_t::base_layer_node_t(const base_layer_node_t& other)
-: image_node_t(other)
+  : image_node_t(other)
 {
 }
 
@@ -44,7 +44,9 @@ void base_layer_node_t::do_recursive_process(const render::context_t& context)
     process(context);
 }
 
-void base_layer_node_t::render_input(std::size_t i, const render::context_t& context)
+void base_layer_node_t::render_input(
+    std::size_t              i,
+    const render::context_t& context)
 {
     assert(input(i) && "Base layer node, null input node in render input");
     input_as<image_node_t>(i)->recursive_process(context);
@@ -52,9 +54,10 @@ void base_layer_node_t::render_input(std::size_t i, const render::context_t& con
 
 void base_layer_node_t::release_input_image(std::size_t i)
 {
-    assert(input(i) && "Base layer node, null input node in release input image");
+    assert(
+        input(i) && "Base layer node, null input node in release input image");
     input_as<image_node_t>(i)->release_image();
 }
 
-}  // namespace
-}  // namespace
+}  // namespace image
+}  // namespace ramen

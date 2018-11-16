@@ -12,7 +12,7 @@ namespace ui
 {
 class color_t
 {
-public:
+  public:
     color_t();
     color_t(double r, double g, double b, double a = 1.0f);
 
@@ -36,10 +36,9 @@ public:
     void           to_hsv(double& h, double& s, double& v) const;
     static color_t from_hsv(double h, double s, double v);
 
-private:
+  private:
     double red_, green_, blue_, alpha_;
 };
 
-}  // ui
-}  // ramen
-
+}  // namespace ui
+}  // namespace ramen

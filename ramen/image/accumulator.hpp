@@ -14,40 +14,45 @@ namespace image
 {
 class rgba_accumulator_t
 {
-public:
+  public:
     rgba_accumulator_t(const image_view_t& view);
     rgba_accumulator_t(const image_view_t& view, const Imath::Box2i defined);
 
     void clear();
 
     void accumulate(const const_image_view_t& v, float factor = 1.0f);
-    void accumulate(const const_image_view_t& v, const Imath::Box2i& area, float factor = 1.0f);
+    void accumulate(
+        const const_image_view_t& v,
+        const Imath::Box2i&       area,
+        float                     factor = 1.0f);
     void multiply(float f);
 
-private:
+  private:
     image_view_t view_;
     Imath::Box2i defined_;
 };
 
 class gray_accumulator_t
 {
-public:
+  public:
     gray_accumulator_t(const gray_image_view_t& view);
-    gray_accumulator_t(const gray_image_view_t& view, const Imath::Box2i defined);
+    gray_accumulator_t(
+        const gray_image_view_t& view,
+        const Imath::Box2i       defined);
 
     void clear();
 
     void accumulate(const const_gray_image_view_t& v, float factor = 1.0f);
-    void accumulate(const const_gray_image_view_t& v,
-                    const Imath::Box2i&            area,
-                    float                          factor = 1.0f);
+    void accumulate(
+        const const_gray_image_view_t& v,
+        const Imath::Box2i&            area,
+        float                          factor = 1.0f);
     void multiply(float f);
 
-private:
+  private:
     gray_image_view_t view_;
     Imath::Box2i      defined_;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace image
+}  // namespace ramen

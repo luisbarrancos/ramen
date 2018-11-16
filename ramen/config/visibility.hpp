@@ -16,4 +16,3 @@
 #define RAMEN_EXPORT
 #define RAMEN_IMPORT
 #endif
-

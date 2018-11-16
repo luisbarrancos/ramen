@@ -18,10 +18,11 @@
 
 namespace ramen
 {
-transform3_param_t::transform3_param_t(const std::string& name,
-                                       const std::string& id,
-                                       bool               image_mode)
-: composite_param_t(name)
+transform3_param_t::transform3_param_t(
+    const std::string& name,
+    const std::string& id,
+    bool               image_mode)
+  : composite_param_t(name)
 {
     image_mode_ = image_mode;
     set_id(id);
@@ -69,7 +70,7 @@ transform3_param_t::transform3_param_t(const std::string& name,
 }
 
 transform3_param_t::transform3_param_t(const transform3_param_t& other)
-: composite_param_t(other)
+  : composite_param_t(other)
 {
 }
 
@@ -162,7 +163,7 @@ Imath::V3f transform3_param_t::get_center() const
     if (image_mode())
     {
         Imath::V2f xy = get_absolute_value<Imath::V2f>(center_xy_param());
-        float      z  = get_value<float>(center_z_param());
+        float      z = get_value<float>(center_z_param());
         return Imath::V3f(xy.x, xy.y, z);
     }
     else
@@ -173,32 +174,36 @@ Imath::V3f transform3_param_t::get_center_at_frame(float frame) const
 {
     if (image_mode())
     {
-        Imath::V2f xy = get_absolute_value_at_frame<Imath::V2f>(center_xy_param(), frame);
-        float      z  = get_value_at_frame<float>(center_z_param(), frame);
+        Imath::V2f xy =
+            get_absolute_value_at_frame<Imath::V2f>(center_xy_param(), frame);
+        float z = get_value_at_frame<float>(center_z_param(), frame);
         return Imath::V3f(xy.x, xy.y, z);
     }
     else
         return get_value_at_frame<Imath::V3f>(center_param(), frame);
 }
 
-transform3_param_t::matrix_type transform3_param_t::matrix_at_frame(float frame,
-                                                                    float aspect,
-                                                                    int   subsample) const
+transform3_param_t::matrix_type transform3_param_t::matrix_at_frame(
+    float frame,
+    float aspect,
+    int   subsample) const
 {
     Imath::V3f c = get_center_at_frame(frame) / subsample;
-    Imath::V3f t = get_value_at_frame<Imath::V3f>(translate_param(), frame) / subsample;
+    Imath::V3f t =
+        get_value_at_frame<Imath::V3f>(translate_param(), frame) / subsample;
     Imath::V3f s = get_value_at_frame<Imath::V3f>(scale_param(), frame);
-    Imath::V3f r
-        = get_value_at_frame<Imath::V3f>(rotate_param(), frame) * math::constants<float>::deg2rad();
+    Imath::V3f r = get_value_at_frame<Imath::V3f>(rotate_param(), frame) *
+                   math::constants<float>::deg2rad();
 
-    transform3_param_t::matrix_type m
-        = matrix_type().setTranslation(-c) * matrix_type().setScale(Imath::V3f(aspect, 1.0f, 1.0f))
-          * matrix_type().setScale(s) * matrix_type().setEulerAngles(r)
-          * matrix_type().setTranslation(t)
-          * matrix_type().setScale(Imath::V3f(1.0f / aspect, 1.0f, 1.0f))
-          * matrix_type().setTranslation(c);
+    transform3_param_t::matrix_type m =
+        matrix_type().setTranslation(-c) *
+        matrix_type().setScale(Imath::V3f(aspect, 1.0f, 1.0f)) *
+        matrix_type().setScale(s) * matrix_type().setEulerAngles(r) *
+        matrix_type().setTranslation(t) *
+        matrix_type().setScale(Imath::V3f(1.0f / aspect, 1.0f, 1.0f)) *
+        matrix_type().setTranslation(c);
 
     return m;
 }
 
-}  // namespace
+}  // namespace ramen

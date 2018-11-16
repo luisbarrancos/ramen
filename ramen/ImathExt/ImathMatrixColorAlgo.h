@@ -15,6 +15,5 @@ Imath::M44f saturationMatrix(float sat);
 Imath::M44f gainMatrix(const Imath::V3f& g);
 Imath::M44f gainMatrix(float g);
 
-}  // ImathExt
-}  // ramen
-
+}  // namespace ImathExt
+}  // namespace ramen

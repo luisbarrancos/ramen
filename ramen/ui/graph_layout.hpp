@@ -21,7 +21,7 @@ namespace ui
 {
 class RAMEN_API graph_layout_t : boost::noncopyable
 {
-public:
+  public:
     graph_layout_t();
     virtual ~graph_layout_t();
 
@@ -30,13 +30,13 @@ public:
     Imath::Box2f node_bbox(const node_t& n) const;
 
     virtual void place_node(node_t& n, const node_graph_t& g) = 0;
-    virtual void layout_selected_nodes(node_graph_t& g)       = 0;
+    virtual void layout_selected_nodes(node_graph_t& g) = 0;
 
-protected:
+  protected:
     graph_layout_t(const graph_layout_t& other);
     void operator=(const graph_layout_t&);
 
-private:
+  private:
     virtual graph_layout_t* do_clone() const = 0;
 };
 
@@ -44,19 +44,18 @@ private:
 
 class RAMEN_API simple_graph_layout_t : public graph_layout_t
 {
-public:
+  public:
     simple_graph_layout_t();
 
     void place_node(node_t& n, const node_graph_t& g) override;
     void layout_selected_nodes(node_graph_t& g) override;
 
-protected:
+  protected:
     simple_graph_layout_t(const simple_graph_layout_t& other);
 
-private:
+  private:
     graph_layout_t* do_clone() const override;
 };
 
-}  // namespace
-}  // namespace
-
+}  // namespace ui
+}  // namespace ramen
